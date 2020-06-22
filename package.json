@@ -1,0 +1,31 @@
+{
+  "name": "@biothings-explorer/single-hop-app",
+  "version": "1.0.0",
+  "description": "App performing single hop query for BioThings Explorer",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "coveralls": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevinxin90/single-hop-app.js.git"
+  },
+  "keywords": [
+    "bte",
+    "biothings",
+    "single",
+    "hop",
+    "query"
+  ],
+  "author": "jiwen xin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kevinxin90/single-hop-app.js/issues"
+  },
+  "homepage": "https://github.com/kevinxin90/single-hop-app.js#readme",
+  "devDependencies": {
+    "coveralls": "^3.1.0",
+    "jest": "^26.0.1"
+  }
+}
