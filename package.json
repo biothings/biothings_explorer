@@ -2,7 +2,7 @@
   "name": "@biothings-explorer/single-hop-app",
   "version": "1.0.0",
   "description": "App performing single hop query for BioThings Explorer",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
     "test": "jest",
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
