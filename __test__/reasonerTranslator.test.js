@@ -42,5 +42,11 @@ describe("Testing Reasoner Std API Query Graph Translator", () => {
     test("Testing the restructureNodes() function", () => {
         rt.restructureNodes();
         expect(rt.nodes).toHaveProperty("qg0");
-    })
+    });
+
+    test("Testing the extractAllInputs() function", () => {
+        rt.extractAllInputs()
+        expect(rt.inputs).toHaveLength(2);
+        expect(rt.inputs).toContain("DOID:14735");
+    });
 });
