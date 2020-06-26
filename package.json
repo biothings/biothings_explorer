@@ -26,10 +26,10 @@
   "homepage": "https://github.com/kevinxin90/single-hop-app.js#readme",
   "devDependencies": {
     "coveralls": "^3.1.0",
-    "jest": "^26.0.1"
+    "jest": "^26.1.0"
   },
   "dependencies": {
-    "@biothings-explorer/call-apis": "^1.0.0",
+    "@biothings-explorer/call-apis": "^1.0.1",
     "@biothings-explorer/id_resolver": "^1.0.0",
     "@biothings-explorer/smartapi-kg": "^1.0.16",
     "body-parser": "^1.19.0",
