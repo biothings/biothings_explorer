@@ -32,7 +32,8 @@ describe("Testing Reasoner Std API Query Graph Translator", () => {
                     "type": "disease"
                 },
                 {
-                    "id": "qg2"
+                    "id": "qg2",
+                    "type": "gene"
                 }
             ]
         };
@@ -45,8 +46,26 @@ describe("Testing Reasoner Std API Query Graph Translator", () => {
     });
 
     test("Testing the extractAllInputs() function", () => {
-        rt.extractAllInputs()
+        rt.extractAllInputs();
         expect(rt.inputs).toHaveLength(2);
         expect(rt.inputs).toContain("DOID:14735");
     });
+
+    test("Testing the findUniqueEdges() function", () => {
+        rt.findUniqueEdges();
+        expect(Array.from(rt.edges)).toHaveLength(1);
+        expect(rt.edges).toContain("disease-None-gene");
+    })
+
+    test("Testing the findMetaKGEdges() function", () => {
+        const edge = 'Gene-related_to-Disease';
+        const meta_kg_edges = rt.findMetaKGEdges(edge);
+        expect(meta_kg_edges.length).toBeGreaterThan(1);
+        const edge2 = 'Gene-functional_association-Pathway';
+        const meta_kg_edges2 = rt.findMetaKGEdges(edge2);
+        expect(meta_kg_edges2.length).toBe(2);
+        const edge3 = 'Gene1-functional_association-Pathway';
+        const meta_kg_edges3 = rt.findMetaKGEdges(edge3);
+        expect(meta_kg_edges3.length).toBe(0);
+    })
 });
