@@ -21,7 +21,8 @@ app.post('/query', jsonParser, async (req, res, next) => {
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(rt1.reasonStdAPIResponse));
     } catch (error) {
-        return next(error)
+        console.log(error);
+        res.end();
     }
 })
 
