@@ -9,7 +9,7 @@ app.use(cors())
 const port = 3000
 var jsonParser = bodyParser.json()
 
-app.post('/query', jsonParser, async (req, res) => {
+app.post('/query', jsonParser, async (req, res, next) => {
     console.log(req.body);
     try {
         const queryGraph = req.body.message.query_graph;
