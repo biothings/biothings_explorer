@@ -11,15 +11,18 @@ var jsonParser = bodyParser.json()
 
 app.post('/query', jsonParser, async (req, res) => {
     console.log(req.body);
-    const queryGraph = req.body.message.query_graph;
-    let rt1 = new rt(queryGraph);
-    //console.log(rt1.findQueryGraphNodeID("DOID:10533"))
-    await rt1.queryPlan();
-    await rt1.queryExecute();
-    //console.log(rt1.query_result);
-    rt1.responseTranslate();
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(rt1.reasonStdAPIResponse));
+    try {
+        const queryGraph = req.body.message.query_graph;
+        let rt1 = new rt(queryGraph);
+        await rt1.queryPlan();
+        await rt1.queryExecute();
+        //console.log(rt1.query_result);
+        rt1.responseTranslate();
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(rt1.reasonStdAPIResponse));
+    } catch (error) {
+        return next(error)
+    }
 })
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
