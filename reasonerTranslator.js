@@ -1,19 +1,37 @@
 const kg = require("@biothings-explorer/smartapi-kg");
 const id_resolver = require("@biothings-explorer/id_resolver");
 const call_api = require("@biothings-explorer/call-apis");
+const camelCase = require('camelcase');
+const camelcase = require("camelcase");
 const ID_WITH_PREFIXES = ["MONDO", "DOID", "UBERON",
     "EFO", "HP", "CHEBI", "CL", "MGI"];
+
+const meta_kg = new kg();
+meta_kg.constructMetaKGSync();
+
 /**
  * Translator Reasoner Std API query graph into BTE input
  */
 module.exports = class ReasonerQueryGraphTranslator {
     constructor(queryGraph) {
         this.queryGraph = queryGraph;
-        this.kg = new kg();
-        this.kg.constructMetaKGSync();
+        this.snake2Pascal();
+        this.kg = meta_kg;
         this.restructureNodes();
         this.extractAllInputs();
         this.findUniqueEdges();
+    }
+
+    /**
+     * Convert snakecase to PascalCase for all nodes in query graph
+     */
+    snake2Pascal() {
+        this.queryGraph.nodes = this.queryGraph.nodes.map(node => {
+            if ("type" in node) {
+                node.type = camelcase(node.type, { pascalCase: true })
+            }
+            return node;
+        })
     }
 
     findQueryGraphNodeID(curie = null, type = null) {
