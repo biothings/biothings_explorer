@@ -9,6 +9,10 @@ app.use(cors())
 const port = 3000
 var jsonParser = bodyParser.json()
 
+app.get('/', (req, res) => {
+    res.redirect("https://smart-api.info/ui/dc91716f44207d2e1287c727f281d339");
+})
+
 app.post('/query', jsonParser, async (req, res, next) => {
     console.log(req.body);
     try {
