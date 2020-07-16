@@ -32,9 +32,12 @@
     "@biothings-explorer/call-apis": "^1.0.2",
     "@biothings-explorer/id_resolver": "^1.0.0",
     "@biothings-explorer/smartapi-kg": "^1.0.17",
+    "biothings-explorer-graphql": "^1.0.1",
     "body-parser": "^1.19.0",
     "camelcase": "^6.0.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "install": "^0.13.0",
+    "npm": "^6.14.6"
   }
 }
