@@ -28,6 +28,11 @@ app.post('/query', jsonParser, async (req, res, next) => {
         console.log(error);
         res.end();
     }
-})
+});
+
+(async () => {
+    const server = await require("biothings-explorer-graphql");
+    server.applyMiddleware({ app });
+})();
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
