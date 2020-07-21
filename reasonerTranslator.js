@@ -1,5 +1,5 @@
 const kg = require("@biothings-explorer/smartapi-kg");
-const id_resolver = require("@biothings-explorer/id_resolver");
+const id_resolver = require("biomedical_id_resolver");
 const call_api = require("@biothings-explorer/call-apis");
 const camelCase = require('camelcase');
 const camelcase = require("camelcase");
@@ -70,10 +70,15 @@ module.exports = class ReasonerQueryGraphTranslator {
      * Extract all curies from the query graph.
      */
     extractAllInputs() {
-        this.inputs = [];
+        this.inputs = {};
         this.queryGraph.nodes.map(node => {
             if ("curie" in node) {
-                this.inputs.push(node.curie);
+                if (!(node.type in this.inputs)) {
+                    this.inputs[node.type] = [];
+                }
+                if (!(this.inputs[node.type]).includes(node.curie)) {
+                    this.inputs[node.type].push(node.curie);
+                }
             }
         })
     }
@@ -169,8 +174,9 @@ module.exports = class ReasonerQueryGraphTranslator {
         let res = [];
         if (supportBatch === false) {
             Object.keys(resolvedIDs).map(curie => {
-                if (inputID in resolvedIDs[curie]["bte_equivalent_identifiers"]) {
-                    resolvedIDs[curie]["bte_equivalent_identifiers"][inputID].map(id => {
+                console.log("resolved", resolvedIDs[curie]);
+                if (inputID in resolvedIDs[curie]["bte_ids"]) {
+                    resolvedIDs[curie]["bte_ids"][inputID].map(id => {
                         edge["input"] = id;
                         edge["input_resolved_identifiers"] = { [curie]: resolvedIDs[curie] };
                         if (!(ID_WITH_PREFIXES.includes(inputID))) {
@@ -186,8 +192,8 @@ module.exports = class ReasonerQueryGraphTranslator {
             let id_mapping = {};
             let input = [];
             Object.keys(resolvedIDs).map(curie => {
-                if (inputID in resolvedIDs[curie]["bte_equivalent_identifiers"]) {
-                    resolvedIDs[curie]["bte_equivalent_identifiers"][inputID].map(id => {
+                if (inputID in resolvedIDs[curie]["bte_ids"]) {
+                    resolvedIDs[curie]["bte_ids"][inputID].map(id => {
                         if (!(ID_WITH_PREFIXES.includes(inputID))) {
                             id_mapping[inputID + ':' + id] = curie;
                         } else {
@@ -256,8 +262,9 @@ module.exports = class ReasonerQueryGraphTranslator {
                 target_id: item.$output,
                 source_id: input,
                 id: [input, item.$association.predicate, item.$output].join('--'),
-                provided_by: item.$association.source,
-                publications: item.pubmed
+                provided_by: item.provided_by,
+                publications: item.publications,
+                api: item.api
             });
             this.reasonStdAPIResponse.results.push({
                 edge_bindings: [
