@@ -47,15 +47,9 @@ describe("Testing Reasoner Std API Query Graph Translator", () => {
 
     test("Testing the extractAllInputs() function", () => {
         rt.extractAllInputs();
-        expect(rt.inputs).toHaveLength(2);
-        expect(rt.inputs).toContain("DOID:14735");
+        expect(rt.inputs).toHaveProperty("Disease");
+        expect(rt.inputs.Disease).toHaveLength(2);
     });
-
-    test("Testing the findUniqueEdges() function", () => {
-        rt.findUniqueEdges();
-        expect(Array.from(rt.edges)).toHaveLength(1);
-        expect(rt.edges).toContain("disease-None-gene");
-    })
 
     test("Testing the findMetaKGEdges() function", () => {
         const edge = 'Gene-related_to-Disease';
