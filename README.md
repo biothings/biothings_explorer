@@ -1,12 +1,10 @@
 # single-hop-app.js
 [![Coverage Status](https://coveralls.io/repos/github/kevinxin90/single-hop-app.js/badge.svg?branch=master)](https://coveralls.io/github/kevinxin90/single-hop-app.js?branch=master)
-[![Build Status](https://travis-ci.com/kevinxin90/single-hop-app.js.svg?branch=master)](https://travis-ci.com/kevinxin90/single-hop-app.js)
 
-App perform single hop query for BioThings Explorer
 
 # Project Title
 
-BioThings Explorer
+BioThings Explorer Reasoner API
 
 ---
 ## Requirements
@@ -46,7 +44,7 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 
 ## Install
 
-    $ git clone https://github.com/kevinxin90/single-hop-app.js
+    $ git clone https://github.com/biothings/single-hop-app.js
     $ cd single-hop-app.js
     $ npm install
 
@@ -58,3 +56,23 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 ## Simple build for production
 
     $ npm build
+
+## Deploy
+
+A docker file is included in the base directory and can be used to build the customized container
+
+```bash
+docker build -t bte_reasoner_api .
+```
+
+Container can be built and started using docker-compose
+
+```bash
+docker-compose up
+```
+
+Public Docker image located at [link](https://hub.docker.com/repository/docker/biothings/bte_reasoner_api)
+
+## Usage
+
+`http://<HOST>:3000`
