@@ -1,0 +1,9 @@
+version: '3'
+services:
+  bte_reasoner_api:
+    container_name: bte_reasoner_api
+    image: bte_reasoner_api
+    build:
+      context: .
+    ports:
+      - '3000:3000'
