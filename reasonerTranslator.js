@@ -1,7 +1,6 @@
 const kg = require("@biothings-explorer/smartapi-kg");
 const id_resolver = require("biomedical_id_resolver");
 const call_api = require("@biothings-explorer/call-apis");
-const camelCase = require('camelcase');
 const camelcase = require("camelcase");
 const ID_WITH_PREFIXES = ["MONDO", "DOID", "UBERON",
     "EFO", "HP", "CHEBI", "CL", "MGI"];
@@ -174,7 +173,6 @@ module.exports = class ReasonerQueryGraphTranslator {
         let res = [];
         if (supportBatch === false) {
             Object.keys(resolvedIDs).map(curie => {
-                console.log("resolved", resolvedIDs[curie]);
                 if (inputID in resolvedIDs[curie]["bte_ids"]) {
                     resolvedIDs[curie]["bte_ids"][inputID].map(id => {
                         edge["input"] = id;
