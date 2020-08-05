@@ -35,9 +35,14 @@
     "biothings-explorer-graphql": "^1.0.3",
     "body-parser": "^1.19.0",
     "camelcase": "^6.0.0",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-winston": "^4.0.3",
     "install": "^0.13.0",
-    "npm": "^6.14.6"
+    "npm": "^6.14.6",
+    "snake-case": "^3.0.3",
+    "winston": "^3.3.3",
+    "winston-elasticsearch": "^0.7.0"
   }
 }
