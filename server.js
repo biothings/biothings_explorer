@@ -4,6 +4,9 @@ const express = require('express');
 const compression = require('compression')
 const cors = require("cors");
 var bodyParser = require('body-parser');
+const getServer = require("biothings-explorer-graphql");
+const depthLimit = require("graphql-depth-limit");
+
 //const expressWinston = require("express-winston");
 //const { createLogger, transports, format } = require("winston");
 //const winston = require("winston");
@@ -82,7 +85,13 @@ app.post('/query', jsonParser, async (req, res, next) => {
 });
 
 (async () => {
-    const server = await require("biothings-explorer-graphql");
+
+    const config = {
+        introspection: true,
+        playground: true,
+        validationRules: [depthLimit(5)] //limit query depth to 5
+    }
+    const server = await getServer(config);
     server.applyMiddleware({ app });
 })();
 
