@@ -17,7 +17,7 @@ before_script:
 script:
     - npm test
     - npm run coveralls
-    - docker build --pull -cache-from biothings/bte_reasoner_api --tag biothings/bte_reasoner_api .
+    - docker build --pull --cache-from biothings/bte_reasoner_api --tag biothings/bte_reasoner_api .
     - docker run -d biothings/bte_reasoner_api
 
 after_script:
