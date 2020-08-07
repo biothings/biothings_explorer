@@ -1,6 +1,6 @@
 {
   "name": "@biothings-explorer/single-hop-app",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "App performing single hop query for BioThings Explorer",
   "main": "server/server.js",
   "scripts": {
@@ -26,23 +26,24 @@
   "homepage": "https://github.com/kevinxin90/single-hop-app.js#readme",
   "devDependencies": {
     "coveralls": "^3.1.0",
-    "jest": "^26.1.0"
+    "jest": "^26.2.2"
   },
   "dependencies": {
-    "@biothings-explorer/call-apis": "^1.0.5",
-    "@biothings-explorer/smartapi-kg": "^1.1.9",
-    "biomedical_id_resolver": "^1.0.8",
-    "biothings-explorer-graphql": "^1.0.3",
+    "@biothings-explorer/call-apis": "^1.0.7",
+    "@biothings-explorer/smartapi-kg": "^1.2.2",
+    "biomedical_id_resolver": "^1.1.0",
+    "biothings-explorer-graphql": "2.1.1",
     "body-parser": "^1.19.0",
     "camelcase": "^6.0.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "express-winston": "^4.0.3",
+    "express-winston": "^4.0.5",
+    "graphql-depth-limit": "^1.1.0",
     "install": "^0.13.0",
-    "npm": "^6.14.6",
+    "npm": "^6.14.7",
     "snake-case": "^3.0.3",
     "winston": "^3.3.3",
-    "winston-elasticsearch": "^0.7.0"
+    "winston-elasticsearch": "^0.7.13"
   }
 }
