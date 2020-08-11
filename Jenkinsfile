@@ -43,7 +43,7 @@ pipeline {
             }
             steps {
                    withEnv([
-                      "IMAGE_NAME=single-hop-app",
+                      "IMAGE_NAME=biothings_kg_api",
                        "BUILD_VERSION=" + (params.BUILD_VERSION ?: env.BUILD_VERSION)
                    ]) {
                         checkout scm
