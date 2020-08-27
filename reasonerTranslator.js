@@ -173,8 +173,8 @@ module.exports = class ReasonerQueryGraphTranslator {
         let res = [];
         if (supportBatch === false) {
             Object.keys(resolvedIDs).map(curie => {
-                if (inputID in resolvedIDs[curie]["bte_ids"]) {
-                    resolvedIDs[curie]["bte_ids"][inputID].map(id => {
+                if (inputID in resolvedIDs[curie]["db_ids"]) {
+                    resolvedIDs[curie]["db_ids"][inputID].map(id => {
                         edge["input"] = id;
                         edge["input_resolved_identifiers"] = { [curie]: resolvedIDs[curie] };
                         if (!(ID_WITH_PREFIXES.includes(inputID))) {
@@ -190,8 +190,8 @@ module.exports = class ReasonerQueryGraphTranslator {
             let id_mapping = {};
             let input = [];
             Object.keys(resolvedIDs).map(curie => {
-                if (inputID in resolvedIDs[curie]["bte_ids"]) {
-                    resolvedIDs[curie]["bte_ids"][inputID].map(id => {
+                if (inputID in resolvedIDs[curie]["db_ids"]) {
+                    resolvedIDs[curie]["db_ids"][inputID].map(id => {
                         if (!(ID_WITH_PREFIXES.includes(inputID))) {
                             id_mapping[inputID + ':' + id] = curie;
                         } else {
