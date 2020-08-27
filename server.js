@@ -1,5 +1,6 @@
 const rt = require("./reasonerTranslator");
 const pred = require("./predicates");
+const assoc = require("./association");
 const express = require('express');
 const compression = require('compression')
 const cors = require("cors");
@@ -61,6 +62,32 @@ app.get('/predicates', (req, res) => {
     try {
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(pred()));
+    } catch (error) {
+        console.log(error);
+        res.end();
+    }
+})
+
+app.get('/metakg', async (req, res) => {
+    try {
+        res.setHeader('Content-Type', 'application/json');
+        let api = undefined, source = undefined;
+        if (req.query.api !== undefined) {
+            if (req.query.api.startsWith('"') && req.query.api.endsWith('"')) {
+                api = req.query.api.slice(1, -1);
+            } else {
+                api = req.query.api;
+            }
+        }
+        if (req.query.provided_by !== undefined) {
+            if (req.query.provided_by.startsWith('"') && req.query.provided_by.endsWith('"')) {
+                source = req.query.provided_by.slice(1, -1);
+            } else {
+                source = req.query.provided_by;
+            }
+        }
+        let assocs = await assoc(req.query.subject, req.query.object, req.query.predicate, api, source);
+        res.end(JSON.stringify(assocs));
     } catch (error) {
         console.log(error);
         res.end();
