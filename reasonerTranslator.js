@@ -89,8 +89,12 @@ module.exports = class ReasonerQueryGraphTranslator {
         this.edges = {};
         this.queryGraph.edges.map(edge => {
             if ("curie" in this.nodes[edge.source_id]) {
-                let relation = edge.relation;
-                if (!("relation" in edge)) {
+                let relation;
+                if ("relation" in edge) {
+                    relation = edge.relation
+                } else if ("type" in edge) {
+                    edge.relation = relation = edge.type
+                } else {
                     relation = "None"
                 }
                 let edge_name = this.nodes[edge.source_id].type + '-' + relation + '-' + this.nodes[edge.target_id].type;
@@ -283,22 +287,27 @@ module.exports = class ReasonerQueryGraphTranslator {
                 ]
             })
             if (!(added_nodes.includes(item.$output))) {
-                this.reasonStdAPIResponse.knowledge_graph.nodes.push({
-                    id: item.$output,
-                    name: item.$output_id_mapping.resolved.id.label,
-                    type: item.$association.output_type,
-                    equivalent_identifiers: item.$output_id_mapping.resolved.equivalent_identifiers
-                })
-                added_nodes.push(item.$output);
+                if (!("$output_id_mapping" in item)) {
+                    console.log("no resolved outout", item);
+                } else {
+                    this.reasonStdAPIResponse.knowledge_graph.nodes.push({
+                        id: item.$output,
+                        name: item.$output_id_mapping.resolved.id.label,
+                        type: item.$association.output_type,
+                        equivalent_identifiers: item.$output_id_mapping.resolved.equivalent_identifiers
+                    })
+                    added_nodes.push(item.$output);
+                    if (!(added_nodes.includes(input))) {
+                        this.reasonStdAPIResponse.knowledge_graph.nodes.push({
+                            id: input,
+                            name: item.$input_resolved_identifiers[input].id.label,
+                            type: item.$association.input_type
+                        })
+                        added_nodes.push(input);
+                    }
+                }
             }
-            if (!(added_nodes.includes(input))) {
-                this.reasonStdAPIResponse.knowledge_graph.nodes.push({
-                    id: input,
-                    name: item.$input_resolved_identifiers[input].id.label,
-                    type: item.$association.input_type
-                })
-                added_nodes.push(input);
-            }
+
         })
 
     }
