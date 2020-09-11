@@ -29,9 +29,9 @@
     "jest": "^26.4.2"
   },
   "dependencies": {
-    "@biothings-explorer/call-apis": "^1.1.0",
+    "@biothings-explorer/call-apis": "^1.1.3",
     "@biothings-explorer/smartapi-kg": "^1.4.0",
-    "biomedical_id_resolver": "^1.2.0",
+    "biomedical_id_resolver": "^1.2.1",
     "biothings-explorer-graphql": "2.1.1",
     "body-parser": "^1.19.0",
     "camelcase": "^6.0.0",
