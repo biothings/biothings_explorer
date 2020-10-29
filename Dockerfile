@@ -1,13 +1,21 @@
-FROM node:12
+FROM node:15-alpine
 
-WORKDIR /usr/src/app
+ENV NODE_ENV production
 
-COPY package*.json ./
+RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
 
-RUN npm install
+WORKDIR /home/node/app
 
-COPY . .
+RUN npm i -g pm2
+
+COPY --chown=node:node package*.json process.yml ./
+
+USER node
+
+RUN npm i
+
+COPY --chown=node:node . .
 
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+ENTRYPOINT [ "pm2-runtime", "./process.yml" ]
