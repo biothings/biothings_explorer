@@ -11,7 +11,6 @@ describe("Testing endpoints", () => {
             .expect('Content-Type', /json/)
             .then((response) => {
                 expect(response.body).toHaveProperty("gene");
-                expect(response.body).toHaveProperty("gene1");
             })
     })
 })
