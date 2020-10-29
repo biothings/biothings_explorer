@@ -8,13 +8,13 @@ const ID_WITH_PREFIXES = ["MONDO", "DOID", "UBERON",
     "EFO", "HP", "CHEBI", "CL", "MGI"];
 
 const meta_kg = new kg();
-meta_kg.constructMetaKGSync();
 
 /**
  * Translator Reasoner Std API query graph into BTE input
  */
 module.exports = class ReasonerQueryGraphTranslator {
-    constructor(queryGraph) {
+    constructor(queryGraph, smartapiID = undefined) {
+        this.smartapiID = smartapiID;
         this.queryGraph = queryGraph;
         this.snake2Pascal();
         this.kg = meta_kg;
@@ -326,6 +326,7 @@ module.exports = class ReasonerQueryGraphTranslator {
      * Translate ReasonerStdAPI query graph into BTE edges
      */
     async queryPlan() {
+        await meta_kg.constructMetaKG(false, "translator", this.smartapiID);
         await this.annotateIDs();
         this.annotateEdges();
     }
