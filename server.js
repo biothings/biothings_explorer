@@ -161,6 +161,5 @@ const createServer = () => {
     return app
 }
 
-createServer().listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
 
 module.exports = createServer;
