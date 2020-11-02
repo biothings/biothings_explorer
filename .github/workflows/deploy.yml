@@ -59,7 +59,7 @@ jobs:
             biothings/bte_reasoner_api:${{steps.vars.outputs.tag}}
 
   deploy:
-    needs: [test]
+    needs: [build]
     runs-on: ubuntu-latest
 
     steps:
