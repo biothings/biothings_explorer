@@ -13,9 +13,10 @@ const meta_kg = new kg();
  * Translator Reasoner Std API query graph into BTE input
  */
 module.exports = class ReasonerQueryGraphTranslator {
-    constructor(queryGraph, smartapiID = undefined) {
+    constructor(queryGraph, smartapiID = undefined, source = undefined) {
         this.smartapiID = smartapiID;
         this.queryGraph = queryGraph;
+        this.source = source;
         this.snake2Pascal();
         this.kg = meta_kg;
         this.restructureNodes();
@@ -132,7 +133,8 @@ module.exports = class ReasonerQueryGraphTranslator {
         let [sub, pred, obj] = edge.split('-');
         let filterCriteria = {
             input_type: sub,
-            output_type: obj
+            output_type: obj,
+            source: this.source
         }
         if (!(pred === "None")) {
             filterCriteria['predicate'] = pred;
