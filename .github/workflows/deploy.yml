@@ -71,7 +71,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          docker pull biothings/bte_reasoner_api:latest
-          docker stop bte_reasoner_app
-          docker system prune -f
-          docker run -d -p 3000:3000 --name=bte_reasoner_app biothings/bte_reasoner_api:latest
+          sudo docker pull biothings/bte_reasoner_api:latest
+          sudo docker stop bte_reasoner_app
+          sudo docker system prune -f
+          sudo docker run -d -p 3000:3000 --name=bte_reasoner_app biothings/bte_reasoner_api:latest
