@@ -26,17 +26,17 @@
   "homepage": "https://github.com/kevinxin90/single-hop-app.js#readme",
   "devDependencies": {
     "coveralls": "^3.1.0",
-    "jest": "^26.5.0",
+    "jest": "^26.6.2",
     "supertest": "^6.0.0"
   },
   "dependencies": {
     "@biothings-explorer/call-apis": "^1.3.0",
-    "@biothings-explorer/smartapi-kg": "^1.7.3",
+    "@biothings-explorer/smartapi-kg": "^1.9.0",
     "axios": "^0.20.0",
     "biomedical_id_resolver": "^1.2.1",
     "biothings-explorer-graphql": "2.1.1",
     "body-parser": "^1.19.0",
-    "camelcase": "^6.0.0",
+    "camelcase": "^6.2.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
