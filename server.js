@@ -113,8 +113,18 @@ const createServer = () => {
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(rf2.reasonStdAPIResponse));
         } catch (error) {
+            res.setHeader('Content-Type', 'application/json');
             console.log(error);
-            res.end();
+            res.end(JSON.stringify(
+                {
+                    "query_graph": req.body.message.query_graph,
+                    "knowledge_graph": {
+                        "edges": [],
+                        "nodes": []
+                    },
+                    "results": []
+                }
+            ));
         }
     });
 
