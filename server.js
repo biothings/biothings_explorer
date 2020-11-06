@@ -9,6 +9,7 @@ const cors = require("cors");
 var bodyParser = require('body-parser');
 const getServer = require("biothings-explorer-graphql");
 const depthLimit = require("graphql-depth-limit");
+const rateLimit = require("express-rate-limit");
 const port = 3000
 const helmet = require("helmet");
 //const expressWinston = require("express-winston");
@@ -21,6 +22,11 @@ const createServer = () => {
     app.use(cors());
     app.use(compression());
     app.use(helmet());
+    const limiter = rateLimit({
+        windowMs: 15 * 60 * 1000,
+        max: 100
+    });
+    app.use("/query", limiter);
 
     // const esTransportOpts = {
     //     level: "info",
