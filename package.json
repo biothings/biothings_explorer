@@ -42,6 +42,7 @@
     "express": "^4.17.1",
     "express-winston": "^4.0.5",
     "graphql-depth-limit": "^1.1.0",
+    "helmet": "^4.2.0",
     "install": "^0.13.0",
     "lodash": "^4.17.20",
     "npm": "^6.14.8",

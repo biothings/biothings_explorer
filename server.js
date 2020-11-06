@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 const getServer = require("biothings-explorer-graphql");
 const depthLimit = require("graphql-depth-limit");
 const port = 3000
+const helmet = require("helmet");
 //const expressWinston = require("express-winston");
 //const { createLogger, transports, format } = require("winston");
 //const winston = require("winston");
@@ -19,6 +20,7 @@ const createServer = () => {
 
     app.use(cors());
     app.use(compression());
+    app.use(helmet());
 
     // const esTransportOpts = {
     //     level: "info",
