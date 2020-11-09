@@ -1,0 +1,17 @@
+scenarios:
+    - flow:
+        - post:
+            url: "/query"
+            json:
+                message:
+                    query_graph:
+                        edges:
+                            - id: "e0"
+                              source_id: "n0"
+                              target_id: "n1"
+                        nodes:
+                            - id: "n0"
+                              type: "{{ input_type }}"
+                              curie: "{{ input_id }}"
+                            - id: "n1"
+                              type: "{{ output_type }}"

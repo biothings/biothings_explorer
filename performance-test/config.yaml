@@ -1,0 +1,19 @@
+config:
+    environments:
+        production:
+            target: "https://api.bte.ncats.io"
+            phases:
+                - duration: 120
+                  arrivalRate: 0.5
+
+        staging:
+            target: "http://localhost:3000"
+            phases:
+                - duration: 120
+                  arrivalRate: 0.5
+    payload:
+        path: "geneids.csv"
+        fields:
+            - "input_type"
+            - "input_id"
+            - "output_type"
