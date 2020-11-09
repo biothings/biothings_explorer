@@ -12,6 +12,7 @@ const depthLimit = require("graphql-depth-limit");
 const rateLimit = require("express-rate-limit");
 const port = 3000
 const helmet = require("helmet");
+var path = require('path');
 //const expressWinston = require("express-winston");
 //const { createLogger, transports, format } = require("winston");
 //const winston = require("winston");
@@ -21,7 +22,12 @@ const createServer = () => {
 
     app.use(cors());
     app.use(compression());
-    app.use(helmet());
+    app.use(
+        helmet({
+            contentSecurityPolicy: false,
+        })
+    );
+    app.use(require('express-status-monitor')());
     const limiter = rateLimit({
         windowMs: 15 * 60 * 1000,
         max: 200
@@ -174,6 +180,10 @@ const createServer = () => {
             console.log(error);
             res.end();
         }
+    });
+
+    app.get('/performance', function (req, res) {
+        res.sendFile(path.join(__dirname + '/performance-test/report.html'));
     });
 
     // (async () => {
