@@ -75,8 +75,22 @@ jobs:
           git pull
           npm i --production
           pm2 restart all
+
+  performance-test:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: SSH and deploy node app
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd opt/single-hop-app.js/performance-test
           npm i -g artillery --ignore-scripts
-          cd performance-test
           artillery run -e production --output report_prod.json --config config.yaml scenarios/query.yaml
           artillery report --output report.html report_prod.json
-
+          pm2 restart all
