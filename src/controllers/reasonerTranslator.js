@@ -7,18 +7,21 @@ const annotate = require("./annotate")
 const ID_WITH_PREFIXES = ["MONDO", "DOID", "UBERON",
     "EFO", "HP", "CHEBI", "CL", "MGI"];
 
-const meta_kg = new kg();
-meta_kg.constructMetaKGSync();
+
 
 /**
  * Translator Reasoner Std API query graph into BTE input
  */
 module.exports = class ReasonerQueryGraphTranslator {
-    constructor(queryGraph, source) {
+    constructor(queryGraph, smartapiID = undefined, source = undefined) {
+        this.smartapiID = smartapiID;
         this.queryGraph = queryGraph;
         this.source = source;
         this.snake2Pascal();
-        this.kg = meta_kg;
+        this.kg = new kg();
+        if (typeof this.smartapiID === 'undefined') {
+            this.kg.constructMetaKGSync();
+        }
         this.restructureNodes();
         this.extractAllInputs();
         this.findUniqueEdges();
@@ -328,6 +331,9 @@ module.exports = class ReasonerQueryGraphTranslator {
      * Translate ReasonerStdAPI query graph into BTE edges
      */
     async queryPlan() {
+        if (typeof this.smartapiID !== 'undefined') {
+            await this.kg.constructMetaKG(false, "translator", this.smartapiID);
+        }
         await this.annotateIDs();
         this.annotateEdges();
     }

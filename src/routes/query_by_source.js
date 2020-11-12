@@ -8,7 +8,7 @@ class RouteQueryBySource {
             try {
                 const sourceName = req.params.sourcename;
                 const queryGraph = req.body.message.query_graph;
-                let rt1 = new rt(queryGraph, sourceName);
+                let rt1 = new rt(queryGraph, undefined, sourceName);
                 await rt1.queryPlan();
                 await rt1.queryExecute();
                 //console.log(rt1.query_result);
