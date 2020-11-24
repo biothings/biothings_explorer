@@ -28,7 +28,7 @@ describe("Testing KnowledgeGraph Module", () => {
             const res = kg._createInputNode(record);
             expect(res).toHaveProperty("NCBIGene:1017");
             expect(res["NCBIGene:1017"]).toHaveProperty("name", "CDK2");
-            expect(res["NCBIGene:1017"]).toHaveProperty("category", "Gene");
+            expect(res["NCBIGene:1017"]).toHaveProperty("category", "biolink:Gene");
         })
     })
 
@@ -53,7 +53,7 @@ describe("Testing KnowledgeGraph Module", () => {
             const kg = new KnowledgeGraph();
             const res = kg._createOutputNode(record);
             expect(res["CHEMBL.COMPOUND:CHEMBL354634"]).toHaveProperty("name", "DRUG A");
-            expect(res["CHEMBL.COMPOUND:CHEMBL354634"]).toHaveProperty("category", "ChemicalSubstance");
+            expect(res["CHEMBL.COMPOUND:CHEMBL354634"]).toHaveProperty("category", "biolink:ChemicalSubstance");
         })
     })
 
