@@ -60,7 +60,9 @@ module.exports = class QEdge2BTEEdgeHandler {
                             [id]: curie
                         };
                     }
-                    bteEdges.push(_.cloneDeep(edge));
+                    let edgeToBePushed = _.cloneDeep(edge);
+                    edgeToBePushed.reasoner_edge = smartAPIEdge.reasoner_edge;
+                    bteEdges.push(edgeToBePushed);
                 })
             }
         }
@@ -95,7 +97,9 @@ module.exports = class QEdge2BTEEdgeHandler {
             edge["input"] = inputs;
             edge["input_resolved_identifiers"] = resolvedIDs;
             edge["original_input"] = id_mapping;
-            bteEdges.push(_.cloneDeep(edge));
+            let edgeToBePushed = _.cloneDeep(edge);
+            edgeToBePushed.reasoner_edge = smartAPIEdge.reasoner_edge;
+            bteEdges.push(edgeToBePushed);
         }
         return bteEdges;
     }

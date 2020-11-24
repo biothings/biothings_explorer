@@ -45,6 +45,14 @@ module.exports = class QEdge {
         return [curie];
     }
 
+    getInputNode() {
+        return ((this.isReversed()) ? this.object : this.subject);
+    }
+
+    getOutputNode() {
+        return ((this.isReversed()) ? this.subject : this.object);
+    }
+
     hasInputResolved() {
         if (this.isReversed()) {
             return this.object.hasEquivalentIDs();

@@ -52,6 +52,11 @@ module.exports = class KnowledgeGraph {
             this.nodes = { ...this.nodes, ...this._createInputNode(record) };
             this.nodes = { ...this.nodes, ...this._createOutputNode(record) };
             this.edges = { ...this.edges, ...this._createEdge(record) };
+
         })
+        this.kg = {
+            nodes: this.nodes,
+            edges: this.edges
+        }
     }
 }

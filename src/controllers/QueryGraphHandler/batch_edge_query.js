@@ -52,6 +52,7 @@ module.exports = class BatchEdgeQueryHandler {
         let expanded_bteEdges = this._expandBTEEdges(bteEdges);
         let query_res = await this._queryBTEEdges(expanded_bteEdges);
         let processed_query_res = await this._postQueryFilter(query_res);
+        nodeUpdate.update(processed_query_res);
         return processed_query_res;
     }
 

@@ -8,6 +8,14 @@ module.exports = class TRAPIQueryHandler {
 
     }
 
+    getResponse() {
+        return {
+            query_graph: this.queryGraph,
+            knowledge_graph: this.knowledgeGraph.kg,
+            results: this.queryResults.results
+        }
+    }
+
     /**
      * Set TRAPI Query Graph
      * @param {object} queryGraph - TRAPI Query Graph Object
@@ -32,12 +40,12 @@ module.exports = class TRAPIQueryHandler {
 
     _createBatchEdgeQueryHandlers(queryPaths) {
         let handlers = {};
-        queryPaths.forEach((item, index) => {
+        for (const index in queryPaths) {
             handlers[index] = new BatchEdgeQueryHandler();
-            handlers[index].setEdges(item);
+            handlers[index].setEdges(queryPaths[0]);
             handlers[index].subscribe(this.knowledgeGraph);
             handlers[index].subscribe(this.queryResults);
-        });
+        };
         return handlers;
     }
 
@@ -47,7 +55,7 @@ module.exports = class TRAPIQueryHandler {
         const handlers = this._createBatchEdgeQueryHandlers(queryPaths);
         for (let i = 0; i < Object.keys(handlers).length; i++) {
             let handler = handlers[i];
-            let res = await handler.query(handler.edges);
+            let res = await handler.query(handler.qEdges);
             handler.notify(res);
         }
     }

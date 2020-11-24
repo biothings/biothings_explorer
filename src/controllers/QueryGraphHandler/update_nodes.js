@@ -1,5 +1,7 @@
 const id_resolver = require("biomedical_id_resolver");
-
+const GraphHelper = require("./helper");
+const _ = require("lodash");
+const helper = new GraphHelper();
 
 module.exports = class NodesUpdateHandler {
     constructor(qEdges) {
@@ -55,11 +57,21 @@ module.exports = class NodesUpdateHandler {
         return;
     }
 
+    _createEquivalentIDsObject(record) {
+        return {
+            [helper._getOutputID(record)]: record["$output_id_mapping"].resolved
+        }
+    }
+
     /**
      * Update nodes with equivalent ids based on query response.
-     * @param {object} response - query response
+     * @param {object} queryResult - query response
      */
-    update(response) {
-
+    update(queryResult) {
+        queryResult.map(record => {
+            record["$reasoner_edge"].getOutputNode().updateEquivalentIDs(
+                _.cloneDeep(this._createEquivalentIDsObject(record))
+            );
+        })
     }
 }

@@ -32,6 +32,14 @@ module.exports = class QNode {
         this.equivalentIDs = equivalentIDs;
     }
 
+    updateEquivalentIDs(equivalentIDs) {
+        if (this.equivalentIDs === undefined) {
+            this.equivalentIDs = equivalentIDs
+        } else {
+            this.equivalentIDs = { ...this.equivalentIDs, ...equivalentIDs };
+        }
+    }
+
     hasInput() {
         return !(typeof this.curie === "undefined");
     }
