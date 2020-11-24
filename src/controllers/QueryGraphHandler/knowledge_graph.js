@@ -22,7 +22,7 @@ module.exports = class KnowledgeGraph {
     _createInputNode(record) {
         return {
             [helper._getInputID(record)]: {
-                category: helper._getInputCategory(record),
+                category: "biolink:" + helper._getInputCategory(record),
                 name: helper._getInputLabel(record)
             }
         }
@@ -31,7 +31,7 @@ module.exports = class KnowledgeGraph {
     _createOutputNode(record) {
         return {
             [helper._getOutputID(record)]: {
-                category: helper._getOutputCategory(record),
+                category: "biolink:" + helper._getOutputCategory(record),
                 name: helper._getOutputLabel(record)
             }
         }
@@ -40,7 +40,7 @@ module.exports = class KnowledgeGraph {
     _createEdge(record) {
         return {
             [helper._createUniqueEdgeID(record)]: {
-                predicate: record["$association"].predicate,
+                predicate: "biolink:" + record["$association"].predicate,
                 subject: helper._getInputID(record),
                 object: helper._getOutputID(record)
             }
