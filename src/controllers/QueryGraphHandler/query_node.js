@@ -17,7 +17,7 @@ module.exports = class QNode {
     }
 
     getCategory() {
-        if (this.category.startsWith("biolink:")) {
+        if (this.category && this.category.startsWith("biolink:")) {
             return this.category.slice(8);
         }
         return this.category;
