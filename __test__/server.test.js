@@ -8,6 +8,7 @@ describe("Testing endpoints", () => {
     const example_foler = path.resolve(__dirname, '../examples');
     const gene2chemical_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_chemicals_physically_interacts_with_genes.json')));
     const disease2gene_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_genes_relate_to_disease.json')));
+    const multihop_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'multi_hop_query.json')));
 
     test("GET /", async () => {
         await request(app)
@@ -103,6 +104,20 @@ describe("Testing endpoints", () => {
         await request(app)
             .post("/query")
             .send(disease2gene_query)
+            .set('Accept', 'application/json')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then(response => {
+                expect(response.body).toHaveProperty("query_graph");
+                expect(response.body).toHaveProperty("knowledge_graph");
+                expect(response.body.knowledge_graph.edges[0].source_id).toEqual("MONDO:0016575");
+            })
+    })
+
+    test("POST /query with multihop query", async () => {
+        await request(app)
+            .post("/query")
+            .send(multihop_query)
             .set('Accept', 'application/json')
             .expect(200)
             .expect('Content-Type', /json/)
