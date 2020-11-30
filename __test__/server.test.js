@@ -41,6 +41,50 @@ describe("Testing endpoints", () => {
             })
     })
 
+    test("GET /metakg with provided_by specified", async () => {
+        await request(app)
+            .get("/metakg?provided_by=drugbank")
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then((response) => {
+                expect(response.body[0]).toHaveProperty("subject");
+                expect(response.body[0]).toHaveProperty("provided_by", "drugbank")
+            })
+    })
+
+    test("GET /metakg with provided_by specified with quotation marks added", async () => {
+        await request(app)
+            .get('/metakg?provided_by="drugbank"')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then((response) => {
+                expect(response.body[0]).toHaveProperty("subject");
+                expect(response.body[0]).toHaveProperty("provided_by", "drugbank")
+            })
+    })
+
+    test("GET /metakg with api specified", async () => {
+        await request(app)
+            .get("/metakg?api=MyChem.info API")
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then((response) => {
+                expect(response.body[0]).toHaveProperty("subject");
+                expect(response.body[0].api).toHaveProperty("name", "MyChem.info API")
+            })
+    })
+
+    test("GET /metakg with api specified and quotation mark added", async () => {
+        await request(app)
+            .get('/metakg?api="MyChem.info API"')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then((response) => {
+                expect(response.body[0]).toHaveProperty("subject");
+                expect(response.body[0].api).toHaveProperty("name", "MyChem.info API")
+            })
+    })
+
     test("POST /query with gene2chemical query", async () => {
         await request(app)
             .post("/query")
