@@ -16,6 +16,18 @@ describe("Testing BatchEdgeQueryHandler Module", () => {
             expect(res.length).toBeGreaterThan(1);
             expect(chemical_node1.hasEquivalentIDs()).toEqual(true);
         })
+
+        test("test subscribe and unsubscribe function", () => {
+            const batchHandler = new BatchEdgeQueryHandler();
+            batchHandler.subscribe(1);
+            batchHandler.subscribe(2);
+            batchHandler.subscribe(3);
+            expect(batchHandler.subscribers).toContain(2);
+            batchHandler.unsubscribe(2);
+            expect(batchHandler.subscribers).not.toContain(2);
+        })
+
+
     })
 
 
