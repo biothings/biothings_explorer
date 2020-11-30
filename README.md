@@ -1,6 +1,5 @@
 # single-hop-app.js
-[![Coverage Status](https://coveralls.io/repos/github/kevinxin90/single-hop-app.js/badge.svg?branch=master)](https://coveralls.io/github/kevinxin90/single-hop-app.js?branch=master)
-
+[![Coverage Status](https://coveralls.io/repos/github/kevinxin90/BioThings_Explorer_TRAPI/badge.svg?branch=master)](https://coveralls.io/github/kevinxin90/BioThings_Explorer_TRAPI?branch=master)
 
 # Project Title
 
