@@ -51,7 +51,14 @@ module.exports = class TRAPIQueryHandler {
 
     async query() {
         this._initializeResponse();
-        const queryPaths = this._processQueryGraph(this.queryGraph);
+        let queryPaths;
+        try {
+            queryPaths = this._processQueryGraph(this.queryGraph);
+        } catch (err) {
+            throw 400;
+            return;
+        }
+
         const handlers = this._createBatchEdgeQueryHandlers(queryPaths);
         for (let i = 0; i < Object.keys(handlers).length; i++) {
             let handler = handlers[i];

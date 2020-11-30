@@ -11,9 +11,14 @@ class V1RouteQuery {
                 await handler.query();
                 res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify(handler.getResponse()));
-            } catch (error) {
-                res.setHeader('Content-Type', 'application/json');
+            }
+            catch (error) {
                 console.log(error);
+                res.setHeader('Content-Type', 'application/json');
+                if (error === 400) {
+                    res.status(400).send({ "error": "unable to process your query graph" });
+                    res.end();
+                }
                 res.end(JSON.stringify(
                     {
                         "query_graph": req.body.message.query_graph,
