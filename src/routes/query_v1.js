@@ -18,6 +18,7 @@ class V1RouteQuery {
                 if (error === 400) {
                     res.status(400).send({ "error": "unable to process your query graph" });
                     res.end();
+                    return
                 }
                 res.end(JSON.stringify(
                     {
