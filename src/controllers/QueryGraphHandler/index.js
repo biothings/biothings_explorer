@@ -12,7 +12,7 @@ module.exports = class TRAPIQueryHandler {
         return {
             query_graph: this.queryGraph,
             knowledge_graph: this.knowledgeGraph.kg,
-            results: this.queryResults.results
+            results: this.queryResults.getResults(),
         }
     }
 
