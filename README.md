@@ -1,9 +1,35 @@
-# single-hop-app.js
+# BioThings Explorer TRAPI API
+---
+[![Build Status](https://travis-ci.com/kevinxin90/BioThings_Explorer_TRAPI.svg?branch=master)](https://travis-ci.com/kevinxin90/BioThings_Explorer_TRAPI)
 [![Coverage Status](https://coveralls.io/repos/github/kevinxin90/BioThings_Explorer_TRAPI/badge.svg?branch=master)](https://coveralls.io/github/kevinxin90/BioThings_Explorer_TRAPI?branch=master)
 
-# Project Title
+## Introduction
 
-BioThings Explorer Reasoner API
+This GitHub repo serves as the development repo for the TRAPI API implementation of BioThings Explorer.
+
+### BioThings Explorer
+
+BioThings Explorer aims at helping users querying and linking results from a variety of biomedical relevant APIs through one interface. The project is funded by the [NCATS Translator project](https://ncats.nih.gov/translator).
+
+### TRAPI
+
+[Translator Reasoner API](https://github.com/NCATSTranslator/ReasonerAPI) (TRAPI) is a standard defined for APIs developed within NCATS Biomedical Translator project to allow easy information exchange among them.
+
+### API Interface
+
+Please visit our TRAPI API landing page [here](http://bte_trapi.smart-api.info/).
+
+### Examples
+
+Query Examples can be found [here](https://github.com/kevinxin90/BioThings_Explorer_TRAPI/tree/master/examples).
+
+
+## Status
+
+Currently, the BioThings Explorer TRAPI API implements TRAPI v0.9.2 standard, and can be queried at https://api.bte.ncats.io/query endpoint.
+
+
+The TRAPI v1.0.0 standard is currently under development. It can be tested using https://api.bte.ncats.io/v1/query endpoint.
 
 ---
 ## Requirements
