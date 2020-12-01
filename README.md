@@ -8,27 +8,23 @@ This GitHub repo serves as the development repo for the TRAPI API implementation
 
 ### What's BioThings Explorer
 
----
-
 BioThings Explorer aims at helping users querying and linking results from a variety of biomedical relevant APIs through one interface. The project is funded by the [NCATS Translator project](https://ncats.nih.gov/translator).
 
 ### What's TRAPI
 
 TRAPI stands for [Translator Reasoner API](https://github.com/NCATSTranslator/ReasonerAPI). It is a standard defined for APIs developed within NCATS Biomedical Translator project to allow easy information exchange among them.
 
----
-
 ### Our TRAPI Interface
 
 Please visit our TRAPI API landing page [here](http://bte_trapi.smart-api.info/).
 
----
 
 ### Some Query Examples
 
 Query Examples can be found [here](https://github.com/kevinxin90/BioThings_Explorer_TRAPI/tree/master/examples).
 
 ---
+
 
 ## Current Development Status
 
@@ -44,6 +40,7 @@ The TRAPI v1.0.0 standard is currently under development. It can be tested using
 For development, you will only need Node.js and a node global package, e.g. npm, installed in your environement.
 
 ### Node
+
 - #### Node installation on Windows
 
   Just go on [official Node.js website](https://nodejs.org/) and download the installer.
@@ -57,6 +54,7 @@ Also, be sure to have `git` available in your PATH, `npm` might need it (You can
       $ sudo apt install npm
 
 - #### Other Operating Systems
+
   You can find more information about the installation on the [official Node.js website](https://nodejs.org/) and the [official NPM website](https://npmjs.org/).
 
 If the installation was successful, you should be able to run the following command.
@@ -69,25 +67,24 @@ If the installation was successful, you should be able to run the following comm
 
 If you need to update `npm`, you can make it using `npm`! Cool right? After running the following command, just open again the command line and be happy.
 
-    $ npm install npm -g
-
+`$ npm install npm -g`
 
 ---
 
 ## Install
 
-    $ git clone https://github.com/biothings/single-hop-app.js
-    $ cd single-hop-app.js
-    $ npm install
+`$ git clone https://github.com/kevinxin90/BioThings_Explorer_TRAPI`
+`$ cd single-hop-app.js`
+`$ npm install`
 
 
 ## Running the project
 
-    $ npm start
+`$ npm start`
 
 ## Simple build for production
 
-    $ npm build
+`$ npm build`
 
 ## Deploy
 
