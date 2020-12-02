@@ -1,11 +1,43 @@
 const QNode = require("./query_node");
 const QEdge = require("./query_edge");
 const _ = require("lodash");
+const InvalidQueryGraphError = require("../../utils/errors/invalid_query_graph_error");
+const LogEntry = require("./log_entry");
 const MAX_DEPTH = 3;
 
 module.exports = class QueryGraphHandler {
     constructor(queryGraph) {
         this.queryGraph = queryGraph;
+        this.logs = [];
+    }
+
+    _validateEmptyNodes(queryGraph) {
+        if (Object.keys(queryGraph.nodes).length === 0) {
+            throw new InvalidQueryGraphError("Your Query Graph has no nodes defined.")
+        }
+    }
+
+    _validateEmptyEdges(queryGraph) {
+        if (Object.keys(queryGraph.edges).length === 0) {
+            throw new InvalidQueryGraphError("Your Query Graph has no edges defined.")
+        }
+    }
+
+    _validateNodeEdgeCorrespondence(queryGraph) {
+        for (let edge_id in queryGraph.edges) {
+            if (!(this.queryGraph.edges[edge_id].subject in queryGraph.nodes)) {
+                throw new InvalidQueryGraphError(`The subject of edge ${edge_id} is not defined in the query graph.`)
+            }
+            if (!(this.queryGraph.edges[edge_id].object in queryGraph.nodes)) {
+                throw new InvalidQueryGraphError(`The object of edge ${edge_id} is not defined in the query graph.`)
+            }
+        }
+    }
+
+    _validate(queryGraph) {
+        this._validateEmptyEdges(queryGraph);
+        this._validateEmptyNodes(queryGraph);
+        this._validateNodeEdgeCorrespondence(queryGraph);
     }
 
     /**
@@ -16,6 +48,7 @@ module.exports = class QueryGraphHandler {
         for (let node_id in this.queryGraph.nodes) {
             nodes[node_id] = new QNode(node_id, this.queryGraph.nodes[node_id])
         }
+        this.logs.push(new LogEntry("DEBUG", null, `BTE identified ${Object.keys(nodes).length} QNodes from your query graph`).getLog());
         return nodes;
     }
 
@@ -37,6 +70,7 @@ module.exports = class QueryGraphHandler {
             }
             edges[edge_id] = new QEdge(edge_id, edge_info);
         };
+        this.logs.push(new LogEntry("DEBUG", null, `BTE identified ${Object.keys(edges).length} QEdges from your query graph`).getLog());
         return edges;
     }
 
@@ -44,6 +78,7 @@ module.exports = class QueryGraphHandler {
      * 
      */
     createQueryPaths() {
+        this._validate(this.queryGraph);
         let paths = {};
         let FirstLevelEdges = this._findFirstLevelEdges();
         paths[0] = FirstLevelEdges.paths;
@@ -56,6 +91,7 @@ module.exports = class QueryGraphHandler {
             }
             paths[i] = ithLevelEdges.paths;
         }
+        this.logs.push(new LogEntry("DEBUG", null, `BTE identified your query graph as a ${Object.keys(paths).length}-depth query graph`).getLog());
         return paths;
     }
 
