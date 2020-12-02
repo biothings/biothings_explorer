@@ -1,5 +1,6 @@
 const _ = require("lodash");
 const meta_kg = require("@biothings-explorer/smartapi-kg");
+const LogEntry = require("./log_entry");
 const ID_WITH_PREFIXES = ["MONDO", "DOID", "UBERON",
     "EFO", "HP", "CHEBI", "CL", "MGI"];
 
@@ -8,10 +9,15 @@ module.exports = class QEdge2BTEEdgeHandler {
         this.qEdges = qEdges;
         this.kg = new meta_kg();
         this.kg.constructMetaKGSync();
+        this.logs = [];
     }
 
     setQEdges(qEdges) {
         this.qEdges = qEdges;
+    }
+
+    _findAPIsFromSmartAPIEdges(smartapiEdges) {
+        return smartapiEdges.map(edge => edge.association.api_name);
     }
 
     /**
@@ -31,6 +37,7 @@ module.exports = class QEdge2BTEEdgeHandler {
             item.reasoner_edge = qEdge;
             return item;
         });
+        this.logs.push(new LogEntry("DEBUG", null, `BTE found ${smartapi_edges.length} smartapi edges corresponding to ${qEdge.getID()}. These smartaip edges comes from ${new Set(this._findAPIsFromSmartAPIEdges(smartapi_edges)).size} unique APIs. They are ${this._findAPIsFromSmartAPIEdges(smartapi_edges)}`).getLog())
         return smartapi_edges;
     }
 
