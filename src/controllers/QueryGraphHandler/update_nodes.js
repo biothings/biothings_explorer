@@ -58,9 +58,14 @@ module.exports = class NodesUpdateHandler {
     }
 
     _createEquivalentIDsObject(record) {
-        return {
-            [helper._getOutputID(record)]: record["$output_id_mapping"].resolved
+        if (record["$output_id_mapping"] !== undefined) {
+            return {
+                [helper._getOutputID(record)]: record["$output_id_mapping"].resolved
+            }
+        } else {
+            return
         }
+
     }
 
     /**
