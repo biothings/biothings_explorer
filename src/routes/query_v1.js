@@ -1,8 +1,26 @@
 const TRAPIGraphHandler = require("../controllers/QueryGraphHandler/index");
+const swaggerValidation = require('openapi-validator-middleware');
+const inputValidationOptions = {
+    formats: [
+        { name: 'double', pattern: /\d+(\.\d+)?/ },
+        { name: 'int64', pattern: /^\d{1,19}$/ },
+        { name: 'int32', pattern: /^\d{1,10}$/ },
+        {
+            name: 'file',
+            validate: () => {
+                return true;
+            }
+        }
+    ],
+    beautifyErrors: true,
+    //firstError: true,
+    expectFormFieldsInBody: true
+};
+swaggerValidation.init("docs/smartapi.yaml", inputValidationOptions);
 
 class V1RouteQuery {
     setRoutes(app) {
-        app.post('/v1/query', async (req, res, next) => {
+        app.post('/v1/query', swaggerValidation.validate, async (req, res, next) => {
             //logger.info("query /query endpoint")
             try {
                 const queryGraph = req.body.message.query_graph;
@@ -13,23 +31,7 @@ class V1RouteQuery {
                 res.end(JSON.stringify(handler.getResponse()));
             }
             catch (error) {
-                console.log(error);
-                res.setHeader('Content-Type', 'application/json');
-                if (error === 400) {
-                    res.status(400).send({ "error": "unable to process your query graph" });
-                    res.end();
-                    return
-                }
-                res.end(JSON.stringify(
-                    {
-                        "query_graph": req.body.message.query_graph,
-                        "knowledge_graph": {
-                            "edges": [],
-                            "nodes": []
-                        },
-                        "results": []
-                    }
-                ));
+                next(error);
             }
         });
     }
