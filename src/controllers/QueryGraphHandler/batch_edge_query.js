@@ -5,6 +5,7 @@ const NodesUpdateHandler = require("./update_nodes");
 module.exports = class BatchEdgeQueryHandler {
     constructor() {
         this.subscribers = [];
+        this.logs = [];
     }
 
     /**
@@ -49,6 +50,7 @@ module.exports = class BatchEdgeQueryHandler {
         await nodeUpdate.setEquivalentIDs(qEdges);
         let edgeConverter = new QEdge2BTEEdgeHandler(qEdges);
         let bteEdges = edgeConverter.convert(qEdges);
+        this.logs = [...this.logs, ...edgeConverter.logs];
         let expanded_bteEdges = this._expandBTEEdges(bteEdges);
         let query_res = await this._queryBTEEdges(expanded_bteEdges);
         let processed_query_res = await this._postQueryFilter(query_res);
