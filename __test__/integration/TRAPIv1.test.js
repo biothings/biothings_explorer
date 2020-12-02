@@ -19,11 +19,11 @@ describe("Testing endpoints", () => {
             .expect(200)
             .expect('Content-Type', /json/)
             .then(response => {
-                expect(response.body).toHaveProperty("query_graph");
-                expect(response.body).toHaveProperty("knowledge_graph");
-                expect(response.body.knowledge_graph).toHaveProperty("nodes");
-                expect(response.body.knowledge_graph).toHaveProperty("edges");
-                expect(response.body.knowledge_graph.nodes).toHaveProperty("NCBIGene:1017")
+                expect(response.body.message).toHaveProperty("query_graph");
+                expect(response.body.message).toHaveProperty("knowledge_graph");
+                expect(response.body.message.knowledge_graph).toHaveProperty("nodes");
+                expect(response.body.message.knowledge_graph).toHaveProperty("edges");
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("NCBIGene:1017")
             })
     })
 
@@ -35,7 +35,7 @@ describe("Testing endpoints", () => {
             .expect(400)
             .expect('Content-Type', /json/)
             .then(response => {
-                expect(response.body).toHaveProperty("error", "unable to process your query graph");
+                expect(response.body).toHaveProperty("error", "Your input query graph is invalid");
             })
     })
 
@@ -47,11 +47,12 @@ describe("Testing endpoints", () => {
             .expect(200)
             .expect('Content-Type', /json/)
             .then(response => {
-                expect(response.body).toHaveProperty("query_graph");
-                expect(response.body).toHaveProperty("knowledge_graph");
-                expect(response.body.knowledge_graph).toHaveProperty("nodes");
-                expect(response.body.knowledge_graph).toHaveProperty("edges");
-                expect(response.body.knowledge_graph.nodes).toHaveProperty("MONDO:0005737");
+                expect(response.body).toHaveProperty("message");
+                expect(response.body.message).toHaveProperty("query_graph");
+                expect(response.body.message).toHaveProperty("knowledge_graph");
+                expect(response.body.message.knowledge_graph).toHaveProperty("nodes");
+                expect(response.body.message.knowledge_graph).toHaveProperty("edges");
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("MONDO:0005737");
             })
     })
 
