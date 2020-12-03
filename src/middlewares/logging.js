@@ -2,17 +2,17 @@ const winston = require('winston');
 const expressWinston = require('express-winston');
 require('winston-daily-rotate-file');
 
-const transport = new (winston.transports.DailyRotateFile)({
-    filename: 'BioThings-Explorer-TRAPI-%DATE%.log',
-    dirname: "/var/log/bte",
-    datePattern: 'YYYY-MM-DD',
-    zippedArchive: true,
-    maxSize: '20m',
-    maxFiles: '14d'
-});
 
 class LoggingHandler {
     setRoutes(app) {
+        const transport = new (winston.transports.DailyRotateFile)({
+            filename: 'BioThings-Explorer-TRAPI-%DATE%.log',
+            dirname: (process.env.NODE_ENV === "development") ? "." : "/var/log/bte",
+            datePattern: 'YYYY-MM-DD',
+            zippedArchive: true,
+            maxSize: '20m',
+            maxFiles: '14d'
+        });
         app.use(expressWinston.logger({
             format: winston.format.combine(
                 winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
