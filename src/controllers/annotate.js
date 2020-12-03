@@ -76,6 +76,9 @@ module.exports = class NGDFilter {
                     let input_type = rec["$association"]["input_type"];
                     let output_type = rec["$association"]["output_type"];
                     let input_resolved_ids = rec["$input_resolved_identifiers"][rec["$original_input"][rec["$input"]]];
+                    if (!("resolved" in rec["$output_id_mapping"])) {
+                        return;
+                    }
                     let output_resolved_ids = rec["$output_id_mapping"]["resolved"];
                     let input_id = this.extractInputID(input_resolved_ids, input_type);
                     let output_id = this.extractInputID(output_resolved_ids, output_type);
