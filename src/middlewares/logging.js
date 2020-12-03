@@ -4,6 +4,7 @@ require('winston-daily-rotate-file');
 
 const transport = new (winston.transports.DailyRotateFile)({
     filename: 'BioThings-Explorer-TRAPI-%DATE%.log',
+    dirname: "/var/log/bte",
     datePattern: 'YYYY-MM-DD',
     zippedArchive: true,
     maxSize: '20m',
