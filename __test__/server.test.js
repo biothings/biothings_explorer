@@ -5,7 +5,7 @@ var path = require('path');
 
 
 describe("Testing endpoints", () => {
-    const example_foler = path.resolve(__dirname, '../examples');
+    const example_foler = path.resolve(__dirname, '../examples/v0.9.2');
     const gene2chemical_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_chemicals_physically_interacts_with_genes.json')));
     const disease2gene_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_genes_relate_to_disease.json')));
     const multihop_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'multi_hop_query.json')));

@@ -6,10 +6,15 @@ var path = require('path');
 
 describe("Testing endpoints", () => {
     const example_foler = path.resolve(__dirname, '../../examples/v1');
-    const invalid_folder = path.resolve(__dirname, "../../examples");
+    const old_spec_folder = path.resolve(__dirname, "../../examples/v0.9.2");
+    const invalid_example_folder = path.resolve(__dirname, "../../examples/v1/invalid");
     const gene2chemical_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_chemicals_physically_interacts_with_genes.json')));
     const disease2gene_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_genes_relate_to_disease.json')));
-    const invalid_query = JSON.parse(fs.readFileSync(path.join(invalid_folder, 'query_genes_relate_to_disease.json')));
+    const query_using_earlier_trapi_spec = JSON.parse(fs.readFileSync(path.join(old_spec_folder, 'query_genes_relate_to_disease.json')));
+    const query_with_nodes_undefined = JSON.parse(fs.readFileSync(path.join(invalid_example_folder, "query_graph_with_nodes_not_specified.json")));
+    const query_with_edges_undefined = JSON.parse(fs.readFileSync(path.join(invalid_example_folder, "query_graph_with_edges_not_specified.json")));
+    const query_with_nodes_and_edges_not_match = JSON.parse(fs.readFileSync(path.join(invalid_example_folder, "query_graph_with_nodes_and_edges_not_match.json")));
+
 
     test("POST /v1/query with gene2chemical query", async () => {
         await request(app)
@@ -27,10 +32,46 @@ describe("Testing endpoints", () => {
             })
     })
 
-    test("POST /v1/query with invalid query graph", async () => {
+    test("POST /v1/query with query graph defined in old trapi standard", async () => {
         await request(app)
             .post("/v1/query")
-            .send(invalid_query)
+            .send(query_using_earlier_trapi_spec)
+            .set('Accept', 'application/json')
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .then(response => {
+                expect(response.body).toHaveProperty("error", "Your input query graph is invalid");
+            })
+    })
+
+    test("POST /v1/query with query graph missing nodes definition", async () => {
+        await request(app)
+            .post("/v1/query")
+            .send(query_with_nodes_undefined)
+            .set('Accept', 'application/json')
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .then(response => {
+                expect(response.body).toHaveProperty("error", "Your input query graph is invalid");
+            })
+    })
+
+    test("POST /v1/query with query graph missing edges definition", async () => {
+        await request(app)
+            .post("/v1/query")
+            .send(query_with_edges_undefined)
+            .set('Accept', 'application/json')
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .then(response => {
+                expect(response.body).toHaveProperty("error", "Your input query graph is invalid");
+            })
+    })
+
+    test("POST /v1/query with query graph with nodes and edges mismatch", async () => {
+        await request(app)
+            .post("/v1/query")
+            .send(query_with_nodes_and_edges_not_match)
             .set('Accept', 'application/json')
             .expect(400)
             .expect('Content-Type', /json/)
