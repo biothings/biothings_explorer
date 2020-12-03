@@ -4,7 +4,6 @@ const InvalidQueryGraphError = require("../utils/errors/invalid_query_graph_erro
 class ErrorHandler {
     setRoutes(app) {
         app.use((error, req, res, next) => {
-            console.log(error);
             if (error instanceof swaggerValidation.InputValidationError) {
                 return res.status(400).json({
                     error: "Your input query graph is invalid",
