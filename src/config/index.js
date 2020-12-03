@@ -10,13 +10,17 @@ module.exports = class Config {
     }
 
     setConfig() {
-        process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+        this.setNodeEnv();
         this.setBodyParser();
         this.setCors();
         this.setCompression();
         this.setHttpHeaders();
         this.setLimiter();
         return this.app;
+    }
+
+    setNodeEnv() {
+        process.env.NODE_ENV = process.env.NODE_ENV || 'development';
     }
 
     setBodyParser() {
