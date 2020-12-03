@@ -38,10 +38,18 @@ module.exports = class TRAPIQueryHandler {
      * @param {object} queryGraph - TRAPI Query Graph Object
      */
     _processQueryGraph(queryGraph) {
-        let queryGraphHandler = new QueryGraph(queryGraph);
-        let res = queryGraphHandler.createQueryPaths();
-        this.logs = [...this.logs, ...queryGraphHandler.logs];
-        return res;
+        try {
+            let queryGraphHandler = new QueryGraph(queryGraph);
+            let res = queryGraphHandler.createQueryPaths();
+            this.logs = [...this.logs, ...queryGraphHandler.logs];
+            return res;
+        } catch (err) {
+            if (err instanceof InvalidQueryGraphError) {
+                throw err;
+            } else {
+                throw new InvalidQueryGraphError();
+            }
+        }
     }
 
     _createBatchEdgeQueryHandlers(queryPaths) {
@@ -57,23 +65,12 @@ module.exports = class TRAPIQueryHandler {
 
     async query() {
         this._initializeResponse();
-        let queryPaths;
-        try {
-            queryPaths = this._processQueryGraph(this.queryGraph);
-        } catch (err) {
-            if (err instanceof InvalidQueryGraphError) {
-                throw err;
-            } else {
-                throw new InvalidQueryGraphError();
-            }
-        }
-
+        let queryPaths = this._processQueryGraph(this.queryGraph);
         const handlers = this._createBatchEdgeQueryHandlers(queryPaths);
         for (let i = 0; i < Object.keys(handlers).length; i++) {
-            let handler = handlers[i];
-            let res = await handler.query(handler.qEdges);
-            this.logs = [...this.logs, ...handler.logs];
-            handler.notify(res);
+            let res = await handlers[i].query(handlers[i].qEdges);
+            this.logs = [...this.logs, ...handlers[i].logs];
+            handlers[i].notify(res);
         }
     }
 }
