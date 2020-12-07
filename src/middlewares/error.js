@@ -1,4 +1,4 @@
-const swaggerValidation = require('openapi-validator-middleware');
+const swaggerValidation = require('./validate');
 const InvalidQueryGraphError = require("../utils/errors/invalid_query_graph_error");
 
 class ErrorHandler {
