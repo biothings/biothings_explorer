@@ -1,6 +1,7 @@
 const QNode = require("../../src/controllers/QueryGraphHandler/query_node");
 const QEdge = require("../../src/controllers/QueryGraphHandler/query_edge");
 const QEdge2BTEEdgeHandler = require("../../src/controllers/QueryGraphHandler/qedge2bteedge");
+const meta_kg = require("@biothings-explorer/smartapi-kg");
 
 describe("Testing QEdge2BTEEdgeHandler Module", () => {
     const gene_node1 = new QNode("n1", { category: "Gene", curie: "NCBIGene:1017" });
@@ -36,10 +37,11 @@ describe("Testing QEdge2BTEEdgeHandler Module", () => {
     const edge2 = new QEdge("e02", { subject: gene_node1, object: chemical_node1, predicate: "physically_interacts_with" });
     const edge3 = new QEdge('e04', { subject: gene_node2, object: chemical_node1 });
     const invalid_edge = new QEdge("e03", { subject: invalid_node, object: chemical_node1 })
-
+    const kg = new meta_kg();
+    kg.constructMetaKGSync();
     describe("Testing _getSmartAPIEdges function", () => {
         test("test valid input", () => {
-            const edgeHandler = new QEdge2BTEEdgeHandler([edge1]);
+            const edgeHandler = new QEdge2BTEEdgeHandler([edge1], kg);
             const res = edgeHandler._getSmartAPIEdges(edge1);
             expect(res.length).toBeGreaterThan(1);
             expect(res[0]).toHaveProperty('reasoner_edge');
@@ -47,7 +49,7 @@ describe("Testing QEdge2BTEEdgeHandler Module", () => {
         })
 
         test("test invalid input should return an empty list", () => {
-            const edgeHandler = new QEdge2BTEEdgeHandler([invalid_edge]);
+            const edgeHandler = new QEdge2BTEEdgeHandler([invalid_edge], kg);
             const res = edgeHandler._getSmartAPIEdges(invalid_edge);
             expect(res.length).toEqual(0);
         })
@@ -56,7 +58,7 @@ describe("Testing QEdge2BTEEdgeHandler Module", () => {
 
     describe("Testing _createNonBatchSupportBTEEdges function", () => {
         test("test smartapi edge with one input should return one bte edge", () => {
-            const edgeHandler = new QEdge2BTEEdgeHandler([edge1]);
+            const edgeHandler = new QEdge2BTEEdgeHandler([edge1], kg);
             const smartapiEdges = edgeHandler._getSmartAPIEdges(edge1);
             const nonBatchEdge = smartapiEdges.filter(edge => edge.query_operation.supportBatch === false)[0];
             const res = edgeHandler._createNonBatchSupportBTEEdges(nonBatchEdge);
@@ -68,7 +70,7 @@ describe("Testing QEdge2BTEEdgeHandler Module", () => {
         })
 
         test("test smartapi edge with multiple input should return multiple bte edge", () => {
-            const edgeHandler = new QEdge2BTEEdgeHandler([edge3]);
+            const edgeHandler = new QEdge2BTEEdgeHandler([edge3], kg);
             const smartapiEdges = edgeHandler._getSmartAPIEdges(edge3);
             const nonBatchEdge = smartapiEdges.filter(edge => edge.query_operation.supportBatch === false)[0];
             const res = edgeHandler._createNonBatchSupportBTEEdges(nonBatchEdge);
@@ -80,7 +82,7 @@ describe("Testing QEdge2BTEEdgeHandler Module", () => {
         })
 
         test("test smartapi edge with multiple input should return multiple bte edge", () => {
-            const edgeHandler = new QEdge2BTEEdgeHandler([edge3]);
+            const edgeHandler = new QEdge2BTEEdgeHandler([edge3], kg);
             const smartapiEdges = edgeHandler._getSmartAPIEdges(edge3);
             const nonBatchEdge = smartapiEdges.filter(edge => edge.query_operation.supportBatch === false)[0];
             const res = edgeHandler._createNonBatchSupportBTEEdges(nonBatchEdge);
@@ -94,7 +96,7 @@ describe("Testing QEdge2BTEEdgeHandler Module", () => {
 
     describe("Testing _createBatchSupportBTEEdges function", () => {
         test("test smartapi edge with one input should return one bte edge", () => {
-            const edgeHandler = new QEdge2BTEEdgeHandler([edge1]);
+            const edgeHandler = new QEdge2BTEEdgeHandler([edge1], kg);
             const smartapiEdges = edgeHandler._getSmartAPIEdges(edge1);
             const batchEdge = smartapiEdges.filter(edge => edge.query_operation.supportBatch === true)[0];
             const res = edgeHandler._createBatchSupportBTEEdges(batchEdge);
@@ -106,7 +108,7 @@ describe("Testing QEdge2BTEEdgeHandler Module", () => {
         })
 
         test("test smartapi edge with multiple input should still return one bte edge", () => {
-            const edgeHandler = new QEdge2BTEEdgeHandler([edge3]);
+            const edgeHandler = new QEdge2BTEEdgeHandler([edge3], kg);
             const smartapiEdges = edgeHandler._getSmartAPIEdges(edge3);
             const batchEdge = smartapiEdges.filter(edge => edge.query_operation.supportBatch === true)[0];
             const res = edgeHandler._createBatchSupportBTEEdges(batchEdge);
