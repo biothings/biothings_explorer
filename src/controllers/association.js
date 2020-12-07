@@ -27,7 +27,8 @@ module.exports = async (sub, obj, pred, api, source) => {
                     metadata: op.association.smartapi.meta.url,
                     id: op.association.smartapi.id,
                     ui: "https://smart-api.info/ui/" + op.association.smartapi.id
-                }
+                },
+                "x-translator": op.association["x-translator"]
             }
         });
     })
