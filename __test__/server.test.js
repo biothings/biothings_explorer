@@ -32,6 +32,17 @@ describe("Testing endpoints", () => {
             })
     })
 
+    test("GET /smartapi/{smartapi_id}/predicates", async () => {
+        await request(app)
+            .get("/smartapi/978fe380a147a8641caf72320862697b/predicates")
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then((response) => {
+                expect(response.body).toHaveProperty("gene");
+                expect(response.body["gene"]).toHaveProperty("chemical_substance");
+            })
+    })
+
     test("GET /metakg", async () => {
         await request(app)
             .get("/metakg")
