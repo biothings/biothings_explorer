@@ -7,19 +7,22 @@ const QueryResults = require("./query_results");
 const InvalidQueryGraphError = require("../../utils/errors/invalid_query_graph_error");
 
 module.exports = class TRAPIQueryHandler {
-    constructor(smartapiID = undefined, source = undefined) {
+    constructor(smartapiID = undefined, team = undefined) {
         this.logs = [];
         this.smartapiID = smartapiID;
-        this.source = source;
+        this.team = team;
     }
 
-    async _loadMetaKG(smartapiID, source) {
+    async _loadMetaKG(smartapiID, team) {
         const kg = new meta_kg();
-        if (smartapiID === undefined && source === undefined) {
+        if (smartapiID === undefined && team === undefined) {
             kg.constructMetaKGSync();
         };
         if (smartapiID !== undefined) {
             await kg.constructMetaKG(false, "translator", smartapiID);
+        }
+        if (team !== undefined) {
+            await kg.constructMetaKG(false, "translator", undefined, team)
         }
         return kg;
     }
@@ -80,7 +83,7 @@ module.exports = class TRAPIQueryHandler {
 
     async query() {
         this._initializeResponse();
-        const kg = await this._loadMetaKG(this.smartapiID, this.source);
+        const kg = await this._loadMetaKG(this.smartapiID, this.team);
         let queryPaths = this._processQueryGraph(this.queryGraph);
         const handlers = this._createBatchEdgeQueryHandlers(queryPaths, kg);
         for (let i = 0; i < Object.keys(handlers).length; i++) {

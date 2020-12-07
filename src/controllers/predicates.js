@@ -22,18 +22,22 @@ const snakeCase = require("snake-case");
 // }
 
 module.exports = class PredicatesHandler {
-    constructor(smartapiID = undefined, version = "1.0.0") {
+    constructor(smartapiID = undefined, version = "1.0.0", team = undefined) {
         this.smartapiID = smartapiID;
         this.version = version;
+        this.team = team;
     }
 
-    async _loadMetaKG(smartapiID) {
+    async _loadMetaKG(smartapiID, team) {
         const kg = new meta_kg();
-        if (smartapiID === undefined) {
-            await kg.constructMetaKG(false, "translator", undefined);
+        if (smartapiID !== undefined) {
+            await kg.constructMetaKG(false, "translator", smartapiID);
+            return kg;
+        } else if (team !== undefined) {
+            await kg.constructMetaKG(false, "translator", undefined, team);
             return kg;
         } else {
-            await kg.constructMetaKG(false, "translator", smartapiID);
+            await kg.constructMetaKG(false, "translator");
             return kg;
         }
     }
@@ -62,8 +66,8 @@ module.exports = class PredicatesHandler {
         }
     }
 
-    async getPredicates(smartapiID = this.smartapiID, version = this.version) {
-        const kg = await this._loadMetaKG(smartapiID);
+    async getPredicates(smartapiID = this.smartapiID, version = this.version, team = this.team) {
+        const kg = await this._loadMetaKG(smartapiID, team);
         let predicates = {};
         kg.ops.map(op => {
             let input = this._modifyCategory(op.association.input_type, version);
