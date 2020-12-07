@@ -5,10 +5,9 @@ const ID_WITH_PREFIXES = ["MONDO", "DOID", "UBERON",
     "EFO", "HP", "CHEBI", "CL", "MGI"];
 
 module.exports = class QEdge2BTEEdgeHandler {
-    constructor(qEdges) {
+    constructor(qEdges, kg) {
         this.qEdges = qEdges;
-        this.kg = new meta_kg();
-        this.kg.constructMetaKGSync();
+        this.kg = kg;
         this.logs = [];
     }
 

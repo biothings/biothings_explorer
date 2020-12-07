@@ -1,3 +1,5 @@
+const meta_kg = require("@biothings-explorer/smartapi-kg");
+
 const BatchEdgeQueryHandler = require("./batch_edge_query");
 const QueryGraph = require("./query_graph")
 const KnowledgeGraph = require("./knowledge_graph");
@@ -5,8 +7,21 @@ const QueryResults = require("./query_results");
 const InvalidQueryGraphError = require("../../utils/errors/invalid_query_graph_error");
 
 module.exports = class TRAPIQueryHandler {
-    constructor() {
+    constructor(smartapiID = undefined, source = undefined) {
         this.logs = [];
+        this.smartapiID = smartapiID;
+        this.source = source;
+    }
+
+    async _loadMetaKG(smartapiID, source) {
+        const kg = new meta_kg();
+        if (smartapiID === undefined && source === undefined) {
+            kg.constructMetaKGSync();
+        };
+        if (smartapiID !== undefined) {
+            await kg.constructMetaKG(false, "translator", smartapiID);
+        }
+        return kg;
     }
 
     getResponse() {
@@ -52,10 +67,10 @@ module.exports = class TRAPIQueryHandler {
         }
     }
 
-    _createBatchEdgeQueryHandlers(queryPaths) {
+    _createBatchEdgeQueryHandlers(queryPaths, kg) {
         let handlers = {};
         for (const index in queryPaths) {
-            handlers[index] = new BatchEdgeQueryHandler();
+            handlers[index] = new BatchEdgeQueryHandler(kg);
             handlers[index].setEdges(queryPaths[index]);
             handlers[index].subscribe(this.knowledgeGraph);
             handlers[index].subscribe(this.queryResults);
@@ -65,8 +80,9 @@ module.exports = class TRAPIQueryHandler {
 
     async query() {
         this._initializeResponse();
+        const kg = await this._loadMetaKG(this.smartapiID, this.source);
         let queryPaths = this._processQueryGraph(this.queryGraph);
-        const handlers = this._createBatchEdgeQueryHandlers(queryPaths);
+        const handlers = this._createBatchEdgeQueryHandlers(queryPaths, kg);
         for (let i = 0; i < Object.keys(handlers).length; i++) {
             let res = await handlers[i].query(handlers[i].qEdges);
             this.logs = [...this.logs, ...handlers[i].logs];
