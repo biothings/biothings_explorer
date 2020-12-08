@@ -37,12 +37,39 @@ module.exports = class KnowledgeGraph {
         }
     }
 
+    _createAttributes(record) {
+        const bteAttributes = ["@type", "name", "pmc", "pubmed", "$reasoner_edge", "$association", "$input", "$output", "$original_input", "$input_resolved_identifiers", "api", "provided_by", "$filter", "$output_id_mapping", "label", "id"];
+        let attributes = [
+            {
+                name: "provided_by",
+                value: helper._getSource(record),
+                type: "biolink:provided_by"
+            },
+            {
+                name: "api",
+                value: helper._getAPI(record),
+                type: "bts:api"
+            }
+        ];
+        Object.keys(record).filter(k => !(bteAttributes.includes(k) || k.startsWith("$"))).map(item => {
+            attributes.push(
+                {
+                    name: item,
+                    value: record[item],
+                    type: (item === "publications") ? "biolink:" + item : "bts:" + item
+                }
+            )
+        })
+        return attributes;
+    }
+
     _createEdge(record) {
         return {
             [helper._createUniqueEdgeID(record)]: {
                 predicate: "biolink:" + record["$association"].predicate,
                 subject: helper._getInputID(record),
-                object: helper._getOutputID(record)
+                object: helper._getOutputID(record),
+                attributes: this._createAttributes(record)
             }
         }
     }
