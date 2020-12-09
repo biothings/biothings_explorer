@@ -8,7 +8,11 @@ info:
   termsOfService: https://biothings.io/about
   title: BioThings Explorer ReasonerStdAPI
   version: 1.0.0
-  x-reasoner_standard_version: 0.9.1
+  x-reasoner_standard_version: 1.0.0
+  x-translator:
+    component: ARA
+    team:
+      - Exploring Agent
 servers:
 - url: https://api.bte.ncats.io
 tags:
@@ -134,12 +138,114 @@ paths:
       summary: Get supported relationships by source and target
       tags:
       - metadata
+      - 0.9.2
+  /v1/predicates:
+    get:
+      tags:
+        - predicates
+        - 1.0.0
+      summary: Get supported relationships by source and target
+      responses:
+        '200':
+          description: Predicates by source and target
+          content:
+            application/json:
+              schema:
+                description: Source map
+                type: object
+                additionalProperties:
+                  description: Target map
+                  type: object
+                  additionalProperties:
+                    description: Array of predicates
+                    type: array
+                    items:
+                      type: string
+                example:
+                  'biolink:ChemicalSubstance':
+                    'biolink:Gene':
+                      - biolink:directly_interacts_with
+                      - biolink:decreases_activity_of
+  /v1/smartapi/{smartapi_id}/predicates:
+    get:
+      tags:
+        - predicates
+        - 1.0.0
+      summary: Get supported relationships by source and target for individual smartAPI
+      parameters:
+        - description: SmartAPI ID of an API, you can get it from https://smart-api.info/registry
+          example: 978fe380a147a8641caf72320862697b
+          in: path
+          name: smartapi_id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Predicates by source and target
+          content:
+            application/json:
+              schema:
+                description: Source map
+                type: object
+                additionalProperties:
+                  description: Target map
+                  type: object
+                  additionalProperties:
+                    description: Array of predicates
+                    type: array
+                    items:
+                      type: string
+                example:
+                  'biolink:ChemicalSubstance':
+                    'biolink:Gene':
+                      - biolink:directly_interacts_with
+                      - biolink:decreases_activity_of
+  /v1/team/{team_name}/predicates:
+    get:
+      tags:
+        - predicates
+        - 1.0.0
+      summary: Get supported relationships by source and target for a KP/ARA team
+      parameters:
+        - description: Translator Team Name, e.g. Service Provider, Multiomics Provider
+          example: Multiomics Provider
+          in: path
+          name: team_name
+          required: true
+          schema:
+            type: string
+            enum:
+              - Multiomics Provider
+              - Text Mining Provider
+              - Service Provider
+      responses:
+        '200':
+          description: Predicates by source and target
+          content:
+            application/json:
+              schema:
+                description: Source map
+                type: object
+                additionalProperties:
+                  description: Target map
+                  type: object
+                  additionalProperties:
+                    description: Array of predicates
+                    type: array
+                    items:
+                      type: string
+                example:
+                  'biolink:ChemicalSubstance':
+                    'biolink:Gene':
+                      - biolink:directly_interacts_with
+                      - biolink:decreases_activity_of
   /v1/query:
     post:
       tags:
         - query
         - 1.0.0
-      summary: Query reasoner via one of several inputs
+      summary: Query BioThings Explorer TRAPI API as ARA
       description: ''
       operationId: query
       requestBody:
@@ -195,7 +301,148 @@ paths:
               schema:
                 type: string
       x-swagger-router-controller: swagger_server.controllers.query_controller
-
+  /v1/smartapi/{smartapi_id}/query:
+    post:
+      tags:
+        - query
+        - 1.0.0
+      summary: Query individual SmartAPI as TRAPI service using SmartAPI ID
+      description: ''
+      operationId: querySmartAPI
+      parameters:
+        - description: SmartAPI ID of an API, you can get it from https://smart-api.info/registry
+          example: 978fe380a147a8641caf72320862697b
+          in: path
+          name: smartapi_id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Query information to be submitted
+        required: true
+        content:
+          application/json:
+            example:
+              message:
+                query_graph:
+                  edges:
+                    e00:
+                      subject: n00
+                      object: n01
+                  nodes:
+                    n00:
+                      category: "biolink:Gene"
+                      id: "NCBIGene:1017"
+                    n01:
+                      category: "biolink:ChemicalSubstance"
+            schema:
+              $ref: '#/components/schemas/Query'
+      responses:
+        '200':
+          description: >-
+            OK. There may or may not be results. Note that some of the provided
+            identifiers may not have been recognized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '400':
+          description: >-
+            Bad request. The request is invalid according to this OpenAPI
+            schema OR a specific identifier is believed to be invalid somehow
+            (not just unrecognized).
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: >-
+            Internal server error.
+          content:
+            application/json:
+              schema:
+                type: string
+        '501':
+          description: >-
+            Not implemented.
+          content:
+            application/json:
+              schema:
+                type: string
+      x-swagger-router-controller: swagger_server.controllers.query_controller
+  /v1/team/{team_name}/query:
+    post:
+      tags:
+        - query
+        - 1.0.0
+      summary: Query individual Translator team as individual TRAPI service using team name
+      description: ''
+      operationId: queryTeam
+      parameters:
+        - description: Translator Team Name, e.g. Service Provider, Multiomics Provider
+          example: Text Mining Provider
+          in: path
+          name: team_name
+          required: true
+          schema:
+            type: string
+            enum:
+              - Multiomics Provider
+              - Text Mining Provider
+              - Service Provider
+      requestBody:
+        description: Query information to be submitted
+        required: true
+        content:
+          application/json:
+            example:
+              message:
+                query_graph:
+                  edges:
+                    e00:
+                      subject: n00
+                      object: n01
+                  nodes:
+                    n00:
+                      category: "biolink:Gene"
+                      id: "NCBIGene:1017"
+                    n01:
+                      category: "biolink:ChemicalSubstance"
+            schema:
+              $ref: '#/components/schemas/Query'
+      responses:
+        '200':
+          description: >-
+            OK. There may or may not be results. Note that some of the provided
+            identifiers may not have been recognized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '400':
+          description: >-
+            Bad request. The request is invalid according to this OpenAPI
+            schema OR a specific identifier is believed to be invalid somehow
+            (not just unrecognized).
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: >-
+            Internal server error.
+          content:
+            application/json:
+              schema:
+                type: string
+        '501':
+          description: >-
+            Not implemented.
+          content:
+            application/json:
+              schema:
+                type: string
+      x-swagger-router-controller: swagger_server.controllers.query_controller
   /query/:
     post:
       requestBody:
@@ -252,15 +499,15 @@ paths:
               message:
                 query_graph:
                   edges:
-                    e00:
-                      subject: n00
-                      object: n01
+                  - id: e00
+                    source_id: n00
+                    target_id: n01
                   nodes:
-                    n00:
-                      category: "biolink:Disease"
-                      id: "MONDO:0005737"
-                    n01:
-                      category: "biolink:ChemicalSubstance"
+                  - curie: NCBIGene:1017
+                    id: n00
+                    type: gene
+                  - id: n01
+                    type: chemical_substance
             schema:
               $ref: '#/components/schemas/Query'
         description: A message with question graph.
@@ -363,16 +610,19 @@ components:
             e.g. Success, QueryNotTraversable, KPsNotAvailable
           type: string
           example: Success
+          nullable: true
         description:
           description: A brief human-readable description of the outcome
           type: string
           example: Success. 42 results found.
+          nullable: true
         logs:
           description: >-
             Log entries containing errors, warnings, debugging information, etc
           type: array
           items:
             $ref: '#/components/schemas/LogEntry'
+          nullable: true
       additionalProperties: true
       required:
         - message
@@ -394,18 +644,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Result'
+          nullable: true
         query_graph:
           type: object
           description: >-
             QueryGraph object that contains a serialization of a query in the
             form of a graph
           $ref: '#/components/schemas/QueryGraph'
+          nullable: true
         knowledge_graph:
           type: object
           description: >-
             KnowledgeGraph object that contains lists of nodes and edges
             in the thought graph corresponding to the message
           $ref: '#/components/schemas/KnowledgeGraph'
+          nullable: true
       additionalProperties: false
     LogEntry:
       type: object
@@ -415,6 +668,7 @@ components:
           format: date-time
           description: Timestamp in ISO 8601 format
           example: '2020-09-03T18:13:49+00:00'
+          nullable: true
         level:
           type: string
           description: Logging level
@@ -423,14 +677,17 @@ components:
             - WARNING
             - INFO
             - DEBUG
+          nullable: true
         code:
           type: string
           description: >-
             One of a standardized set of short codes
             e.g. QueryNotTraversable, KPNotAvailable, KPResponseMalformed
+          nullable: true
         message:
           type: string
           description: A human-readable log message
+          nullable: true
       additionalProperties: true
     Result:
       type: object
@@ -443,14 +700,26 @@ components:
       properties:
         node_bindings:
           type: object
-          description: List of QNode-KNode bindings.
+          description: >-
+            The dictionary of Input Query Graph to Result Knowledge Graph node
+            bindings where the dictionary keys are the key identifiers of the
+            Query Graph nodes and the associated values of those keys are
+            instances of NodeBinding schema type (see below). This value is an
+            array of NodeBindings since a given query node may have multiple
+            knowledge graph Node bindings in the result.
           additionalProperties:
             type: array
             items:
               $ref: '#/components/schemas/NodeBinding'
         edge_bindings:
           type: object
-          description: List of QEdge-KEdge bindings.
+          description: >-
+            The dictionary of Input Query Graph to Result Knowledge Graph edge
+            bindings where the dictionary keys are the key identifiers of the
+            Query Graph edges and the associated values of those keys are
+            instances of EdgeBinding schema type (see below). This value is an
+            array of EdgeBindings since a given query edge may resolve to
+            multiple knowledge graph edges in the result.
           additionalProperties:
             type: array
             items:
@@ -464,16 +733,26 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/CURIE'
-          description: A knowledge-graph node id, i.e. the `id` of a KNode
+          description: >-
+            An instance of NodeBinding is a single KnowledgeGraph Node mapping,
+            identified by the corresponding 'id' object key identifier of the
+            Node within the Knowledge Graph. Instances of NodeBinding may
+            include extra annotation (such annotation is not yet fully
+            standardized).
       additionalProperties: true
       required:
         - id
     EdgeBinding:
       type: object
+      description: >-
+        A instance of EdgeBinding is a single KnowledgeGraph Edge mapping,
+        identified by the corresponding 'id' object key identifier of the
+        Edge within the Knowledge Graph. Instances of EdgeBinding may include
+        extra annotation (such annotation is not yet fully standardized).
       properties:
         id:
           type: string
-          description: A knowledge-graph edge id, i.e. the `id` of a KEdge
+          description: The key identifier of a specific KnowledgeGraph Edge.
       additionalProperties: true
       required:
         - id
@@ -538,12 +817,14 @@ components:
                 $ref: '#/components/schemas/CURIE'
           example: OMIM:603903
           description: CURIE identifier for this node
+          nullable: true
         category:
           oneOf:
             - $ref: '#/components/schemas/BiolinkEntity'
             - type: array
               items:
                 $ref: '#/components/schemas/BiolinkEntity'
+          nullable: true
         is_set:
           type: boolean
           description: >-
@@ -561,7 +842,14 @@ components:
       additionalProperties: true
     QEdge:
       type: object
-      description: An edge in the QueryGraph
+      description: >-
+        An edge in the QueryGraph used as an filter pattern specification in a
+        query. If optional predicate or relation properties are not specified,
+        they are assumed to be wildcard matches to the target knowledge space.
+        If specified, the ontological inheritance hierarchy associated with
+        the terms provided is assumed, such that edge bindings returned may be
+        an exact match to the given QEdge predicate or relation term ('class'),
+        or to a term which is a subclass of the QEdge specified term.
       properties:
         predicate:
           oneOf:
@@ -569,41 +857,60 @@ components:
             - type: array
               items:
                 $ref: '#/components/schemas/BiolinkRelation'
+          nullable: true
         relation:
           type: string
-          example: upregulates
-          description: Lower-level relationship type of this edge
+          example: RO:0002447
+          description: >-
+            Query constraint against the relationship type term of this edge,
+            as originally specified by, or curated by inference from, the
+            original external source of knowledge. Note that this should
+            often be specified as predicate ontology term CURIE, although
+            this may not be strictly enforced.
+          nullable: true
         subject:
           type: string
           example: https://omim.org/entry/603903
-          description: Corresponds to the id of subject node of this edge
+          description: >-
+            Corresponds to the map key identifier of the
+            subject concept node anchoring the query filter
+            pattern for the query relationship edge.
         object:
           type: string
           example: https://www.uniprot.org/uniprot/P00738
-          description: Corresponds to the id of object node of this edge
+          description: >-
+            Corresponds to the map key identifier of the
+            object concept node anchoring the query filter
+            pattern for the query relationship edge.
       additionalProperties: true
       required:
         - subject
         - object
     Node:
       type: object
-      description: A node in the knowledge graph
+      description: >-
+        A node in the KnowledgeGraph which represents some biomedical
+        concept. Nodes are identified by the keys in the KnowledgeGraph
+        Node mapping.
       properties:
         name:
           type: string
           example: Haptoglobin
           description: Formal name of the entity
+          nullable: true
         category:
           oneOf:
             - $ref: '#/components/schemas/BiolinkEntity'
             - type: array
               items:
                 $ref: '#/components/schemas/BiolinkEntity'
+          nullable: true
         attributes:
           type: array
           description: A list of attributes describing the node
           items:
             $ref: '#/components/schemas/Attribute'
+          nullable: true
       additionalProperties: false
     Attribute:
       type: object
@@ -619,6 +926,7 @@ components:
             Human-readable name or label for the attribute. If appropriate,
             should be the name of the semantic type term.
           example: PubMed Identifier
+          nullable: true
         value:
           example: 32529952
           description: >-
@@ -639,39 +947,53 @@ components:
             Human-consumable URL to link out and provide additional information
             about the attribute (not the node or the edge).
           example: https://pubmed.ncbi.nlm.nih.gov/32529952
+          nullable: true
         source:
           type: string
           description: Source of the attribute, preferably as a CURIE prefix.
           example: UniProtKB
+          nullable: true
       required:
         - type
         - value
       additionalProperties: false
     Edge:
       type: object
-      description: An edge in the knowledge graph linking two nodes
+      description: >-
+        A specification of the semantic relationship linking two concepts
+        that are expressed as nodes in the knowledge "thought" graph
+        resulting from a query upon the underlying knowledge source.
       properties:
         predicate:
-          $ref: '#/components/schemas/BiolinkRelation'
+          allOf:
+            - $ref: '#/components/schemas/BiolinkRelation'
+          nullable: true
         relation:
           type: string
-          example: upregulates
-          description: Lower-level relationship type of this edge
+          example: RO:0002447
+          description: >-
+            The relationship type term of this edge, originally specified by,
+            or curated by inference from, the original source of knowledge.
+            This should generally be specified as predicate ontology CURIE.
+          nullable: true
         subject:
           $ref: '#/components/schemas/CURIE'
           example: OMIM:603903
           description: >-
-            Corresponds to the map key CURIE of the subject node of this edge
+            Corresponds to the map key CURIE of the
+            subject concept node of this relationship edge.
         object:
           $ref: '#/components/schemas/CURIE'
           example: UniProtKB:P00738
           description: >-
-            Corresponds to the map key CURIE of the object node of this edge
+            Corresponds to the map key CURIE of the
+            object concept node of this relationship edge.
         attributes:
           type: array
           description: A list of additional attributes for this edge
           items:
             $ref: '#/components/schemas/Attribute'
+          nullable: true
       additionalProperties: false
       required:
         - subject

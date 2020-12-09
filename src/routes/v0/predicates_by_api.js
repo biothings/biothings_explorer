@@ -1,10 +1,10 @@
-const PredicatesHandler = require("../controllers/predicates");
+const PredicatesHandler = require("../../controllers/predicates");
 
-class RoutePredicatesByTeam {
+class RouteQueryByAPI {
     setRoutes(app) {
-        app.get('/v1/team/:teamName/predicates', async (req, res, next) => {
+        app.get('/smartapi/:smartapiID/predicates', async (req, res, next) => {
             try {
-                const handler = new PredicatesHandler(undefined, "1.0.0", req.params.teamName);
+                const handler = new PredicatesHandler(req.params.smartapiID, "0.9.2");
                 const predicates = await handler.getPredicates();
                 res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify(predicates));
@@ -16,4 +16,4 @@ class RoutePredicatesByTeam {
     }
 }
 
-module.exports = new RoutePredicatesByTeam();
+module.exports = new RouteQueryByAPI();

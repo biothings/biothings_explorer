@@ -1,11 +1,12 @@
-const TRAPIGraphHandler = require("../controllers/QueryGraphHandler/index");
+const TRAPIGraphHandler = require("../../controllers/QueryGraphHandler/index");
+const swaggerValidation = require("../../middlewares/validate")
 
-class RouteQueryV1ByTeam {
+class RouteQueryV1ByAPI {
     setRoutes(app) {
-        app.post('/v1/team/:teamName/query', async (req, res, next) => {
+        app.post('/v1/smartapi/:smartapiID/query', swaggerValidation.validate, async (req, res, next) => {
             try {
                 const queryGraph = req.body.message.query_graph;
-                const handler = new TRAPIGraphHandler(undefined, req.params.teamName);
+                const handler = new TRAPIGraphHandler(req.params.smartapiID);
                 handler.setQueryGraph(queryGraph);
                 await handler.query();
                 res.setHeader('Content-Type', 'application/json');
@@ -18,4 +19,4 @@ class RouteQueryV1ByTeam {
     }
 }
 
-module.exports = new RouteQueryV1ByTeam();
+module.exports = new RouteQueryV1ByAPI();

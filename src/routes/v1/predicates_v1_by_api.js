@@ -1,4 +1,4 @@
-const PredicatesHandler = require("../controllers/predicates");
+const PredicatesHandler = require("../../controllers/predicates");
 
 class RoutePredicatesByAPI {
     setRoutes(app) {

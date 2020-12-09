@@ -1,14 +1,13 @@
-const rt = require("../controllers/reasonerTranslator");
-const rt2 = require("../controllers/reasonerTranslator2");
+const rt = require("../../controllers/reasonerTranslator");
+const rt2 = require("../../controllers/reasonerTranslator2");
 
-class RouteQueryBySource {
+class RouteQuery {
     setRoutes(app) {
-        app.post('/source/:sourcename/query', async (req, res, next) => {
+        app.post('/query', async (req, res, next) => {
             //logger.info("query /query endpoint")
             try {
-                const sourceName = req.params.sourcename;
                 const queryGraph = req.body.message.query_graph;
-                let rt1 = new rt(queryGraph, undefined, sourceName);
+                let rt1 = new rt(queryGraph);
                 await rt1.queryPlan();
                 await rt1.queryExecute();
                 //console.log(rt1.query_result);
@@ -20,11 +19,21 @@ class RouteQueryBySource {
                 res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify(rf2.reasonStdAPIResponse));
             } catch (error) {
+                res.setHeader('Content-Type', 'application/json');
                 console.log(error);
-                res.end();
+                res.end(JSON.stringify(
+                    {
+                        "query_graph": req.body.message.query_graph,
+                        "knowledge_graph": {
+                            "edges": [],
+                            "nodes": []
+                        },
+                        "results": []
+                    }
+                ));
             }
         });
     }
 }
 
-module.exports = new RouteQueryBySource();
+module.exports = new RouteQuery();

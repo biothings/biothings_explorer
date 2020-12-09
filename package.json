@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@biothings-explorer/call-apis": "^1.3.0",
-    "@biothings-explorer/smartapi-kg": "^2.0.1",
+    "@biothings-explorer/smartapi-kg": "^2.1.4",
     "axios": "^0.20.0",
     "biomedical_id_resolver": "^1.2.1",
     "biothings-explorer-graphql": "2.1.1",

@@ -1,13 +1,12 @@
-const TRAPIGraphHandler = require("../controllers/QueryGraphHandler/index");
-const swaggerValidation = require("../middlewares/validate");
+const TRAPIGraphHandler = require("../../controllers/QueryGraphHandler/index");
+const swaggerValidation = require("../../middlewares/validate")
 
-class V1RouteQuery {
+class RouteQueryV1ByTeam {
     setRoutes(app) {
-        app.post('/v1/query', swaggerValidation.validate, async (req, res, next) => {
-            //logger.info("query /query endpoint")
+        app.post('/v1/team/:teamName/query', swaggerValidation.validate, async (req, res, next) => {
             try {
                 const queryGraph = req.body.message.query_graph;
-                const handler = new TRAPIGraphHandler();
+                const handler = new TRAPIGraphHandler(undefined, req.params.teamName);
                 handler.setQueryGraph(queryGraph);
                 await handler.query();
                 res.setHeader('Content-Type', 'application/json');
@@ -20,4 +19,4 @@ class V1RouteQuery {
     }
 }
 
-module.exports = new V1RouteQuery();
+module.exports = new RouteQueryV1ByTeam();

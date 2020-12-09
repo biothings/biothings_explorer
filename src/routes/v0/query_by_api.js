@@ -1,4 +1,4 @@
-const rt3 = require("../controllers/reasonerTranslator");
+const rt3 = require("../../controllers/reasonerTranslator");
 
 class RouteQueryByAPI {
     setRoutes(app) {
