@@ -23,7 +23,13 @@ module.exports = class KnowledgeGraph {
         return {
             [helper._getInputID(record)]: {
                 category: "biolink:" + helper._getInputCategory(record),
-                name: helper._getInputLabel(record)
+                name: helper._getInputLabel(record),
+                attributes: [
+                    {
+                        name: "equivalent_identifiers",
+                        value: helper._getInputEquivalentIds(record)
+                    }
+                ]
             }
         }
     }
@@ -32,13 +38,19 @@ module.exports = class KnowledgeGraph {
         return {
             [helper._getOutputID(record)]: {
                 category: "biolink:" + helper._getOutputCategory(record),
-                name: helper._getOutputLabel(record)
+                name: helper._getOutputLabel(record),
+                attributes: [
+                    {
+                        name: "equivalent_identifiers",
+                        value: helper._getOutputEquivalentIds(record)
+                    }
+                ]
             }
         }
     }
 
     _createAttributes(record) {
-        const bteAttributes = ["@type", "name", "pmc", "pubmed", "$reasoner_edge", "$association", "$input", "$output", "$original_input", "$input_resolved_identifiers", "api", "provided_by", "$filter", "$output_id_mapping", "label", "id"];
+        const bteAttributes = ["@type", "name", "pmc", "pubmed", "label", "id"];
         let attributes = [
             {
                 name: "provided_by",
