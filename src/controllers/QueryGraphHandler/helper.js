@@ -1,3 +1,4 @@
+const { exec } = require("child_process");
 const crypto = require("crypto");
 
 module.exports = class QueryGraphHelper {
@@ -49,5 +50,23 @@ module.exports = class QueryGraphHelper {
 
     _getInputLabel(record) {
         return ((record["$reasoner_edge"].isReversed()) ? record.label : record["$input_resolved_identifiers"][record["$original_input"][record["$input"]]].id.label);
+    }
+
+    _getInputEquivalentIds(record) {
+        try {
+            return ((record["$reasoner_edge"].isReversed()) ? record.$output_id_mapping.resolved : record["$input_resolved_identifiers"][record["$original_input"][record["$input"]]]);
+        } catch (err) {
+            return null;
+        }
+
+    }
+
+    _getOutputEquivalentIds(record) {
+        try {
+            return ((record["$reasoner_edge"].isReversed()) ? record["$input_resolved_identifiers"][record["$original_input"][record["$input"]]] : record.$output_id_mapping.resolved);
+        } catch (err) {
+            return null;
+        }
+
     }
 }
