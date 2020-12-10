@@ -3,10 +3,10 @@ const swaggerValidation = require("../../middlewares/validate")
 
 class RouteQueryV1ByAPI {
     setRoutes(app) {
-        app.post('/v1/smartapi/:smartapiID/query', async (req, res, next) => {
+        app.post('/v1/smartapi/:smartapi_id/query', swaggerValidation.validate, async (req, res, next) => {
             try {
                 const queryGraph = req.body.message.query_graph;
-                const handler = new TRAPIGraphHandler(req.params.smartapiID);
+                const handler = new TRAPIGraphHandler(req.params.smartapi_id);
                 handler.setQueryGraph(queryGraph);
                 await handler.query();
                 res.setHeader('Content-Type', 'application/json');
