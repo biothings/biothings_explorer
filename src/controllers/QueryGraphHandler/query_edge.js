@@ -1,3 +1,5 @@
+const helper = require("./helper");
+
 module.exports = class QEdge {
     /**
      * 
@@ -13,6 +15,15 @@ module.exports = class QEdge {
 
     getID() {
         return this.id;
+    }
+
+    setID(id) {
+        this.id = id;
+    }
+
+    getHashedEdgeRepresentation() {
+        const toBeHashed = this.subject.getCategory() + this.predicate + this.object.getCategory() + this.getInputCurie();
+        return new helper()._generateHash(toBeHashed);
     }
 
     getPredicate() {
