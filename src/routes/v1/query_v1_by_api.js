@@ -6,13 +6,14 @@ class RouteQueryV1ByAPI {
         app.post('/v1/smartapi/:smartapi_id/query', swaggerValidation.validate, async (req, res, next) => {
             try {
                 const queryGraph = req.body.message.query_graph;
-                const handler = new TRAPIGraphHandler(req.params.smartapi_id);
+                const handler = new TRAPIGraphHandler(req.params.smartapi_id, undefined, false);
                 handler.setQueryGraph(queryGraph);
                 await handler.query();
                 res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify(handler.getResponse()));
             }
             catch (error) {
+                console.log(error);
                 next(error);
             }
         });
