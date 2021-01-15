@@ -7,10 +7,11 @@ const QueryResults = require("./query_results");
 const InvalidQueryGraphError = require("../../utils/errors/invalid_query_graph_error");
 
 module.exports = class TRAPIQueryHandler {
-    constructor(smartapiID = undefined, team = undefined) {
+    constructor(smartapiID = undefined, team = undefined, resolveOutputIDs = true) {
         this.logs = [];
         this.smartapiID = smartapiID;
         this.team = team;
+        this.resolveOutputIDs = resolveOutputIDs;
     }
 
     async _loadMetaKG(smartapiID, team) {
@@ -73,7 +74,7 @@ module.exports = class TRAPIQueryHandler {
     _createBatchEdgeQueryHandlers(queryPaths, kg) {
         let handlers = {};
         for (const index in queryPaths) {
-            handlers[index] = new BatchEdgeQueryHandler(kg);
+            handlers[index] = new BatchEdgeQueryHandler(kg, this.resolveOutputIDs);
             handlers[index].setEdges(queryPaths[index]);
             handlers[index].subscribe(this.knowledgeGraph);
             handlers[index].subscribe(this.queryResults);
