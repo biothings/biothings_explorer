@@ -4,7 +4,7 @@ const crypto = require("crypto");
 module.exports = class QueryGraphHelper {
 
     _generateHash(stringToBeHashed) {
-        return crypto.createHash('sha1').update(stringToBeHashed).digest('hex');
+        return crypto.createHash('md5').update(stringToBeHashed).digest('hex');
     }
 
     _getInputQueryNodeID(record) {
