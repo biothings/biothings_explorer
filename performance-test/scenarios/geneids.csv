@@ -1,0 +1,7 @@
+gene,NCBIGene:1018,disease
+gene,NCBIGene:1019,disease
+chemical_substance,CHEMBL.COMPOUND:CHEMBL744,gene
+gene,NCBIGene:1999,pathway
+disease,MONDO:0016575,gene
+disease,MONDO:0016575,chemical_substance
+gene,NCBIGene:1017,gene

@@ -104,3 +104,7 @@ dist
 .tern-port
 
 kevin.js
+
+#Artillery logs
+report.html
+report_staging.json

@@ -2,20 +2,26 @@ const kg = require("@biothings-explorer/smartapi-kg");
 const id_resolver = require("biomedical_id_resolver");
 const call_api = require("@biothings-explorer/call-apis");
 const camelcase = require("camelcase");
+const expand = require("./expand");
+const annotate = require("./annotate")
 const ID_WITH_PREFIXES = ["MONDO", "DOID", "UBERON",
     "EFO", "HP", "CHEBI", "CL", "MGI"];
 
-const meta_kg = new kg();
-meta_kg.constructMetaKGSync();
+
 
 /**
  * Translator Reasoner Std API query graph into BTE input
  */
 module.exports = class ReasonerQueryGraphTranslator {
-    constructor(queryGraph) {
+    constructor(queryGraph, smartapiID = undefined, source = undefined) {
+        this.smartapiID = smartapiID;
         this.queryGraph = queryGraph;
+        this.source = source;
         this.snake2Pascal();
-        this.kg = meta_kg;
+        this.kg = new kg();
+        if (typeof this.smartapiID === 'undefined') {
+            this.kg.constructMetaKGSync();
+        }
         this.restructureNodes();
         this.extractAllInputs();
         this.findUniqueEdges();
@@ -36,6 +42,13 @@ module.exports = class ReasonerQueryGraphTranslator {
     findQueryGraphNodeID(curie = null, type = null) {
         if (!(curie === null)) {
             let node = this.queryGraph.nodes.filter(node => node.curie === curie);
+            if (node.length === 0) {
+                curie = this.expanded_mapping[curie];
+                node = this.queryGraph.nodes.filter(node => node.curie === curie);
+            }
+            if (node.length === 0) {
+                return undefined
+            }
             return node[0].id;
         }
         if (!(type === null)) {
@@ -51,6 +64,9 @@ module.exports = class ReasonerQueryGraphTranslator {
             res = tmp.filter(edge => edge.relation === label)
         } else {
             res = tmp.filter(edge => !('relation' in edge));
+        }
+        if (res.length === 0) {
+            return undefined
         }
         return res[0].id;
     }
@@ -89,19 +105,25 @@ module.exports = class ReasonerQueryGraphTranslator {
         this.edges = {};
         this.queryGraph.edges.map(edge => {
             if ("curie" in this.nodes[edge.source_id]) {
-                let relation = edge.relation;
-                if (!("relation" in edge)) {
+                let relation;
+                if ("relation" in edge) {
+                    relation = edge.relation
+                } else if ("type" in edge) {
+                    edge.relation = relation = edge.type
+                } else {
                     relation = "None"
                 }
                 let edge_name = this.nodes[edge.source_id].type + '-' + relation + '-' + this.nodes[edge.target_id].type;
                 if (!(edge_name in this.edges)) {
                     this.edges[edge_name] = {
                         reasoner_edges: [],
-                        curies: []
+                        curies: [],
+                        filter: undefined
                     }
                 }
                 this.edges[edge_name].reasoner_edges.push(edge);
                 this.edges[edge_name].curies.push(this.nodes[edge.source_id].curie)
+                this.edges[edge_name].filter = edge.filter
             }
         })
     }
@@ -114,7 +136,8 @@ module.exports = class ReasonerQueryGraphTranslator {
         let [sub, pred, obj] = edge.split('-');
         let filterCriteria = {
             input_type: sub,
-            output_type: obj
+            output_type: obj,
+            source: this.source
         }
         if (!(pred === "None")) {
             filterCriteria['predicate'] = pred;
@@ -135,6 +158,18 @@ module.exports = class ReasonerQueryGraphTranslator {
      */
     async annotateIDs() {
         this.resolved_ids = await id_resolver(this.inputs);
+        await this.expand(this.resolved_ids);
+    }
+
+    async expand(inputs) {
+        let ep = new expand();
+        this.expanded = await ep.expand(Object.values(inputs));
+        this.expanded_mapping = {};
+        for (let curie in this.expanded) {
+            for (let child_curie in this.expanded[curie]) {
+                this.expanded_mapping[child_curie] = curie;
+            }
+        }
     }
 
     /**
@@ -159,9 +194,13 @@ module.exports = class ReasonerQueryGraphTranslator {
             this.edges[edge]["smartapi_edges"] = [];
             smartapi_edges.map(item => {
                 let newEdges = this.addInputsToEdges(this.edges[edge].equivalent_identifiers, item);
+                newEdges = newEdges.map(e => {
+                    e.filter = this.edges[edge].filter;
+                    return e;
+                })
                 this.edges[edge]["smartapi_edges"] = [...this.edges[edge]["smartapi_edges"], ...newEdges];
             })
-        })
+        });
     }
 
     /**
@@ -173,8 +212,8 @@ module.exports = class ReasonerQueryGraphTranslator {
         let res = [];
         if (supportBatch === false) {
             Object.keys(resolvedIDs).map(curie => {
-                if (inputID in resolvedIDs[curie]["bte_ids"]) {
-                    resolvedIDs[curie]["bte_ids"][inputID].map(id => {
+                if (inputID in resolvedIDs[curie]["db_ids"]) {
+                    resolvedIDs[curie]["db_ids"][inputID].map(id => {
                         edge["input"] = id;
                         edge["input_resolved_identifiers"] = { [curie]: resolvedIDs[curie] };
                         if (!(ID_WITH_PREFIXES.includes(inputID))) {
@@ -184,14 +223,32 @@ module.exports = class ReasonerQueryGraphTranslator {
                         }
                         res.push(edge);
                     })
+                };
+                if (curie in this.expanded) {
+                    let child_curie;
+                    for (child_curie in this.expanded[curie]) {
+                        if (inputID in this.expanded[curie][child_curie]["db_ids"]) {
+                            this.expanded[curie][child_curie]["db_ids"][inputID].map(id => {
+                                edge["input"] = id;
+                                edge["input_resolved_identifiers"] = { [child_curie]: this.expanded[curie][child_curie] };
+                                if (!(ID_WITH_PREFIXES.includes(inputID))) {
+                                    edge["original_input"] = { [inputID + ':' + id]: child_curie }
+                                } else {
+                                    edge["original_input"] = { [id]: child_curie };
+                                }
+                                res.push(edge);
+                            })
+                        }
+                    }
                 }
+
             })
         } else {
             let id_mapping = {};
             let input = [];
             Object.keys(resolvedIDs).map(curie => {
-                if (inputID in resolvedIDs[curie]["bte_ids"]) {
-                    resolvedIDs[curie]["bte_ids"][inputID].map(id => {
+                if (inputID in resolvedIDs[curie]["db_ids"]) {
+                    resolvedIDs[curie]["db_ids"][inputID].map(id => {
                         if (!(ID_WITH_PREFIXES.includes(inputID))) {
                             id_mapping[inputID + ':' + id] = curie;
                         } else {
@@ -199,6 +256,21 @@ module.exports = class ReasonerQueryGraphTranslator {
                         }
                         input.push(id);
                     })
+                }
+                if (curie in this.expanded) {
+                    let child_curie;
+                    for (child_curie in this.expanded[curie]) {
+                        if (inputID in this.expanded[curie][child_curie]["db_ids"]) {
+                            this.expanded[curie][child_curie]["db_ids"][inputID].map(id => {
+                                if (!(ID_WITH_PREFIXES.includes(inputID))) {
+                                    id_mapping[inputID + ':' + id] = child_curie;
+                                } else {
+                                    id_mapping[id] = child_curie;
+                                }
+                                input.push(id);
+                            })
+                        }
+                    }
                 }
             })
             if (Object.keys(id_mapping).length > 0) {
@@ -211,10 +283,57 @@ module.exports = class ReasonerQueryGraphTranslator {
         return res;
     }
 
+    filterEdge(rec) {
+        if (!("$filter" in rec)) {
+            return rec;
+        }
+        for (let key in rec["$filter"]) {
+            let filter_key;
+            if (key === "ngd") {
+                filter_key = "$ngd";
+            } else {
+                filter_key = key;
+            }
+            if (filter_key in rec && rec[filter_key] !== undefined) {
+                if (Array.isArray(rec[filter_key])) {
+                    rec[filter_key] = rec[filter_key][0]
+                }
+                try {
+                    let operation = Object.keys(rec["$filter"][key])[0];
+                    let val = rec["$filter"][key][operation];
+                    if (operation === "=" && rec[filter_key] !== val) {
+                        return undefined
+                    }
+                    if (operation === '>' && rec[filter_key] <= val) {
+                        return undefined
+                    }
+                    if (operation === "<" && rec[filter_key] >= val) {
+                        return undefined
+                    }
+                    return false
+                } catch (e) {
+                    return undefined
+                }
+            }
+            return undefined
+        }
+        return rec;
+    }
+
+    filterResponse(response) {
+        if (!(Array.isArray(response)) || response.length === 0) {
+            return response
+        }
+        return response.filter(rec => this.filterEdge(rec) !== undefined)
+    }
+
     /**
      * Translate ReasonerStdAPI query graph into BTE edges
      */
     async queryPlan() {
+        if (typeof this.smartapiID !== 'undefined') {
+            await this.kg.constructMetaKG(false, "translator", this.smartapiID);
+        }
         await this.annotateIDs();
         this.annotateEdges();
     }
@@ -230,6 +349,11 @@ module.exports = class ReasonerQueryGraphTranslator {
         let executor = new call_api(this.smartapi_edges);
         await executor.query();
         this.query_result = executor.result;
+        let at = new annotate(this.query_result, {})
+        await at.annotateNGD();
+        this.query_result = at.queryResult;
+        this.query_result = this.filterResponse(this.query_result)
+
     }
 
     /**
@@ -247,6 +371,9 @@ module.exports = class ReasonerQueryGraphTranslator {
         };
         this.query_result.map(item => {
             let input = item.$original_input[item.$input];
+            if (item.$input in this.expanded_mapping) {
+                input = this.expanded_mapping[item.$input];
+            }
             let input_query_graph_id = this.findQueryGraphNodeID(input, null);
             let output_query_graph_id = this.findQueryGraphNodeID(null, item.$association.output_type);
             let pred = item.$reasoner_edge.split('-')[1];
@@ -283,22 +410,27 @@ module.exports = class ReasonerQueryGraphTranslator {
                 ]
             })
             if (!(added_nodes.includes(item.$output))) {
-                this.reasonStdAPIResponse.knowledge_graph.nodes.push({
-                    id: item.$output,
-                    name: item.$output_id_mapping.resolved.id.label,
-                    type: item.$association.output_type,
-                    equivalent_identifiers: item.$output_id_mapping.resolved.equivalent_identifiers
-                })
-                added_nodes.push(item.$output);
+                if (!("$output_id_mapping" in item)) {
+                    //console.log("no resolved outout", item);
+                } else {
+                    this.reasonStdAPIResponse.knowledge_graph.nodes.push({
+                        id: item.$output,
+                        name: item.$output_id_mapping.resolved.id.label,
+                        type: item.$association.output_type,
+                        equivalent_identifiers: item.$output_id_mapping.resolved
+                    })
+                    added_nodes.push(item.$output);
+                    if (!(added_nodes.includes(input))) {
+                        this.reasonStdAPIResponse.knowledge_graph.nodes.push({
+                            id: input,
+                            name: input,
+                            type: item.$association.input_type
+                        })
+                        added_nodes.push(input);
+                    }
+                }
             }
-            if (!(added_nodes.includes(input))) {
-                this.reasonStdAPIResponse.knowledge_graph.nodes.push({
-                    id: input,
-                    name: item.$input_resolved_identifiers[input].id.label,
-                    type: item.$association.input_type
-                })
-                added_nodes.push(input);
-            }
+
         })
 
     }

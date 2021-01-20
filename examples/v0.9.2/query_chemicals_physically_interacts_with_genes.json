@@ -1,0 +1,25 @@
+{
+    "message": {
+        "query_graph": {
+            "edges": [
+                {
+                    "id": "e10",
+                    "source_id": "n0",
+                    "target_id": "n1",
+                    "relation": "physically_interacts_with"
+                }
+            ],
+            "nodes": [
+                {
+                    "id": "n0",
+                    "type": "gene",
+                    "curie": "NCBIGene:1017"
+                },
+                {
+                    "id": "n1",
+                    "type": "chemical_substance"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "category": "biolink:DrugExposure",
+                    "id": "NCIT:C18059"
+                },
+                "n3": {
+                    "category": "biolink:DiseaseOrPhenotypicFeature"
+                }
+            },
+            "edges": {
+                "e03": {
+                    "subject": "n0",
+                    "object": "n3"
+                }
+            }
+        }
+    }
+}

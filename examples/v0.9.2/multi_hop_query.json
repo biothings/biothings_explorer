@@ -1,0 +1,33 @@
+{
+    "message": {
+        "query_graph": {
+            "edges": [
+                {
+                    "id": "e10",
+                    "source_id": "n0",
+                    "target_id": "n1"
+                },
+                {
+                    "id": "e11",
+                    "source_id": "n1",
+                    "target_id": "n2"
+                }
+            ],
+            "nodes": [
+                {
+                    "id": "n0",
+                    "type": "disease",
+                    "curie": "MONDO:0016575"
+                },
+                {
+                    "id": "n1",
+                    "type": "gene"
+                },
+                {
+                    "id": "n2",
+                    "type": "ChemicalSubstance"
+                }
+            ]
+        }
+    }
+}
