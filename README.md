@@ -1,4 +1,4 @@
-# single-hop-app.js
+# BioThings Explorer TRAPI
 [![Coverage Status](https://coveralls.io/repos/github/kevinxin90/single-hop-app.js/badge.svg?branch=master)](https://coveralls.io/github/kevinxin90/single-hop-app.js?branch=master)
 
 
