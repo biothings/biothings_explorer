@@ -6,7 +6,7 @@ class RouteQueryV1ByAPI {
         app.post('/v1/smartapi/:smartapi_id/query', swaggerValidation.validate, async (req, res, next) => {
             try {
                 const queryGraph = req.body.message.query_graph;
-                const handler = new TRAPIGraphHandler(req.params.smartapi_id, undefined, false);
+                const handler = new TRAPIGraphHandler(req.params.smartapi_id, undefined, true);
                 handler.setQueryGraph(queryGraph);
                 await handler.query();
                 res.setHeader('Content-Type', 'application/json');

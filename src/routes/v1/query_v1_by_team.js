@@ -3,10 +3,10 @@ const swaggerValidation = require("../../middlewares/validate")
 
 class RouteQueryV1ByTeam {
     setRoutes(app) {
-        app.post('/v1/team/:teamName/query', swaggerValidation.validate, async (req, res, next) => {
+        app.post('/v1/team/:team_name/query', swaggerValidation.validate, async (req, res, next) => {
             try {
                 const queryGraph = req.body.message.query_graph;
-                const handler = new TRAPIGraphHandler(undefined, req.params.teamName);
+                const handler = new TRAPIGraphHandler(undefined, req.params.team_name);
                 handler.setQueryGraph(queryGraph);
                 await handler.query();
                 res.setHeader('Content-Type', 'application/json');
