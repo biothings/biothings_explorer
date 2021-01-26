@@ -33,6 +33,6 @@
             "hidden": true
         }
     ],
-    "commitUrlFormat": "https://github.com/mokkapps/changelog-generator-demo/commits/{{hash}}",
-    "compareUrlFormat": "https://github.com/mokkapps/changelog-generator-demo/compare/{{previousTag}}...{{currentTag}}"
+    "commitUrlFormat": "https://github.com/biothings/BioThings_Explorer_TRAPI/commits/{{hash}}",
+    "compareUrlFormat": "https://github.com/biothings/BioThings_Explorer_TRAPI/compare/{{previousTag}}...{{currentTag}}"
 }
