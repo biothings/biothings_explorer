@@ -2,7 +2,7 @@ name: ci-cd
 
 on:
   release:
-    types: [published]
+    types: [created, released, published]
 
 jobs:
   test:
