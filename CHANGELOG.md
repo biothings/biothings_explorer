@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/mokkapps/changelog-generator-demo/compare/v1.3.0...v1.4.0) (2021-01-26)
+
+
+### Features
+
+* :sparkles: Enable logging for call-apis module ([406a62b](https://github.com/mokkapps/changelog-generator-demo/commits/406a62b64e3cd0e1d961782f27e39485b90ded25))
+
 ## [1.3.0](https://github.com/mokkapps/changelog-generator-demo/compare/v1.1.1...v1.3.0) (2021-01-26)
 
 
