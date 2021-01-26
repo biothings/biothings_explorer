@@ -38,6 +38,7 @@ module.exports = class BatchEdgeQueryHandler {
     async _queryBTEEdges(bteEdges) {
         let executor = new call_api(bteEdges);
         await executor.query(this.resolveOutputIDs);
+        this.logs = [...this.logs, ...executor.logs]
         return executor.result;
     }
 
