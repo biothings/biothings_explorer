@@ -1,0 +1,21 @@
+{
+    "message": {
+        "query_graph": {
+            "edges": {
+                "e00": {
+                    "object": "n01",
+                    "subject": "n00"
+                }
+            },
+            "nodes": {
+                "n00": {
+                    "category": "biolink:ChemicalSubstance",
+                    "id": "CHEBI:18050"
+                },
+                "n01": {
+                    "category": "biolink:Gene"
+                }
+            }
+        }
+    }
+}
