@@ -6,7 +6,8 @@ class RouteQueryV1ByTeam {
         app.post('/v1/team/:team_name/query', swaggerValidation.validate, async (req, res, next) => {
             try {
                 const queryGraph = req.body.message.query_graph;
-                const handler = new TRAPIGraphHandler(undefined, req.params.team_name);
+                const enableIDResolution = (req.params.team_name === "Text Mining Provider") ? false : true;
+                const handler = new TRAPIGraphHandler(undefined, req.params.team_name, enableIDResolution);
                 handler.setQueryGraph(queryGraph);
                 await handler.query();
                 res.setHeader('Content-Type', 'application/json');

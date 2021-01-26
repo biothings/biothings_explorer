@@ -1,6 +1,6 @@
 {
   "name": "@biothings-explorer/single-hop-app",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "App performing single hop query for BioThings Explorer",
   "main": "src/server.js",
   "scripts": {
