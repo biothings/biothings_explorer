@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/mokkapps/changelog-generator-demo/compare/v1.1.1...v1.3.0) (2021-01-26)
+
+
+### Features
+
+* :sparkles: Enable BTE TRAPI to query SmartAPI on real time ([be00d80](https://github.com/mokkapps/changelog-generator-demo/commits/be00d804af9a93d1f84f4cbb968160c62fd3fbd2))
+
+
+### Bug Fixes
+
+* :bug: change log level to warning if no smartapi edge found ([082759f](https://github.com/mokkapps/changelog-generator-demo/commits/082759f0c5abc51e3a3b8f2700a82f2c4a86e60c))
+* :bug: Display correct log message based on whether smartapi edges are found or not ([54cf072](https://github.com/mokkapps/changelog-generator-demo/commits/54cf0722076201bfeb617749986e478e552597b0))
+* added jenkinsfile ([b35c484](https://github.com/mokkapps/changelog-generator-demo/commits/b35c48408872c4686120715daa3f7f4e146a72cc))
+* update the image name ([77c74f7](https://github.com/mokkapps/changelog-generator-demo/commits/77c74f72e0d8505b26b7b95eb8ddb03bb19a9fbe))
+
 ## [1.2.0](https://github.com/mokkapps/changelog-generator-demo/compare/v1.1.1...v1.2.0) (2021-01-26)
 
 
