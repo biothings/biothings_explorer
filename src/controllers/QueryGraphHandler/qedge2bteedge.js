@@ -37,7 +37,7 @@ module.exports = class QEdge2BTEEdgeHandler {
             return item;
         });
         if (smartapi_edges.length === 0) {
-            this.logs.push(new LogEntry("DEBUG", null, `BTE didn't find any smartapi edges corresponding to ${qEdge.getID()}`).getLog())
+            this.logs.push(new LogEntry("WARNING", null, `BTE didn't find any smartapi edges corresponding to ${qEdge.getID()}`).getLog())
         } else {
             this.logs.push(new LogEntry("DEBUG", null, `BTE found ${smartapi_edges.length} smartapi edges corresponding to ${qEdge.getID()}. These smartaip edges comes from ${new Set(this._findAPIsFromSmartAPIEdges(smartapi_edges)).size} unique APIs. They are ${Array.from(new Set(this._findAPIsFromSmartAPIEdges(smartapi_edges))).join(',')}`).getLog())
         }
