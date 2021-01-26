@@ -38,7 +38,7 @@
     "supertest": "^6.1.3"
   },
   "dependencies": {
-    "@biothings-explorer/call-apis": "^1.7.0",
+    "@biothings-explorer/call-apis": "^1.8.0",
     "@biothings-explorer/smartapi-kg": "^2.2.0",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
