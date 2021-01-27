@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.9.1](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v1.9.0...v1.9.1) (2021-01-27)
+
+
+### Bug Fixes
+
+* :bug: fix CHANGELOG bug ([f72c660](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/f72c660e7afd6fdeec8f4092478b1683b9bdfcb2))
+* :bug: fix wrong url in CHANGELOG and autogenerate tools ([f927d5e](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/f927d5ea3a73b24951c9a195d5522d7965e00e19))
 
 ## [1.9.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v1.4.0...v1.9.0) (2021-01-26)
 
