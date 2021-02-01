@@ -127,7 +127,7 @@ describe("Testing QueryEdge Module", () => {
         test("test get reverse predicate if query is reversed", () => {
             const edge = new QEdge("e01", { subject: type_node, object: disease1_node, predicate: "biolink:treats" });
             const res = edge.getPredicate();
-            expect(res).toBe("treated by");
+            expect(res).toBe("treated_by");
         });
 
 
