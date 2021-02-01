@@ -9,7 +9,7 @@ describe("Testing endpoints", () => {
     const clinical_risk_kp_folder = path.resolve(__dirname, '../../examples/v1/multiomics/clinical_risk_kp');
     const old_spec_folder = path.resolve(__dirname, "../../examples/v0.9.2");
     const invalid_example_folder = path.resolve(__dirname, "../../examples/v1/invalid");
-    const drugexposue2disease_query = JSON.parse(fs.readFileSync(path.join(clinical_risk_kp_folder, 'query_drug_exposure_to_disease.json')));
+    const drug2disease_query = JSON.parse(fs.readFileSync(path.join(clinical_risk_kp_folder, 'query_drug_to_disease.json')));
     const gene2chemical_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_chemicals_physically_interacts_with_genes.json')));
     const disease2gene_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_genes_relate_to_disease.json')));
     const query_using_earlier_trapi_spec = JSON.parse(fs.readFileSync(path.join(old_spec_folder, 'query_genes_relate_to_disease.json')));
@@ -59,7 +59,7 @@ describe("Testing endpoints", () => {
     test("POST /v1/query with clinical risk kp query", async () => {
         await request(app)
             .post("/v1/query")
-            .send(drugexposue2disease_query)
+            .send(drug2disease_query)
             .set('Accept', 'application/json')
             .expect(200)
             .expect('Content-Type', /json/)
@@ -68,7 +68,7 @@ describe("Testing endpoints", () => {
                 expect(response.body.message).toHaveProperty("knowledge_graph");
                 expect(response.body.message.knowledge_graph).toHaveProperty("nodes");
                 expect(response.body.message.knowledge_graph).toHaveProperty("edges");
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("MONDO:0005249")
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("MONDO:0008315")
             })
     })
 
