@@ -3,6 +3,8 @@ const QEdge = require("../../src/controllers/QueryGraphHandler/query_edge");
 
 describe("Testing QueryEdge Module", () => {
     const gene_node1 = new QNode("n1", { category: "Gene", id: "NCBIGene:1017" });
+    const type_node = new QNode("n2", { category: "ChemicalSubstance" });
+    const disease1_node = new QNode("n1", { category: "Disease", id: "MONDO:000123" });
     const node1_equivalent_ids = {
         "NCBIGene:1017": {
             db_ids: {
@@ -118,6 +120,17 @@ describe("Testing QueryEdge Module", () => {
             const res = edge5.hasInputResolved();
             expect(res).toBeTruthy();
         });
+
+    })
+
+    describe("Testing getPredicate function", () => {
+        test("test get reverse predicate if query is reversed", () => {
+            const edge = new QEdge("e01", { subject: type_node, object: disease1_node, predicate: "biolink:treats" });
+            const res = edge.getPredicate();
+            expect(res).toBe("treated by");
+        });
+
+
 
     })
 
