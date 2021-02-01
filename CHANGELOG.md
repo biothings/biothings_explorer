@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.9.2](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v1.9.1...v1.9.2) (2021-02-01)
+
+
+### Bug Fixes
+
+* :bug: fix issue regarding missing type information for node attributes ([7cf6119](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/7cf61195a7e0dac0f6615e2e7f97defbba365e57))
+
 ### [1.9.1](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v1.9.0...v1.9.1) (2021-01-27)
 
 
