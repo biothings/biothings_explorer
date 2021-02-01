@@ -27,7 +27,8 @@ module.exports = class KnowledgeGraph {
                 attributes: [
                     {
                         name: "equivalent_identifiers",
-                        value: helper._getInputEquivalentIds(record)
+                        value: helper._getInputEquivalentIds(record),
+                        type: "biolink:id"
                     }
                 ]
             }
@@ -42,7 +43,8 @@ module.exports = class KnowledgeGraph {
                 attributes: [
                     {
                         name: "equivalent_identifiers",
-                        value: helper._getOutputEquivalentIds(record)
+                        value: helper._getOutputEquivalentIds(record),
+                        type: "biolink:id"
                     }
                 ]
             }
