@@ -4,6 +4,6 @@ describe("Test EdgeReverse class", () => {
     test("test reverse with correct predicate", () => {
         const handler = new Reverse();
         const res = handler.reverse('treats');
-        expect(res).toBe("treated by");
+        expect(res).toBe("treated_by");
     })
 })
