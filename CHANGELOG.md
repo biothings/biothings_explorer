@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v1.9.2...v1.10.0) (2021-02-02)
+
+
+### Features
+
+* :sparkles: add debug and log for qedge2bteedge module ([abc9265](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/abc92651f9869a566d0e092dcaec1ecf10361060))
+* :sparkles: add debug message for nodeUpdateHandler module ([6cf9b5d](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/6cf9b5dc9b75f0845acd49236f9021bb852679c2))
+* :sparkles: look for symmetric predicate if qEdge is reversed ([a167345](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/a1673454c396b196c1d6970a65fe67468802e057))
+* :sparkles: support edge reversal ([862560d](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/862560daa9da0005dd85fdd5612e72ce5364e0f4))
+
+
+### Bug Fixes
+
+* :bug: check if user provided predicate is undefined ([56eb1fe](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/56eb1feed819ea4c682c7700602796a663f85ff0))
+* :bug: modify query predicate to fit biolink json file ([fc91a31](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/fc91a318c7e218bcf2e37351e3f1921ab970a0cc))
+* :bug: synchronize the predicate in kg with the qg ([658aa43](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/658aa434b0efa035cbd79053cbe76a36be132b21))
+* :bug: terminate the query if one of the critical intermediate step return empty results ([15ee30a](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/15ee30aef234ebe20ca45372fe5d349ee88a2ed0))
+* :bug: use predicate from api if no predicate supplied in qg ([a073f99](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/a073f9959c8a3c2f7fdda8fe0c83768d125e943f))
+
 ### [1.9.2](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v1.9.1...v1.9.2) (2021-02-01)
 
 
