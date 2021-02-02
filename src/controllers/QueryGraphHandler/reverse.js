@@ -11,6 +11,9 @@ module.exports = class EdgeReverse {
         if (typeof predicate === "string") {
             let modifiedPredicate = predicate.replace('_', ' ');
             if (modifiedPredicate in this.data.slots) {
+                if (this.data.slots[modifiedPredicate].symmetric === true) {
+                    return modifiedPredicate.replace(' ', '_');
+                }
                 if ('inverse' in this.data.slots[modifiedPredicate]) {
                     return this.data.slots[modifiedPredicate].inverse.replace(' ', '_');
                 }
