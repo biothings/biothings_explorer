@@ -73,8 +73,8 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 
 ## Install
 
-`$ git clone https://github.com/kevinxin90/BioThings_Explorer_TRAPI`
-`$ cd single-hop-app.js`
+`$ git clone https://github.com/biothings/BioThings_Explorer_TRAPI`
+`$ cd BioThings_Explorer_TRAPI`
 `$ npm install`
 
 
