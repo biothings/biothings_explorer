@@ -80,7 +80,7 @@ module.exports = class KnowledgeGraph {
     _createEdge(record) {
         return {
             [helper._createUniqueEdgeID(record)]: {
-                predicate: "biolink:" + record["$association"].predicate,
+                predicate: "biolink:" + record["$reasoner_edge"].getQueryPredicate(),
                 subject: helper._getInputID(record),
                 object: helper._getOutputID(record),
                 attributes: this._createAttributes(record)
