@@ -1,6 +1,7 @@
 const call_api = require("@biothings-explorer/call-apis");
 const QEdge2BTEEdgeHandler = require("./qedge2bteedge");
 const NodesUpdateHandler = require("./update_nodes");
+const debug = require("debug")("biothings-explorer-trapi:batch_edge_query");
 //const CacheHandler = require("./cache_handler");
 
 module.exports = class BatchEdgeQueryHandler {
@@ -52,11 +53,18 @@ module.exports = class BatchEdgeQueryHandler {
     async query(qEdges) {
         let nodeUpdate = new NodesUpdateHandler(qEdges);
         await nodeUpdate.setEquivalentIDs(qEdges);
+        debug('Start to convert qEdges into BTEEdges....');
         let edgeConverter = new QEdge2BTEEdgeHandler(qEdges, this.kg);
         let bteEdges = edgeConverter.convert(qEdges);
+        debug(`qEdges are successfully converted into ${bteEdges.length} BTEEdges....`);
         this.logs = [...this.logs, ...edgeConverter.logs];
+        if (bteEdges.length === 0) {
+            return [];
+        }
         let expanded_bteEdges = this._expandBTEEdges(bteEdges);
+        debug('Start to query BTEEdges....');
         let query_res = await this._queryBTEEdges(expanded_bteEdges);
+        debug('BTEEdges are successfully queried....');
         let processed_query_res = await this._postQueryFilter(query_res);
         nodeUpdate.update(processed_query_res);
         return processed_query_res;
