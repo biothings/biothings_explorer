@@ -2,6 +2,8 @@ const id_resolver = require("biomedical_id_resolver");
 const GraphHelper = require("./helper");
 const _ = require("lodash");
 const helper = new GraphHelper();
+const debug = require("debug")("biothings-explorer-trapi:nodeUpdateHandler");
+
 
 module.exports = class NodesUpdateHandler {
     constructor(qEdges) {
@@ -43,13 +45,17 @@ module.exports = class NodesUpdateHandler {
         if (curies.length === 0) {
             return;
         }
+        debug(`curies: ${JSON.stringify(curies)}`);
         const equivalentIDs = await this._getEquivalentIDs(curies);
+        debug(`Resolved equivalent ids: ${JSON.stringify(equivalentIDs)}`);
         qEdges.map(edge => {
+            debug(`Edge input curie is ${edge.getInputCurie()}`);
             let edgeEquivalentIDs = Object.keys(equivalentIDs)
                 .filter(key => edge.getInputCurie().includes(key))
                 .reduce((res, key) => {
                     return { ...res, [key]: equivalentIDs[key] };
                 }, {});
+            debug(`Edge Equivalent IDs: ${JSON.stringify(edgeEquivalentIDs)}`)
             if (Object.keys(edgeEquivalentIDs).length > 0) {
                 edge.getSubject().setEquivalentIDs(edgeEquivalentIDs);
             }
