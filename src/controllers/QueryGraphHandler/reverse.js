@@ -8,12 +8,15 @@ module.exports = class EdgeReverse {
     }
 
     reverse(predicate) {
-        let modifiedPredicate = predicate.replace('_', ' ');
-        if (modifiedPredicate in this.data.slots) {
-            if ('inverse' in this.data.slots[modifiedPredicate]) {
-                return this.data.slots[modifiedPredicate].inverse.replace(' ', '_');
+        if (typeof predicate === "string") {
+            let modifiedPredicate = predicate.replace('_', ' ');
+            if (modifiedPredicate in this.data.slots) {
+                if ('inverse' in this.data.slots[modifiedPredicate]) {
+                    return this.data.slots[modifiedPredicate].inverse.replace(' ', '_');
+                }
             }
         }
+
         return undefined;
     }
 }
