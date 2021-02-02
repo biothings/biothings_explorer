@@ -28,10 +28,10 @@ Query Examples can be found [here](https://github.com/kevinxin90/BioThings_Explo
 
 ## Current Development Status
 
-Currently, the BioThings Explorer TRAPI API implements TRAPI v0.9.2 standard, and can be queried at https://api.bte.ncats.io/query endpoint.
+Currently, the BioThings Explorer TRAPI API implements TRAPI v1.0.0 standard, and can be queried at https://api.bte.ncats.io/v1/query endpoint.
 
 
-The TRAPI v1.0.0 standard is currently under development. It can be tested using https://api.bte.ncats.io/v1/query endpoint.
+The TRAPI v0.9.2 standard is deprecated. But it can still be tested using https://api.bte.ncats.io/query endpoint.
 
 ---
 
