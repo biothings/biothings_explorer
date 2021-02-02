@@ -19,7 +19,7 @@ module.exports = class TRAPIQueryHandler {
     async _loadMetaKG(smartapiID, team) {
         const kg = new meta_kg();
         if (smartapiID === undefined && team === undefined) {
-            await kg.constructMetaKG(false);
+            await kg.constructMetaKG(false, "translator");
         };
         if (smartapiID !== undefined) {
             await kg.constructMetaKG(false, "translator", smartapiID);
