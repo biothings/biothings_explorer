@@ -1,4 +1,7 @@
 const helper = require("./helper");
+const debug = require("debug")("biothings-explorer-trapi:QEdge");
+const reverse = require("./reverse");
+
 
 module.exports = class QEdge {
     /**
@@ -11,6 +14,7 @@ module.exports = class QEdge {
         this.predicate = info.predicate;
         this.subject = info.subject;
         this.object = info.object;
+        this.edgeReverser = new reverse();
     }
 
     getID() {
@@ -26,11 +30,22 @@ module.exports = class QEdge {
         return new helper()._generateHash(toBeHashed);
     }
 
-    getPredicate() {
+    getQueryPredicate() {
         if (this.predicate && this.predicate.startsWith("biolink:")) {
             return this.predicate.slice(8);
         }
-        return this.predicate;
+        return this.predicate
+    }
+
+    getPredicate() {
+        let predicate = this.predicate;
+        if (this.predicate && this.predicate.startsWith("biolink:")) {
+            predicate = this.predicate.slice(8);
+        }
+        if (this.isReversed()) {
+            return this.edgeReverser.reverse(predicate);
+        }
+        return predicate;
     }
 
     getSubject() {

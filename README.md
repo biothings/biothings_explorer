@@ -41,6 +41,9 @@ For development, you will only need Node.js and a node global package, e.g. npm,
 
 ### Node
 
+NOTE: Node version must be higher than v12.
+
+
 - #### Node installation on Windows
 
   Just go on [official Node.js website](https://nodejs.org/) and download the installer.
@@ -60,7 +63,7 @@ Also, be sure to have `git` available in your PATH, `npm` might need it (You can
 If the installation was successful, you should be able to run the following command.
 
     $ node --version
-    v8.11.3
+    v12.*.*
 
     $ npm --version
     6.1.0
@@ -73,8 +76,8 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 
 ## Install
 
-`$ git clone https://github.com/kevinxin90/BioThings_Explorer_TRAPI`
-`$ cd single-hop-app.js`
+`$ git clone https://github.com/biothings/BioThings_Explorer_TRAPI`
+`$ cd BioThings_Explorer_TRAPI`
 `$ npm install`
 
 

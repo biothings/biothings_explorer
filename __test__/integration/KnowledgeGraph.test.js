@@ -29,6 +29,7 @@ describe("Testing KnowledgeGraph Module", () => {
             expect(res).toHaveProperty("NCBIGene:1017");
             expect(res["NCBIGene:1017"]).toHaveProperty("name", "CDK2");
             expect(res["NCBIGene:1017"]).toHaveProperty("category", "biolink:Gene");
+            expect(res["NCBIGene:1017"].attributes[0]).toHaveProperty("type", "biolink:id");
         })
     })
 

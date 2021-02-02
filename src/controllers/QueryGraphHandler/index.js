@@ -5,6 +5,8 @@ const QueryGraph = require("./query_graph")
 const KnowledgeGraph = require("./knowledge_graph");
 const QueryResults = require("./query_results");
 const InvalidQueryGraphError = require("../../utils/errors/invalid_query_graph_error");
+const debug = require("debug")("biothings-explorer-trapi:main");
+
 
 module.exports = class TRAPIQueryHandler {
     constructor(smartapiID = undefined, team = undefined, resolveOutputIDs = true) {
@@ -17,7 +19,7 @@ module.exports = class TRAPIQueryHandler {
     async _loadMetaKG(smartapiID, team) {
         const kg = new meta_kg();
         if (smartapiID === undefined && team === undefined) {
-            await kg.constructMetaKG(false);
+            await kg.constructMetaKG(false, "translator");
         };
         if (smartapiID !== undefined) {
             await kg.constructMetaKG(false, "translator", smartapiID);
@@ -86,10 +88,14 @@ module.exports = class TRAPIQueryHandler {
         this._initializeResponse();
         const kg = await this._loadMetaKG(this.smartapiID, this.team);
         let queryPaths = this._processQueryGraph(this.queryGraph);
+        debug(`query paths constructed: ${queryPaths}`);
         const handlers = this._createBatchEdgeQueryHandlers(queryPaths, kg);
         for (let i = 0; i < Object.keys(handlers).length; i++) {
             let res = await handlers[i].query(handlers[i].qEdges);
             this.logs = [...this.logs, ...handlers[i].logs];
+            if (res.length === 0) {
+                return;
+            }
             handlers[i].notify(res);
         }
     }

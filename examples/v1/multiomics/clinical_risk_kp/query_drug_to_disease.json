@@ -3,11 +3,11 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "category": "biolink:DrugExposure",
-                    "id": "NCIT:C18059"
+                    "category": "biolink:Drug",
+                    "id": "CHEBI:86990"
                 },
                 "n3": {
-                    "category": "biolink:DiseaseOrPhenotypicFeature"
+                    "category": "biolink:Disease"
                 }
             },
             "edges": {
