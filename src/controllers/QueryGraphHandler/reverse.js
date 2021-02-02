@@ -8,9 +8,10 @@ module.exports = class EdgeReverse {
     }
 
     reverse(predicate) {
-        if (predicate in this.data.slots) {
-            if ('inverse' in this.data.slots[predicate]) {
-                return this.data.slots[predicate].inverse.replace(' ', '_');
+        let modifiedPredicate = predicate.replace('_', ' ');
+        if (modifiedPredicate in this.data.slots) {
+            if ('inverse' in this.data.slots[modifiedPredicate]) {
+                return this.data.slots[modifiedPredicate].inverse.replace(' ', '_');
             }
         }
         return undefined;
