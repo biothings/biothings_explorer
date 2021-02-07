@@ -108,3 +108,10 @@ kevin.js
 #Artillery logs
 report.html
 report_staging.json
+
+processed*.txt
+*-audit.json
+*.log.gz
+report*.json
+
+.DS_Store
