@@ -96,7 +96,6 @@ module.exports = class QEdge2BTEEdgeHandler {
         let bteEdges = [];
         const inputID = smartAPIEdge.association.input_id;
         let resolvedIDs = smartAPIEdge.reasoner_edge.getSubject().getEquivalentIDs();
-        debug(`Resolved ids are ${JSON.stringify(resolvedIDs)}`);
         Object.keys(resolvedIDs).map(curie => {
             if (inputID in resolvedIDs[curie]["db_ids"]) {
                 resolvedIDs[curie]["db_ids"][inputID].map(id => {
