@@ -81,7 +81,7 @@ module.exports = class NodesUpdateHandler {
     update(queryResult) {
         queryResult.map(record => {
             record["$reasoner_edge"].getOutputNode().updateEquivalentIDs(
-                _.cloneDeep(this._createEquivalentIDsObject(record))
+                this._createEquivalentIDsObject(record)
             );
         })
     }
