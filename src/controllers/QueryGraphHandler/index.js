@@ -1,5 +1,8 @@
 const meta_kg = require("@biothings-explorer/smartapi-kg");
-
+const fs = require("fs");
+var path = require('path');
+const util = require('util');
+const readFile = util.promisify(fs.readFile);
 const BatchEdgeQueryHandler = require("./batch_edge_query");
 const QueryGraph = require("./query_graph")
 const KnowledgeGraph = require("./knowledge_graph");
@@ -19,7 +22,13 @@ module.exports = class TRAPIQueryHandler {
     async _loadMetaKG(smartapiID, team) {
         const kg = new meta_kg();
         if (smartapiID === undefined && team === undefined) {
-            await kg.constructMetaKG(false, "translator");
+            debug("loading specs without smartapiID and team info.")
+            const smartapi_specs = await readFile(path.resolve(__dirname, '../../../data/smartapi_specs.json'));
+            debug("smartapi specs read from local file")
+            const data = JSON.parse(smartapi_specs);
+            debug("smartapi specs parsed into JSON from local file");
+            kg.constructMetaKGFromUserProvidedSpecs(data);
+            debug(`Total number of ops loaded: ${kg.ops.length}`);
         };
         if (smartapiID !== undefined) {
             await kg.constructMetaKG(false, "translator", smartapiID);
@@ -86,7 +95,9 @@ module.exports = class TRAPIQueryHandler {
 
     async query() {
         this._initializeResponse();
+        debug('start to load metakg.')
         const kg = await this._loadMetaKG(this.smartapiID, this.team);
+        debug("metakg successfully loaded")
         let queryPaths = this._processQueryGraph(this.queryGraph);
         debug(`query paths constructed: ${queryPaths}`);
         const handlers = this._createBatchEdgeQueryHandlers(queryPaths, kg);
