@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v1.10.0...v1.11.0) (2021-02-09)
+
+
+### Features
+
+* :sparkles: run cron job in expressjs event loop ([d2d44bc](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/d2d44bc584583947d6cfad796e13cf7e55ff0588))
+* :sparkles: set cron job to pull smartapi spec from API every 10 mins ([8f8dbe1](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/8f8dbe1c1ede0e492ac75157be6c0aa501b14382))
+* :sparkles: update metakg endpoint to read from local copy of SmartAPI specs ([c5f40d0](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/c5f40d0dfb9966812acfd46356c394cb82fb9b20))
+
 ## [1.10.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v1.9.2...v1.10.0) (2021-02-02)
 
 
