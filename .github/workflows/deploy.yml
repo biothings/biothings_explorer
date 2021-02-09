@@ -1,8 +1,9 @@
 name: ci-cd
 
 on:
-  release:
-    types: [created, released, published]
+  push:
+    tags:
+      - "v*.*.*"
 
 jobs:
   test:
