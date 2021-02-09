@@ -38,7 +38,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd opt/BioThings_Explorer_TRAPI
-          git pull
+          git stash && git pull
           npm i --production
           pm2 restart all
 
