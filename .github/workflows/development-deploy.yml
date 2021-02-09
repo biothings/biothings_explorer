@@ -66,11 +66,10 @@ jobs:
         ls -l
     - name: copy file via ssh password
       uses: appleboy/scp-action@master
-      working-directory: ./performance-test
       with:
         host: ${{ secrets.SSH_HOST_DEV }}
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY_DEV }}
         port: ${{ secrets.SSH_PORT }}
-        source: "report.html"
+        source: "performance-test/report.html"
         target: "opt/BioThings_Explorer_TRAPI/performance-test"
