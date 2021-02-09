@@ -1,5 +1,4 @@
 const _ = require("lodash");
-const meta_kg = require("@biothings-explorer/smartapi-kg");
 const LogEntry = require("./log_entry");
 const ID_WITH_PREFIXES = ["MONDO", "DOID", "UBERON",
     "EFO", "HP", "CHEBI", "CL", "MGI", "NCIT", "PR", "UNIPROT"];
@@ -96,7 +95,6 @@ module.exports = class QEdge2BTEEdgeHandler {
         let bteEdges = [];
         const inputID = smartAPIEdge.association.input_id;
         let resolvedIDs = smartAPIEdge.reasoner_edge.getSubject().getEquivalentIDs();
-        debug(`Resolved ids are ${JSON.stringify(resolvedIDs)}`);
         Object.keys(resolvedIDs).map(curie => {
             if (inputID in resolvedIDs[curie]["db_ids"]) {
                 resolvedIDs[curie]["db_ids"][inputID].map(id => {

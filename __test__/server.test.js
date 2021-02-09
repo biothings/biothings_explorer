@@ -111,19 +111,19 @@ describe("Testing endpoints", () => {
             })
     })
 
-    test("POST /query with disease2gene query", async () => {
-        await request(app)
-            .post("/query")
-            .send(disease2gene_query)
-            .set('Accept', 'application/json')
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .then(response => {
-                expect(response.body).toHaveProperty("query_graph");
-                expect(response.body).toHaveProperty("knowledge_graph");
-                expect(response.body.knowledge_graph.edges[0].source_id).toEqual("MONDO:0016575");
-            })
-    })
+    // test("POST /query with disease2gene query", async () => {
+    //     await request(app)
+    //         .post("/query")
+    //         .send(disease2gene_query)
+    //         .set('Accept', 'application/json')
+    //         .expect(200)
+    //         .expect('Content-Type', /json/)
+    //         .then(response => {
+    //             expect(response.body).toHaveProperty("query_graph");
+    //             expect(response.body).toHaveProperty("knowledge_graph");
+    //             expect(response.body.knowledge_graph.edges[0].source_id).toEqual("MONDO:0016575");
+    //         })
+    // })
 
     // test("POST /query with multihop query", async () => {
     //     await request(app)

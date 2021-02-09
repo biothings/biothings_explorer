@@ -6,8 +6,14 @@ config:
                 - duration: 120
                   arrivalRate: 0.5
 
-        staging:
+        local:
             target: "http://localhost:3000"
+            phases:
+                - duration: 120
+                  arrivalRate: 0.5
+
+        dev:
+            target: "https://dev.api.bte.ncats.io"
             phases:
                 - duration: 120
                   arrivalRate: 0.5

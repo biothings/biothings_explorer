@@ -47,7 +47,6 @@ module.exports = class NodesUpdateHandler {
         }
         debug(`curies: ${JSON.stringify(curies)}`);
         const equivalentIDs = await this._getEquivalentIDs(curies);
-        debug(`Resolved equivalent ids: ${JSON.stringify(equivalentIDs)}`);
         qEdges.map(edge => {
             debug(`Edge input curie is ${edge.getInputCurie()}`);
             let edgeEquivalentIDs = Object.keys(equivalentIDs)
@@ -55,7 +54,6 @@ module.exports = class NodesUpdateHandler {
                 .reduce((res, key) => {
                     return { ...res, [key]: equivalentIDs[key] };
                 }, {});
-            debug(`Edge Equivalent IDs: ${JSON.stringify(edgeEquivalentIDs)}`)
             if (Object.keys(edgeEquivalentIDs).length > 0) {
                 edge.getSubject().setEquivalentIDs(edgeEquivalentIDs);
             }
@@ -81,7 +79,7 @@ module.exports = class NodesUpdateHandler {
     update(queryResult) {
         queryResult.map(record => {
             record["$reasoner_edge"].getOutputNode().updateEquivalentIDs(
-                _.cloneDeep(this._createEquivalentIDsObject(record))
+                this._createEquivalentIDsObject(record)
             );
         })
     }
