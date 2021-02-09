@@ -20,6 +20,7 @@ describe("Testing endpoints", () => {
         await request(app)
             .get("/performance")
             .expect(200)
+            .expect('Content-Type', /html/)
     })
 
     test("GET /predicates", async () => {

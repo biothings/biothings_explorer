@@ -71,7 +71,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd opt/single-hop-app.js
-          git pull
+          git stash && git pull
           npm i --production
           pm2 restart all
 
