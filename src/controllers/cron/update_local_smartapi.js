@@ -6,7 +6,7 @@ const cron = require('node-cron');
 
 
 const updateSmartAPISpecs = async () => {
-    const SMARTAPI_URL = 'https://smart-api.info/api/query?q=tags.name:translator&size=150&fields=paths,servers,tags,components.x-bte*,info';
+    const SMARTAPI_URL = 'https://smart-api.info/api/query?q=tags.name:translator&size=150&fields=paths,servers,tags,components.x-bte*,info,_meta';
     const res = await axios.get(SMARTAPI_URL);
     const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
     fs.writeFile(localFilePath, JSON.stringify(res.data), (err) => {
