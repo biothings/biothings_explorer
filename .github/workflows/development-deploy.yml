@@ -43,6 +43,7 @@ jobs:
           pm2 restart all
 
   performance-test:
+    needs: [deploy]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -59,14 +60,17 @@ jobs:
       run: |
         pwd
         npm i -g artillery
+        ls -l
         artillery run -e dev --output report_dev.json --config config.yaml scenarios/query.yaml
         artillery report --output report.html report_dev.json
+        ls -l
     - name: copy file via ssh password
       uses: appleboy/scp-action@master
+      working-directory: ./performance-test
       with:
         host: ${{ secrets.SSH_HOST_DEV }}
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY_DEV }}
         port: ${{ secrets.SSH_PORT }}
-        source: "./performance-test/report.html"
+        source: "report.html"
         target: "opt/BioThings_Explorer_TRAPI/performance-test"
