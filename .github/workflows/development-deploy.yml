@@ -41,3 +41,21 @@ jobs:
           git pull
           npm i --production
           pm2 restart all
+
+  performance-test:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: SSH and run performance test
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST_DEV }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY_DEV }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd opt/BioThings_Explorer_TRAPI/performance-test
+          artillery run -e dev --output report_dev.json --config config.yaml scenarios/query.yaml
+          artillery report --output report.html report_dev.json
+          pm2 restart all
