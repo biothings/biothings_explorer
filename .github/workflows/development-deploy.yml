@@ -55,7 +55,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: pwd
+    - run: ls -l
     - run: cd performance-test
+    - run: pwd
+    - run: ls -l
     - run: npm i -g artillery
     - run: artillery run -e dev --output report_dev.json --config config.yaml scenarios/query.yaml
     - run: artillery report --output report.html report_dev.json
