@@ -54,15 +54,13 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: pwd
-    - run: ls -l
-    - run: cd performance-test
-    - run: pwd
-    - run: ls -l
-    - run: npm i -g artillery
-    - run: artillery run -e dev --output report_dev.json --config config.yaml scenarios/query.yaml
-    - run: artillery report --output report.html report_dev.json
-    - run: ls -l
+    - name: run performance test
+      working-directory: ./performance-test
+      run: |
+        pwd
+        npm i -g artillery
+        artillery run -e dev --output report_dev.json --config config.yaml scenarios/query.yaml
+        artillery report --output report.html report_dev.json
     - name: copy file via ssh password
       uses: appleboy/scp-action@master
       with:
@@ -70,5 +68,5 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY_DEV }}
         port: ${{ secrets.SSH_PORT }}
-        source: "report.html"
+        source: "./performance-test/report.html"
         target: "opt/BioThings_Explorer_TRAPI/performance-test"
