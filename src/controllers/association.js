@@ -1,12 +1,14 @@
 const meta_kg = require("@biothings-explorer/smartapi-kg");
 const kg = new meta_kg();
-META_KG_CONSTRUCTED = false
+const fs = require("fs");
+var path = require('path');
+const util = require('util');
+const readFile = util.promisify(fs.readFile);
 
 module.exports = async (sub, obj, pred, api, source) => {
-    if (META_KG_CONSTRUCTED === false) {
-        await kg.constructMetaKG(true);
-        META_KG_CONSTRUCTED = true
-    }
+    const smartapi_specs = await readFile(path.resolve(__dirname, '../../data/smartapi_specs.json'));
+    const data = JSON.parse(smartapi_specs);
+    kg.constructMetaKGFromUserProvidedSpecs(data);
     let associations = [];
     let filtered_res = kg.filter({
         input_type: sub,

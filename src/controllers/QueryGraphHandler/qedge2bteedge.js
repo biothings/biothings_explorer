@@ -1,5 +1,4 @@
 const _ = require("lodash");
-const meta_kg = require("@biothings-explorer/smartapi-kg");
 const LogEntry = require("./log_entry");
 const ID_WITH_PREFIXES = ["MONDO", "DOID", "UBERON",
     "EFO", "HP", "CHEBI", "CL", "MGI", "NCIT", "PR", "UNIPROT"];
