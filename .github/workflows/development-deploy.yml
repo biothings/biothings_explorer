@@ -72,4 +72,5 @@ jobs:
         key: ${{ secrets.SSH_KEY_DEV }}
         port: ${{ secrets.SSH_PORT }}
         source: "performance-test/report.html"
-        target: "opt/BioThings_Explorer_TRAPI"
+        target: "opt/BioThings_Explorer_TRAPI/performance-test"
+        strip_components: 1
