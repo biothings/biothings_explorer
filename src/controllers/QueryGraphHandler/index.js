@@ -101,13 +101,17 @@ module.exports = class TRAPIQueryHandler {
         let queryPaths = this._processQueryGraph(this.queryGraph);
         debug(`query paths constructed: ${queryPaths}`);
         const handlers = this._createBatchEdgeQueryHandlers(queryPaths, kg);
+        debug(`Query depth is ${Object.keys(handlers).length}`);
         for (let i = 0; i < Object.keys(handlers).length; i++) {
+            debug(`Start to query depth ${i + 1}`);
             let res = await handlers[i].query(handlers[i].qEdges);
+            debug(`Query for depth ${i + 1} completes.`);
             this.logs = [...this.logs, ...handlers[i].logs];
             if (res.length === 0) {
                 return;
             }
             handlers[i].notify(res);
+            debug(`Updated TRAPI knowledge graph using query results for depth ${i + 1}`)
         }
     }
 }

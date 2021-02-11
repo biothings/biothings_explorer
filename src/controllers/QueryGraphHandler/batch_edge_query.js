@@ -66,7 +66,10 @@ module.exports = class BatchEdgeQueryHandler {
         let query_res = await this._queryBTEEdges(expanded_bteEdges);
         debug('BTEEdges are successfully queried....');
         let processed_query_res = await this._postQueryFilter(query_res);
+        debug(`Total number of response is ${processed_query_res.length}`);
+        debug('Start to update nodes.')
         nodeUpdate.update(processed_query_res);
+        debug('update nodes completed')
         return processed_query_res;
         // let cacheHandler = new CacheHandler(qEdges);
         // let { cachedResults, nonCachedEdges } = await cacheHandler.categorizeEdges(qEdges);
