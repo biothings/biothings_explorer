@@ -37,7 +37,7 @@ The TRAPI v0.9.2 standard is deprecated. But it can still be tested using https:
 
 ## Requirements
 
-For development, you will only need Node.js and a node global package, e.g. npm, installed in your environement.
+For development, you will only need Node.js and a node global package, e.g. npm, installed in your environment.
 
 ### Node
 
@@ -84,6 +84,12 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 ## Running the project
 
 `$ npm start`
+
+To enable debug mode, which outputs logging statements to the terminal in real time:
+
+`$ DEBUG=biothings-explorer-trapi:* npm start`
+
+`$ DEBUG=biothings-explorer-trapi:*,smartapi-kg:*,call-apis:*,biomedical-id-resolver:* npm start` (also outputs debug statements from dependencies)
 
 ## Simple build for production
 
