@@ -76,18 +76,18 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 
 ## Install
 
-`$ git clone https://github.com/biothings/BioThings_Explorer_TRAPI`
-`$ cd BioThings_Explorer_TRAPI`
-`$ npm install`
+    $ git clone https://github.com/biothings/BioThings_Explorer_TRAPI`
+    $ cd BioThings_Explorer_TRAPI`
+    $ npm install`
 
 
 ## Running the project
 
-`$ npm start`
+    $ npm start
 
 ## Simple build for production
 
-`$ npm build`
+    $ npm build
 
 ## Deploy
 
