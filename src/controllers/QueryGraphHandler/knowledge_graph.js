@@ -1,4 +1,5 @@
 const GraphHelper = require("./helper");
+const debug = require("debug")("biothings-explorer-trapi:KnowledgeGraph");
 const helper = new GraphHelper();
 
 module.exports = class KnowledgeGraph {
@@ -80,7 +81,7 @@ module.exports = class KnowledgeGraph {
     _createEdge(record) {
         return {
             [helper._createUniqueEdgeID(record)]: {
-                predicate: "biolink:" + ((typeof record["$reasoner_edge"].getQueryPredicate() === "undefined") ? record["$association"].predicate : record["$reasoner_edge"].getQueryPredicate()),
+                predicate: "biolink:" + ((typeof record.$edge_metadata.trapi_qEdge_obj.getQueryPredicate() === "undefined") ? record.$edge_metadata.predicate : record.$edge_metadata.trapi_qEdge_obj.getQueryPredicate()),
                 subject: helper._getInputID(record),
                 object: helper._getOutputID(record),
                 attributes: this._createAttributes(record)

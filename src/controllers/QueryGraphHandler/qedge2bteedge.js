@@ -56,11 +56,11 @@ module.exports = class QEdge2BTEEdgeHandler {
      */
     _createNonBatchSupportBTEEdges(smartAPIEdge) {
         let bteEdges = [];
-        let inputID = smartAPIEdge.association.input_id;
-        let resolvedIDs = smartAPIEdge.reasoner_edge.getSubject().getEquivalentIDs();
+        const inputID = smartAPIEdge.association.input_id;
+        const resolvedIDs = smartAPIEdge.reasoner_edge.getSubject().getEquivalentIDs();
         for (let curie in resolvedIDs) {
-            if (inputID in resolvedIDs[curie].db_ids) {
-                resolvedIDs[curie]["db_ids"][inputID].map(id => {
+            if (inputID in resolvedIDs[curie].dbIDs) {
+                resolvedIDs[curie].dbIDs[inputID].map(id => {
                     let edge = _.cloneDeep(smartAPIEdge);
                     edge.input = id;
                     edge.input_resolved_identifiers = {
@@ -96,8 +96,8 @@ module.exports = class QEdge2BTEEdgeHandler {
         const inputID = smartAPIEdge.association.input_id;
         let resolvedIDs = smartAPIEdge.reasoner_edge.getSubject().getEquivalentIDs();
         Object.keys(resolvedIDs).map(curie => {
-            if (inputID in resolvedIDs[curie]["db_ids"]) {
-                resolvedIDs[curie]["db_ids"][inputID].map(id => {
+            if (inputID in resolvedIDs[curie].dbIDs) {
+                resolvedIDs[curie].dbIDs[inputID].map(id => {
                     if (!(ID_WITH_PREFIXES.includes(inputID))) {
                         id_mapping[inputID + ':' + id] = curie;
                     } else {

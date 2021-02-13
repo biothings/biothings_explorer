@@ -1,7 +1,6 @@
 const id_resolver = require("biomedical_id_resolver");
 const GraphHelper = require("./helper");
 const _ = require("lodash");
-const helper = new GraphHelper();
 const debug = require("debug")("biothings-explorer-trapi:nodeUpdateHandler");
 
 
@@ -63,9 +62,9 @@ module.exports = class NodesUpdateHandler {
     }
 
     _createEquivalentIDsObject(record) {
-        if (record["$output_id_mapping"] !== undefined) {
+        if (record.$output.obj !== undefined) {
             return {
-                [helper._getOutputID(record)]: record["$output_id_mapping"].resolved
+                [record.$output.obj.primaryID]: record.$output.obj
             }
         } else {
             return
@@ -79,7 +78,7 @@ module.exports = class NodesUpdateHandler {
      */
     update(queryResult) {
         queryResult.map(record => {
-            record["$reasoner_edge"].getOutputNode().updateEquivalentIDs(
+            record.$edge_metadata.trapi_qEdge_obj.getOutputNode().updateEquivalentIDs(
                 this._createEquivalentIDsObject(record)
             );
         })
