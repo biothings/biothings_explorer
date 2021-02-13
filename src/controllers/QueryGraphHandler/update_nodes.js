@@ -36,7 +36,8 @@ module.exports = class NodesUpdateHandler {
      * @param {object} curies - each key represents the category, e.g. gene, value is an array of curies.
      */
     async _getEquivalentIDs(curies) {
-        const equivalentIDs = await id_resolver(curies);
+        const resolver = new id_resolver();
+        const equivalentIDs = await resolver.resolve(curies);
         return equivalentIDs;
     }
 
