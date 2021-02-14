@@ -1,7 +1,7 @@
 const _ = require("lodash");
 const LogEntry = require("./log_entry");
 const ID_WITH_PREFIXES = ["MONDO", "DOID", "UBERON",
-    "EFO", "HP", "CHEBI", "CL", "MGI", "NCIT", "PR", "UNIPROT"];
+    "EFO", "HP", "CHEBI", "CL", "MGI", "NCIT"];
 const debug = require("debug")("biothings-explorer-trapi:qedge2btedge");
 
 
@@ -66,13 +66,13 @@ module.exports = class QEdge2BTEEdgeHandler {
                     edge.input_resolved_identifiers = {
                         [curie]: resolvedIDs[curie]
                     };
-                    if (!(ID_WITH_PREFIXES.includes(inputID))) {
+                    if (ID_WITH_PREFIXES.includes(inputID) || id.includes(':')) {
                         edge.original_input = {
-                            [inputID + ':' + id]: curie
+                            [id]: curie
                         }
                     } else {
                         edge.original_input = {
-                            [id]: curie
+                            [inputID + ':' + id]: curie
                         };
                     }
                     let edgeToBePushed = _.cloneDeep(edge);
@@ -98,10 +98,10 @@ module.exports = class QEdge2BTEEdgeHandler {
         Object.keys(resolvedIDs).map(curie => {
             if (inputID in resolvedIDs[curie].dbIDs) {
                 resolvedIDs[curie].dbIDs[inputID].map(id => {
-                    if (!(ID_WITH_PREFIXES.includes(inputID))) {
-                        id_mapping[inputID + ':' + id] = curie;
-                    } else {
+                    if (ID_WITH_PREFIXES.includes(inputID) || id.includes(':')) {
                         id_mapping[id] = curie;
+                    } else {
+                        id_mapping[inputID + ':' + id] = curie;
                     }
                     inputs.push(id);
                 })
