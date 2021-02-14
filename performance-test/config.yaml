@@ -18,7 +18,7 @@ config:
                 - duration: 120
                   arrivalRate: 0.5
     payload:
-        path: "geneids.csv"
+        path: "single_hop_examples.csv"
         fields:
             - "input_type"
             - "input_id"
