@@ -22,33 +22,29 @@ module.exports = class KnowledgeGraph {
 
     _createInputNode(record) {
         return {
-            [helper._getInputID(record)]: {
-                category: "biolink:" + helper._getInputCategory(record),
-                name: helper._getInputLabel(record),
-                attributes: [
-                    {
-                        name: "equivalent_identifiers",
-                        value: helper._getInputEquivalentIds(record),
-                        type: "biolink:id"
-                    }
-                ]
-            }
+            category: "biolink:" + helper._getInputCategory(record),
+            name: helper._getInputLabel(record),
+            attributes: [
+                {
+                    name: "equivalent_identifiers",
+                    value: helper._getInputEquivalentIds(record),
+                    type: "biolink:id"
+                }
+            ]
         }
     }
 
     _createOutputNode(record) {
         return {
-            [helper._getOutputID(record)]: {
-                category: "biolink:" + helper._getOutputCategory(record),
-                name: helper._getOutputLabel(record),
-                attributes: [
-                    {
-                        name: "equivalent_identifiers",
-                        value: helper._getOutputEquivalentIds(record),
-                        type: "biolink:id"
-                    }
-                ]
-            }
+            category: "biolink:" + helper._getOutputCategory(record),
+            name: helper._getOutputLabel(record),
+            attributes: [
+                {
+                    name: "equivalent_identifiers",
+                    value: helper._getOutputEquivalentIds(record),
+                    type: "biolink:id"
+                }
+            ]
         }
     }
 
@@ -80,20 +76,29 @@ module.exports = class KnowledgeGraph {
 
     _createEdge(record) {
         return {
-            [helper._createUniqueEdgeID(record)]: {
-                predicate: "biolink:" + ((typeof record.$edge_metadata.trapi_qEdge_obj.getQueryPredicate() === "undefined") ? record.$edge_metadata.predicate : record.$edge_metadata.trapi_qEdge_obj.getQueryPredicate()),
-                subject: helper._getInputID(record),
-                object: helper._getOutputID(record),
-                attributes: this._createAttributes(record)
-            }
+            predicate: "biolink:" + ((typeof record.$edge_metadata.trapi_qEdge_obj.getQueryPredicate() === "undefined") ? record.$edge_metadata.predicate : record.$edge_metadata.trapi_qEdge_obj.getQueryPredicate()),
+            subject: helper._getInputID(record),
+            object: helper._getOutputID(record),
+            attributes: this._createAttributes(record)
         }
     }
 
     update(queryResult) {
         queryResult.map(record => {
-            this.nodes = { ...this.nodes, ...this._createInputNode(record) };
-            this.nodes = { ...this.nodes, ...this._createOutputNode(record) };
-            this.edges = { ...this.edges, ...this._createEdge(record) };
+            debug(`record input: ${JSON.stringify(record.$input)}`);
+            debug(`record output: ${JSON.stringify(record.$output)}`);
+            if (!(helper._getInputID(record) in this.nodes)) {
+                this.nodes[helper._getInputID(record)] = this._createInputNode(record);
+            }
+            if (!(helper._getOutputID(record) in this.nodes)) {
+                this.nodes[helper._getOutputID(record)] = this._createOutputNode(record);
+            }
+            if (!(helper._createUniqueEdgeID(record) in this.edges)) {
+                this.edges[helper._createUniqueEdgeID(record)] = this._createEdge(record);
+            }
+            // this.nodes = { ...this.nodes, ...this._createInputNode(record) };
+            // this.nodes = { ...this.nodes, ...this._createOutputNode(record) };
+            // this.edges = { ...this.edges, ...this._createEdge(record) };
 
         })
         this.kg = {
