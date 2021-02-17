@@ -157,7 +157,8 @@ module.exports = class ReasonerQueryGraphTranslator {
      * @param {array} curies - list of 
      */
     async annotateIDs() {
-        this.resolved_ids = await id_resolver(this.inputs);
+        const resolver = new id_resolver();
+        this.resolved_ids = await resolver.resolve(this.inputs);
         await this.expand(this.resolved_ids);
     }
 
@@ -247,8 +248,8 @@ module.exports = class ReasonerQueryGraphTranslator {
             let id_mapping = {};
             let input = [];
             Object.keys(resolvedIDs).map(curie => {
-                if (inputID in resolvedIDs[curie]["db_ids"]) {
-                    resolvedIDs[curie]["db_ids"][inputID].map(id => {
+                if (inputID in resolvedIDs[curie].dbIDs) {
+                    resolvedIDs[curie].dbIDs[inputID].map(id => {
                         if (!(ID_WITH_PREFIXES.includes(inputID))) {
                             id_mapping[inputID + ':' + id] = curie;
                         } else {
@@ -260,8 +261,8 @@ module.exports = class ReasonerQueryGraphTranslator {
                 if (curie in this.expanded) {
                     let child_curie;
                     for (child_curie in this.expanded[curie]) {
-                        if (inputID in this.expanded[curie][child_curie]["db_ids"]) {
-                            this.expanded[curie][child_curie]["db_ids"][inputID].map(id => {
+                        if (inputID in this.expanded[curie][child_curie].dbIDs) {
+                            this.expanded[curie][child_curie].dbIDs[inputID].map(id => {
                                 if (!(ID_WITH_PREFIXES.includes(inputID))) {
                                     id_mapping[inputID + ':' + id] = child_curie;
                                 } else {
