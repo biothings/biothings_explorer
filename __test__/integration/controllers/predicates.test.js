@@ -100,4 +100,24 @@ describe("Test Predicates Module", () => {
             expect(res).toEqual('biolink:treated_by')
         })
     })
+
+    describe("Test getPredicates function", () => {
+        test("Default should render correctly", async () => {
+            const handler = new pred();
+            const res = await handler.getPredicates();
+            expect(res).toHaveProperty("biolink:Gene");
+        })
+
+        test("If smartapi ID provided, should render predicates only related to the smartapi", async () => {
+            const handler = new pred('59dce17363dce279d389100834e43648');
+            const res = await handler.getPredicates();
+            expect(res).toHaveProperty("biolink:Gene");
+        })
+
+        test("If team name provided, should render predicates only related to the smartapi", async () => {
+            const handler = new pred(undefined, "Service Provider");
+            const res = await handler.getPredicates();
+            expect(res).toHaveProperty("biolink:Gene");
+        })
+    })
 })
