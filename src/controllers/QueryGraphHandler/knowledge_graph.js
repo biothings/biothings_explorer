@@ -85,8 +85,6 @@ module.exports = class KnowledgeGraph {
 
     update(queryResult) {
         queryResult.map(record => {
-            debug(`record input: ${JSON.stringify(record.$input)}`);
-            debug(`record output: ${JSON.stringify(record.$output)}`);
             if (!(helper._getInputID(record) in this.nodes)) {
                 this.nodes[helper._getInputID(record)] = this._createInputNode(record);
             }
