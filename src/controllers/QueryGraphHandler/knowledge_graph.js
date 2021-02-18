@@ -50,7 +50,7 @@ module.exports = class KnowledgeGraph {
 
     _createAttributes(record) {
         const bteAttributes = ["@type", "name", "pmc", "pubmed", "label", "id", "api", "provided_by"];
-        let attributes = [
+        const attributes = [
             {
                 name: "provided_by",
                 value: helper._getSource(record),
