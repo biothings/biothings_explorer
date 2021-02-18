@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon src/server.js",
     "test": "jest --forceExit",
+    "test-cov": "jest --coverage",
     "coveralls": "jest --coverage --forceExit && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "test-coveralls": "jest --coverage --forceExit && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js --verbose",
     "release": "standard-version",
