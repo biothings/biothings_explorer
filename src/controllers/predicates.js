@@ -1,5 +1,9 @@
 const meta_kg = require("@biothings-explorer/smartapi-kg");
 const snakeCase = require("snake-case");
+const fs = require("fs");
+var path = require('path');
+const util = require('util');
+const readFile = util.promisify(fs.readFile);
 
 
 // module.exports = () => {
@@ -29,6 +33,8 @@ module.exports = class PredicatesHandler {
     }
 
     async _loadMetaKG(smartapiID, team) {
+        const smartapi_specs = await readFile(path.resolve(__dirname, '../../data/smartapi_specs.json'));
+        const data = JSON.parse(smartapi_specs);
         const kg = new meta_kg();
         if (smartapiID !== undefined) {
             await kg.constructMetaKG(false, "translator", smartapiID);
@@ -37,7 +43,7 @@ module.exports = class PredicatesHandler {
             await kg.constructMetaKG(false, "translator", undefined, team);
             return kg;
         } else {
-            await kg.constructMetaKG(false, "translator");
+            kg.constructMetaKGFromUserProvidedSpecs(data);
             return kg;
         }
     }
