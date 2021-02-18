@@ -65,7 +65,6 @@ module.exports = class BatchEdgeQueryHandler {
         debug('Start to query BTEEdges....');
         let query_res = await this._queryBTEEdges(expanded_bteEdges);
         debug('BTEEdges are successfully queried....');
-        console.log("query res", query_res);
         let processed_query_res = await this._postQueryFilter(query_res);
         debug(`Total number of response is ${processed_query_res.length}`);
         debug('Start to update nodes.')
