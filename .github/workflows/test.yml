@@ -8,36 +8,36 @@ on:
   pull_request:
     branches: [ master ]
 
-    name: Test Coveralls
+name: Test Coveralls
 
-    jobs:
-    
-      test-coverage:
-        name: Generate coverage report
-        runs-on: ubuntu-latest
-        steps:
-    
-        - uses: actions/checkout@v1
-    
-        - name: Use Node.js 12.x
-          uses: actions/setup-node@v1
-          with:
-            node-version: 12.x
-    
-        - name: npm install, generate coverage report
-          run: |
-            npm ci
-            npm run test-cov
-        - name: Send coverage report to coveralls for visualization
-          uses: coverallsapp/github-action@master
-          with:
-            github-token: ${{ secrets.GITHUB_TOKEN }}
-      finish:
-        needs: test-coverage
-        runs-on: ubuntu-latest
-        steps:
-        - name: Coveralls Finished
-          uses: coverallsapp/github-action@master
-          with:
-            github-token: ${{ secrets.github_token }}
-            parallel-finished: true
+jobs:
+
+  test-coverage:
+    name: Generate coverage report
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v1
+
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
+    - name: npm install, generate coverage report
+      run: |
+        npm ci
+        npm run test-cov
+    - name: Send coverage report to coveralls for visualization
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+  finish:
+    needs: test-coverage
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true
