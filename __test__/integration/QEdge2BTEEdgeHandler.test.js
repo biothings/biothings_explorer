@@ -7,7 +7,7 @@ describe("Testing QEdge2BTEEdgeHandler Module", () => {
     const gene_node1 = new QNode("n1", { category: "Gene", curie: "NCBIGene:1017" });
     const node1_equivalent_ids = {
         "NCBIGene:1017": {
-            db_ids: {
+            dbIDs: {
                 NCBIGene: ["1017"],
                 SYMBOL: ['CDK2']
             }
@@ -16,13 +16,13 @@ describe("Testing QEdge2BTEEdgeHandler Module", () => {
     gene_node1.setEquivalentIDs(node1_equivalent_ids);
     const node2_equivalent_ids = {
         "NCBIGene:1017": {
-            db_ids: {
+            dbIDs: {
                 NCBIGene: ["1017"],
                 SYMBOL: ['CDK2']
             }
         },
         "NCBIGene:1018": {
-            db_ids: {
+            dbIDs: {
                 NCBIGene: ["1018"],
                 SYMBOL: ['CDK3']
             }

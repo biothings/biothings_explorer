@@ -4,7 +4,7 @@ class RoutePredicatesByAPI {
     setRoutes(app) {
         app.get('/v1/smartapi/:smartapiID/predicates', async (req, res, next) => {
             try {
-                const handler = new PredicatesHandler(req.params.smartapiID, "1.0.0");
+                const handler = new PredicatesHandler(req.params.smartapiID);
                 const predicates = await handler.getPredicates();
                 res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify(predicates));

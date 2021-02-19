@@ -14,7 +14,6 @@ class RouteQueryV1ByAPI {
                 res.end(JSON.stringify(handler.getResponse()));
             }
             catch (error) {
-                console.log(error);
                 next(error);
             }
         });

@@ -13,9 +13,6 @@ describe("Testing endpoints", () => {
     const gene2chemical_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_chemicals_physically_interacts_with_genes.json')));
     const disease2gene_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_genes_relate_to_disease.json')));
     const query_using_earlier_trapi_spec = JSON.parse(fs.readFileSync(path.join(old_spec_folder, 'query_genes_relate_to_disease.json')));
-    const query_with_nodes_undefined = JSON.parse(fs.readFileSync(path.join(invalid_example_folder, "query_graph_with_nodes_not_specified.json")));
-    const query_with_edges_undefined = JSON.parse(fs.readFileSync(path.join(invalid_example_folder, "query_graph_with_edges_not_specified.json")));
-    const query_with_nodes_and_edges_not_match = JSON.parse(fs.readFileSync(path.join(invalid_example_folder, "query_graph_with_nodes_and_edges_not_match.json")));
 
     test("GET /v1/predicates", async () => {
         await request(app)
@@ -76,42 +73,6 @@ describe("Testing endpoints", () => {
         await request(app)
             .post("/v1/query")
             .send(query_using_earlier_trapi_spec)
-            .set('Accept', 'application/json')
-            .expect(400)
-            .expect('Content-Type', /json/)
-            .then(response => {
-                expect(response.body).toHaveProperty("error", "Your input query graph is invalid");
-            })
-    })
-
-    test("POST /v1/query with query graph missing nodes definition", async () => {
-        await request(app)
-            .post("/v1/query")
-            .send(query_with_nodes_undefined)
-            .set('Accept', 'application/json')
-            .expect(400)
-            .expect('Content-Type', /json/)
-            .then(response => {
-                expect(response.body).toHaveProperty("error", "Your input query graph is invalid");
-            })
-    })
-
-    test("POST /v1/query with query graph missing edges definition", async () => {
-        await request(app)
-            .post("/v1/query")
-            .send(query_with_edges_undefined)
-            .set('Accept', 'application/json')
-            .expect(400)
-            .expect('Content-Type', /json/)
-            .then(response => {
-                expect(response.body).toHaveProperty("error", "Your input query graph is invalid");
-            })
-    })
-
-    test("POST /v1/query with query graph with nodes and edges mismatch", async () => {
-        await request(app)
-            .post("/v1/query")
-            .send(query_with_nodes_and_edges_not_match)
             .set('Accept', 'application/json')
             .expect(400)
             .expect('Content-Type', /json/)

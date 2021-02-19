@@ -1,6 +1,6 @@
 # BioThings Explorer TRAPI API
 [![Build Status](https://travis-ci.com/kevinxin90/BioThings_Explorer_TRAPI.svg?branch=master)](https://travis-ci.com/kevinxin90/BioThings_Explorer_TRAPI)
-[![Coverage Status](https://coveralls.io/repos/github/kevinxin90/BioThings_Explorer_TRAPI/badge.svg?branch=master)](https://coveralls.io/github/kevinxin90/BioThings_Explorer_TRAPI?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/biothings/BioThings_Explorer_TRAPI/badge.svg?branch=master)](https://coveralls.io/github/biothings/BioThings_Explorer_TRAPI?branch=master)
 
 ## Introduction
 
@@ -76,14 +76,14 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 
 ## Install
 
-`$ git clone https://github.com/biothings/BioThings_Explorer_TRAPI`
-`$ cd BioThings_Explorer_TRAPI`
-`$ npm install`
+    $ git clone https://github.com/biothings/BioThings_Explorer_TRAPI`
+    $ cd BioThings_Explorer_TRAPI`
+    $ npm install`
 
 
 ## Running the project
 
-`$ npm start`
+    $ npm start
 
 To enable debug mode, which outputs logging statements to the terminal in real time:
 
@@ -93,7 +93,7 @@ To enable debug mode, which outputs logging statements to the terminal in real t
 
 ## Simple build for production
 
-`$ npm build`
+    $ npm build
 
 ## Deploy
 

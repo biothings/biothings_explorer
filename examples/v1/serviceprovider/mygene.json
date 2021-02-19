@@ -1,0 +1,22 @@
+{
+    "message": {
+        "query_graph": {
+            "edges": {
+                "e00": {
+                    "object": "n01",
+                    "subject": "n00",
+                    "predicate": "biolink:functional_association"
+                }
+            },
+            "nodes": {
+                "n00": {
+                    "category": "biolink:Gene",
+                    "id": "NCBIGene:1017"
+                },
+                "n01": {
+                    "category": "biolink:BiologicalProcess"
+                }
+            }
+        }
+    }
+}

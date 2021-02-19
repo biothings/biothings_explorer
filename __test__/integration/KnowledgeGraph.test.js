@@ -6,55 +6,111 @@ describe("Testing KnowledgeGraph Module", () => {
     const gene_node1 = new QNode("n1", { category: "Gene", id: "NCBIGene:1017" });
     const chemical_node1 = new QNode("n3", { category: "ChemicalSubstance" });
     const edge1 = new QEdge("e01", { subject: gene_node1, object: chemical_node1 });
+    const record = {
+        "$edge_metadata": {
+            trapi_qEdge_obj: edge1,
+            source: "DGIdb",
+            api_name: "BioThings DGIDB API"
+        },
+        "publications": ['PMID:123', 'PMID:1234'],
+        "interactionType": "inhibitor",
+        "$input": {
+            original: "SYMBOL:CDK2",
+            obj: {
+                primaryID: 'NCBIGene:1017',
+                label: "CDK2",
+                dbIDs: {
+                    SYMBOL: "CDK2",
+                    NCBIGene: "1017"
+                },
+                curies: ['SYMBOL:CDK2', 'NCBIGene:1017']
+            }
+        },
+        "$output": {
+            original: "CHEMBL.COMPOUND:CHEMBL744",
+            obj: {
+                primaryID: 'CHEMBL.COMPOUND:CHEMBL744',
+                label: "RILUZOLE",
+                dbIDs: {
+                    "CHEMBL.COMPOUND": "CHEMBL744",
+                    "PUBCHEM": "1234",
+                    "name": "RILUZOLE"
+                },
+                curies: ['CHEMBL.COMPOUND:CHEMBL744', 'PUBCHEM:1234', "name:RILUZOLE"]
+            }
+        },
+    }
     describe("Testing _createInputNode function", () => {
         test("test when input with string, should output a hash of 40 characters", () => {
-            const record = {
-                "$reasoner_edge": edge1,
-                "$input": "SYMBOL:CDK2",
-                "id": "CHEMBL.COMPOUND:CHEMBL354634",
-                "$original_input": {
-                    "SYMBOL:CDK2": "NCBIGene:1017"
-                },
-                "$input_resolved_identifiers": {
-                    "NCBIGene:1017": {
-                        id: {
-                            label: "CDK2"
-                        }
-                    }
-                },
-                "label": "DRUG A"
-            }
             const kg = new KnowledgeGraph();
             const res = kg._createInputNode(record);
-            expect(res).toHaveProperty("NCBIGene:1017");
-            expect(res["NCBIGene:1017"]).toHaveProperty("name", "CDK2");
-            expect(res["NCBIGene:1017"]).toHaveProperty("category", "biolink:Gene");
-            expect(res["NCBIGene:1017"].attributes[0]).toHaveProperty("type", "biolink:id");
+            expect(res).toHaveProperty("category", "biolink:Gene");
+            expect(res).toHaveProperty("name", "CDK2");
+            expect(res.attributes[0]).toHaveProperty("type", "biolink:id");
+            expect(res.attributes[0]).toHaveProperty("value", ["SYMBOL:CDK2", "NCBIGene:1017"])
         })
     })
 
     describe("Testing _createOutputNode function", () => {
         test("test when input with string, should output a hash of 40 characters", () => {
-            const record = {
-                "$reasoner_edge": edge1,
-                "$input": "SYMBOL:CDK2",
-                "id": "CHEMBL.COMPOUND:CHEMBL354634",
-                "$original_input": {
-                    "SYMBOL:CDK2": "NCBIGene:1017"
-                },
-                "$input_resolved_identifiers": {
-                    "NCBIGene:1017": {
-                        id: {
-                            label: "CDK2"
-                        }
-                    }
-                },
-                "label": "DRUG A"
-            }
             const kg = new KnowledgeGraph();
             const res = kg._createOutputNode(record);
-            expect(res["CHEMBL.COMPOUND:CHEMBL354634"]).toHaveProperty("name", "DRUG A");
-            expect(res["CHEMBL.COMPOUND:CHEMBL354634"]).toHaveProperty("category", "biolink:ChemicalSubstance");
+            expect(res).toHaveProperty("category", "biolink:ChemicalSubstance");
+            expect(res).toHaveProperty("name", "RILUZOLE");
+            expect(res.attributes[0]).toHaveProperty("type", "biolink:id");
+            expect(res.attributes[0]).toHaveProperty("value", ['CHEMBL.COMPOUND:CHEMBL744', 'PUBCHEM:1234', "name:RILUZOLE"])
+        })
+    })
+
+    describe("Testing _createAttributes function", () => {
+        test("test edge attribute provided_by and api are correctly found", () => {
+            const kg = new KnowledgeGraph();
+            const res = kg._createAttributes(record);
+            expect(res.length).toBeGreaterThanOrEqual(2);
+            expect(res[0]).toHaveProperty("name", "provided_by");
+            expect(res[0]).toHaveProperty("type", "biolink:provided_by");
+            expect(res[0]).toHaveProperty("value", "DGIdb");
+            expect(res[1]).toHaveProperty("name", "api");
+            expect(res[1]).toHaveProperty("type", "bts:api");
+            expect(res[1]).toHaveProperty("value", "BioThings DGIDB API");
+        })
+
+        test("test edge attribute other than provided_by and api are correctly found", () => {
+            const kg = new KnowledgeGraph();
+            const res = kg._createAttributes(record);
+            expect(res.length).toBeGreaterThan(2);
+            expect(res[2]).toHaveProperty("name", "publications");
+            expect(res[2]).toHaveProperty("type", "biolink:publications");
+            expect(res[2]).toHaveProperty("value", ['PMID:123', 'PMID:1234']);
+            expect(res[3]).toHaveProperty("name", "interactionType");
+            expect(res[3]).toHaveProperty("type", "bts:interactionType");
+            expect(res[3]).toHaveProperty("value", 'inhibitor');
+        })
+    })
+
+    describe("Testing _createEdge function", () => {
+        test("test edge attribute provided_by and api are correctly found", () => {
+            const kg = new KnowledgeGraph();
+            const res = kg._createAttributes(record);
+            expect(res.length).toBeGreaterThanOrEqual(2);
+            expect(res[0]).toHaveProperty("name", "provided_by");
+            expect(res[0]).toHaveProperty("type", "biolink:provided_by");
+            expect(res[0]).toHaveProperty("value", "DGIdb");
+            expect(res[1]).toHaveProperty("name", "api");
+            expect(res[1]).toHaveProperty("type", "bts:api");
+            expect(res[1]).toHaveProperty("value", "BioThings DGIDB API");
+        })
+
+        test("test edge attribute other than provided_by and api are correctly found", () => {
+            const kg = new KnowledgeGraph();
+            const res = kg._createAttributes(record);
+            expect(res.length).toBeGreaterThan(2);
+            expect(res[2]).toHaveProperty("name", "publications");
+            expect(res[2]).toHaveProperty("type", "biolink:publications");
+            expect(res[2]).toHaveProperty("value", ['PMID:123', 'PMID:1234']);
+            expect(res[3]).toHaveProperty("name", "interactionType");
+            expect(res[3]).toHaveProperty("type", "bts:interactionType");
+            expect(res[3]).toHaveProperty("value", 'inhibitor');
         })
     })
 
