@@ -317,12 +317,18 @@ describe("Test helper moduler", () => {
 
     describe("Test _getInputCategory function", () => {
 
-        test("If edge is reversed, should return the category of the output", () => {
+        test("If edge is reversed, should return the category of the object", () => {
 
             const edgeObject = {
                 isReversed() {
                     return true;
-                }
+                },
+                getObject() {
+                    return nodeObject1
+                },
+                getSubject() {
+                    return nodeObject2
+                },
             }
             const record = {
                 $edge_metadata: {
@@ -339,8 +345,8 @@ describe("Test helper moduler", () => {
                     }
                 },
             }
-            const res = helper._getInputID(record);
-            expect(res).toEqual('output')
+            const res = helper._getInputCategory(record);
+            expect(res).toEqual('Node1Type')
         })
 
         test("If edge is not reversed, should return the node ID of the subject", () => {
@@ -348,7 +354,13 @@ describe("Test helper moduler", () => {
             const edgeObject = {
                 isReversed() {
                     return false;
-                }
+                },
+                getObject() {
+                    return nodeObject1
+                },
+                getSubject() {
+                    return nodeObject2
+                },
             }
             const record = {
                 $edge_metadata: {
@@ -365,8 +377,8 @@ describe("Test helper moduler", () => {
                     }
                 },
             }
-            const res = helper._getInputID(record);
-            expect(res).toEqual('input')
+            const res = helper._getInputCategory(record);
+            expect(res).toEqual('Node2Type')
         })
     })
 
@@ -601,6 +613,38 @@ describe("Test helper moduler", () => {
             expect(res).toEqual(['789'])
         })
 
+        test("If error occurred, return null", () => {
+
+            const edgeObject = {
+                isReversed() {
+                    throw new Error();
+                }
+            }
+            const record = {
+                $edge_metadata: {
+                    trapi_qEdge_obj: edgeObject
+                },
+                $input: {
+                    obj: {
+                        primaryID: "input",
+                        label: 'inputLabel',
+                        curies: ['123', '456']
+                    },
+                },
+                $output: {
+                    obj: {
+                        primaryID: "output",
+                        label: 'outputLabel',
+                        curies: [
+                            '789'
+                        ]
+                    },
+                },
+            }
+            const res = helper._getInputEquivalentIds(record);
+            expect(res).toBeNull;
+        })
+
         test("If edge is not reversed, should return the curies of the subject", () => {
 
             const edgeObject = {
@@ -673,6 +717,38 @@ describe("Test helper moduler", () => {
             const res = helper._getOutputEquivalentIds(record);
             expect(res).toEqual(['123', '456'])
         })
+    })
+
+    test("If error occurred, return null", () => {
+
+        const edgeObject = {
+            isReversed() {
+                throw new Error();
+            }
+        }
+        const record = {
+            $edge_metadata: {
+                trapi_qEdge_obj: edgeObject
+            },
+            $input: {
+                obj: {
+                    primaryID: "input",
+                    label: 'inputLabel',
+                    curies: ['123', '456']
+                },
+            },
+            $output: {
+                obj: {
+                    primaryID: "output",
+                    label: 'outputLabel',
+                    curies: [
+                        '789'
+                    ]
+                },
+            },
+        }
+        const res = helper._getOutputEquivalentIds(record);
+        expect(res).toBeNull;
     })
 
     test("If edge is not reversed, should return the curies of the object", () => {
