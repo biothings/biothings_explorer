@@ -17,7 +17,8 @@ class RouteMetaKG {
                 let assocs = await assoc(req.query.subject, req.query.object, req.query.predicate, api, source);
                 res.end(JSON.stringify({ associations: assocs }));
             } catch (error) {
-                next(new MetaKGLoadingError());
+                next(
+                    new MetaKGLoadingError());
             }
         })
     }
