@@ -3,9 +3,8 @@ const request = require('supertest');
 const fs = require("fs");
 const axios = require("axios");
 var path = require('path');
-const { response } = require("express");
 
-describe("Testing /v1/query endpoints", () => {
+describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
     const invalid_example_folder = path.resolve(__dirname, "../../../../examples/v1/invalid");
     const example_foler = path.resolve(__dirname, '../../../../examples/v1');
     test("Input query graph that doesn't pass Swagger Validation should return 400 error", async () => {
