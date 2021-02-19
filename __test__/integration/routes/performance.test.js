@@ -1,4 +1,4 @@
-const app = require("../../../../src/app");
+const app = require("../../../src/app");
 const request = require('supertest');
 
 describe("Test /performance endpoint", () => {
