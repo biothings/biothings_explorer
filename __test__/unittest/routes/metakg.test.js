@@ -6,7 +6,7 @@ jest.mock('../../../src/controllers/association');
 describe("Test /performance endpoint", () => {
 
 
-    test("Should return 200 with valid response", async () => {
+    test("Should return 404 when loading metakg failed", async () => {
         assoc.mockImplementation(() => {
             throw new Error("Error")
         })
