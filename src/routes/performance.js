@@ -18,6 +18,7 @@ class RoutePerformance {
                 //     res.sendFile(file_path)
                 // }
             } catch (err) {
+                res.setHeader('Content-Type', 'application/json');
                 res.status(404);
                 res.end(JSON.stringify({ "error": err.toString() }));
             }
