@@ -19,7 +19,7 @@ describe("Test /v1/team/{team_name}/predicates endpoint", () => {
             .expect(200)
             .expect('Content-Type', /json/)
             .then((response) => {
-                expect(response.body).toEqual([]);
+                expect(response.body).toEqual({});
             })
     })
 
