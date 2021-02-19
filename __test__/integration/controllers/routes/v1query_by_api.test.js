@@ -89,6 +89,23 @@ describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
             })
     })
 
+    test("Query to non-Text Mining KPs should have id resolution turned on", async () => {
+        const query = JSON.parse(fs.readFileSync(path.join(example_foler, "serviceprovider/mygene.json")));
+        await request(app)
+            .post("/v1/smartapi/59dce17363dce279d389100834e43648/query")
+            .send(query)
+            .set('Accept', 'application/json')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then(response => {
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("GO:0000082")
+                expect(response.body.message.knowledge_graph.nodes["GO:0000082"].attributes[0].value).toEqual([
+                    "GO:0000082",
+                    "name:G1/S transition of mitotic cell cycle"
+                ])
+            })
+    })
+
     test("Query to Text Mining Co-occurrence KP should be correctly paginated", async () => {
         const query = JSON.parse(fs.readFileSync(path.join(example_foler, "textmining/query_chemicals_related_to_disease.json")));
         const apiResponse = await axios.get('https://biothings.ncats.io/text_mining_co_occurrence_kp/query?q=object.id:%22MONDO:0005252%22%20AND%20subject.type:%22ChemicalSubstance%22');
