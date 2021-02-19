@@ -1,9 +1,10 @@
 const utils = require("../utils/common");
 const assoc = require("../controllers/association");
+const MetaKGLoadingError = require("../utils/errors/metakg_error");
 
 class RouteMetaKG {
     setRoutes(app) {
-        app.get('/metakg', async (req, res) => {
+        app.get('/metakg', async (req, res, next) => {
             try {
                 res.setHeader('Content-Type', 'application/json');
                 let api = undefined, source = undefined;
@@ -16,8 +17,7 @@ class RouteMetaKG {
                 let assocs = await assoc(req.query.subject, req.query.object, req.query.predicate, api, source);
                 res.end(JSON.stringify({ associations: assocs }));
             } catch (error) {
-                console.log(error);
-                res.end();
+                next(new MetaKGLoadingError());
             }
         })
     }
