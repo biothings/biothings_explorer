@@ -1,4 +1,3 @@
-const { exec } = require("child_process");
 const crypto = require("crypto");
 
 module.exports = class QueryGraphHelper {
@@ -8,53 +7,54 @@ module.exports = class QueryGraphHelper {
     }
 
     _getInputQueryNodeID(record) {
-        return ((record["$reasoner_edge"].isReversed()) ? record["$reasoner_edge"].getObject().getID() : record["$reasoner_edge"].getSubject().getID());
+        return ((record.$edge_metadata.trapi_qEdge_obj.isReversed()) ? record.$edge_metadata.trapi_qEdge_obj.getObject().getID() : record.$edge_metadata.trapi_qEdge_obj.getSubject().getID());
     }
 
     _getOutputQueryNodeID(record) {
-        return ((record["$reasoner_edge"].isReversed()) ? record["$reasoner_edge"].getSubject().getID() : record["$reasoner_edge"].getObject().getID());
+        return ((record.$edge_metadata.trapi_qEdge_obj.isReversed()) ? record.$edge_metadata.trapi_qEdge_obj.getSubject().getID() : record.$edge_metadata.trapi_qEdge_obj.getObject().getID());
     }
 
     _getOutputID(record) {
-        return ((record["$reasoner_edge"].isReversed()) ? record["$original_input"][record["$input"]] : record.id);
+        return ((record.$edge_metadata.trapi_qEdge_obj.isReversed()) ? record.$input.obj.primaryID : record.$output.obj.primaryID);
     }
 
     _getInputID(record) {
-        return ((record["$reasoner_edge"].isReversed()) ? record.id : record["$original_input"][record["$input"]]);
+        return ((record.$edge_metadata.trapi_qEdge_obj.isReversed()) ? record.$output.obj.primaryID : record.$input.obj.primaryID);
     }
 
     _getAPI(record) {
-        return record["$association"].api_name || '';
+        return record.$edge_metadata.api_name || '';
     }
 
     _getSource(record) {
-        return record["$association"].source || '';
+        return record.$edge_metadata.source || '';
     }
 
     _createUniqueEdgeID(record) {
         const edgeMetaData = [this._getInputID(record), this._getOutputID(record), this._getAPI(record), this._getSource(record)];
-        return this._generateHash(edgeMetaData.join('-'));
+        // return this._generateHash(edgeMetaData.join('-'));
+        return edgeMetaData.join('-');
     }
 
     _getInputCategory(record) {
-        return ((record["$reasoner_edge"].isReversed()) ? record["$reasoner_edge"].getObject().getCategory() : record["$reasoner_edge"].getSubject().getCategory());
+        return ((record.$edge_metadata.trapi_qEdge_obj.isReversed()) ? record.$edge_metadata.trapi_qEdge_obj.getObject().getCategory() : record.$edge_metadata.trapi_qEdge_obj.getSubject().getCategory());
     }
 
     _getOutputCategory(record) {
-        return ((record["$reasoner_edge"].isReversed()) ? record["$reasoner_edge"].getSubject().getCategory() : record["$reasoner_edge"].getObject().getCategory());
+        return ((record.$edge_metadata.trapi_qEdge_obj.isReversed()) ? record.$edge_metadata.trapi_qEdge_obj.getSubject().getCategory() : record.$edge_metadata.trapi_qEdge_obj.getObject().getCategory());
     }
 
     _getOutputLabel(record) {
-        return ((record["$reasoner_edge"].isReversed()) ? record["$input_resolved_identifiers"][record["$original_input"][record["$input"]]].id.label : record.label);
+        return ((record.$edge_metadata.trapi_qEdge_obj.isReversed()) ? record.$input.obj.label : record.$output.obj.label);
     }
 
     _getInputLabel(record) {
-        return ((record["$reasoner_edge"].isReversed()) ? record.label : record["$input_resolved_identifiers"][record["$original_input"][record["$input"]]].id.label);
+        return ((record.$edge_metadata.trapi_qEdge_obj.isReversed()) ? record.$output.obj.label : record.$input.obj.label);
     }
 
     _getInputEquivalentIds(record) {
         try {
-            return ((record["$reasoner_edge"].isReversed()) ? record.$output_id_mapping.resolved : record["$input_resolved_identifiers"][record["$original_input"][record["$input"]]]);
+            return ((record.$edge_metadata.trapi_qEdge_obj.isReversed()) ? record.$output.obj.curies : record.$input.obj.curies);
         } catch (err) {
             return null;
         }
@@ -63,7 +63,7 @@ module.exports = class QueryGraphHelper {
 
     _getOutputEquivalentIds(record) {
         try {
-            return ((record["$reasoner_edge"].isReversed()) ? record["$input_resolved_identifiers"][record["$original_input"][record["$input"]]] : record.$output_id_mapping.resolved);
+            return ((record.$edge_metadata.trapi_qEdge_obj.isReversed()) ? record.$input.obj.curies : record.$output.obj.curies);
         } catch (err) {
             return null;
         }

@@ -1,7 +1,5 @@
 const id_resolver = require("biomedical_id_resolver");
-const GraphHelper = require("./helper");
 const _ = require("lodash");
-const helper = new GraphHelper();
 const debug = require("debug")("biothings-explorer-trapi:nodeUpdateHandler");
 
 
@@ -36,7 +34,8 @@ module.exports = class NodesUpdateHandler {
      * @param {object} curies - each key represents the category, e.g. gene, value is an array of curies.
      */
     async _getEquivalentIDs(curies) {
-        const equivalentIDs = await id_resolver(curies);
+        const resolver = new id_resolver();
+        const equivalentIDs = await resolver.resolve(curies);
         return equivalentIDs;
     }
 
@@ -62,9 +61,9 @@ module.exports = class NodesUpdateHandler {
     }
 
     _createEquivalentIDsObject(record) {
-        if (record["$output_id_mapping"] !== undefined) {
+        if (record.$output.obj !== undefined) {
             return {
-                [helper._getOutputID(record)]: record["$output_id_mapping"].resolved
+                [record.$output.obj.primaryID]: record.$output.obj
             }
         } else {
             return
@@ -77,10 +76,25 @@ module.exports = class NodesUpdateHandler {
      * @param {object} queryResult - query response
      */
     update(queryResult) {
+        const node_dict = {};
+        const id_dict = {};
+        // queryResult.map(record => {
+        //     record.$edge_metadata.trapi_qEdge_obj.getOutputNode().updateEquivalentIDs(
+        //         this._createEquivalentIDsObject(record)
+        //     );
+        // })
         queryResult.map(record => {
-            record["$reasoner_edge"].getOutputNode().updateEquivalentIDs(
-                this._createEquivalentIDsObject(record)
-            );
+            const nodeID = record.$edge_metadata.trapi_qEdge_obj.getOutputNode().getID();
+            if (!(nodeID in id_dict)) {
+                id_dict[nodeID] = {};
+                node_dict[nodeID] = record.$edge_metadata.trapi_qEdge_obj.getOutputNode();
+            }
+            if (!(record.$output.obj.primaryID in id_dict[nodeID])) {
+                id_dict[nodeID][record.$output.obj.primaryID] = record.$output.obj;
+            }
         })
+        for (const nodeID in id_dict) {
+            node_dict[nodeID].updateEquivalentIDs(id_dict[nodeID]);
+        }
     }
 }

@@ -5,12 +5,12 @@ var path = require('path');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
 
-module.exports = async (sub, obj, pred, api, source) => {
+module.exports = async (sub = undefined, obj = undefined, pred = undefined, api = undefined, source = undefined) => {
     const smartapi_specs = await readFile(path.resolve(__dirname, '../../data/smartapi_specs.json'));
     const data = JSON.parse(smartapi_specs);
     kg.constructMetaKGFromUserProvidedSpecs(data);
-    let associations = [];
-    let filtered_res = kg.filter({
+    const associations = [];
+    const filtered_res = kg.filter({
         input_type: sub,
         output_type: obj,
         predicate: pred,
