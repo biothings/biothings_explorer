@@ -3,6 +3,7 @@ const snakeCase = require("snake-case");
 const fs = require("fs");
 var path = require('path');
 const util = require('util');
+const PredicatesLoadingError = require("../utils/errors/predicates_error");
 const readFile = util.promisify(fs.readFile);
 
 module.exports = class PredicatesHandler {
@@ -27,7 +28,7 @@ module.exports = class PredicatesHandler {
                 return kg;
             }
         } catch (error) {
-            throw Error("Failed to Load MetaKG");
+            throw new PredicatesLoadingError("Failed to Load MetaKG");
         }
 
     }

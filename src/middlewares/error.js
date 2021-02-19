@@ -1,5 +1,6 @@
 const swaggerValidation = require('./validate');
 const InvalidQueryGraphError = require("../utils/errors/invalid_query_graph_error");
+const PredicatesLoadingError = require('../utils/errors/predicates_error');
 
 class ErrorHandler {
     setRoutes(app) {
@@ -13,6 +14,12 @@ class ErrorHandler {
             if (error instanceof InvalidQueryGraphError) {
                 return res.status(400).json({
                     error: "Your input query graph is invalid",
+                    more_info: error.message
+                })
+            }
+            if (error instanceof PredicatesLoadingError) {
+                return res.status(404).json({
+                    error: "Unable to load predicates",
                     more_info: error.message
                 })
             }
