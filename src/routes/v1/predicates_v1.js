@@ -9,8 +9,7 @@ class RoutePredicates {
                 res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify(predicates));
             } catch (error) {
-                console.log(error);
-                res.end();
+                next(error)
             }
         })
     }
