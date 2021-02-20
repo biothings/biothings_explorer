@@ -3,7 +3,7 @@ const swaggerValidation = require("../../middlewares/validate")
 
 class V1RouteQuery {
     setRoutes(app) {
-        app.post('/v1/query', swaggerValidation.validate, async (req, res, next) => {
+        app.post('(/v1)?/query', swaggerValidation.validate, async (req, res, next) => {
             //logger.info("query /query endpoint")
             try {
                 const queryGraph = req.body.message.query_graph;
