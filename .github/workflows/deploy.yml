@@ -89,8 +89,10 @@ jobs:
         script: |
           cd opt/single-hop-app.js
           git stash && git pull
-          npm i --production
-          pm2 restart all
+          rm docker-compose.yml
+          cp docker-compose-prod.yml docker-compose.yml
+          docker-compose up --force-recreate --build -d
+          docker image prune -f
 
   performance-test:
     needs: [deploy]

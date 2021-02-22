@@ -3,7 +3,7 @@ services:
   api:
     container_name: api
     restart: always
-    build: .
+    image: "biothings/bte_reasoner_api:latest"
     ports:
       - '3000:3000'
     environment:
