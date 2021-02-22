@@ -7,7 +7,7 @@ class LoggingHandler {
     setRoutes(app) {
         const transport = new (winston.transports.DailyRotateFile)({
             filename: 'BioThings-Explorer-TRAPI-%DATE%.log',
-            dirname: (process.env.NODE_ENV !== "production") ? "." : "/var/log/bte",
+            dirname: process.env.LOG || './log',
             datePattern: 'YYYY-MM-DD',
             zippedArchive: true,
             maxSize: '20m',
