@@ -53,21 +53,27 @@ module.exports = class BatchEdgeQueryHandler {
     async query(qEdges) {
         const cacheHandler = new CacheHandler(qEdges);
         const { cachedResults, nonCachedEdges } = await cacheHandler.categorizeEdges(qEdges);
-        const nodeUpdate = new NodesUpdateHandler(nonCachedEdges);
-        await nodeUpdate.setEquivalentIDs(qEdges);
-        debug('Start to convert qEdges into BTEEdges....');
-        const edgeConverter = new QEdge2BTEEdgeHandler(nonCachedEdges, this.kg);
-        const bteEdges = edgeConverter.convert(nonCachedEdges);
-        debug(`qEdges are successfully converted into ${bteEdges.length} BTEEdges....`);
-        this.logs = [...this.logs, ...edgeConverter.logs];
-        if (bteEdges.length === 0 && cachedResults.length === 0) {
-            return [];
+        this.logs = [...this.logs, ...cacheHandler.logs];
+        let query_res;
+        const nodeUpdate = new NodesUpdateHandler(nonCachedEdges);;
+        if (nonCachedEdges.length === 0) {
+            query_res = [];
+        } else {
+            await nodeUpdate.setEquivalentIDs(qEdges);
+            debug('Start to convert qEdges into BTEEdges....');
+            const edgeConverter = new QEdge2BTEEdgeHandler(nonCachedEdges, this.kg);
+            const bteEdges = edgeConverter.convert(nonCachedEdges);
+            debug(`qEdges are successfully converted into ${bteEdges.length} BTEEdges....`);
+            this.logs = [...this.logs, ...edgeConverter.logs];
+            if (bteEdges.length === 0 && cachedResults.length === 0) {
+                return [];
+            }
+            const expanded_bteEdges = this._expandBTEEdges(bteEdges);
+            debug('Start to query BTEEdges....');
+            query_res = await this._queryBTEEdges(expanded_bteEdges);
+            debug('BTEEdges are successfully queried....');
+            await cacheHandler.cacheEdges(query_res);
         }
-        const expanded_bteEdges = this._expandBTEEdges(bteEdges);
-        debug('Start to query BTEEdges....');
-        let query_res = await this._queryBTEEdges(expanded_bteEdges);
-        debug('BTEEdges are successfully queried....');
-        await cacheHandler.cacheEdges(query_res);
         query_res = [...query_res, ...cachedResults];
         const processed_query_res = await this._postQueryFilter(query_res);
         debug(`Total number of response is ${processed_query_res.length}`);
