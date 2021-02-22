@@ -1,12 +1,14 @@
 const redisClient = require("../../utils/cache/redis-client");
 const debug = require("debug")("biothings-explorer-trapi:cache_handler");
+const LogEntry = require("./log_entry");
 
 
 module.exports = class {
     constructor(qEdges, logs = []) {
         this.qEdges = qEdges;
         this.logs = logs;
-        this.cacheEnabled = (!process.env.REDIS_HOST === undefined) && (!process.env.REDIS_PORT === undefined);
+        this.cacheEnabled = (!(process.env.REDIS_HOST === undefined)) && (!(process.env.REDIS_PORT === undefined));
+        this.logs.push(new LogEntry("DEBUG", null, `REDIS cache is ${(this.cacheEnabled === true) ? '' : 'not'} enabled.`).getLog())
     }
 
     async categorizeEdges(qEdges) {
@@ -23,6 +25,8 @@ module.exports = class {
             const cachedRes = await redisClient.getAsync(hashedEdgeID);
             let cachedResJSON = JSON.parse(cachedRes);
             if (cachedResJSON) {
+                debug(`BTE find cached results for ${qEdges[i].getID()}`);
+                this.logs.push(new LogEntry("DEBUG", null, `BTE find cached results for ${qEdges[i].getID()}`).getLog())
                 cachedResJSON.map(rec => {
                     rec.$edge_metadata.trapi_qEdge_obj = qEdges[i];
                 });
@@ -31,7 +35,6 @@ module.exports = class {
                 nonCachedEdges.push(qEdges[i]);
             }
         }
-        debug(`Number of cached results: ${cachedResults.length}`);
         return { cachedResults, nonCachedEdges };
     }
 
