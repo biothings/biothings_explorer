@@ -39,8 +39,10 @@ jobs:
         script: |
           cd opt/BioThings_Explorer_TRAPI
           git stash && git pull
-          npm i --production
-          pm2 restart all
+          rm docker-compose.yml
+          cp docker-compose-dev.yml docker-compose.yml
+          docker-compose up --force-recreate --build -d
+          docker image prune -f
 
   performance-test:
     needs: [deploy]
