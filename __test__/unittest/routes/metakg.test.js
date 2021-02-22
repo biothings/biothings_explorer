@@ -15,7 +15,6 @@ describe("Test /performance endpoint", () => {
             .expect(404)
             .expect('Content-Type', /json/)
             .then(res => {
-                console.log(Object.keys(res));
                 expect(res.body).toHaveProperty("error", "Unable to load metakg")
             })
     })
