@@ -1,6 +1,6 @@
 apps:
     - name: bte_reasoner_api
-      script: ./index.js
+      script: ./src/server.js
       exec_mode: cluster
       instances: max
       
