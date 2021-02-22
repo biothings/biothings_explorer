@@ -66,7 +66,7 @@ module.exports = class QEdge2BTEEdgeHandler {
                     edge.input_resolved_identifiers = {
                         [curie]: resolvedIDs[curie]
                     };
-                    if (ID_WITH_PREFIXES.includes(inputID) || id.includes(':')) {
+                    if (ID_WITH_PREFIXES.includes(inputID) || id.toString().includes(':')) {
                         edge.original_input = {
                             [id]: curie
                         }
