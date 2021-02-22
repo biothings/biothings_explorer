@@ -2,7 +2,7 @@ const call_api = require("@biothings-explorer/call-apis");
 const QEdge2BTEEdgeHandler = require("./qedge2bteedge");
 const NodesUpdateHandler = require("./update_nodes");
 const debug = require("debug")("biothings-explorer-trapi:batch_edge_query");
-//const CacheHandler = require("./cache_handler");
+const CacheHandler = require("./cache_handler");
 
 module.exports = class BatchEdgeQueryHandler {
     constructor(kg, resolveOutputIDs = true) {
@@ -38,9 +38,9 @@ module.exports = class BatchEdgeQueryHandler {
      */
     async _queryBTEEdges(bteEdges) {
         let executor = new call_api(bteEdges);
-        await executor.query(this.resolveOutputIDs);
+        const res = await executor.query(this.resolveOutputIDs);
         this.logs = [...this.logs, ...executor.logs]
-        return executor.result;
+        return res;
     }
 
     /**
@@ -51,22 +51,29 @@ module.exports = class BatchEdgeQueryHandler {
     }
 
     async query(qEdges) {
-        let nodeUpdate = new NodesUpdateHandler(qEdges);
+        const cacheHandler = new CacheHandler(qEdges);
+        const { cachedResults, nonCachedEdges } = await cacheHandler.categorizeEdges(qEdges);
+        const nodeUpdate = new NodesUpdateHandler(nonCachedEdges);
         await nodeUpdate.setEquivalentIDs(qEdges);
         debug('Start to convert qEdges into BTEEdges....');
-        let edgeConverter = new QEdge2BTEEdgeHandler(qEdges, this.kg);
-        let bteEdges = edgeConverter.convert(qEdges);
+        const edgeConverter = new QEdge2BTEEdgeHandler(nonCachedEdges, this.kg);
+        const bteEdges = edgeConverter.convert(nonCachedEdges);
         debug(`qEdges are successfully converted into ${bteEdges.length} BTEEdges....`);
         this.logs = [...this.logs, ...edgeConverter.logs];
-        if (bteEdges.length === 0) {
+        if (bteEdges.length === 0 && cachedResults.length === 0) {
             return [];
         }
-        let expanded_bteEdges = this._expandBTEEdges(bteEdges);
+        const expanded_bteEdges = this._expandBTEEdges(bteEdges);
         debug('Start to query BTEEdges....');
         let query_res = await this._queryBTEEdges(expanded_bteEdges);
         debug('BTEEdges are successfully queried....');
-        let processed_query_res = await this._postQueryFilter(query_res);
+        await cacheHandler.cacheEdges(query_res);
+        query_res = [...query_res, ...cachedResults];
+        const processed_query_res = await this._postQueryFilter(query_res);
+        debug(`Total number of response is ${processed_query_res.length}`);
+        debug('Start to update nodes.')
         nodeUpdate.update(processed_query_res);
+        debug('update nodes completed')
         return processed_query_res;
         // let cacheHandler = new CacheHandler(qEdges);
         // let { cachedResults, nonCachedEdges } = await cacheHandler.categorizeEdges(qEdges);

@@ -3,6 +3,8 @@ const cors = require("cors");
 var bodyParser = require('body-parser');
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
+const dotenv = require("dotenv");
+
 
 module.exports = class Config {
     constructor(app) {
@@ -10,6 +12,7 @@ module.exports = class Config {
     }
 
     setConfig() {
+        this.setDotEnv();
         this.setNodeEnv();
         this.setBodyParser();
         this.setCors();
@@ -17,6 +20,10 @@ module.exports = class Config {
         this.setHttpHeaders();
         this.setLimiter();
         return this.app;
+    }
+
+    setDotEnv() {
+        dotenv.config();
     }
 
     setNodeEnv() {

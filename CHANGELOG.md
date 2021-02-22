@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v1.11.0...v1.12.0) (2021-02-19)
+
+
+### Features
+
+* :sparkles: adapt to new output from id resolver module ([1b7d1b8](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/1b7d1b8519b2990b0f7b6b42e1115aa97e22015e))
+
+
+### Bug Fixes
+
+* :bug: add missing next parameter ([d943307](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/d9433077038a72392f3e93f6a75f8d64e96d76be))
+* :bug: fix /performance endpoint not working issue ([6f59473](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/6f59473c3155e3b19727cc26aab6babe6b8ea821))
+* :bug: fix wrong generate curie logic ([8c0e585](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/8c0e585a8706d5cd0dfcdeb35ef29f0b043bb1cc))
+
+### [1.11.1](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v1.11.0...v1.11.1) (2021-02-19)
+
 ## [1.11.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v1.10.0...v1.11.0) (2021-02-09)
 
 

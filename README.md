@@ -1,6 +1,7 @@
 # BioThings Explorer TRAPI API
-[![Build Status](https://travis-ci.com/kevinxin90/BioThings_Explorer_TRAPI.svg?branch=master)](https://travis-ci.com/kevinxin90/BioThings_Explorer_TRAPI)
-[![Coverage Status](https://coveralls.io/repos/github/kevinxin90/BioThings_Explorer_TRAPI/badge.svg?branch=master)](https://coveralls.io/github/kevinxin90/BioThings_Explorer_TRAPI?branch=master)
+[![Test Coveralls](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/test.yml/badge.svg)](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/test.yml)
+[![Coverage Status](https://coveralls.io/repos/github/biothings/BioThings_Explorer_TRAPI/badge.svg?branch=master)](https://coveralls.io/github/biothings/BioThings_Explorer_TRAPI?branch=master)
+[![ci-cd](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/deploy.yml/badge.svg)](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/deploy.yml)
 
 ## Introduction
 
@@ -37,7 +38,7 @@ The TRAPI v0.9.2 standard is deprecated. But it can still be tested using https:
 
 ## Requirements
 
-For development, you will only need Node.js and a node global package, e.g. npm, installed in your environement.
+For development, you will only need Node.js and a node global package, e.g. npm, installed in your environment.
 
 ### Node
 
@@ -76,18 +77,24 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 
 ## Install
 
-`$ git clone https://github.com/biothings/BioThings_Explorer_TRAPI`
-`$ cd BioThings_Explorer_TRAPI`
-`$ npm install`
+    $ git clone https://github.com/biothings/BioThings_Explorer_TRAPI`
+    $ cd BioThings_Explorer_TRAPI`
+    $ npm install`
 
 
 ## Running the project
 
-`$ npm start`
+    $ npm start
+
+To enable debug mode, which outputs logging statements to the terminal in real time:
+
+`$ DEBUG=biothings-explorer-trapi:* npm start`
+
+`$ DEBUG=biothings-explorer-trapi:*,smartapi-kg:*,call-apis:*,biomedical-id-resolver:* npm start` (also outputs debug statements from dependencies)
 
 ## Simple build for production
 
-`$ npm build`
+    $ npm build
 
 ## Deploy
 

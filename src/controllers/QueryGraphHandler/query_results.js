@@ -27,7 +27,7 @@ module.exports = class QueryResult {
 
     _createEdgeBindings(record) {
         return {
-            [record["$reasoner_edge"].getID()]: [
+            [record.$edge_metadata.trapi_qEdge_obj.getID()]: [
                 {
                     id: helper._createUniqueEdgeID(record)
                 }
