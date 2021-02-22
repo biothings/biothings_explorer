@@ -11,7 +11,7 @@ services:
       REDIS_PORT: 6379
       LOG: ./log
     volumes:
-      - ./log:/home/node/app/log
+      - /var/log/bte:/home/node/app/log
   redis:
     container_name: bte_redis
     restart: always
