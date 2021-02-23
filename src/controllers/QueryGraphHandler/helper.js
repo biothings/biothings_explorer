@@ -1,6 +1,11 @@
 const crypto = require("crypto");
+const reverse = require("./reverse");
 
 module.exports = class QueryGraphHelper {
+
+    constructor() {
+        this.reverse = reverse;
+    }
 
     _generateHash(stringToBeHashed) {
         return crypto.createHash('md5').update(stringToBeHashed).digest('hex');
@@ -20,6 +25,10 @@ module.exports = class QueryGraphHelper {
 
     _getInputID(record) {
         return ((record.$edge_metadata.trapi_qEdge_obj.isReversed()) ? record.$output.obj.primaryID : record.$input.obj.primaryID);
+    }
+
+    _getPredicate(record) {
+        return ((record.$edge_metadata.trapi_qEdge_obj.isReversed()) ? "biolink:" + this.reverse.reverse(record.$edge_metadata.predicate) : "biolink:" + record.$edge_metadata.predicate);
     }
 
     _getAPI(record) {

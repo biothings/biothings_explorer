@@ -49,7 +49,7 @@ module.exports = class KnowledgeGraph {
     }
 
     _createAttributes(record) {
-        const bteAttributes = ["@type", "name", "pmc", "pubmed", "label", "id", "api", "provided_by"];
+        const bteAttributes = ["name", "label", "id", "api", "provided_by"];
         const attributes = [
             {
                 name: "provided_by",
@@ -76,7 +76,7 @@ module.exports = class KnowledgeGraph {
 
     _createEdge(record) {
         return {
-            predicate: "biolink:" + ((typeof record.$edge_metadata.trapi_qEdge_obj.getQueryPredicate() === "undefined") ? record.$edge_metadata.predicate : record.$edge_metadata.trapi_qEdge_obj.getQueryPredicate()),
+            predicate: helper._getPredicate(record),
             subject: helper._getInputID(record),
             object: helper._getOutputID(record),
             attributes: this._createAttributes(record)
