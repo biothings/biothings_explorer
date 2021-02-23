@@ -45,4 +45,18 @@ describe("Test utility functions", () => {
             expect(res).toEqual(['biolink:treats']);
         })
     })
+
+    describe("Test toArray function", () => {
+        test("Array input should return itself", () => {
+            const input = ['a'];
+            const res = utils.toArray(input);
+            expect(res).toEqual(['a']);
+        })
+
+        test("Non-Array input should return an array of one element being itself", () => {
+            const input = 'a';
+            const res = utils.toArray(input);
+            expect(res).toEqual(['a']);
+        })
+    })
 })
