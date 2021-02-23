@@ -1,0 +1,25 @@
+{
+    "message": {
+        "query_graph": {
+            "edges": {
+                "e00": {
+                    "object": "n01",
+                    "subject": "n00",
+                    "predicate": [
+                        "biolink:affected_by",
+                        "biolink:disrupted_by"
+                    ]
+                }
+            },
+            "nodes": {
+                "n00": {
+                    "category": "biolink:ChemicalSubstance",
+                    "id": "UMLS:C0023828"
+                },
+                "n01": {
+                    "category": "biolink:Gene"
+                }
+            }
+        }
+    }
+}
