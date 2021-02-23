@@ -14,3 +14,10 @@ exports.removeBioLinkPrefix = (input) => {
     }
     return input;
 }
+
+exports.toArray = (input) => {
+    if (Array.isArray(input)) {
+        return input
+    }
+    return [input];
+}
