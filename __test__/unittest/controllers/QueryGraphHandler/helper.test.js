@@ -1,4 +1,6 @@
 const QueryGraphHelpder = require("../../../../src/controllers/QueryGraphHandler/helper");
+const reverse = require("../../../../src/controllers/QueryGraphHandler/reverse");
+jest.mock("../../../../src/controllers/QueryGraphHandler/reverse");
 
 describe("Test helper moduler", () => {
     const nodeObject1 = {
@@ -794,5 +796,41 @@ describe("Test helper moduler", () => {
         expect(res.length).toBe(32);
         const res1 = helper._generateHash('kkkkkkkkk');
         expect(res1.length).toBe(32);
+    })
+
+    describe("Test _getPredicate function", () => {
+        test("return original predicate if edge is not reversed", () => {
+            reverse.reverse.mockResolvedValue('hello');
+            const edgeObject = {
+                isReversed() {
+                    return false;
+                }
+            }
+            const record = {
+                $edge_metadata: {
+                    trapi_qEdge_obj: edgeObject,
+                    predicate: "treats"
+                }
+            }
+            const res = helper._getPredicate(record);
+            expect(res).toEqual("biolink:treats");
+        })
+
+        test("return reversed predicate if edge is reversed", () => {
+            reverse.reverse.mockReturnValueOnce('hello');
+            const edgeObject = {
+                isReversed() {
+                    return true;
+                }
+            }
+            const record = {
+                $edge_metadata: {
+                    trapi_qEdge_obj: edgeObject,
+                    predicate: "treats"
+                }
+            }
+            const res = helper._getPredicate(record);
+            expect(res).toEqual("biolink:hello");
+        })
     })
 })
