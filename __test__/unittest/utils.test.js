@@ -1,4 +1,3 @@
-const { expectCt } = require("helmet");
 const utils = require("../../src/utils/common");
 
 describe("Test utility functions", () => {
@@ -25,6 +24,25 @@ describe("Test utility functions", () => {
             const input = 'ke"vin';
             const res = utils.removeQuotesFromQuery(input);
             expect(res).toEqual('ke"vin');
+        })
+    })
+    describe("Test removeBioLinkPrefix function", () => {
+        test("String input with biolink prefix should be removed", () => {
+            const input = 'biolink:treats';
+            const res = utils.removeBioLinkPrefix(input);
+            expect(res).toEqual("treats");
+        })
+
+        test("String input without biolink prefix should be kept same", () => {
+            const input = 'treats';
+            const res = utils.removeBioLinkPrefix(input);
+            expect(res).toEqual("treats");
+        })
+
+        test("non-string input should be kept same", () => {
+            const input = ['biolink:treats'];
+            const res = utils.removeBioLinkPrefix(input);
+            expect(res).toEqual(['biolink:treats']);
         })
     })
 })
