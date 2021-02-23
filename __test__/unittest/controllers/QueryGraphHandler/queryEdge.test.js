@@ -1,11 +1,12 @@
 const qEdge = require("../../../../src/controllers/QueryGraphHandler/query_edge");
 const reverse = require("../../../../src/controllers/QueryGraphHandler/reverse");
 const utils = require("../../../../src/utils/common");
-
 jest.mock("../../../../src/controllers/QueryGraphHandler/reverse");
+
 
 describe("Test QEdge class", () => {
     describe("Test getPredicate function", () => {
+
         test("Non reversed edge should return predicates itself", () => {
             const edge = new qEdge('e01', {
                 predicate: 'biolink:treats',
