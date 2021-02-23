@@ -31,13 +31,6 @@ module.exports = class QEdge {
         return new helper()._generateHash(toBeHashed);
     }
 
-    getQueryPredicate() {
-        if (this.predicate && this.predicate.startsWith("biolink:")) {
-            return this.predicate.slice(8);
-        }
-        return this.predicate
-    }
-
     getPredicate() {
         if (this.predicate === undefined) {
             return undefined;
