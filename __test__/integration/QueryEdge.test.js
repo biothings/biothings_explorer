@@ -129,9 +129,6 @@ describe("Testing QueryEdge Module", () => {
             const res = edge.getPredicate();
             expect(res).toEqual(["treated_by"]);
         });
-
-
-
     })
 
 })
