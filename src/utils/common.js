@@ -7,3 +7,10 @@ exports.removeQuotesFromQuery = (queryString) => {
         return queryString;
     }
 }
+
+exports.removeBioLinkPrefix = (input) => {
+    if (typeof input === 'string' && input.startsWith('biolink:')) {
+        return input.slice(8);
+    }
+    return input;
+}
