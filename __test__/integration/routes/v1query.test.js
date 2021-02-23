@@ -5,6 +5,7 @@ var path = require('path');
 
 describe("Testing /v1/query endpoints", () => {
     const invalid_example_folder = path.resolve(__dirname, "../../../examples/v1/invalid");
+    const valid_example_folder = path.resolve(__dirname, "../../../examples/v1");
     test("Input query graph that doesn't pass Swagger Validation should return 400 error", async () => {
         const InvalidInputQueryGraph = {
             message1: 1
@@ -56,6 +57,22 @@ describe("Testing /v1/query endpoints", () => {
             .expect('Content-Type', /json/)
             .then(response => {
                 expect(response.body).toHaveProperty("error", "Your input query graph is invalid");
+            })
+    })
+
+    test("Input query graph with multiple predicates in one edge should be parsed correctly", async () => {
+        const query = JSON.parse(fs.readFileSync(path.join(valid_example_folder, "query_with_multiple_predicates_in_one_edge.json")));
+        await request(app)
+            .post("/v1/query")
+            .send(query)
+            .set('Accept', 'application/json')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then(response => {
+                const predicates = Array.from(new Set(Object.values(response.body.message.knowledge_graph.edges).map(edge => edge.predicate)));
+                expect(predicates).toHaveLength(2);
+                expect(predicates).toContain("biolink:affected_by");
+                expect(predicates).toContain("biolink:disrupted_by");
             })
     })
 })
