@@ -38,8 +38,9 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd opt/BioThings_Explorer_TRAPI
-          git stash && git pull
           rm docker-compose.yml
+          git stash
+          git pull
           cp docker-compose-dev.yml docker-compose.yml
           docker-compose up --force-recreate --build -d
           docker image prune -f
