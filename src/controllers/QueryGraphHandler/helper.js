@@ -40,7 +40,7 @@ module.exports = class QueryGraphHelper {
     }
 
     _createUniqueEdgeID(record) {
-        const edgeMetaData = [this._getInputID(record), this._getOutputID(record), this._getAPI(record), this._getSource(record)];
+        const edgeMetaData = [this._getInputID(record), this._getOutputID(record), this._getPredicate(record), this._getAPI(record), this._getSource(record)];
         // return this._generateHash(edgeMetaData.join('-'));
         return edgeMetaData.join('-');
     }
