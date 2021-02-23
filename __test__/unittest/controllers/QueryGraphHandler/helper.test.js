@@ -290,7 +290,7 @@ describe("Test helper moduler", () => {
         })
     })
 
-    describe("Test _createUniqueEdgeID function", () => {
+    test("Test _createUniqueEdgeID function", () => {
         const edgeObject = {
             isReversed() {
                 return false;
@@ -300,7 +300,8 @@ describe("Test helper moduler", () => {
             $edge_metadata: {
                 trapi_qEdge_obj: edgeObject,
                 api_name: 'MyGene.info API',
-                source: 'CPDB'
+                source: 'CPDB',
+                predicate: 'related_to'
             },
             $input: {
                 obj: {
@@ -314,7 +315,7 @@ describe("Test helper moduler", () => {
             },
         }
         const res = helper._createUniqueEdgeID(record);
-        expect(res).toEqual('input-output-MyGene.info API-CPDB')
+        expect(res).toEqual('input-output-biolink:related_to-MyGene.info API-CPDB')
     })
 
     describe("Test _getInputCategory function", () => {
