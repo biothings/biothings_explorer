@@ -1,4 +1,5 @@
 const helper = require("./helper");
+const { removeBioLinkPrefix, toArray } = require("../../utils/common");
 const debug = require("debug")("biothings-explorer-trapi:QEdge");
 const reverse = require("./reverse");
 
@@ -38,14 +39,14 @@ module.exports = class QEdge {
     }
 
     getPredicate() {
-        let predicate = this.predicate;
-        if (this.predicate && this.predicate.startsWith("biolink:")) {
-            predicate = this.predicate.slice(8);
+        if (this.predicate === undefined) {
+            return undefined;
         }
-        if (this.isReversed()) {
-            return this.edgeReverser.reverse(predicate);
-        }
-        return predicate;
+        const predicates = toArray(this.predicate);
+        return predicates.map(predicate => {
+            const predicateWithOutPrefix = removeBioLinkPrefix(predicate);
+            return (this.isReversed() === true) ? this.edgeReverser.reverse(predicateWithOutPrefix) : predicateWithOutPrefix;
+        }).filter(item => !(typeof item === "undefined"))
     }
 
     getSubject() {
