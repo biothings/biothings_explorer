@@ -1,0 +1,20 @@
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "id": "UMLS:C0008780"
+                },
+                "n1": {
+                    "category": "biolink:Gene"
+                }
+            },
+            "edges": {
+                "e01": {
+                    "subject": "n0",
+                    "object": "n1"
+                }
+            }
+        }
+    }
+}
