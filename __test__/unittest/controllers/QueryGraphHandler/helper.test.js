@@ -125,14 +125,14 @@ describe("Test helper moduler", () => {
                     trapi_qEdge_obj: edgeObject
                 },
                 $input: {
-                    obj: {
+                    obj: [{
                         primaryID: "input"
-                    }
+                    }]
                 },
                 $output: {
-                    obj: {
+                    obj: [{
                         primaryID: "output"
-                    }
+                    }]
                 },
             }
             const res = helper._getInputID(record);
@@ -151,14 +151,14 @@ describe("Test helper moduler", () => {
                     trapi_qEdge_obj: edgeObject
                 },
                 $input: {
-                    obj: {
+                    obj: [{
                         primaryID: "input"
-                    }
+                    }]
                 },
                 $output: {
-                    obj: {
+                    obj: [{
                         primaryID: "output"
-                    }
+                    }]
                 },
             }
             const res = helper._getInputID(record);
@@ -180,14 +180,14 @@ describe("Test helper moduler", () => {
                     trapi_qEdge_obj: edgeObject
                 },
                 $input: {
-                    obj: {
+                    obj: [{
                         primaryID: "input"
-                    }
+                    }]
                 },
                 $output: {
-                    obj: {
+                    obj: [{
                         primaryID: "output"
-                    }
+                    }]
                 },
             }
             const res = helper._getOutputID(record);
@@ -207,14 +207,14 @@ describe("Test helper moduler", () => {
                 trapi_qEdge_obj: edgeObject
             },
             $input: {
-                obj: {
+                obj: [{
                     primaryID: "input"
-                }
+                }]
             },
             $output: {
-                obj: {
+                obj: [{
                     primaryID: "output"
-                }
+                }]
             },
         }
         const res = helper._getOutputID(record);
@@ -301,14 +301,14 @@ describe("Test helper moduler", () => {
                 source: 'CPDB'
             },
             $input: {
-                obj: {
+                obj: [{
                     primaryID: "input"
-                }
+                }]
             },
             $output: {
-                obj: {
+                obj: [{
                     primaryID: "output"
-                }
+                }]
             },
         }
         const res = helper._createUniqueEdgeID(record);
@@ -335,18 +335,20 @@ describe("Test helper moduler", () => {
                     trapi_qEdge_obj: edgeObject
                 },
                 $input: {
-                    obj: {
-                        primaryID: "input"
-                    }
+                    obj: [{
+                        primaryID: "input",
+                        semanticType: "inputType"
+                    }]
                 },
                 $output: {
-                    obj: {
-                        primaryID: "output"
-                    }
+                    obj: [{
+                        primaryID: "output",
+                        semanticType: "outputType"
+                    }]
                 },
             }
             const res = helper._getInputCategory(record);
-            expect(res).toEqual('Node1Type')
+            expect(res).toEqual('outputType')
         })
 
         test("If edge is not reversed, should return the node ID of the subject", () => {
@@ -367,18 +369,20 @@ describe("Test helper moduler", () => {
                     trapi_qEdge_obj: edgeObject
                 },
                 $input: {
-                    obj: {
-                        primaryID: "input"
-                    }
+                    obj: [{
+                        primaryID: "input",
+                        semanticType: "inputType"
+                    }]
                 },
                 $output: {
-                    obj: {
-                        primaryID: "output"
-                    }
+                    obj: [{
+                        primaryID: "output",
+                        semanticType: "outputType"
+                    }]
                 },
             }
             const res = helper._getInputCategory(record);
-            expect(res).toEqual('Node2Type')
+            expect(res).toEqual('inputType')
         })
     })
 
@@ -402,18 +406,20 @@ describe("Test helper moduler", () => {
                     trapi_qEdge_obj: edgeObject
                 },
                 $input: {
-                    obj: {
-                        primaryID: "input"
-                    }
+                    obj: [{
+                        primaryID: "input",
+                        semanticType: "inputType"
+                    }]
                 },
                 $output: {
-                    obj: {
-                        primaryID: "output"
-                    }
+                    obj: [{
+                        primaryID: "output",
+                        semanticType: "outputType"
+                    }]
                 },
             }
             const res = helper._getOutputCategory(record);
-            expect(res).toEqual('Node2Type')
+            expect(res).toEqual('inputType')
         })
     })
 
@@ -435,18 +441,20 @@ describe("Test helper moduler", () => {
                 trapi_qEdge_obj: edgeObject
             },
             $input: {
-                obj: {
-                    primaryID: "input"
-                }
+                obj: [{
+                    primaryID: "input",
+                    semanticType: "inputType"
+                }]
             },
             $output: {
-                obj: {
-                    primaryID: "output"
-                }
+                obj: [{
+                    primaryID: "output",
+                    semanticType: "outputType"
+                }]
             },
         }
         const res = helper._getOutputCategory(record);
-        expect(res).toEqual('Node1Type')
+        expect(res).toEqual('outputType')
     })
 
     describe("Test _getInputLabel function", () => {
@@ -463,16 +471,16 @@ describe("Test helper moduler", () => {
                     trapi_qEdge_obj: edgeObject
                 },
                 $input: {
-                    obj: {
+                    obj: [{
                         primaryID: "input",
                         label: 'inputLabel'
-                    },
+                    }],
                 },
                 $output: {
-                    obj: {
+                    obj: [{
                         primaryID: "output",
                         label: 'outputLabel'
-                    },
+                    }],
                 },
             }
             const res = helper._getInputLabel(record);
@@ -491,16 +499,16 @@ describe("Test helper moduler", () => {
                     trapi_qEdge_obj: edgeObject
                 },
                 $input: {
-                    obj: {
+                    obj: [{
                         primaryID: "input",
                         label: 'inputLabel'
-                    },
+                    }],
                 },
                 $output: {
-                    obj: {
+                    obj: [{
                         primaryID: "output",
                         label: 'outputLabel'
-                    },
+                    }],
                 },
             }
             const res = helper._getInputLabel(record);
@@ -528,16 +536,16 @@ describe("Test helper moduler", () => {
                     trapi_qEdge_obj: edgeObject
                 },
                 $input: {
-                    obj: {
+                    obj: [{
                         primaryID: "input",
                         label: 'inputLabel'
-                    },
+                    }],
                 },
                 $output: {
-                    obj: {
+                    obj: [{
                         primaryID: "output",
                         label: 'outputLabel'
-                    },
+                    }],
                 },
             }
             const res = helper._getOutputLabel(record);
@@ -563,16 +571,16 @@ describe("Test helper moduler", () => {
                 trapi_qEdge_obj: edgeObject
             },
             $input: {
-                obj: {
+                obj: [{
                     primaryID: "input",
                     label: 'inputLabel'
-                },
+                }],
             },
             $output: {
-                obj: {
+                obj: [{
                     primaryID: "output",
                     label: 'outputLabel'
-                },
+                }],
             },
         }
         const res = helper._getOutputLabel(record);
@@ -593,20 +601,20 @@ describe("Test helper moduler", () => {
                     trapi_qEdge_obj: edgeObject
                 },
                 $input: {
-                    obj: {
+                    obj: [{
                         primaryID: "input",
                         label: 'inputLabel',
                         curies: ['123', '456']
-                    },
+                    }],
                 },
                 $output: {
-                    obj: {
+                    obj: [{
                         primaryID: "output",
                         label: 'outputLabel',
                         curies: [
                             '789'
                         ]
-                    },
+                    }],
                 },
             }
             const res = helper._getInputEquivalentIds(record);
@@ -657,20 +665,20 @@ describe("Test helper moduler", () => {
                     trapi_qEdge_obj: edgeObject
                 },
                 $input: {
-                    obj: {
+                    obj: [{
                         primaryID: "input",
                         label: 'inputLabel',
                         curies: ['123', '456']
-                    },
+                    }],
                 },
                 $output: {
-                    obj: {
+                    obj: [{
                         primaryID: "output",
                         label: 'outputLabel',
                         curies: [
                             '789'
                         ]
-                    },
+                    }],
                 },
             }
             const res = helper._getInputEquivalentIds(record);
@@ -698,20 +706,20 @@ describe("Test helper moduler", () => {
                     trapi_qEdge_obj: edgeObject
                 },
                 $input: {
-                    obj: {
+                    obj: [{
                         primaryID: "input",
                         label: 'inputLabel',
                         curies: ['123', '456']
-                    },
+                    }],
                 },
                 $output: {
-                    obj: {
+                    obj: [{
                         primaryID: "output",
                         label: 'outputLabel',
                         curies: [
                             '789'
                         ]
-                    },
+                    }],
                 },
             }
             const res = helper._getOutputEquivalentIds(record);
@@ -731,20 +739,20 @@ describe("Test helper moduler", () => {
                 trapi_qEdge_obj: edgeObject
             },
             $input: {
-                obj: {
+                obj: [{
                     primaryID: "input",
                     label: 'inputLabel',
                     curies: ['123', '456']
-                },
+                }],
             },
             $output: {
-                obj: {
+                obj: [{
                     primaryID: "output",
                     label: 'outputLabel',
                     curies: [
                         '789'
                     ]
-                },
+                }],
             },
         }
         const res = helper._getOutputEquivalentIds(record);
@@ -769,20 +777,20 @@ describe("Test helper moduler", () => {
                 trapi_qEdge_obj: edgeObject
             },
             $input: {
-                obj: {
+                obj: [{
                     primaryID: "input",
                     label: 'inputLabel',
                     curies: ['123', '456']
-                },
+                }],
             },
             $output: {
-                obj: {
+                obj: [{
                     primaryID: "output",
                     label: 'outputLabel',
                     curies: [
                         '789'
                     ]
-                },
+                }],
             },
         }
         const res = helper._getOutputEquivalentIds(record);

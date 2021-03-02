@@ -1,4 +1,5 @@
 const _ = require("lodash");
+const utils = require("../utils");
 
 module.exports = class QNode {
     /**
@@ -8,7 +9,7 @@ module.exports = class QNode {
      */
     constructor(id, info) {
         this.id = id;
-        this.category = info.category;
+        this.category = info.category || "NamedThing";
         this.curie = info.id;
     }
 
@@ -17,10 +18,7 @@ module.exports = class QNode {
     }
 
     getCategory() {
-        if (this.category && this.category.startsWith("biolink:")) {
-            return this.category.slice(8);
-        }
-        return this.category;
+        return utils.removeBioLinkPrefix(this.category);
     }
 
     getCurie() {
@@ -29,6 +27,26 @@ module.exports = class QNode {
 
     getEquivalentIDs() {
         return this.equivalentIDs;
+    }
+
+    getCategories() {
+        if (this.hasEquivalentIDs() === false) {
+            const categories = utils.toArray(this.category);
+            return utils.getUnique(categories.map(category => utils.removeBioLinkPrefix(category)));
+        }
+        let categories = [];
+        Object.values(this.equivalentIDs).map(entities => {
+            entities.map(entity => {
+                categories = [...categories, ...entity.semanticTypes];
+            })
+        })
+        return utils.getUnique(categories);
+    }
+
+    getEntities() {
+        return Object.values(this.equivalentIDs).reduce((res, entities) => {
+            return [...res, ...entities];
+        }, []);
     }
 
     setEquivalentIDs(equivalentIDs) {

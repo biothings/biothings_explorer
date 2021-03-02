@@ -5,16 +5,16 @@
                 "e00": {
                     "object": "n01",
                     "subject": "n00",
-                    "predicate": "biolink:functional_association"
+                    "predicate": "biolink:physically_interacts_with"
                 }
             },
             "nodes": {
                 "n00": {
-                    "category": "biolink:Gene",
-                    "id": "ENSEMBL:ENSG00000123374"
+                    "category": "biolink:ChemicalSubstance",
+                    "id": "CHEMBL.COMPOUND:CHEMBL744"
                 },
                 "n01": {
-                    "category": "biolink:BiologicalProcess"
+                    "category": "biolink:Gene"
                 }
             }
         }

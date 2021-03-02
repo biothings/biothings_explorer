@@ -16,7 +16,7 @@ describe("Testing QueryResults Module", () => {
         "interactionType": "inhibitor",
         "$input": {
             original: "SYMBOL:CDK2",
-            obj: {
+            obj: [{
                 primaryID: 'NCBIGene:1017',
                 label: "CDK2",
                 dbIDs: {
@@ -24,11 +24,11 @@ describe("Testing QueryResults Module", () => {
                     NCBIGene: "1017"
                 },
                 curies: ['SYMBOL:CDK2', 'NCBIGene:1017']
-            }
+            }]
         },
         "$output": {
             original: "CHEMBL.COMPOUND:CHEMBL744",
-            obj: {
+            obj: [{
                 primaryID: 'CHEMBL.COMPOUND:CHEMBL744',
                 label: "RILUZOLE",
                 dbIDs: {
@@ -37,7 +37,7 @@ describe("Testing QueryResults Module", () => {
                     "name": "RILUZOLE"
                 },
                 curies: ['CHEMBL.COMPOUND:CHEMBL744', 'PUBCHEM:1234', "name:RILUZOLE"]
-            }
+            }]
         },
     }
     describe("Testing _createNodeBindings function", () => {

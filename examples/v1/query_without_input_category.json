@@ -3,18 +3,16 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "category": "biolink:Gene",
-                    "id": "NCBIGENE:1017"
+                    "id": "UMLS:C0008780"
                 },
                 "n1": {
-                    "category": "biolink:ChemicalSubstance"
+                    "category": "biolink:Gene"
                 }
             },
             "edges": {
                 "e01": {
                     "subject": "n0",
-                    "object": "n1",
-                    "predicate": "biolink:physically_interacts_with"
+                    "object": "n1"
                 }
             }
         }

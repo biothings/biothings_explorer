@@ -30,8 +30,8 @@ module.exports = class QEdge2BTEEdgeHandler {
         debug(`Subject node is ${qEdge.getSubject().id}`);
         debug(`Object node is ${qEdge.getObject().id}`);
         let filterCriteria = {
-            input_type: qEdge.getSubject().getCategory(),
-            output_type: qEdge.getObject().getCategory(),
+            input_type: qEdge.getSubject().getCategories(),
+            output_type: qEdge.getObject().getCategories(),
             predicate: qEdge.getPredicate()
         };
         debug(`Filter criteria is: ${JSON.stringify(filterCriteria)}`);
@@ -55,31 +55,35 @@ module.exports = class QEdge2BTEEdgeHandler {
      * @param {object} smartAPIEdge 
      */
     _createNonBatchSupportBTEEdges(smartAPIEdge) {
-        let bteEdges = [];
+        const bteEdges = [];
         const inputID = smartAPIEdge.association.input_id;
+        const inputType = smartAPIEdge.association.input_type;
         const resolvedIDs = smartAPIEdge.reasoner_edge.getSubject().getEquivalentIDs();
-        for (let curie in resolvedIDs) {
-            if (inputID in resolvedIDs[curie].dbIDs) {
-                resolvedIDs[curie].dbIDs[inputID].map(id => {
-                    let edge = _.cloneDeep(smartAPIEdge);
-                    edge.input = id;
-                    edge.input_resolved_identifiers = {
-                        [curie]: resolvedIDs[curie]
-                    };
-                    if (ID_WITH_PREFIXES.includes(inputID) || id.toString().includes(':')) {
-                        edge.original_input = {
-                            [id]: curie
-                        }
-                    } else {
-                        edge.original_input = {
-                            [inputID + ':' + id]: curie
+        for (const curie in resolvedIDs) {
+            resolvedIDs[curie].map(entity => {
+                if (entity.semanticType === inputType && inputID in entity.dbIDs) {
+                    entity.dbIDs[inputID].map(id => {
+                        const edge = _.cloneDeep(smartAPIEdge);
+                        edge.input = id;
+                        edge.input_resolved_identifiers = {
+                            [curie]: [entity]
                         };
-                    }
-                    let edgeToBePushed = _.cloneDeep(edge);
-                    edgeToBePushed.reasoner_edge = smartAPIEdge.reasoner_edge;
-                    bteEdges.push(edgeToBePushed);
-                })
-            }
+                        if (ID_WITH_PREFIXES.includes(inputID) || id.toString().includes(':')) {
+                            edge.original_input = {
+                                [id]: curie
+                            }
+                        } else {
+                            edge.original_input = {
+                                [inputID + ':' + id]: curie
+                            };
+                        }
+                        const edgeToBePushed = _.cloneDeep(edge);
+                        edgeToBePushed.reasoner_edge = smartAPIEdge.reasoner_edge;
+                        bteEdges.push(edgeToBePushed);
+                    })
+                }
+            })
+
         }
         return bteEdges;
     }
@@ -90,29 +94,36 @@ module.exports = class QEdge2BTEEdgeHandler {
      * @param {object} smartAPIEdge 
      */
     _createBatchSupportBTEEdges(smartAPIEdge) {
-        let id_mapping = {};
-        let inputs = [];
-        let bteEdges = [];
+        const id_mapping = {};
+        const inputs = [];
+        const bteEdges = [];
+        const input_resolved_identifiers = {};
         const inputID = smartAPIEdge.association.input_id;
+        const inputType = smartAPIEdge.association.input_type;
         let resolvedIDs = smartAPIEdge.reasoner_edge.getSubject().getEquivalentIDs();
-        Object.keys(resolvedIDs).map(curie => {
-            if (inputID in resolvedIDs[curie].dbIDs) {
-                resolvedIDs[curie].dbIDs[inputID].map(id => {
-                    if (ID_WITH_PREFIXES.includes(inputID) || id.includes(':')) {
-                        id_mapping[id] = curie;
-                    } else {
-                        id_mapping[inputID + ':' + id] = curie;
-                    }
-                    inputs.push(id);
-                })
-            }
-        })
+        debug(`Resolved ids: ${JSON.stringify(resolvedIDs)}`);
+        debug(`Input id: ${inputID}`);
+        for (const curie in resolvedIDs) {
+            resolvedIDs[curie].map(entity => {
+                if (entity.semanticType === inputType && inputID in entity.dbIDs) {
+                    entity.dbIDs[inputID].map(id => {
+                        if (ID_WITH_PREFIXES.includes(inputID) || id.includes(':')) {
+                            id_mapping[id] = curie;
+                        } else {
+                            id_mapping[inputID + ':' + id] = curie;
+                        }
+                        input_resolved_identifiers[curie] = [entity];
+                        inputs.push(id);
+                    })
+                }
+            })
+        }
         if (Object.keys(id_mapping).length > 0) {
-            let edge = _.cloneDeep(smartAPIEdge);
-            edge["input"] = inputs;
-            edge["input_resolved_identifiers"] = resolvedIDs;
-            edge["original_input"] = id_mapping;
-            let edgeToBePushed = _.cloneDeep(edge);
+            const edge = _.cloneDeep(smartAPIEdge);
+            edge.input = inputs;
+            edge.input_resolved_identifiers = input_resolved_identifiers;
+            edge.original_input = id_mapping;
+            const edgeToBePushed = _.cloneDeep(edge);
             edgeToBePushed.reasoner_edge = smartAPIEdge.reasoner_edge;
             bteEdges.push(edgeToBePushed);
         }
@@ -138,7 +149,7 @@ module.exports = class QEdge2BTEEdgeHandler {
     convert(qEdges) {
         let bteEdges = [];
         qEdges.map(edge => {
-            let smartapi_edges = this._getSmartAPIEdges(edge);
+            const smartapi_edges = this._getSmartAPIEdges(edge);
             debug(`${smartapi_edges.length} SmartAPI edges are retrieved....`)
             smartapi_edges.map(item => {
                 let newEdges = this._createBTEEdges(item);
@@ -154,6 +165,7 @@ module.exports = class QEdge2BTEEdgeHandler {
             debug(`No bte edge found for this query batch.`)
             this.logs.push(new LogEntry("WARNING", null, `BTE didn't find any bte edges for this batch. Your query terminates.`).getLog())
         } else {
+            debug(`BTE found ${bteEdges.length} bte edges for this batch.`)
             this.logs.push(new LogEntry("DEBUG", null, `BTE found ${bteEdges.length} bte edges for this batch.`).getLog())
         }
         return bteEdges;
