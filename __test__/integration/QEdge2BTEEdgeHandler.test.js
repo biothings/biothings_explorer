@@ -6,27 +6,30 @@ const meta_kg = require("@biothings-explorer/smartapi-kg");
 describe("Testing QEdge2BTEEdgeHandler Module", () => {
     const gene_node1 = new QNode("n1", { category: "Gene", curie: "NCBIGene:1017" });
     const node1_equivalent_ids = {
-        "NCBIGene:1017": {
+        "NCBIGene:1017": [{
             dbIDs: {
                 NCBIGene: ["1017"],
                 SYMBOL: ['CDK2']
-            }
-        }
+            },
+            semanticTypes: ["NamedThing", "Gene"]
+        }]
     }
     gene_node1.setEquivalentIDs(node1_equivalent_ids);
     const node2_equivalent_ids = {
-        "NCBIGene:1017": {
+        "NCBIGene:1017": [{
             dbIDs: {
                 NCBIGene: ["1017"],
                 SYMBOL: ['CDK2']
-            }
-        },
-        "NCBIGene:1018": {
+            },
+            semanticTypes: ["NamedThing", "Gene"]
+        }],
+        "NCBIGene:1018": [{
             dbIDs: {
                 NCBIGene: ["1018"],
                 SYMBOL: ['CDK3']
-            }
-        }
+            },
+            semanticTypes: ["NamedThing", "Gene"]
+        }]
     }
     const gene_node2 = new QNode("n2", { category: "Gene", curie: ["NCBIGene:1017", "NCBIGene:1018"] });
     gene_node2.setEquivalentIDs(node2_equivalent_ids);

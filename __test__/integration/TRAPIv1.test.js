@@ -49,7 +49,7 @@ describe("Testing endpoints", () => {
                 expect(response.body.message).toHaveProperty("knowledge_graph");
                 expect(response.body.message.knowledge_graph).toHaveProperty("nodes");
                 expect(response.body.message.knowledge_graph).toHaveProperty("edges");
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("NCBIGene:1017")
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("NCBIGENE:1017")
             })
     })
 
