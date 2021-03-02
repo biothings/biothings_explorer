@@ -19,11 +19,14 @@ module.exports = class NodesUpdateHandler {
                 return;
             }
             if (edge.hasInput()) {
-                let inputCategory = edge.getSubject().getCategory();
-                if (!(inputCategory in curies)) {
-                    curies[inputCategory] = [];
-                }
-                curies[inputCategory] = [...curies[inputCategory], ...edge.getInputCurie()];
+                const inputCategories = edge.getSubject().getCategories();
+                inputCategories.map(category => {
+                    if (!(category in curies)) {
+                        curies[category] = [];
+                    }
+                    curies[category] = [...curies[category], ...edge.getInputCurie()];
+                })
+
             }
         })
         return curies;
@@ -34,7 +37,7 @@ module.exports = class NodesUpdateHandler {
      * @param {object} curies - each key represents the category, e.g. gene, value is an array of curies.
      */
     async _getEquivalentIDs(curies) {
-        const resolver = new id_resolver();
+        const resolver = new id_resolver.Resolver("biolink");
         const equivalentIDs = await resolver.resolve(curies);
         return equivalentIDs;
     }
@@ -53,6 +56,7 @@ module.exports = class NodesUpdateHandler {
                 .reduce((res, key) => {
                     return { ...res, [key]: equivalentIDs[key] };
                 }, {});
+            debug(`Edge Equivalent IDs are: ${JSON.stringify(edgeEquivalentIDs)}`);
             if (Object.keys(edgeEquivalentIDs).length > 0) {
                 edge.getSubject().setEquivalentIDs(edgeEquivalentIDs);
             }
