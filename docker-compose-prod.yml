@@ -3,7 +3,7 @@ services:
   api:
     container_name: api
     restart: always
-    build: .
+    image: "biothings/bte_reasoner_api:latest"
     ports:
       - '3000:3000'
     environment:
@@ -11,7 +11,7 @@ services:
       REDIS_PORT: 6379
       LOG: ./log
     volumes:
-      - /var/log/bte:/home/node/app/log
+      - ./log:/home/node/app/log
   redis:
     container_name: bte_redis
     restart: always

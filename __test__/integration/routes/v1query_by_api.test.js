@@ -90,18 +90,19 @@ describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
     })
 
     test("Query to non-Text Mining KPs should have id resolution turned on", async () => {
-        const query = JSON.parse(fs.readFileSync(path.join(example_foler, "serviceprovider/mygene.json")));
+        const query = JSON.parse(fs.readFileSync(path.join(example_foler, "serviceprovider/mychem.json")));
         await request(app)
-            .post("/v1/smartapi/59dce17363dce279d389100834e43648/query")
+            .post("/v1/smartapi/8f08d1446e0bb9c2b323713ce83e2bd3/query")
             .send(query)
             .set('Accept', 'application/json')
             .expect(200)
             .expect('Content-Type', /json/)
             .then(response => {
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("GO:0000082")
-                expect(response.body.message.knowledge_graph.nodes["GO:0000082"].attributes[0].value).toEqual([
-                    "GO:0000082",
-                    "name:G1/S transition of mitotic cell cycle"
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("NCBIGENE:117541019")
+                expect(response.body.message.knowledge_graph.nodes["NCBIGENE:117541019"].attributes[0].value).toEqual([
+                    "NCBIGENE:117541019",
+                    "name:potassium intermediate/small conductance calcium-activated channel, subfamily N, member 3",
+                    "SYMBOL:kcnn3"
                 ])
             })
     })

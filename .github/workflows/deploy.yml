@@ -33,9 +33,19 @@ jobs:
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-      -
+      - 
         name: Set up Docker Buildx
+        id: buildx
         uses: docker/setup-buildx-action@v1
+
+      - 
+        name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
       -
         name: Login to DockerHub
         uses: docker/login-action@v1
@@ -49,6 +59,7 @@ jobs:
       -
         name: Build and push
         uses: docker/build-push-action@v2
+        id: docker_build
         with:
           context: .
           file: ./Dockerfile
@@ -56,6 +67,12 @@ jobs:
           tags: |
             biothings/bte_reasoner_api:latest
             biothings/bte_reasoner_api:${{steps.vars.outputs.tag}}
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+      - 
+        name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
 
   deploy:
     needs: [build]
@@ -72,8 +89,10 @@ jobs:
         script: |
           cd opt/single-hop-app.js
           git stash && git pull
-          npm i --production
-          pm2 restart all
+          rm docker-compose.yml
+          cp docker-compose-prod.yml docker-compose.yml
+          docker-compose up --force-recreate --build -d
+          docker image prune -f
 
   performance-test:
     needs: [deploy]

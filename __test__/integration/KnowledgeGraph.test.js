@@ -16,19 +16,20 @@ describe("Testing KnowledgeGraph Module", () => {
         "interactionType": "inhibitor",
         "$input": {
             original: "SYMBOL:CDK2",
-            obj: {
+            obj: [{
                 primaryID: 'NCBIGene:1017',
                 label: "CDK2",
                 dbIDs: {
                     SYMBOL: "CDK2",
                     NCBIGene: "1017"
                 },
+                semanticType: "Gene",
                 curies: ['SYMBOL:CDK2', 'NCBIGene:1017']
-            }
+            }]
         },
         "$output": {
             original: "CHEMBL.COMPOUND:CHEMBL744",
-            obj: {
+            obj: [{
                 primaryID: 'CHEMBL.COMPOUND:CHEMBL744',
                 label: "RILUZOLE",
                 dbIDs: {
@@ -36,8 +37,9 @@ describe("Testing KnowledgeGraph Module", () => {
                     "PUBCHEM": "1234",
                     "name": "RILUZOLE"
                 },
+                semanticType: "ChemicalSubstance",
                 curies: ['CHEMBL.COMPOUND:CHEMBL744', 'PUBCHEM:1234', "name:RILUZOLE"]
-            }
+            }]
         },
     }
     describe("Testing _createInputNode function", () => {
