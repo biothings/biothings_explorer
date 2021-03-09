@@ -26,7 +26,7 @@ module.exports = class QEdge {
     }
 
     getHashedEdgeRepresentation() {
-        const toBeHashed = this.subject.getCategories() + this.predicate + this.object.getCategories() + this.getInputCurie();
+        const toBeHashed = this.subject.getCategories() + this.predicate + this.object.getCategories() + this.getInputPrimaryIDs();
         return new helper()._generateHash(toBeHashed);
     }
 
@@ -72,6 +72,10 @@ module.exports = class QEdge {
             return curie;
         }
         return [curie];
+    }
+
+    getInputPrimaryIDs() {
+        return ((this.isReversed()) ? this.object.getPrimaryIDs() : this.subject.getPrimaryIDs());
     }
 
     getInputNode() {
