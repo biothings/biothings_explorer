@@ -49,6 +49,10 @@ module.exports = class QNode {
         }, []);
     }
 
+    getPrimaryIDs() {
+        return this.getEntities().map(entity => entity.primaryID)
+    }
+
     setEquivalentIDs(equivalentIDs) {
         this.equivalentIDs = equivalentIDs;
     }
