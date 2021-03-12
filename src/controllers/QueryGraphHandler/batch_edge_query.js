@@ -51,15 +51,16 @@ module.exports = class BatchEdgeQueryHandler {
     }
 
     async query(qEdges) {
+        const nodeUpdate = new NodesUpdateHandler(qEdges);;
+        await nodeUpdate.setEquivalentIDs(qEdges);
         const cacheHandler = new CacheHandler(qEdges);
         const { cachedResults, nonCachedEdges } = await cacheHandler.categorizeEdges(qEdges);
         this.logs = [...this.logs, ...cacheHandler.logs];
         let query_res;
-        const nodeUpdate = new NodesUpdateHandler(nonCachedEdges);;
+
         if (nonCachedEdges.length === 0) {
             query_res = [];
         } else {
-            await nodeUpdate.setEquivalentIDs(qEdges);
             debug('Start to convert qEdges into BTEEdges....');
             const edgeConverter = new QEdge2BTEEdgeHandler(nonCachedEdges, this.kg);
             const bteEdges = edgeConverter.convert(nonCachedEdges);

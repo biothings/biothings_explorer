@@ -1,4 +1,4 @@
-const TRAPIGraphHandler = require("../../controllers/QueryGraphHandler/index");
+const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate")
 
 class RouteQueryV1ByTeam {

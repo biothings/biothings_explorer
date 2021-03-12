@@ -39,7 +39,7 @@ module.exports = class {
     }
 
     _copyRecord(record) {
-        debug(`record.$input, ${Object.keys(record.$input)}`)
+        debug(`record.$input, ${JSON.stringify(record.$input)}`)
         const new_record = {
             $edge_metadata: {
                 input_id: record.$edge_metadata.input_id,
@@ -51,22 +51,22 @@ module.exports = class {
                 api_name: record.$edge_metadata.api_name
             },
             $input: {
-                original: record.$input.obj.original,
-                obj: {
-                    dbIDs: record.$input.obj.dbIDs,
-                    curies: record.$input.obj.curies,
-                    label: record.$input.obj.label,
-                    primaryID: record.$input.obj.primaryID
-                }
+                original: record.$input.original,
+                obj: [{
+                    dbIDs: record.$input.obj[0].dbIDs,
+                    curies: record.$input.obj[0].curies,
+                    label: record.$input.obj[0].label,
+                    primaryID: record.$input.obj[0].primaryID
+                }]
             },
             $output: {
-                original: record.$output.obj.original,
-                obj: {
-                    dbIDs: record.$output.obj.dbIDs,
-                    curies: record.$output.obj.curies,
-                    label: record.$output.obj.label,
-                    primaryID: record.$output.obj.primaryID
-                }
+                original: record.$output.original,
+                obj: [{
+                    dbIDs: record.$output.obj[0].dbIDs,
+                    curies: record.$output.obj[0].curies,
+                    label: record.$output.obj[0].label,
+                    primaryID: record.$output.obj[0].primaryID
+                }]
             }
         };
         Object.keys(record).map(k => {

@@ -50,6 +50,7 @@ module.exports = class QNode {
     }
 
     getPrimaryIDs() {
+        console.log(this.equivalentIDs);
         return this.getEntities().map(entity => entity.primaryID)
     }
 
