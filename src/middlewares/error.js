@@ -1,5 +1,5 @@
 const swaggerValidation = require('./validate');
-const InvalidQueryGraphError = require("../utils/errors/invalid_query_graph_error");
+const QueryGraphHandler = require("@biothings-explorer/query_graph_handler");
 const PredicatesLoadingError = require('../utils/errors/predicates_error');
 const MetaKGLoadingError = require("../utils/errors/metakg_error");
 
@@ -12,7 +12,7 @@ class ErrorHandler {
                     more_info: error.errors
                 });
             }
-            if (error instanceof InvalidQueryGraphError) {
+            if (error instanceof QueryGraphHandler.InvalidQueryGraphError) {
                 return res.status(400).json({
                     error: "Your input query graph is invalid",
                     more_info: error.message
