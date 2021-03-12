@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.0.0...v2.0.1) (2021-03-12)
+
+
+### Bug Fixes
+
+* :bug: fix wrong uniprot issuue ([92fac04](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/92fac04398329d3dec5d579ed5dcf1d397d515ee))
+
+## [2.0.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v1.12.0...v2.0.0) (2021-03-09)
+
+
+### Features
+
+* :sparkles: have /query and /v1/query the same behavior ([2db1ff8](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/2db1ff8bd40de94b8d99935e58a711f42441cdf7))
+* :sparkles: use redis to enable cacheing query results ([dd42583](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/dd42583b4a458d29a57007872779f33e6034b27b))
+
+
+### Bug Fixes
+
+* :bug: check semantic type match input type before creating bte edge ([2731602](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/2731602e8f033b71f033a7e98ff7d269fd4c6d34))
+* :bug: fix wrong logic to determine if redis cache is enabled ([fdf71ab](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/fdf71ab29b35de00f24428763c7514ad2b4c874a))
+* :bug: fix wrongly generated cache hash id ([49a9734](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/49a97348ad3d34b3becc358be01d45cef3c62e33))
+* :bug: remove non-edge data from knowledge graph edge attributes ([500a66b](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/500a66bd948ca9cb59a64c04f5114fdfb5b90ceb))
+* :bug: stringify all values of dbIDs ([0919e7d](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/0919e7d45f5aa8c4dbe93bc62121d96b6e650a63))
+
 ## [1.12.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v1.11.0...v1.12.0) (2021-02-19)
 
 
