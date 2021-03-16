@@ -120,6 +120,7 @@ describe("Testing endpoints", () => {
     })
 
     test("POST /v1/query with query that needs to expand node", async () => {
+        console.log("expanded node", expand_node);
         await request(app)
             .post("/v1/query")
             .send(expand_node)
@@ -127,6 +128,7 @@ describe("Testing endpoints", () => {
             .expect(200)
             .expect('Content-Type', /json/)
             .then(response => {
+                console.log(response.body.message.knowledge_graph);
                 expect(response.body).toHaveProperty("message");
                 expect(response.body.message).toHaveProperty("query_graph");
                 expect(response.body.message).toHaveProperty("knowledge_graph");
