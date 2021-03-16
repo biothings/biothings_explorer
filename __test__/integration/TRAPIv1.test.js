@@ -14,6 +14,7 @@ describe("Testing endpoints", () => {
     const disease2gene_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_genes_relate_to_disease.json')));
     const query_using_earlier_trapi_spec = JSON.parse(fs.readFileSync(path.join(old_spec_folder, 'query_genes_relate_to_disease.json')));
     const query_without_category = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_without_input_category.json')))
+    const expand_node = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_with_node_to_be_expanded.json')))
 
     test("GET /v1/predicates", async () => {
         await request(app)
@@ -115,6 +116,24 @@ describe("Testing endpoints", () => {
                 expect(response.body.message.knowledge_graph.nodes).toHaveProperty("MONDO:0016575");
                 expect(response.body.message.knowledge_graph.nodes).toHaveProperty("UMLS:C0008780");
                 expect(response.body.message.knowledge_graph.nodes["UMLS:C0008780"]).toHaveProperty("category", "biolink:PhenotypicFeature");
+            })
+    })
+
+    test("POST /v1/query with query that needs to expand node", async () => {
+        await request(app)
+            .post("/v1/query")
+            .send(expand_node)
+            .set('Accept', 'application/json')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then(response => {
+                expect(response.body).toHaveProperty("message");
+                expect(response.body.message).toHaveProperty("query_graph");
+                expect(response.body.message).toHaveProperty("knowledge_graph");
+                expect(response.body.message.knowledge_graph).toHaveProperty("nodes");
+                expect(response.body.message.knowledge_graph).toHaveProperty("edges");
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("REACT:R-HSA-109582");
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("GO:0000082");
             })
     })
 
