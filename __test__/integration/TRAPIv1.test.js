@@ -119,24 +119,24 @@ describe("Testing endpoints", () => {
             })
     })
 
-    test("POST /v1/query with query that needs to expand node", async () => {
-        console.log("expanded node", expand_node);
-        await request(app)
-            .post("/v1/query")
-            .send(expand_node)
-            .set('Accept', 'application/json')
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .then(response => {
-                console.log(response.body.message.knowledge_graph);
-                expect(response.body).toHaveProperty("message");
-                expect(response.body.message).toHaveProperty("query_graph");
-                expect(response.body.message).toHaveProperty("knowledge_graph");
-                expect(response.body.message.knowledge_graph).toHaveProperty("nodes");
-                expect(response.body.message.knowledge_graph).toHaveProperty("edges");
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("REACT:R-HSA-109582");
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("GO:0000082");
-            })
-    })
+    // test("POST /v1/query with query that needs to expand node", async () => {
+    //     console.log("expanded node", expand_node);
+    //     await request(app)
+    //         .post("/v1/query")
+    //         .send(expand_node)
+    //         .set('Accept', 'application/json')
+    //         .expect(200)
+    //         .expect('Content-Type', /json/)
+    //         .then(response => {
+    //             console.log(response.body.message.knowledge_graph);
+    //             expect(response.body).toHaveProperty("message");
+    //             expect(response.body.message).toHaveProperty("query_graph");
+    //             expect(response.body.message).toHaveProperty("knowledge_graph");
+    //             expect(response.body.message.knowledge_graph).toHaveProperty("nodes");
+    //             expect(response.body.message.knowledge_graph).toHaveProperty("edges");
+    //             expect(response.body.message.knowledge_graph.nodes).toHaveProperty("REACT:R-HSA-109582");
+    //             expect(response.body.message.knowledge_graph.nodes).toHaveProperty("GO:0000082");
+    //         })
+    // })
 
 })
