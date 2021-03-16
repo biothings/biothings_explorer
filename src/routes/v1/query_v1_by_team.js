@@ -1,5 +1,7 @@
-const TRAPIGraphHandler = require("../../controllers/QueryGraphHandler/index");
+const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate")
+const path = require("path");
+const smartAPIPath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
 
 class RouteQueryV1ByTeam {
     setRoutes(app) {
@@ -7,7 +9,13 @@ class RouteQueryV1ByTeam {
             try {
                 const queryGraph = req.body.message.query_graph;
                 const enableIDResolution = (req.params.team_name === "Text Mining Provider") ? false : true;
-                const handler = new TRAPIGraphHandler(undefined, req.params.team_name, enableIDResolution);
+                const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
+                    {
+                        teamName: req.params.team_name,
+                        enableIDResolution
+                    },
+                    smartAPIPath
+                );
                 handler.setQueryGraph(queryGraph);
                 await handler.query();
                 res.setHeader('Content-Type', 'application/json');
