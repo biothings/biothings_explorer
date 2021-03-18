@@ -98,11 +98,9 @@ describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
             .expect(200)
             .expect('Content-Type', /json/)
             .then(response => {
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("NCBIGENE:117541019")
-                expect(response.body.message.knowledge_graph.nodes["NCBIGENE:117541019"].attributes[0].value).toEqual([
-                    "NCBIGENE:117541019",
-                    "name:potassium intermediate/small conductance calcium-activated channel, subfamily N, member 3",
-                    "SYMBOL:kcnn3"
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("NCBIGENE:6530")
+                expect(response.body.message.knowledge_graph.nodes["NCBIGENE:6530"].attributes[0].value).toEqual([
+                    "NCBIGENE:6530", "name:solute carrier family 6 member 2", "SYMBOL:SLC6A2", "UMLS:C1420212", "HGNC:11048", "UniProtKB:P23975", "ENSEMBL:ENSG00000103546", "OMIM:163970"
                 ])
             })
     })
