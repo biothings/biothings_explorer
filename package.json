@@ -41,7 +41,7 @@
     "supertest": "^6.1.3"
   },
   "dependencies": {
-    "@biothings-explorer/query_graph_handler": "^1.2.0",
+    "@biothings-explorer/query_graph_handler": "^1.2.1",
     "@biothings-explorer/smartapi-kg": "^2.2.12",
     "axios": "^0.21.1",
     "biothings-explorer-graphql": "2.1.1",
