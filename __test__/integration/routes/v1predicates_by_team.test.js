@@ -16,10 +16,13 @@ describe("Test /v1/team/{team_name}/predicates endpoint", () => {
     test("Query to Invalid team Should return 200 with empty response", async () => {
         await request(app)
             .get("/v1/team/wrong team/predicates")
-            .expect(200)
+            .expect(404)
             .expect('Content-Type', /json/)
             .then((response) => {
-                expect(response.body).toEqual({});
+                expect(response.body).toEqual({
+                    "error": "Unable to load predicates",
+                    "more_info": "Failed to Load MetaKG",
+                });
             })
     })
 
