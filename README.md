@@ -120,7 +120,7 @@ Public Docker image located at [link](https://hub.docker.com/repository/docker/b
 
 The TRAPI interface has `/test/query` endpoint which uses a SmartAPI spec stored at **test** folder named **smartapi.json**
 
-If you would like to use the `/test/query` endpoint to test a local SmartAPI spec, you can mount the your local folder containing the SmartAPI spec to the folder **/home/nodde/app/test** in the container. [Note: The SmartAPI spec must be named **smartapi.json**]
+If you would like to use the `/test/query` endpoint to test a local SmartAPI spec, you can mount the your local folder containing the SmartAPI spec to the folder **/home/node/app/test** in the container. [Note: The SmartAPI spec must be named **smartapi.json**]
 
 You could do so using the following commands:
 
