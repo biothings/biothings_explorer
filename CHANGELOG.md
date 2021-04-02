@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.0.1...v2.1.0) (2021-04-02)
+
+
+### Features
+
+* :sparkles: add /test/query endpoint to support user specified smartapi spec ([c75e44d](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/c75e44db6b79ccd2ef7b3f6f5cfd2cc448fd2814))
+* :sparkles: add additional node attributes to knowledge graph ([4fb93e3](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/4fb93e37c8a16bc2ae9381747ba56a4e13aa33ed))
+* :sparkles: add cron job to periodically pull from /predicates endpoint ([94461b1](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/94461b1a7c96b9b7ea66b4f5eb41f55b1a87dcb9))
+* :sparkles: add num_of_participants property for pathway ([3d9f820](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/3d9f8209134a5625f2940500a65bf0fd277cb457))
+* :sparkles: have bte only use a specified number of APIs ([7fa1732](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/7fa17323faa8e457a60a6df4dea508cc0489a061))
+* :sparkles: support restricting /predicates to only api names provide ([9260ec9](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/9260ec969b4244f878f8a0a6c360b04a7dfde8dd))
+* :sparkles: update local predicates file and smartapi specs ([425093e](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/425093ee3e96af0b969620805bf796ffe592a6fc))
+
+
+### Bug Fixes
+
+* :bug: add support for resolving protein ids ([500161a](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/500161ac8357cb89739da58189f73afd1f91cb58))
+* :bug: fix api_response_transform bug ([4d911d6](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/4d911d6aa91120775b3d2b70c71fbd1a8e2feefb))
+* :bug: fix cache related bug causing query failure ([3bd87ae](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/3bd87aec0283b12dfe1676e9fc7e2b57dd51c41e))
+* :bug: fix id resolver failure issue ([eecbe4f](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/eecbe4f163d535a3a0f589d98fbdc0d76d8dd86d))
+* :bug: fix missing biolink prefix issue ([153b601](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/153b6011641263bd1d420defa0c881b62b0741a2))
+* :bug: fix typo ([5b32009](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/5b320097664afb438f6b9e2fc11b7dc232069b3e))
+* :bug: fix wrong edge id in query results ([4bb1aa7](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/4bb1aa7e3e98da8cd713f89236840f91439d00cb))
+
 ### [2.0.1](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.0.0...v2.0.1) (2021-03-12)
 
 
