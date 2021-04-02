@@ -14,7 +14,9 @@ class RouteQueryV1ByAPI {
                         smartAPIID: req.params.smartapi_id,
                         enableIDResolution
                     },
-                    smartAPIPath
+                    smartAPIPath,
+                    undefined,
+                    false
                 );
                 handler.setQueryGraph(queryGraph);
                 await handler.query();
