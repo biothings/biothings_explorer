@@ -122,6 +122,15 @@ The TRAPI interface has `/test/query` endpoint which uses a SmartAPI spec stored
 
 If you would like to use the `/test/query` endpoint to test a local SmartAPI spec, you can mount the your local folder containing the SmartAPI spec to the folder **/home/nodde/app/test** in the container. [Note: The SmartAPI spec must be named **smartapi.json**]
 
-You could do so using the following command:
+You could do so using the following commands:
+
+First pull the biothings/bte_reasoner_api image from Docker Hub:
+`docker pull biothings/bte_reasoner_api`
+
+Then, Run the image and mount your local smartapi spec folder
 
 `docker run -p 3000:3000 -v [local_folder_contain_smartapi_spec]:/home/node/app/test -d biothings/bte_reasoner_api`
+
+Now, you should be able to test your local smartapi using POST queries at:
+
+`http://localhost:3000/test/query`
