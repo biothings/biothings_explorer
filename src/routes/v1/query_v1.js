@@ -1,4 +1,5 @@
 const path = require("path");
+const config = require("./config");
 const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate");
 const smartAPIPath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
@@ -8,7 +9,7 @@ class V1RouteQuery {
             //logger.info("query /query endpoint")
             try {
                 const queryGraph = req.body.message.query_graph;
-                const handler = new TRAPIGraphHandler.TRAPIQueryHandler({}, smartAPIPath);
+                const handler = new TRAPIGraphHandler.TRAPIQueryHandler({ apiNames: config.API_LIST }, smartAPIPath);
                 handler.setQueryGraph(queryGraph);
                 await handler.query();
                 res.setHeader('Content-Type', 'application/json');
