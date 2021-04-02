@@ -1,0 +1,1402 @@
+{
+    "_id": "59dce17363dce279d389100834e43648",
+    "_meta": {
+        "date_created": "2020-12-16T00:00:51.690125+00:00",
+        "last_updated": "2021-04-01T07:02:30.608277+00:00",
+        "slug": "mygene",
+        "url": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/master/mygene.info/openapi_full.yml",
+        "username": "newgene"
+    },
+    "_score": 1.0,
+    "_status": {
+        "refresh_status": 200,
+        "refresh_ts": "2021-04-01T07:02:30+00:00",
+        "uptime_status": "good",
+        "uptime_ts": "2021-04-01T07:08:51.822178"
+    },
+    "components": {
+        "parameters": {
+            "callback": {
+                "description": "you can pass a \"callback\" parameter to make a JSONP call.",
+                "in": "query",
+                "name": "callback",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "dotfield": {
+                "description": "control the format of the returned fields when passed \"fields\" parameter contains dot notation, e.g. \"fields=refseq.rna\". If \"True\" or \"1\", the returned data object contains a single \"refseq.rna\" field, otherwise (\"False\" or \"0\"), a single \"refseq\" field with a sub-field of \"rna\". Default: True.",
+                "in": "query",
+                "name": "dotfield",
+                "schema": {
+                    "type": "boolean"
+                }
+            },
+            "email": {
+                "description": "If you are regular users of our services, we encourage you to provide us an email, so that we can better track the usage or follow up with you.",
+                "in": "query",
+                "name": "email",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "fields": {
+                "description": "a comma-separated fields to limit the fields returned from the matching gene hits. The supported field names can be found from any gene object (e.g. http://mygene.info/v3/gene/1017). Note that it supports dot notation as well, e.g., you can pass \"refseq.rna\". If \"fields=all\", all available fields will be returned. Default: \"symbol,name,taxid,entrezgene,ensemblgene\".",
+                "in": "query",
+                "name": "fields",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "from": {
+                "description": "the number of matching gene hits to skip, starting from 0. Combining with \"size\" parameter, this can be useful for paging. Default: 0.",
+                "in": "query",
+                "name": "from",
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "size": {
+                "description": "the maximum number of matching gene hits to return (with a cap of 1000 at the moment). Default: 10.",
+                "in": "query",
+                "name": "size",
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "sort": {
+                "description": "the comma-separated fields to sort on. Prefix with \"-\" for descending order, otherwise in ascending order. Default: sort by matching scores in decending order.",
+                "in": "query",
+                "name": "sort",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "species": {
+                "description": "can be used to limit the gene hits from given species. You can use \"common names\" for nine common species (human, mouse, rat, fruitfly, nematode, zebrafish, thale-cress, frog and pig). All other species, you can provide their taxonomy ids. Multiple species can be passed using comma as a separator. Default: human,mouse,rat.",
+                "in": "query",
+                "name": "species",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "schemas": {
+            "Gene": {
+                "properties": {
+                    "AnimalQTLdb": {
+                        "type": "string"
+                    },
+                    "FLYBASE": {
+                        "type": "string"
+                    },
+                    "HGNC": {
+                        "type": "string"
+                    },
+                    "HPRD": {
+                        "type": "string"
+                    },
+                    "MGI": {
+                        "type": "string"
+                    },
+                    "MIM": {
+                        "type": "string"
+                    },
+                    "RATMAP": {
+                        "type": "string"
+                    },
+                    "RGD": {
+                        "type": "string"
+                    },
+                    "TAIR": {
+                        "type": "string"
+                    },
+                    "Vega": {
+                        "type": "string"
+                    },
+                    "WormBase": {
+                        "type": "string"
+                    },
+                    "Xenbase": {
+                        "type": "string"
+                    },
+                    "ZFIN": {
+                        "type": "string"
+                    },
+                    "_id": {
+                        "type": "string"
+                    },
+                    "accession": {
+                        "type": "object"
+                    },
+                    "aliase": {
+                        "type": "string"
+                    },
+                    "ec": {
+                        "type": "string"
+                    },
+                    "ensembl": {
+                        "type": "object"
+                    },
+                    "entrezgene": {
+                        "format": "int64",
+                        "type": "integer"
+                    },
+                    "generif": {
+                        "properties": {
+                            "pubmed": {
+                                "$ref": "#/components/schemas/int64_or_array"
+                            },
+                            "text": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "genomic_pos": {
+                        "type": "object"
+                    },
+                    "go": {
+                        "type": "object"
+                    },
+                    "homologene": {
+                        "type": "object"
+                    },
+                    "interpro": {
+                        "type": "object"
+                    },
+                    "locus_tag": {
+                        "type": "string"
+                    },
+                    "map_location": {
+                        "type": "string"
+                    },
+                    "miRBase": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "other_names": {
+                        "$ref": "#/components/schemas/string_or_array"
+                    },
+                    "pathway": {
+                        "type": "object"
+                    },
+                    "pdb": {
+                        "$ref": "#/components/schemas/string_or_array"
+                    },
+                    "pfam": {
+                        "type": "string"
+                    },
+                    "pharmgkb": {
+                        "type": "string"
+                    },
+                    "pid": {
+                        "type": "string"
+                    },
+                    "pir": {
+                        "type": "string"
+                    },
+                    "prosite": {
+                        "type": "string"
+                    },
+                    "reagent": {
+                        "type": "object"
+                    },
+                    "refseq": {
+                        "type": "object"
+                    },
+                    "reporter": {
+                        "type": "object"
+                    },
+                    "summary": {
+                        "type": "string"
+                    },
+                    "symbol": {
+                        "type": "string"
+                    },
+                    "taxid": {
+                        "format": "int32",
+                        "type": "integer"
+                    },
+                    "type_of_gene": {
+                        "type": "string"
+                    },
+                    "umls": {
+                        "type": "object"
+                    },
+                    "unigene": {
+                        "type": "string"
+                    },
+                    "uniprot": {
+                        "properties": {
+                            "Swiss-Prot": {
+                                "$ref": "#/components/schemas/string_or_array"
+                            },
+                            "TrEMBL": {
+                                "$ref": "#/components/schemas/string_or_array"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "wikipedia": {
+                        "properties": {
+                            "url_stub": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "_id",
+                    "taxid"
+                ],
+                "type": "object"
+            },
+            "MinimalGene": {
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "entrezgene": {
+                        "format": "int64",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "symbol": {
+                        "type": "string"
+                    },
+                    "taxid": {
+                        "format": "int32",
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "_id",
+                    "taxid"
+                ],
+                "type": "object"
+            },
+            "QueryPOSTResult": {
+                "items": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/MinimalGene"
+                        },
+                        {
+                            "properties": {
+                                "_score": {
+                                    "format": "float",
+                                    "type": "number"
+                                },
+                                "query": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    ]
+                },
+                "type": "array"
+            },
+            "QueryResult": {
+                "properties": {
+                    "hits": {
+                        "items": {
+                            "$ref": "#/components/schemas/Gene"
+                        },
+                        "type": "array"
+                    },
+                    "max_score": {
+                        "format": "float",
+                        "type": "number"
+                    },
+                    "took": {
+                        "type": "integer"
+                    },
+                    "total": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "int64_or_array": {
+                "type": "integer"
+            },
+            "string_or_array": {
+                "type": "string"
+            }
+        },
+        "x-bte-kgs-operations": {
+            "BPToGene": [
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "GO",
+                            "semantic": "BiologicalProcess"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "entrezgene",
+                        "species": "human"
+                    },
+                    "predicate": "has_participant",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "go.BP.id",
+                            "size": 1000
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
+                    },
+                    "source": "NCBI Gene",
+                    "supportBatch": true
+                }
+            ],
+            "CCToGene": [
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "GO",
+                            "semantic": "CellularComponent"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "entrezgene",
+                        "species": "human"
+                    },
+                    "predicate": "expresses",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "go.CC.id",
+                            "size": 1000
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
+                    },
+                    "source": "NCBI Gene",
+                    "supportBatch": true
+                }
+            ],
+            "GeneToProtein": [
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "ENSEMBL",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "id": "UniProtKB",
+                            "semantic": "Protein"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "uniprot.Swiss-Prot",
+                        "species": "human"
+                    },
+                    "predicate": "has_gene_product",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "ensembl.gene"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/uniprotProtein"
+                    },
+                    "source": "UniprotKB",
+                    "supportBatch": true
+                }
+            ],
+            "MFToGene": [
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "GO",
+                            "semantic": "MolecularActivity"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "entrezgene",
+                        "species": "human"
+                    },
+                    "predicate": "enabled_by",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "go.MF.id",
+                            "size": 1000
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
+                    },
+                    "source": "NCBI Gene",
+                    "supportBatch": true
+                }
+            ],
+            "PathwayHasGene": [
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "REACT",
+                            "semantic": "Pathway"
+                        }
+                    ],
+                    "method": "post",
+                    "outputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "entrezgene",
+                        "species": "human"
+                    },
+                    "predicate": "has_participant",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "pathway.reactome.id",
+                            "size": 1000
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
+                    },
+                    "source": "Reactome",
+                    "supportBatch": true
+                },
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "KEGG",
+                            "semantic": "Pathway"
+                        }
+                    ],
+                    "method": "post",
+                    "outputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "entrezgene",
+                        "species": "human"
+                    },
+                    "predicate": "has_participant",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "pathway.kegg.id",
+                            "size": 1000
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
+                    },
+                    "source": "ConsensusPathDB",
+                    "supportBatch": true
+                },
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "WIKIPATHWAYS",
+                            "semantic": "Pathway"
+                        }
+                    ],
+                    "method": "post",
+                    "outputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "entrezgene",
+                        "species": "human"
+                    },
+                    "predicate": "has_participant",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "pathway.wikipathways.id",
+                            "size": 1000
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
+                    },
+                    "source": "ConsensusPathDB",
+                    "supportBatch": true
+                },
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "BIOCARTA",
+                            "semantic": "Pathway"
+                        }
+                    ],
+                    "method": "post",
+                    "outputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "entrezgene",
+                        "species": "human"
+                    },
+                    "predicate": "has_participant",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "pathway.biocarta.id",
+                            "size": 1000
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
+                    },
+                    "source": "ConsensusPathDB",
+                    "supportBatch": true
+                }
+            ],
+            "ProteinToGene": [
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "UniProtKB",
+                            "semantic": "Protein"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "id": "ENSEMBL",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "ensembl.gene",
+                        "species": "human"
+                    },
+                    "predicate": "related_to",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "uniprot.Swiss-Prot"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/ensemblGene"
+                    },
+                    "source": "UniprotKB",
+                    "supportBatch": true
+                }
+            ],
+            "enablesMF": [
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "id": "GO",
+                            "semantic": "MolecularActivity"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "go.MF",
+                        "species": "human"
+                    },
+                    "predicate": "enables",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "entrezgene"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/molecularFunction"
+                    },
+                    "source": "NCBI Gene",
+                    "supportBatch": true
+                }
+            ],
+            "hasHomolog": [
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "id": "MGI",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "pantherdb.ortholog"
+                    },
+                    "predicate": "homologous_to",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "entrezgene"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/pantherMGI"
+                    },
+                    "source": "PANTHER",
+                    "supportBatch": true
+                }
+            ],
+            "hasTranscript": [
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "ENSEMBL",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "id": "ENSEMBL",
+                            "semantic": "Transcript"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "ensembl.transcript",
+                        "species": "human"
+                    },
+                    "predicate": "related_to",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "ensembl.gene"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/ensemblTranscript"
+                    },
+                    "source": "Ensembl",
+                    "supportBatch": true
+                }
+            ],
+            "involvedInBP": [
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "id": "GO",
+                            "semantic": "BiologicalProcess"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "go.BP",
+                        "species": "human"
+                    },
+                    "predicate": "participates_in",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "entrezgene"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/biologicalProcess"
+                    },
+                    "source": "NCBI Gene",
+                    "supportBatch": true
+                }
+            ],
+            "involvedInCC": [
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "id": "GO",
+                            "semantic": "CellularComponent"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "go.CC",
+                        "species": "human"
+                    },
+                    "predicate": "expressed_in",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "entrezgene"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/cellularComponent"
+                    },
+                    "source": "NCBI Gene",
+                    "supportBatch": true
+                }
+            ],
+            "involvedInPathway": [
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "method": "post",
+                    "outputs": [
+                        {
+                            "id": "REACT",
+                            "semantic": "Pathway"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "pathway.reactome",
+                        "species": "human"
+                    },
+                    "predicate": "participates_in",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "entrezgene"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/reactomePathway"
+                    },
+                    "source": "Reactome",
+                    "supportBatch": true
+                },
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "method": "post",
+                    "outputs": [
+                        {
+                            "id": "KEGG",
+                            "semantic": "Pathway"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "pathway.kegg",
+                        "species": "human"
+                    },
+                    "predicate": "participates_in",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "entrezgene"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/keggPathway"
+                    },
+                    "source": "ConsensusPathDB",
+                    "supportBatch": true
+                },
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "method": "post",
+                    "outputs": [
+                        {
+                            "id": "WIKIPATHWAYS",
+                            "semantic": "Pathway"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "pathway.wikipathways",
+                        "species": "human"
+                    },
+                    "predicate": "participates_in",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "entrezgene"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/wikipathway"
+                    },
+                    "source": "ConsensusPathDB",
+                    "supportBatch": true
+                },
+                {
+                    "inputSeparator": ",",
+                    "inputs": [
+                        {
+                            "id": "NCBIGENE",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "method": "post",
+                    "outputs": [
+                        {
+                            "id": "BIOCARTA",
+                            "semantic": "Pathway"
+                        }
+                    ],
+                    "parameters": {
+                        "fields": "pathway.biocarta",
+                        "species": "human"
+                    },
+                    "predicate": "participates_in",
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "entrezgene"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/biocarta"
+                    },
+                    "source": "ConsensusPathDB",
+                    "supportBatch": true
+                }
+            ]
+        },
+        "x-bte-response-mapping": {
+            "biocarta": {
+                "BIOCARTA": "pathway.biocarta.id",
+                "name": "pathway.biocarta.name"
+            },
+            "biologicalProcess": {
+                "GO": "go.BP.id",
+                "evidence": "go.BP.evidence",
+                "name": "go.BP.term",
+                "pubmed": "go.BP.pubmed",
+                "qualifiers": "go.BP.qualifier"
+            },
+            "cellularComponent": {
+                "GO": "go.CC.id",
+                "evidence": "go.CC.evidence",
+                "name": "go.CC.term",
+                "pubmed": "go.CC.pubmed",
+                "qualifiers": "go.CC.qualifier"
+            },
+            "ensemblGene": {
+                "ENSEMBL": "ensembl.gene"
+            },
+            "ensemblProtein": {
+                "ENSEMBL": "ensembl.protein"
+            },
+            "ensemblTranscript": {
+                "ENSEMBL": "ensembl.transcript"
+            },
+            "entrezgene": {
+                "NCBIGENE": "entrezgene"
+            },
+            "keggPathway": {
+                "KEGG": "pathway.kegg.id",
+                "name": "pathway.kegg.name"
+            },
+            "molecularFunction": {
+                "GO": "go.MF.id",
+                "evidence": "go.MF.evidence",
+                "name": "go.MF.term",
+                "pubmed": "go.MF.pubmed",
+                "qualifiers": "go.MF.qualifier"
+            },
+            "pantherMGI": {
+                "MGI": "pantherdb.ortholog.MGI",
+                "inTaxon": "pantherdb.ortholog.taxid"
+            },
+            "reactomePathway": {
+                "REACT": "pathway.reactome.id",
+                "name": "pathway.reactome.name"
+            },
+            "uniprotProtein": {
+                "UniProtKB": "uniprot.Swiss-Prot"
+            },
+            "wikipathway": {
+                "WIKIPATHWAYS": "pathway.wikipathways.id",
+                "name": "pathway.wikipathways.name"
+            }
+        }
+    },
+    "info": {
+        "contact": {
+            "email": "help@mygene.info",
+            "name": "Chunlei Wu",
+            "x-id": "https://github.com/newgene",
+            "x-role": "responsible developer"
+        },
+        "description": "Documentation of the MyGene.info Gene Query web services. Learn more about [MyGene.info](http://mygene.info/)",
+        "termsOfService": "http://mygene.info/terms/",
+        "title": "MyGene.info API",
+        "version": "3.0",
+        "x-translator": {
+            "component": "KP",
+            "team": [
+                "Service Provider"
+            ]
+        }
+    },
+    "openapi": "3.0.0",
+    "paths": {
+        "/gene": {
+            "post": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/fields",
+                        "name": "fields"
+                    },
+                    {
+                        "$ref": "#/components/parameters/species",
+                        "name": "species"
+                    },
+                    {
+                        "$ref": "#/components/parameters/dotfield",
+                        "name": "dotfield"
+                    },
+                    {
+                        "$ref": "#/components/parameters/email",
+                        "name": "email"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "ids": {
+                                        "description": "multiple geneids seperated by comma, e.g., \"ids=1017,1018\" or \"ids=695,ENSG00000123374\". Note that currently we only take the input ids up to 1000 maximum, the rest will be omitted.",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "ids"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/Gene"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "a list of matching gene objects"
+                    }
+                },
+                "summary": "For a list of gene ids, return the matching gene objects",
+                "tags": [
+                    "annotation"
+                ]
+            }
+        },
+        "/gene/{geneid}": {
+            "get": {
+                "parameters": [
+                    {
+                        "description": "Entrez or Ensembl gene id, e.g., 1017, ENSG00000170248. A retired Entrez Gene id works too if it is replaced by a new one, e.g., 245794",
+                        "example": "1017",
+                        "in": "path",
+                        "name": "geneid",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/fields",
+                        "name": "fields"
+                    },
+                    {
+                        "$ref": "#/components/parameters/dotfield",
+                        "name": "dotfield"
+                    },
+                    {
+                        "$ref": "#/components/parameters/callback",
+                        "name": "callback"
+                    },
+                    {
+                        "$ref": "#/components/parameters/email",
+                        "name": "email"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Gene"
+                                }
+                            }
+                        },
+                        "description": "A matching gene object"
+                    }
+                },
+                "summary": "Retrieve gene annotation object based on Entrez or Ensembl gene id, support JSONP and CORS as well.",
+                "tags": [
+                    "annotation"
+                ]
+            }
+        },
+        "/metadata": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/callback",
+                        "name": "callback"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "MyGene.info metadata object"
+                    }
+                },
+                "summary": "Get metadata about the data available from MyGene.info."
+            }
+        },
+        "/metadata/fields": {
+            "get": {
+                "parameters": [
+                    {
+                        "description": "Pass a search term to filter the available fields, e.g. \"search=clinvar\".",
+                        "in": "query",
+                        "name": "search",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Pass a prefix string to filter the available fields, e.g. \"prefix=refseq\".",
+                        "in": "query",
+                        "name": "prefix",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/callback",
+                        "name": "callback"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "MyGene.info metadata fields object"
+                    }
+                },
+                "summary": "Get metadata about the data fields available from MyGene.info."
+            }
+        },
+        "/query": {
+            "get": {
+                "parameters": [
+                    {
+                        "description": "Query string. Examples \"CDK2\", \"NM_052827\", \"204639_at\", \"chr1:151,073,054-151,383,976\", \"hg19.chr1:151073054-151383976\". The detailed query syntax can be found from our [docs](http://docs.mygene.info/en/latest/doc/query_service.html).",
+                        "example": "CDK2",
+                        "in": "query",
+                        "name": "q",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/fields",
+                        "name": "fields"
+                    },
+                    {
+                        "$ref": "#/components/parameters/species",
+                        "name": "species"
+                    },
+                    {
+                        "$ref": "#/components/parameters/size",
+                        "name": "size"
+                    },
+                    {
+                        "$ref": "#/components/parameters/from",
+                        "name": "from"
+                    },
+                    {
+                        "$ref": "#/components/parameters/sort",
+                        "name": "sort"
+                    },
+                    {
+                        "description": "a single field or comma-separated fields to return facets, for example, \"facets=taxid\", \"facets=taxid,type_of_gene\".",
+                        "in": "query",
+                        "name": "facets",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "relevant when faceting on species (i.e., \u201cfacets=taxid\u201d are passed). It\u2019s used to pass species filter without changing the scope of faceting, so that the returned facet counts won\u2019t change. Either species name or taxonomy id can be used, just like \u201cspecies\u201d parameter.",
+                        "in": "query",
+                        "name": "species_facet_filter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "when passed as \u201cTrue\u201d or \u201c1\u201d, the query returns only the hits with valid Entrez gene ids. Default: False.",
+                        "in": "query",
+                        "name": "entrezonly",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "description": "when passed as \u201cTrue\u201d or \u201c1\u201d, the query returns only the hits with valid Ensembl gene ids. Default: False.",
+                        "in": "query",
+                        "name": "ensemblonly",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/callback",
+                        "name": "callback"
+                    },
+                    {
+                        "$ref": "#/components/parameters/dotfield",
+                        "name": "dotfield"
+                    },
+                    {
+                        "$ref": "#/components/parameters/email",
+                        "name": "email"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/QueryResult"
+                                }
+                            }
+                        },
+                        "description": "A query response object with \"hits\" property"
+                    }
+                },
+                "summary": "Make gene query and return matching gene list. Support JSONP and CORS as well.",
+                "tags": [
+                    "query"
+                ]
+            },
+            "post": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/fields",
+                        "name": "fields"
+                    },
+                    {
+                        "$ref": "#/components/parameters/species",
+                        "name": "species"
+                    },
+                    {
+                        "$ref": "#/components/parameters/dotfield",
+                        "name": "dotfield"
+                    },
+                    {
+                        "$ref": "#/components/parameters/email",
+                        "name": "email"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "q": {
+                                        "description": "multiple query terms seperated by comma (also support \"+\" or white space), but no wildcard, e.g., \"q=1017,1018\" or \"q=CDK2+BTK\"",
+                                        "type": "string"
+                                    },
+                                    "scopes": {
+                                        "description": "Specify one or more fields (separated by comma) as the search \"scopes\", e.g., \"scopes=entrezgene\", \"scopes=entrezgene,ensemblgene\". The available \"fields\" can be passed to \"scopes\" parameter are listed [here](http://mygene.info/doc/query_service.html#available-fields). Default: \"scopes=entrezgene,ensemblgene,retired\" (either Entrez or Ensembl gene ids).",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "q"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/QueryPOSTResult"
+                                }
+                            }
+                        },
+                        "description": "Query response objects with \"hits\" property"
+                    }
+                },
+                "summary": "Make gene batch query and return matching gene hits",
+                "tags": [
+                    "query"
+                ],
+                "x-bte-kgs-operations": [
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/enablesMF"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/MFToGene"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/involvedInBP"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/BPToGene"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/involvedInCC"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/CCToGene"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/involvedInPathway"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/hasTranscript"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/GeneToProtein"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/ProteinToGene"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/hasHomolog"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/PathwayHasGene"
+                    }
+                ]
+            }
+        }
+    },
+    "servers": [
+        {
+            "description": "Encrypted Production server",
+            "url": "https://mygene.info/v3"
+        },
+        {
+            "description": "Production server",
+            "url": "http://mygene.info/v3"
+        }
+    ],
+    "tags": [
+        {
+            "name": "gene"
+        },
+        {
+            "name": "annotation"
+        },
+        {
+            "name": "query"
+        },
+        {
+            "name": "translator"
+        },
+        {
+            "name": "biothings"
+        }
+    ]
+}
