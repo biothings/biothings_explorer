@@ -115,3 +115,13 @@ Public Docker image located at [link](https://hub.docker.com/repository/docker/b
 ## Usage
 
 `http://<HOST>:3000`
+
+## Test with local SmartAPI spec
+
+The TRAPI interface has `/test/query` endpoint which uses a SmartAPI spec stored at **test** folder named **smartapi.json**
+
+If you would like to use the `/test/query` endpoint to test a local SmartAPI spec, you can mount the your local folder containing the SmartAPI spec to the folder **/home/nodde/app/test** in the container. [Note: The SmartAPI spec must be named **smartapi.json**]
+
+You could do so using the following command:
+
+`docker run -p 3000:3000 -v [local_folder_contain_smartapi_spec]:/home/node/app/test -d biothings/bte_reasoner_api`

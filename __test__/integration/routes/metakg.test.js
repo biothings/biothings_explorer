@@ -85,4 +85,16 @@ describe("Test /metakg endpoint", () => {
                 expect(subjs).toEqual(['ChemicalSubstance']);
             })
     })
+
+    test("Should return info from TRAPI /predicates endpoint", async () => {
+        await request(app)
+            .get("/metakg")
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then((response) => {
+                expect(response.body).toHaveProperty("associations");
+                const apis = Array.from(new Set(response.body.associations.map(item => item.api.name)));
+                expect(apis).toContain("Automat Pharos");
+            })
+    })
 })

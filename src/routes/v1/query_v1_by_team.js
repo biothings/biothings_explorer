@@ -14,7 +14,9 @@ class RouteQueryV1ByTeam {
                         teamName: req.params.team_name,
                         enableIDResolution
                     },
-                    smartAPIPath
+                    smartAPIPath,
+                    undefined,
+                    false
                 );
                 handler.setQueryGraph(queryGraph);
                 await handler.query();

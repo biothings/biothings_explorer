@@ -36,8 +36,7 @@ describe("Test Predicates Module", () => {
 
         test("If invalid team name is provided, should return an empty list", async () => {
             const handler = new pred();
-            const res = await handler._loadMetaKG(undefined, 'Multiomics Provider1');
-            expect(res.ops).toEqual([])
+            await expect(handler._loadMetaKG(undefined, 'Multiomics Provider1')).rejects.toThrow('Failed to Load MetaKG');
         })
 
         test("By default, should return all ops", async () => {

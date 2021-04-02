@@ -13,20 +13,21 @@ module.exports = class PredicatesHandler {
     }
 
     async _loadMetaKG(smartapiID = undefined, team = undefined) {
-        const smartapi_specs = await readFile(path.resolve(__dirname, '../../data/smartapi_specs.json'));
-        const data = JSON.parse(smartapi_specs);
-        const kg = new meta_kg();
+        const smartapi_specs = path.resolve(__dirname, '../../data/smartapi_specs.json');
+        const predicates = path.resolve(__dirname, '../../data/predicates.json');
+        const kg = new meta_kg.default(smartapi_specs, predicates);
         try {
             if (smartapiID !== undefined) {
-                await kg.constructMetaKG(false, "translator", smartapiID);
-                return kg;
+                kg.constructMetaKGSync(false, { smartAPIID: smartapiID })
             } else if (team !== undefined) {
-                await kg.constructMetaKG(false, "translator", undefined, team);
-                return kg;
+                kg.constructMetaKGSync(false, { teamName: team })
             } else {
-                kg.constructMetaKGFromUserProvidedSpecs(data);
-                return kg;
+                kg.constructMetaKGSync(true, {})
             }
+            if (kg.ops.length === 0) {
+                throw new PredicatesLoadingError("Failed to Load MetaKG");
+            }
+            return kg;
         } catch (error) {
             throw new PredicatesLoadingError("Failed to Load MetaKG");
         }
@@ -66,6 +67,7 @@ module.exports = class PredicatesHandler {
                 predicates[input][output].push(pred);
             }
         })
+
         return predicates;
     }
 }
