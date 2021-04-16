@@ -1,23 +1,415 @@
 {
-    "_id": "59dce17363dce279d389100834e43648",
-    "_meta": {
-        "date_created": "2020-12-16T00:00:51.690125+00:00",
-        "last_updated": "2021-04-01T07:02:30.608277+00:00",
-        "slug": "mygene",
-        "url": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/master/mygene.info/openapi_full.yml",
-        "username": "newgene"
+    "openapi": "3.0.0",
+    "info": {
+        "contact": {
+            "email": "help@biothings.io",
+            "name": "Chunlei Wu",
+            "x-id": "https://github.com/newgene",
+            "x-role": "responsible developer"
+        },
+        "description": "Documentation of the MyChem.info chem query web services.  Learn more about [MyChem.info](http://MyChem.info/)",
+        "termsOfService": "http://MyChem.info/terms",
+        "title": "MyChem.info API",
+        "version": "1.0",
+        "x-translator": {
+            "component": "KP",
+            "team": [
+                "Service Provider"
+            ]
+        }
     },
-    "_score": 1.0,
-    "_status": {
-        "refresh_status": 200,
-        "refresh_ts": "2021-04-01T07:02:30+00:00",
-        "uptime_status": "good",
-        "uptime_ts": "2021-04-01T07:08:51.822178"
+    "servers": [
+        {
+            "description": "Encrypted Production server",
+            "url": "https://mychem.info/v1"
+        },
+        {
+            "description": "Production server",
+            "url": "http://mychem.info/v1"
+        }
+    ],
+    "tags": [
+        {
+            "name": "chemical"
+        },
+        {
+            "name": "drug"
+        },
+        {
+            "name": "annotation"
+        },
+        {
+            "name": "query"
+        },
+        {
+            "name": "translator"
+        },
+        {
+            "name": "biothings"
+        }
+    ],
+    "paths": {
+        "/chem": {
+            "post": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/dotfield",
+                        "name": "dotfield"
+                    },
+                    {
+                        "$ref": "#/components/parameters/fields",
+                        "name": "fields"
+                    },
+                    {
+                        "$ref": "#/components/parameters/email",
+                        "name": "email"
+                    },
+                    {
+                        "$ref": "#/components/parameters/format",
+                        "name": "format"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "ids": {
+                                        "description": "multiple chemical IDs separated by comma. Note that currently we only take the input ids up to 1000 maximum, the rest will be omitted. Type: string (list). Max: 1000.",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "ids"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/Chem"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "A list of matching chemical objects"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResult"
+                                }
+                            }
+                        },
+                        "description": "A response indicating an improperly formatted query"
+                    }
+                },
+                "summary": "For a list of chemical IDs, return the matching chemical object",
+                "tags": [
+                    "chemical"
+                ]
+            }
+        },
+        "/chem/{chemid}": {
+            "get": {
+                "parameters": [
+                    {
+                        "description": "Retrieve chemical objects based on ID - currently one of: [InChiKey](https://en.wikipedia.org/wiki/International_Chemical_Identifier#InChIKey), [DrugBank accession number](https://www.drugbank.ca/documentation), [ChEMBLID](https://www.ebi.ac.uk/chembl/faq#faq40), [ChEBI identifier](http://www.ebi.ac.uk/chebi/aboutChebiForward.do), [PubChem CID](https://pubchem.ncbi.nlm.nih.gov/search/help_search.html#Cid), [UNII](https://www.fda.gov/ForIndustry/DataStandards/SubstanceRegistrationSystem-UniqueIngredientIdentifierUNII/).  Supports JSONP and CORS as well.",
+                        "example": "USNINKBPBVKHHZ-CYUUQNCZSA-L",
+                        "in": "path",
+                        "name": "chemid",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/dotfield",
+                        "name": "dotfield"
+                    },
+                    {
+                        "$ref": "#/components/parameters/callback",
+                        "name": "callback"
+                    },
+                    {
+                        "$ref": "#/components/parameters/fields",
+                        "name": "fields"
+                    },
+                    {
+                        "$ref": "#/components/parameters/email",
+                        "name": "email"
+                    },
+                    {
+                        "$ref": "#/components/parameters/format",
+                        "name": "format"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Chem"
+                                }
+                            }
+                        },
+                        "description": "A matching chemical object"
+                    },
+                    "404": {
+                        "description": "A response indicating an unknown chemical ID"
+                    }
+                },
+                "summary": "Retrieve chemical objects based on ID",
+                "tags": [
+                    "chemical"
+                ]
+            }
+        },
+        "/metadata": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/callback",
+                        "in": "query",
+                        "name": "callback"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "MyChem.info metadata object"
+                    }
+                },
+                "summary": "Get metadata about the data available from MyChem.info",
+                "tags": [
+                    "metadata"
+                ]
+            }
+        },
+        "/metadata/fields": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/search",
+                        "name": "search"
+                    },
+                    {
+                        "$ref": "#/components/parameters/callback",
+                        "name": "callback"
+                    },
+                    {
+                        "$ref": "#/components/parameters/prefix",
+                        "name": "prefix"
+                    },
+                    {
+                        "$ref": "#/components/parameters/format",
+                        "name": "format"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "MyChem.info metadata fields object"
+                    }
+                },
+                "summary": "Get metadata about the data fields available from a MyChem.info chem object",
+                "tags": [
+                    "metadata"
+                ]
+            }
+        },
+        "/query": {
+            "get": {
+                "parameters": [
+                    {
+                        "description": "Query string.  The detailed query syntax can be found from our [docs](http://MyChem.info).  Examples: \"Fludara\", \"CHEMBI:63599\", \"DB01073\".",
+                        "example": "Fludara",
+                        "in": "query",
+                        "name": "q",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/dotfield",
+                        "name": "dotfield"
+                    },
+                    {
+                        "$ref": "#/components/parameters/fields",
+                        "name": "fields"
+                    },
+                    {
+                        "$ref": "#/components/parameters/facet_size",
+                        "name": "facet_size"
+                    },
+                    {
+                        "$ref": "#/components/parameters/sort",
+                        "name": "sort"
+                    },
+                    {
+                        "$ref": "#/components/parameters/callback",
+                        "name": "callback"
+                    },
+                    {
+                        "$ref": "#/components/parameters/email",
+                        "name": "email"
+                    },
+                    {
+                        "$ref": "#/components/parameters/facets",
+                        "name": "facets"
+                    },
+                    {
+                        "$ref": "#/components/parameters/size",
+                        "name": "size"
+                    },
+                    {
+                        "$ref": "#/components/parameters/from",
+                        "name": "from"
+                    },
+                    {
+                        "$ref": "#/components/parameters/format",
+                        "name": "format"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/QueryResult"
+                                }
+                            }
+                        },
+                        "description": "A query response with the \"hits\" property"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResult"
+                                }
+                            }
+                        },
+                        "description": "A response indicating an improperly formatted query"
+                    }
+                },
+                "summary": "Make chemical queries and return matching chemical hits. Supports JSONP and CORS as well.",
+                "tags": [
+                    "query"
+                ]
+            },
+            "post": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/dotfield",
+                        "name": "dotfield"
+                    },
+                    {
+                        "$ref": "#/components/parameters/email",
+                        "name": "email"
+                    },
+                    {
+                        "$ref": "#/components/parameters/fields",
+                        "name": "fields"
+                    },
+                    {
+                        "$ref": "#/components/parameters/size",
+                        "name": "size"
+                    },
+                    {
+                        "$ref": "#/components/parameters/format",
+                        "name": "format"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "q": {
+                                        "description": "multiple query terms separated by comma (also \"+\" or whitespace).  Does not support wildcard queries",
+                                        "type": "string"
+                                    },
+                                    "scopes": {
+                                        "description": "a comma-separated list of fields as the search \"scopes\" (fields to search through for query term). The available \"fields\" that can be passed to the \"scopes\" parameter are listed in the **/metadata/fields** endpoint.string Default: \"scopes=_id\".",
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/QueryPOSTResult"
+                                }
+                            }
+                        },
+                        "description": "Query response objects with the \"hits\" property"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResult"
+                                }
+                            }
+                        },
+                        "description": "A response indicating an improperly formatted query"
+                    }
+                },
+                "summary": "Make batch chemical queries and return matching chemical hits",
+                "tags": [
+                    "query"
+                ],
+                "x-bte-kgs-operations": [
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/metabolizedBy"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/target"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/treats"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/treats2"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/treated_by2"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/contraindication"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/metabolize"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/targetedBy"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/treatedBy"
+                    },
+                    {
+                        "$ref": "#/components/x-bte-kgs-operations/contraindicatedBy"
+                    }
+                ]
+            }
+        }
     },
     "components": {
         "parameters": {
             "callback": {
-                "description": "you can pass a \"callback\" parameter to make a JSONP call.",
+                "description": "you can pass a \"callback\" parameter to make a JSONP call. Type: string.",
                 "in": "query",
                 "name": "callback",
                 "schema": {
@@ -25,7 +417,7 @@
                 }
             },
             "dotfield": {
-                "description": "control the format of the returned fields when passed \"fields\" parameter contains dot notation, e.g. \"fields=refseq.rna\". If \"True\" or \"1\", the returned data object contains a single \"refseq.rna\" field, otherwise (\"False\" or \"0\"), a single \"refseq\" field with a sub-field of \"rna\". Default: True.",
+                "description": "control the format of the returned chem object. If \"true\" or \"1\", all fields will be collapsed into a single level deep object (all nested objects will be a single level deep, using dotfield notation to signify the nested structure) Type: boolean. Default: false.",
                 "in": "query",
                 "name": "dotfield",
                 "schema": {
@@ -33,31 +425,71 @@
                 }
             },
             "email": {
-                "description": "If you are regular users of our services, we encourage you to provide us an email, so that we can better track the usage or follow up with you.",
+                "description": "If you are regular users of our services, we encourage you to provide us with an email, so that we can better track the usage or follow up with you.",
                 "in": "query",
                 "name": "email",
                 "schema": {
                     "type": "string"
                 }
             },
+            "facet_size": {
+                "description": "the number of facet buckets to return in the response. Type: integer. Default: 10. Max: 1000.",
+                "in": "query",
+                "name": "facet_size",
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "facets": {
+                "description": "a comma-separated list of fields to return facets on.  In addition to query hits, the fields notated in \"facets\" will be aggregated by value and bucklet counts will be displayed in the \"facets\" field of the response object. Type: string (list). Default: None. Max: 1000.",
+                "in": "query",
+                "name": "facets",
+                "schema": {
+                    "type": "string"
+                }
+            },
             "fields": {
-                "description": "a comma-separated fields to limit the fields returned from the matching gene hits. The supported field names can be found from any gene object (e.g. http://mygene.info/v3/gene/1017). Note that it supports dot notation as well, e.g., you can pass \"refseq.rna\". If \"fields=all\", all available fields will be returned. Default: \"symbol,name,taxid,entrezgene,ensemblgene\".",
+                "description": "a comma-separated list of fields (in dotfield notation) used to limit the fields returned from the matching chem hit(s). The supported field names can be found from any chem object or from the /metadata/fields endpoint. If \"fields=all\", all available fields will be returned. Type: string (list). Default: all. Max: 1000.",
                 "in": "query",
                 "name": "fields",
                 "schema": {
                     "type": "string"
                 }
             },
+            "format": {
+                "description": "controls output format of server response, currently supports: \"json\", \"jsonld\", \"html\". Type: string. Default: json.",
+                "in": "query",
+                "name": "format",
+                "schema": {
+                    "type": "string"
+                }
+            },
             "from": {
-                "description": "the number of matching gene hits to skip, starting from 0. Combining with \"size\" parameter, this can be useful for paging. Default: 0.",
+                "description": "the number of matching chem hits to skip, starting from 0.  This can be useful for paging in combination with the \"size\" parameter. Type: integer. Default: None.",
                 "in": "query",
                 "name": "from",
                 "schema": {
                     "type": "integer"
                 }
             },
+            "prefix": {
+                "description": "Pass a prefix string to filter the available fields. Type: string. Default: None.",
+                "in": "query",
+                "name": "prefix",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "search": {
+                "description": "Pass a search term to filter the available fields. Type: string. Default: None.",
+                "in": "query",
+                "name": "search",
+                "schema": {
+                    "type": "string"
+                }
+            },
             "size": {
-                "description": "the maximum number of matching gene hits to return (with a cap of 1000 at the moment). Default: 10.",
+                "description": "the maximum number of matching chem hits to return per batch. Type: integer. Default: 10.",
                 "in": "query",
                 "name": "size",
                 "schema": {
@@ -65,227 +497,42 @@
                 }
             },
             "sort": {
-                "description": "the comma-separated fields to sort on. Prefix with \"-\" for descending order, otherwise in ascending order. Default: sort by matching scores in decending order.",
+                "description": "the comma-separated list of fields to sort on. Prefix each with \"-\" for descending order, otherwise in ascending order. Default: sort by descending score.",
                 "in": "query",
                 "name": "sort",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "species": {
-                "description": "can be used to limit the gene hits from given species. You can use \"common names\" for nine common species (human, mouse, rat, fruitfly, nematode, zebrafish, thale-cress, frog and pig). All other species, you can provide their taxonomy ids. Multiple species can be passed using comma as a separator. Default: human,mouse,rat.",
-                "in": "query",
-                "name": "species",
                 "schema": {
                     "type": "string"
                 }
             }
         },
         "schemas": {
-            "Gene": {
+            "Chem": {
                 "properties": {
-                    "AnimalQTLdb": {
-                        "type": "string"
-                    },
-                    "FLYBASE": {
-                        "type": "string"
-                    },
-                    "HGNC": {
-                        "type": "string"
-                    },
-                    "HPRD": {
-                        "type": "string"
-                    },
-                    "MGI": {
-                        "type": "string"
-                    },
-                    "MIM": {
-                        "type": "string"
-                    },
-                    "RATMAP": {
-                        "type": "string"
-                    },
-                    "RGD": {
-                        "type": "string"
-                    },
-                    "TAIR": {
-                        "type": "string"
-                    },
-                    "Vega": {
-                        "type": "string"
-                    },
-                    "WormBase": {
-                        "type": "string"
-                    },
-                    "Xenbase": {
-                        "type": "string"
-                    },
-                    "ZFIN": {
-                        "type": "string"
-                    },
                     "_id": {
                         "type": "string"
-                    },
-                    "accession": {
-                        "type": "object"
-                    },
-                    "aliase": {
-                        "type": "string"
-                    },
-                    "ec": {
-                        "type": "string"
-                    },
-                    "ensembl": {
-                        "type": "object"
-                    },
-                    "entrezgene": {
-                        "format": "int64",
-                        "type": "integer"
-                    },
-                    "generif": {
-                        "properties": {
-                            "pubmed": {
-                                "$ref": "#/components/schemas/int64_or_array"
-                            },
-                            "text": {
-                                "type": "string"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "genomic_pos": {
-                        "type": "object"
-                    },
-                    "go": {
-                        "type": "object"
-                    },
-                    "homologene": {
-                        "type": "object"
-                    },
-                    "interpro": {
-                        "type": "object"
-                    },
-                    "locus_tag": {
-                        "type": "string"
-                    },
-                    "map_location": {
-                        "type": "string"
-                    },
-                    "miRBase": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "other_names": {
-                        "$ref": "#/components/schemas/string_or_array"
-                    },
-                    "pathway": {
-                        "type": "object"
-                    },
-                    "pdb": {
-                        "$ref": "#/components/schemas/string_or_array"
-                    },
-                    "pfam": {
-                        "type": "string"
-                    },
-                    "pharmgkb": {
-                        "type": "string"
-                    },
-                    "pid": {
-                        "type": "string"
-                    },
-                    "pir": {
-                        "type": "string"
-                    },
-                    "prosite": {
-                        "type": "string"
-                    },
-                    "reagent": {
-                        "type": "object"
-                    },
-                    "refseq": {
-                        "type": "object"
-                    },
-                    "reporter": {
-                        "type": "object"
-                    },
-                    "summary": {
-                        "type": "string"
-                    },
-                    "symbol": {
-                        "type": "string"
-                    },
-                    "taxid": {
-                        "format": "int32",
-                        "type": "integer"
-                    },
-                    "type_of_gene": {
-                        "type": "string"
-                    },
-                    "umls": {
-                        "type": "object"
-                    },
-                    "unigene": {
-                        "type": "string"
-                    },
-                    "uniprot": {
-                        "properties": {
-                            "Swiss-Prot": {
-                                "$ref": "#/components/schemas/string_or_array"
-                            },
-                            "TrEMBL": {
-                                "$ref": "#/components/schemas/string_or_array"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "wikipedia": {
-                        "properties": {
-                            "url_stub": {
-                                "type": "string"
-                            }
-                        },
-                        "type": "object"
                     }
                 },
                 "required": [
-                    "_id",
-                    "taxid"
+                    "_id"
                 ],
                 "type": "object"
             },
-            "MinimalGene": {
+            "ErrorResult": {
                 "properties": {
-                    "_id": {
+                    "message": {
                         "type": "string"
                     },
-                    "entrezgene": {
-                        "format": "int64",
-                        "type": "integer"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "symbol": {
-                        "type": "string"
-                    },
-                    "taxid": {
-                        "format": "int32",
-                        "type": "integer"
+                    "success": {
+                        "type": "boolean"
                     }
                 },
-                "required": [
-                    "_id",
-                    "taxid"
-                ],
                 "type": "object"
             },
             "QueryPOSTResult": {
                 "items": {
                     "allOf": [
                         {
-                            "$ref": "#/components/schemas/MinimalGene"
+                            "$ref": "#/components/schemas/Chem"
                         },
                         {
                             "properties": {
@@ -307,7 +554,7 @@
                 "properties": {
                     "hits": {
                         "items": {
-                            "$ref": "#/components/schemas/Gene"
+                            "$ref": "#/components/schemas/Chem"
                         },
                         "type": "array"
                     },
@@ -325,1078 +572,476 @@
                 "type": "object"
             },
             "int64_or_array": {
-                "type": "integer"
+                "oneOf": [
+                    {
+                        "items": {
+                            "format": "int64",
+                            "type": "integer"
+                        },
+                        "type": "array"
+                    },
+                    {
+                        "format": "int64",
+                        "type": "integer"
+                    }
+                ]
             },
             "string_or_array": {
-                "type": "string"
+                "oneOf": [
+                    {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    {
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "x-bte-response-mapping": {
+            "metabolizedBy": {
+                "name": "drugbank.enzymes.name",
+                "SYMBOL": "drugbank.enzymes.gene_name",
+                "pubmed": "drugbank.enzymes.pmids",
+                "function": "drugbank.enzymes.general_function",
+                "action": "drugbank.enzymes.actions"
+            },
+            "target-drugbank": {
+                "name": "drugbank.targets.name",
+                "SYMBOL": "drugbank.targets.gene_name",
+                "function": "drugbank.targets.general_function",
+                "action": "drugbank.targets.actions",
+                "pubmed": "drugbank.targets.pmids"
+            },
+            "target-drugcentral": {
+                "name": "drugcentral.bioactivity.target_name",
+                "SYMBOL": "drugcentral.bioactivity.uniprot.gene_symbol",
+                "action": "drugcentral.bioactivity.action_type"
+            },
+            "treats": {
+                "name": "drugcentral.drug_use.indication.concept_name",
+                "SNOMED": "drugcentral.drug_use.indication.snomed_concept_id",
+                "UMLS": "drugcentral.drug_use.indication.umls_cui"
+            },
+            "contraindication": {
+                "name": "drugcentral.drug_use.contraindication.concept_name",
+                "SNOMED": "drugcentral.drug_use.contraindication.snomed_concept_id",
+                "UMLS": "drugcentral.drug_use.contraindication.umls_cui"
+            },
+            "drugbank": {
+                "DRUGBANK": "drugbank.id"
+            },
+            "chembl": {
+                "CHEMBL.COMPOUND": "chembl.molecule_chembl_id"
+            },
+            "chembl-treats": {
+                "MESH": "chembl.drug_indications.mesh_id",
+                "max_phase": "chembl.drug_indications.max_phase_for_ind",
+                "first_approval": "chembl.drug_indications.first_approval"
             }
         },
         "x-bte-kgs-operations": {
-            "BPToGene": [
+            "metabolizedBy": [
                 {
+                    "supportBatch": true,
                     "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "GO",
-                            "semantic": "BiologicalProcess"
-                        }
-                    ],
-                    "outputs": [
-                        {
-                            "id": "NCBIGENE",
-                            "semantic": "Gene"
-                        }
-                    ],
                     "parameters": {
-                        "fields": "entrezgene",
-                        "species": "human"
+                        "fields": "drugbank.enzymes"
                     },
-                    "predicate": "has_participant",
                     "requestBody": {
                         "body": {
                             "q": "{inputs[0]}",
-                            "scopes": "go.BP.id",
-                            "size": 1000
+                            "scopes": "drugbank.id"
                         },
                         "header": "application/x-www-form-urlencoded"
                     },
+                    "inputs": [
+                        {
+                            "id": "DRUGBANK",
+                            "semantic": "ChemicalSubstance"
+                        }
+                    ],
+                    "predicate": "metabolic_processing_affected_by",
+                    "source": "drugbank",
+                    "outputs": [
+                        {
+                            "id": "SYMBOL",
+                            "semantic": "Gene"
+                        }
+                    ],
                     "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
-                    },
-                    "source": "NCBI Gene",
-                    "supportBatch": true
+                        "$ref": "#/components/x-bte-response-mapping/metabolizedBy"
+                    }
                 }
             ],
-            "CCToGene": [
+            "target": [
                 {
+                    "supportBatch": true,
                     "inputSeparator": ",",
+                    "parameters": {
+                        "fields": "drugbank.targets"
+                    },
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "drugbank.id"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
                     "inputs": [
                         {
-                            "id": "GO",
-                            "semantic": "CellularComponent"
+                            "id": "DRUGBANK",
+                            "semantic": "ChemicalSubstance"
                         }
                     ],
                     "outputs": [
                         {
-                            "id": "NCBIGENE",
+                            "id": "SYMBOL",
                             "semantic": "Gene"
                         }
                     ],
-                    "parameters": {
-                        "fields": "entrezgene",
-                        "species": "human"
-                    },
-                    "predicate": "expresses",
-                    "requestBody": {
-                        "body": {
-                            "q": "{inputs[0]}",
-                            "scopes": "go.CC.id",
-                            "size": 1000
-                        },
-                        "header": "application/x-www-form-urlencoded"
-                    },
+                    "predicate": "physically_interacts_with",
+                    "source": "drugbank",
                     "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
-                    },
-                    "source": "NCBI Gene",
-                    "supportBatch": true
-                }
-            ],
-            "GeneToProtein": [
-                {
-                    "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "ENSEMBL",
-                            "semantic": "Gene"
-                        }
-                    ],
-                    "outputs": [
-                        {
-                            "id": "UniProtKB",
-                            "semantic": "Protein"
-                        }
-                    ],
-                    "parameters": {
-                        "fields": "uniprot.Swiss-Prot",
-                        "species": "human"
-                    },
-                    "predicate": "has_gene_product",
-                    "requestBody": {
-                        "body": {
-                            "q": "{inputs[0]}",
-                            "scopes": "ensembl.gene"
-                        },
-                        "header": "application/x-www-form-urlencoded"
-                    },
-                    "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/uniprotProtein"
-                    },
-                    "source": "UniprotKB",
-                    "supportBatch": true
-                }
-            ],
-            "MFToGene": [
-                {
-                    "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "GO",
-                            "semantic": "MolecularActivity"
-                        }
-                    ],
-                    "outputs": [
-                        {
-                            "id": "NCBIGENE",
-                            "semantic": "Gene"
-                        }
-                    ],
-                    "parameters": {
-                        "fields": "entrezgene",
-                        "species": "human"
-                    },
-                    "predicate": "enabled_by",
-                    "requestBody": {
-                        "body": {
-                            "q": "{inputs[0]}",
-                            "scopes": "go.MF.id",
-                            "size": 1000
-                        },
-                        "header": "application/x-www-form-urlencoded"
-                    },
-                    "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
-                    },
-                    "source": "NCBI Gene",
-                    "supportBatch": true
-                }
-            ],
-            "PathwayHasGene": [
-                {
-                    "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "REACT",
-                            "semantic": "Pathway"
-                        }
-                    ],
-                    "method": "post",
-                    "outputs": [
-                        {
-                            "id": "NCBIGENE",
-                            "semantic": "Gene"
-                        }
-                    ],
-                    "parameters": {
-                        "fields": "entrezgene",
-                        "species": "human"
-                    },
-                    "predicate": "has_participant",
-                    "requestBody": {
-                        "body": {
-                            "q": "{inputs[0]}",
-                            "scopes": "pathway.reactome.id",
-                            "size": 1000
-                        },
-                        "header": "application/x-www-form-urlencoded"
-                    },
-                    "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
-                    },
-                    "source": "Reactome",
-                    "supportBatch": true
+                        "$ref": "#/components/x-bte-response-mapping/target-drugbank"
+                    }
                 },
                 {
+                    "supportBatch": true,
                     "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "KEGG",
-                            "semantic": "Pathway"
-                        }
-                    ],
-                    "method": "post",
-                    "outputs": [
-                        {
-                            "id": "NCBIGENE",
-                            "semantic": "Gene"
-                        }
-                    ],
                     "parameters": {
-                        "fields": "entrezgene",
-                        "species": "human"
+                        "fields": "drugcentral.bioactivity"
                     },
-                    "predicate": "has_participant",
                     "requestBody": {
                         "body": {
                             "q": "{inputs[0]}",
-                            "scopes": "pathway.kegg.id",
-                            "size": 1000
+                            "scopes": "chembl.molecule_chembl_id"
                         },
                         "header": "application/x-www-form-urlencoded"
                     },
+                    "inputs": [
+                        {
+                            "id": "CHEMBL.COMPOUND",
+                            "semantic": "ChemicalSubstance"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "id": "SYMBOL",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "predicate": "physically_interacts_with",
+                    "source": "drugcentral",
                     "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
+                        "$ref": "#/components/x-bte-response-mapping/target-drugcentral"
+                    }
+                }
+            ],
+            "treats": [
+                {
+                    "supportBatch": true,
+                    "inputSeparator": ",",
+                    "parameters": {
+                        "fields": "drugcentral.drug_use.indication"
                     },
-                    "source": "ConsensusPathDB",
-                    "supportBatch": true
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "chembl.molecule_chembl_id"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "inputs": [
+                        {
+                            "id": "CHEMBL.COMPOUND",
+                            "semantic": "ChemicalSubstance"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "id": "UMLS",
+                            "semantic": "Disease"
+                        }
+                    ],
+                    "predicate": "approved_to_treat",
+                    "source": "drugcentral",
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/treats"
+                    }
+                }
+            ],
+            "contraindication": [
+                {
+                    "supportBatch": true,
+                    "inputSeparator": ",",
+                    "parameters": {
+                        "fields": "drugcentral.drug_use.contraindication"
+                    },
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "chembl.molecule_chembl_id"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "inputs": [
+                        {
+                            "id": "CHEMBL.COMPOUND",
+                            "semantic": "ChemicalSubstance"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "id": "UMLS",
+                            "semantic": "Disease"
+                        }
+                    ],
+                    "predicate": "contraindicated_for",
+                    "source": "drugcentral",
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/contraindication"
+                    }
+                }
+            ],
+            "metabolize": [
+                {
+                    "supportBatch": true,
+                    "inputSeparator": ",",
+                    "parameters": {
+                        "fields": "drugbank.id",
+                        "size": "1000"
+                    },
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "drugbank.enzymes.gene_name"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "outputs": [
+                        {
+                            "id": "DRUGBANK",
+                            "semantic": "ChemicalSubstance"
+                        }
+                    ],
+                    "predicate": "affects_metabolic_processing_of",
+                    "source": "drugbank",
+                    "inputs": [
+                        {
+                            "id": "SYMBOL",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/drugbank"
+                    }
+                }
+            ],
+            "targetedBy": [
+                {
+                    "supportBatch": true,
+                    "inputSeparator": ",",
+                    "parameters": {
+                        "fields": "drugbank.id",
+                        "size": "1000"
+                    },
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "drugbank.targets.gene_name"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
+                    "outputs": [
+                        {
+                            "id": "DRUGBANK",
+                            "semantic": "ChemicalSubstance"
+                        }
+                    ],
+                    "inputs": [
+                        {
+                            "id": "SYMBOL",
+                            "semantic": "Gene"
+                        }
+                    ],
+                    "predicate": "physically_interacts_with",
+                    "source": "drugbank",
+                    "response_mapping": {
+                        "$ref": "#/components/x-bte-response-mapping/drugbank"
+                    }
                 },
                 {
+                    "supportBatch": true,
                     "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "WIKIPATHWAYS",
-                            "semantic": "Pathway"
-                        }
-                    ],
-                    "method": "post",
-                    "outputs": [
-                        {
-                            "id": "NCBIGENE",
-                            "semantic": "Gene"
-                        }
-                    ],
                     "parameters": {
-                        "fields": "entrezgene",
-                        "species": "human"
+                        "fields": "chembl.molecule_chembl_id",
+                        "size": "1000"
                     },
-                    "predicate": "has_participant",
                     "requestBody": {
                         "body": {
                             "q": "{inputs[0]}",
-                            "scopes": "pathway.wikipathways.id",
-                            "size": 1000
+                            "scopes": "drugcentral.bioactivity.uniprot.gene_symbol"
                         },
                         "header": "application/x-www-form-urlencoded"
                     },
-                    "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
-                    },
-                    "source": "ConsensusPathDB",
-                    "supportBatch": true
-                },
-                {
-                    "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "BIOCARTA",
-                            "semantic": "Pathway"
-                        }
-                    ],
-                    "method": "post",
                     "outputs": [
                         {
-                            "id": "NCBIGENE",
+                            "id": "CHEMBL.COMPOUND",
+                            "semantic": "ChemicalSubstance"
+                        }
+                    ],
+                    "inputs": [
+                        {
+                            "id": "SYMBOL",
                             "semantic": "Gene"
                         }
                     ],
-                    "parameters": {
-                        "fields": "entrezgene",
-                        "species": "human"
-                    },
-                    "predicate": "has_participant",
-                    "requestBody": {
-                        "body": {
-                            "q": "{inputs[0]}",
-                            "scopes": "pathway.biocarta.id",
-                            "size": 1000
-                        },
-                        "header": "application/x-www-form-urlencoded"
-                    },
+                    "predicate": "physically_interacts_with",
+                    "source": "drugcentral",
                     "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/entrezgene"
-                    },
-                    "source": "ConsensusPathDB",
-                    "supportBatch": true
+                        "$ref": "#/components/x-bte-response-mapping/chembl"
+                    }
                 }
             ],
-            "ProteinToGene": [
+            "treatedBy": [
                 {
+                    "supportBatch": true,
                     "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "UniProtKB",
-                            "semantic": "Protein"
-                        }
-                    ],
-                    "outputs": [
-                        {
-                            "id": "ENSEMBL",
-                            "semantic": "Gene"
-                        }
-                    ],
                     "parameters": {
-                        "fields": "ensembl.gene",
-                        "species": "human"
+                        "fields": "chembl.molecule_chembl_id",
+                        "size": "1000"
                     },
-                    "predicate": "related_to",
                     "requestBody": {
                         "body": {
                             "q": "{inputs[0]}",
-                            "scopes": "uniprot.Swiss-Prot"
+                            "scopes": "drugcentral.drug_use.indication.umls_cui"
                         },
                         "header": "application/x-www-form-urlencoded"
                     },
+                    "outputs": [
+                        {
+                            "id": "CHEMBL.COMPOUND",
+                            "semantic": "ChemicalSubstance"
+                        }
+                    ],
+                    "inputs": [
+                        {
+                            "id": "UMLS",
+                            "semantic": "Disease"
+                        }
+                    ],
+                    "predicate": "approved_for_treatment_by",
+                    "source": "drugcentral",
                     "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/ensemblGene"
-                    },
-                    "source": "UniprotKB",
-                    "supportBatch": true
+                        "$ref": "#/components/x-bte-response-mapping/chembl"
+                    }
                 }
             ],
-            "enablesMF": [
+            "contraindicatedBy": [
                 {
+                    "supportBatch": true,
                     "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "NCBIGENE",
-                            "semantic": "Gene"
-                        }
-                    ],
-                    "outputs": [
-                        {
-                            "id": "GO",
-                            "semantic": "MolecularActivity"
-                        }
-                    ],
                     "parameters": {
-                        "fields": "go.MF",
-                        "species": "human"
+                        "fields": "chembl.molecule_chembl_id",
+                        "size": "1000"
                     },
-                    "predicate": "enables",
                     "requestBody": {
                         "body": {
                             "q": "{inputs[0]}",
-                            "scopes": "entrezgene"
+                            "scopes": "drugcentral.drug_use.contraindication.umls_cui"
                         },
                         "header": "application/x-www-form-urlencoded"
                     },
+                    "outputs": [
+                        {
+                            "id": "CHEMBL.COMPOUND",
+                            "semantic": "ChemicalSubstance"
+                        }
+                    ],
+                    "inputs": [
+                        {
+                            "id": "UMLS",
+                            "semantic": "Disease"
+                        }
+                    ],
+                    "predicate": "is_contraindication_for",
+                    "source": "drugcentral",
                     "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/molecularFunction"
-                    },
-                    "source": "NCBI Gene",
-                    "supportBatch": true
+                        "$ref": "#/components/x-bte-response-mapping/chembl"
+                    }
                 }
             ],
-            "hasHomolog": [
+            "treats2": [
                 {
+                    "supportBatch": true,
                     "inputSeparator": ",",
+                    "parameters": {
+                        "fields": "chembl.drug_indications",
+                        "size": "1000"
+                    },
+                    "requestBody": {
+                        "body": {
+                            "q": "{inputs[0]}",
+                            "scopes": "chembl.molecule_chembl_id"
+                        },
+                        "header": "application/x-www-form-urlencoded"
+                    },
                     "inputs": [
                         {
-                            "id": "NCBIGENE",
-                            "semantic": "Gene"
+                            "id": "CHEMBL.COMPOUND",
+                            "semantic": "ChemicalSubstance"
                         }
                     ],
                     "outputs": [
                         {
-                            "id": "MGI",
-                            "semantic": "Gene"
+                            "id": "MESH",
+                            "semantic": "Disease"
                         }
                     ],
-                    "parameters": {
-                        "fields": "pantherdb.ortholog"
-                    },
-                    "predicate": "homologous_to",
-                    "requestBody": {
-                        "body": {
-                            "q": "{inputs[0]}",
-                            "scopes": "entrezgene"
-                        },
-                        "header": "application/x-www-form-urlencoded"
-                    },
+                    "predicate": "treats",
+                    "source": "chembl",
                     "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/pantherMGI"
-                    },
-                    "source": "PANTHER",
-                    "supportBatch": true
+                        "$ref": "#/components/x-bte-response-mapping/chembl-treats"
+                    }
                 }
             ],
-            "hasTranscript": [
+            "treated_by2": [
                 {
+                    "supportBatch": true,
                     "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "ENSEMBL",
-                            "semantic": "Gene"
-                        }
-                    ],
-                    "outputs": [
-                        {
-                            "id": "ENSEMBL",
-                            "semantic": "Transcript"
-                        }
-                    ],
                     "parameters": {
-                        "fields": "ensembl.transcript",
-                        "species": "human"
+                        "fields": "chembl.molecule_chembl_id",
+                        "size": "1000"
                     },
-                    "predicate": "related_to",
                     "requestBody": {
                         "body": {
                             "q": "{inputs[0]}",
-                            "scopes": "ensembl.gene"
+                            "scopes": "chembl.drug_indications.mesh_id"
                         },
                         "header": "application/x-www-form-urlencoded"
                     },
-                    "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/ensemblTranscript"
-                    },
-                    "source": "Ensembl",
-                    "supportBatch": true
-                }
-            ],
-            "involvedInBP": [
-                {
-                    "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "NCBIGENE",
-                            "semantic": "Gene"
-                        }
-                    ],
                     "outputs": [
                         {
-                            "id": "GO",
-                            "semantic": "BiologicalProcess"
+                            "id": "CHEMBL.COMPOUND",
+                            "semantic": "ChemicalSubstance"
                         }
                     ],
-                    "parameters": {
-                        "fields": "go.BP",
-                        "species": "human"
-                    },
-                    "predicate": "participates_in",
-                    "requestBody": {
-                        "body": {
-                            "q": "{inputs[0]}",
-                            "scopes": "entrezgene"
-                        },
-                        "header": "application/x-www-form-urlencoded"
-                    },
-                    "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/biologicalProcess"
-                    },
-                    "source": "NCBI Gene",
-                    "supportBatch": true
-                }
-            ],
-            "involvedInCC": [
-                {
-                    "inputSeparator": ",",
                     "inputs": [
                         {
-                            "id": "NCBIGENE",
-                            "semantic": "Gene"
+                            "id": "MESH",
+                            "semantic": "Disease"
                         }
                     ],
-                    "outputs": [
-                        {
-                            "id": "GO",
-                            "semantic": "CellularComponent"
-                        }
-                    ],
-                    "parameters": {
-                        "fields": "go.CC",
-                        "species": "human"
-                    },
-                    "predicate": "expressed_in",
-                    "requestBody": {
-                        "body": {
-                            "q": "{inputs[0]}",
-                            "scopes": "entrezgene"
-                        },
-                        "header": "application/x-www-form-urlencoded"
-                    },
+                    "predicate": "treated_by",
+                    "source": "chembl",
                     "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/cellularComponent"
-                    },
-                    "source": "NCBI Gene",
-                    "supportBatch": true
-                }
-            ],
-            "involvedInPathway": [
-                {
-                    "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "NCBIGENE",
-                            "semantic": "Gene"
-                        }
-                    ],
-                    "method": "post",
-                    "outputs": [
-                        {
-                            "id": "REACT",
-                            "semantic": "Pathway"
-                        }
-                    ],
-                    "parameters": {
-                        "fields": "pathway.reactome",
-                        "species": "human"
-                    },
-                    "predicate": "participates_in",
-                    "requestBody": {
-                        "body": {
-                            "q": "{inputs[0]}",
-                            "scopes": "entrezgene"
-                        },
-                        "header": "application/x-www-form-urlencoded"
-                    },
-                    "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/reactomePathway"
-                    },
-                    "source": "Reactome",
-                    "supportBatch": true
-                },
-                {
-                    "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "NCBIGENE",
-                            "semantic": "Gene"
-                        }
-                    ],
-                    "method": "post",
-                    "outputs": [
-                        {
-                            "id": "KEGG",
-                            "semantic": "Pathway"
-                        }
-                    ],
-                    "parameters": {
-                        "fields": "pathway.kegg",
-                        "species": "human"
-                    },
-                    "predicate": "participates_in",
-                    "requestBody": {
-                        "body": {
-                            "q": "{inputs[0]}",
-                            "scopes": "entrezgene"
-                        },
-                        "header": "application/x-www-form-urlencoded"
-                    },
-                    "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/keggPathway"
-                    },
-                    "source": "ConsensusPathDB",
-                    "supportBatch": true
-                },
-                {
-                    "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "NCBIGENE",
-                            "semantic": "Gene"
-                        }
-                    ],
-                    "method": "post",
-                    "outputs": [
-                        {
-                            "id": "WIKIPATHWAYS",
-                            "semantic": "Pathway"
-                        }
-                    ],
-                    "parameters": {
-                        "fields": "pathway.wikipathways",
-                        "species": "human"
-                    },
-                    "predicate": "participates_in",
-                    "requestBody": {
-                        "body": {
-                            "q": "{inputs[0]}",
-                            "scopes": "entrezgene"
-                        },
-                        "header": "application/x-www-form-urlencoded"
-                    },
-                    "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/wikipathway"
-                    },
-                    "source": "ConsensusPathDB",
-                    "supportBatch": true
-                },
-                {
-                    "inputSeparator": ",",
-                    "inputs": [
-                        {
-                            "id": "NCBIGENE",
-                            "semantic": "Gene"
-                        }
-                    ],
-                    "method": "post",
-                    "outputs": [
-                        {
-                            "id": "BIOCARTA",
-                            "semantic": "Pathway"
-                        }
-                    ],
-                    "parameters": {
-                        "fields": "pathway.biocarta",
-                        "species": "human"
-                    },
-                    "predicate": "participates_in",
-                    "requestBody": {
-                        "body": {
-                            "q": "{inputs[0]}",
-                            "scopes": "entrezgene"
-                        },
-                        "header": "application/x-www-form-urlencoded"
-                    },
-                    "response_mapping": {
-                        "$ref": "#/components/x-bte-response-mapping/biocarta"
-                    },
-                    "source": "ConsensusPathDB",
-                    "supportBatch": true
+                        "$ref": "#/components/x-bte-response-mapping/chembl"
+                    }
                 }
             ]
-        },
-        "x-bte-response-mapping": {
-            "biocarta": {
-                "BIOCARTA": "pathway.biocarta.id",
-                "name": "pathway.biocarta.name"
-            },
-            "biologicalProcess": {
-                "GO": "go.BP.id",
-                "evidence": "go.BP.evidence",
-                "name": "go.BP.term",
-                "pubmed": "go.BP.pubmed",
-                "qualifiers": "go.BP.qualifier"
-            },
-            "cellularComponent": {
-                "GO": "go.CC.id",
-                "evidence": "go.CC.evidence",
-                "name": "go.CC.term",
-                "pubmed": "go.CC.pubmed",
-                "qualifiers": "go.CC.qualifier"
-            },
-            "ensemblGene": {
-                "ENSEMBL": "ensembl.gene"
-            },
-            "ensemblProtein": {
-                "ENSEMBL": "ensembl.protein"
-            },
-            "ensemblTranscript": {
-                "ENSEMBL": "ensembl.transcript"
-            },
-            "entrezgene": {
-                "NCBIGENE": "entrezgene"
-            },
-            "keggPathway": {
-                "KEGG": "pathway.kegg.id",
-                "name": "pathway.kegg.name"
-            },
-            "molecularFunction": {
-                "GO": "go.MF.id",
-                "evidence": "go.MF.evidence",
-                "name": "go.MF.term",
-                "pubmed": "go.MF.pubmed",
-                "qualifiers": "go.MF.qualifier"
-            },
-            "pantherMGI": {
-                "MGI": "pantherdb.ortholog.MGI",
-                "inTaxon": "pantherdb.ortholog.taxid"
-            },
-            "reactomePathway": {
-                "REACT": "pathway.reactome.id",
-                "name": "pathway.reactome.name"
-            },
-            "uniprotProtein": {
-                "UniProtKB": "uniprot.Swiss-Prot"
-            },
-            "wikipathway": {
-                "WIKIPATHWAYS": "pathway.wikipathways.id",
-                "name": "pathway.wikipathways.name"
-            }
         }
-    },
-    "info": {
-        "contact": {
-            "email": "help@mygene.info",
-            "name": "Chunlei Wu",
-            "x-id": "https://github.com/newgene",
-            "x-role": "responsible developer"
-        },
-        "description": "Documentation of the MyGene.info Gene Query web services. Learn more about [MyGene.info](http://mygene.info/)",
-        "termsOfService": "http://mygene.info/terms/",
-        "title": "MyGene.info API",
-        "version": "3.0",
-        "x-translator": {
-            "component": "KP",
-            "team": [
-                "Service Provider"
-            ]
-        }
-    },
-    "openapi": "3.0.0",
-    "paths": {
-        "/gene": {
-            "post": {
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/fields",
-                        "name": "fields"
-                    },
-                    {
-                        "$ref": "#/components/parameters/species",
-                        "name": "species"
-                    },
-                    {
-                        "$ref": "#/components/parameters/dotfield",
-                        "name": "dotfield"
-                    },
-                    {
-                        "$ref": "#/components/parameters/email",
-                        "name": "email"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "properties": {
-                                    "ids": {
-                                        "description": "multiple geneids seperated by comma, e.g., \"ids=1017,1018\" or \"ids=695,ENSG00000123374\". Note that currently we only take the input ids up to 1000 maximum, the rest will be omitted.",
-                                        "type": "string"
-                                    }
-                                },
-                                "required": [
-                                    "ids"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "items": {
-                                        "$ref": "#/components/schemas/Gene"
-                                    },
-                                    "type": "array"
-                                }
-                            }
-                        },
-                        "description": "a list of matching gene objects"
-                    }
-                },
-                "summary": "For a list of gene ids, return the matching gene objects",
-                "tags": [
-                    "annotation"
-                ]
-            }
-        },
-        "/gene/{geneid}": {
-            "get": {
-                "parameters": [
-                    {
-                        "description": "Entrez or Ensembl gene id, e.g., 1017, ENSG00000170248. A retired Entrez Gene id works too if it is replaced by a new one, e.g., 245794",
-                        "example": "1017",
-                        "in": "path",
-                        "name": "geneid",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "$ref": "#/components/parameters/fields",
-                        "name": "fields"
-                    },
-                    {
-                        "$ref": "#/components/parameters/dotfield",
-                        "name": "dotfield"
-                    },
-                    {
-                        "$ref": "#/components/parameters/callback",
-                        "name": "callback"
-                    },
-                    {
-                        "$ref": "#/components/parameters/email",
-                        "name": "email"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Gene"
-                                }
-                            }
-                        },
-                        "description": "A matching gene object"
-                    }
-                },
-                "summary": "Retrieve gene annotation object based on Entrez or Ensembl gene id, support JSONP and CORS as well.",
-                "tags": [
-                    "annotation"
-                ]
-            }
-        },
-        "/metadata": {
-            "get": {
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/callback",
-                        "name": "callback"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "MyGene.info metadata object"
-                    }
-                },
-                "summary": "Get metadata about the data available from MyGene.info."
-            }
-        },
-        "/metadata/fields": {
-            "get": {
-                "parameters": [
-                    {
-                        "description": "Pass a search term to filter the available fields, e.g. \"search=clinvar\".",
-                        "in": "query",
-                        "name": "search",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Pass a prefix string to filter the available fields, e.g. \"prefix=refseq\".",
-                        "in": "query",
-                        "name": "prefix",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "$ref": "#/components/parameters/callback",
-                        "name": "callback"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "MyGene.info metadata fields object"
-                    }
-                },
-                "summary": "Get metadata about the data fields available from MyGene.info."
-            }
-        },
-        "/query": {
-            "get": {
-                "parameters": [
-                    {
-                        "description": "Query string. Examples \"CDK2\", \"NM_052827\", \"204639_at\", \"chr1:151,073,054-151,383,976\", \"hg19.chr1:151073054-151383976\". The detailed query syntax can be found from our [docs](http://docs.mygene.info/en/latest/doc/query_service.html).",
-                        "example": "CDK2",
-                        "in": "query",
-                        "name": "q",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "$ref": "#/components/parameters/fields",
-                        "name": "fields"
-                    },
-                    {
-                        "$ref": "#/components/parameters/species",
-                        "name": "species"
-                    },
-                    {
-                        "$ref": "#/components/parameters/size",
-                        "name": "size"
-                    },
-                    {
-                        "$ref": "#/components/parameters/from",
-                        "name": "from"
-                    },
-                    {
-                        "$ref": "#/components/parameters/sort",
-                        "name": "sort"
-                    },
-                    {
-                        "description": "a single field or comma-separated fields to return facets, for example, \"facets=taxid\", \"facets=taxid,type_of_gene\".",
-                        "in": "query",
-                        "name": "facets",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "relevant when faceting on species (i.e., \u201cfacets=taxid\u201d are passed). It\u2019s used to pass species filter without changing the scope of faceting, so that the returned facet counts won\u2019t change. Either species name or taxonomy id can be used, just like \u201cspecies\u201d parameter.",
-                        "in": "query",
-                        "name": "species_facet_filter",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "when passed as \u201cTrue\u201d or \u201c1\u201d, the query returns only the hits with valid Entrez gene ids. Default: False.",
-                        "in": "query",
-                        "name": "entrezonly",
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    {
-                        "description": "when passed as \u201cTrue\u201d or \u201c1\u201d, the query returns only the hits with valid Ensembl gene ids. Default: False.",
-                        "in": "query",
-                        "name": "ensemblonly",
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    {
-                        "$ref": "#/components/parameters/callback",
-                        "name": "callback"
-                    },
-                    {
-                        "$ref": "#/components/parameters/dotfield",
-                        "name": "dotfield"
-                    },
-                    {
-                        "$ref": "#/components/parameters/email",
-                        "name": "email"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/QueryResult"
-                                }
-                            }
-                        },
-                        "description": "A query response object with \"hits\" property"
-                    }
-                },
-                "summary": "Make gene query and return matching gene list. Support JSONP and CORS as well.",
-                "tags": [
-                    "query"
-                ]
-            },
-            "post": {
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/fields",
-                        "name": "fields"
-                    },
-                    {
-                        "$ref": "#/components/parameters/species",
-                        "name": "species"
-                    },
-                    {
-                        "$ref": "#/components/parameters/dotfield",
-                        "name": "dotfield"
-                    },
-                    {
-                        "$ref": "#/components/parameters/email",
-                        "name": "email"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "properties": {
-                                    "q": {
-                                        "description": "multiple query terms seperated by comma (also support \"+\" or white space), but no wildcard, e.g., \"q=1017,1018\" or \"q=CDK2+BTK\"",
-                                        "type": "string"
-                                    },
-                                    "scopes": {
-                                        "description": "Specify one or more fields (separated by comma) as the search \"scopes\", e.g., \"scopes=entrezgene\", \"scopes=entrezgene,ensemblgene\". The available \"fields\" can be passed to \"scopes\" parameter are listed [here](http://mygene.info/doc/query_service.html#available-fields). Default: \"scopes=entrezgene,ensemblgene,retired\" (either Entrez or Ensembl gene ids).",
-                                        "type": "string"
-                                    }
-                                },
-                                "required": [
-                                    "q"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/QueryPOSTResult"
-                                }
-                            }
-                        },
-                        "description": "Query response objects with \"hits\" property"
-                    }
-                },
-                "summary": "Make gene batch query and return matching gene hits",
-                "tags": [
-                    "query"
-                ],
-                "x-bte-kgs-operations": [
-                    {
-                        "$ref": "#/components/x-bte-kgs-operations/enablesMF"
-                    },
-                    {
-                        "$ref": "#/components/x-bte-kgs-operations/MFToGene"
-                    },
-                    {
-                        "$ref": "#/components/x-bte-kgs-operations/involvedInBP"
-                    },
-                    {
-                        "$ref": "#/components/x-bte-kgs-operations/BPToGene"
-                    },
-                    {
-                        "$ref": "#/components/x-bte-kgs-operations/involvedInCC"
-                    },
-                    {
-                        "$ref": "#/components/x-bte-kgs-operations/CCToGene"
-                    },
-                    {
-                        "$ref": "#/components/x-bte-kgs-operations/involvedInPathway"
-                    },
-                    {
-                        "$ref": "#/components/x-bte-kgs-operations/hasTranscript"
-                    },
-                    {
-                        "$ref": "#/components/x-bte-kgs-operations/GeneToProtein"
-                    },
-                    {
-                        "$ref": "#/components/x-bte-kgs-operations/ProteinToGene"
-                    },
-                    {
-                        "$ref": "#/components/x-bte-kgs-operations/hasHomolog"
-                    },
-                    {
-                        "$ref": "#/components/x-bte-kgs-operations/PathwayHasGene"
-                    }
-                ]
-            }
-        }
-    },
-    "servers": [
-        {
-            "description": "Encrypted Production server",
-            "url": "https://mygene.info/v3"
-        },
-        {
-            "description": "Production server",
-            "url": "http://mygene.info/v3"
-        }
-    ],
-    "tags": [
-        {
-            "name": "gene"
-        },
-        {
-            "name": "annotation"
-        },
-        {
-            "name": "query"
-        },
-        {
-            "name": "translator"
-        },
-        {
-            "name": "biothings"
-        }
-    ]
+    }
 }
