@@ -37,7 +37,6 @@ exports.API_LIST = [
     'Automat Uberongraph',
     'Automat Human GOA',
     'Automat HGNC',
-    'Automat CTD',
     'Automat HMDB',
     'Automat Hetio',
     'Automat Panther',
