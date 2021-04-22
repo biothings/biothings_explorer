@@ -1,0 +1,1 @@
+process.env.MAX_QUERIES_PER_MIN = 20;
