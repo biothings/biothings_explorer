@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.2.0...v2.3.0) (2021-04-20)
+
+
+### Features
+
+* :sparkles: set a hard limit of 3s for all TRAPI APIs ([db96e0b](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/db96e0bc48dda0a345fac6500fcb8851516dc7ac))
+
+
+### Bug Fixes
+
+* :bug: disable Automat CTD due to poor perform ([3753b2c](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/3753b2cfe69b6c9ef2e82254fe688a039e4e73e3))
+* :bug: fix wrong output type ([714f9ab](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/714f9abf81bd5735b2a011d9513a8b9347443adb))
+
 ## [2.2.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.1.0...v2.2.0) (2021-04-02)
 
 ## [2.1.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.0.1...v2.1.0) (2021-04-02)
