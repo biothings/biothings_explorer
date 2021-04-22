@@ -63,9 +63,9 @@ module.exports = class Config {
 
     setLimiter() {
         const limiter = rateLimit({
-            windowMs: 15 * 60 * 1000, //15mins
-            max: 200 //200 requests
+            windowMs: 1 * 60 * 1000, //1min
+            max: 3 //3 requests
         });
-        this.app.use("/query", limiter);
+        this.app.use("/v1/query", limiter);
     }
 }
