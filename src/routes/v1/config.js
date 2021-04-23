@@ -20,7 +20,7 @@ exports.API_LIST = [
     'DISEASES API',
     'EBIgene2phenotype API',
     'Gene Ontology Biological Process API',
-    // 'Clinical Risk KP API',
+    'Clinical Risk KP API',
     'Gene Ontology Molecular Activity API',
     'Gene Ontology Cellular Component API',
     'BioThings DGIdb API',
