@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.3.0...v2.4.0) (2021-04-23)
+
+
+### Features
+
+* :sparkles: allow user to set MAX_QUERIES_PER_MIN as env ([8686092](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/8686092a8cbeedacbc38f8670a7be6470eeafc9d))
+* :sparkles: set rate limit to max 3 queries per min ([aeea89c](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/aeea89c867eace66ba485b1c8b146af2a4328912))
+
+
+### Bug Fixes
+
+* :bug: fix unable to resolve biocarta id issue ([551e4b1](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/551e4b1f938eb08054f303ec6d2460f558e32d08))
+* :fire: temporarily disable text mining co-occurrence kp ([d214a4d](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/d214a4dbec36a60d6df7d150f89835a6ea32bac8))
+* :sparkles: re-enable clinical risk kp ([4464dfc](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/4464dfcffcb470ee7478cd16b2d93d712367ebd7))
+
 ## [2.3.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.2.0...v2.3.0) (2021-04-20)
 
 
