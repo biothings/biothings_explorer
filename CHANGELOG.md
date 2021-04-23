@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.4.0...v2.5.0) (2021-04-23)
+
+
+### Bug Fixes
+
+* :bug: fix issue when output ids contain special characters ([898483a](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/898483a89d678e7fc4c95dd43ab607e3bbc4ae46))
+
 ## [2.4.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.3.0...v2.4.0) (2021-04-23)
 
 
