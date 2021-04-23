@@ -24,7 +24,7 @@ exports.API_LIST = [
     'Gene Ontology Molecular Activity API',
     'Gene Ontology Cellular Component API',
     'BioThings DGIdb API',
-    'Text Mining CO-OCCURRENCE API',
+    // 'Text Mining CO-OCCURRENCE API',
     'Text Mining Targeted Association API',
     'Multiomics Wellness KP API',
     'BioLink API',

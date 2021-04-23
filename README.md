@@ -92,6 +92,10 @@ To enable debug mode, which outputs logging statements to the terminal in real t
 
 `$ DEBUG=biothings-explorer-trapi:*,smartapi-kg:*,call-apis:*,biomedical-id-resolver:* npm start` (also outputs debug statements from dependencies)
 
+By default, the `/v1/query` endpoint only supports 3 queries per min, you could modify this behavior by setting MAX_QUERIES_PER_MIN environment variable when starting the service
+
+`$ MAX_QUERIES_PER_MIN=5 npm start`
+
 ## Simple build for production
 
     $ npm build
