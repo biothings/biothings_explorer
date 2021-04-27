@@ -3,7 +3,7 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "id": "NCBIGENE:1017",
+                    "id": "NCBIGene:1017",
                     "category": "biolink:Gene"
                 },
                 "n1": {

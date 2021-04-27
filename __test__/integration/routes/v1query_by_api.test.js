@@ -98,7 +98,7 @@ describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
             .expect(200)
             .expect('Content-Type', /json/)
             .then(response => {
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("NCBIGENE:6530")
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("NCBIGene:6530")
             })
     })
 
