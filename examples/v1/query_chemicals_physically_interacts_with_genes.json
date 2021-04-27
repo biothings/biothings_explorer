@@ -4,7 +4,7 @@
             "nodes": {
                 "n0": {
                     "category": "biolink:Gene",
-                    "id": "NCBIGENE:1017"
+                    "id": "NCBIGene:1017"
                 },
                 "n1": {
                     "category": "biolink:ChemicalSubstance"
