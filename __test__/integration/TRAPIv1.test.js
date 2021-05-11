@@ -67,7 +67,7 @@ describe("Testing endpoints", () => {
                 expect(response.body.message).toHaveProperty("knowledge_graph");
                 expect(response.body.message.knowledge_graph).toHaveProperty("nodes");
                 expect(response.body.message.knowledge_graph).toHaveProperty("edges");
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("MONDO:0008315")
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("MONDO:0001583")
             })
     })
 
