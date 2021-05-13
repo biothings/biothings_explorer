@@ -3,11 +3,11 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "category": "biolink:DiseaseOrPhenotypicFeature",
-                    "id": "MONDO:0005015"
+                    "categories": "biolink:DiseaseOrPhenotypicFeature",
+                    "ids": "MONDO:0005015"
                 },
                 "n3": {
-                    "category": "biolink:DiseaseOrPhenotypicFeature"
+                    "categories": "biolink:DiseaseOrPhenotypicFeature"
                 }
             },
             "edges": {
