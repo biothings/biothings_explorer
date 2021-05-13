@@ -2,7 +2,7 @@ const PredicatesHandler = require("../../controllers/predicates");
 
 class RoutePredicatesByAPI {
     setRoutes(app) {
-        app.get('/v1/smartapi/:smartapiID/predicates', async (req, res, next) => {
+        app.get('/v1/smartapi/:smartapiID/meta_knowledge_graph', async (req, res, next) => {
             try {
                 const handler = new PredicatesHandler(req.params.smartapiID);
                 const predicates = await handler.getPredicates();

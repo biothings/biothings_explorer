@@ -16,9 +16,9 @@ describe("Testing endpoints", () => {
     const query_without_category = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_without_input_category.json')))
     const expand_node = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_with_node_to_be_expanded.json')))
 
-    test("GET /v1/predicates", async () => {
+    test("GET /v1/meta_knowledge_graph", async () => {
         await request(app)
-            .get("/v1/predicates")
+            .get("/v1/meta_knowledge_graph")
             .expect(200)
             .expect('Content-Type', /json/)
             .then((response) => {
@@ -28,9 +28,9 @@ describe("Testing endpoints", () => {
             })
     })
 
-    test("GET /v1/smartapi/{smartapi_id}/predicates", async () => {
+    test("GET /v1/smartapi/{smartapi_id}/meta_knowledge_graph", async () => {
         await request(app)
-            .get("/v1/smartapi/978fe380a147a8641caf72320862697b/predicates")
+            .get("/v1/smartapi/978fe380a147a8641caf72320862697b/meta_knowledge_graph")
             .expect(200)
             .expect('Content-Type', /json/)
             .then((response) => {

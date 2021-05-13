@@ -86,7 +86,7 @@ describe("Test /metakg endpoint", () => {
             })
     })
 
-    test("Should return info from TRAPI /predicates endpoint", async () => {
+    test("Should return info from TRAPI /meta_knowledge_graph endpoint", async () => {
         await request(app)
             .get("/metakg")
             .expect(200)
