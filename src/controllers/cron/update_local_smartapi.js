@@ -14,6 +14,7 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
                 spec.info["x-translator"].component === "KP" &&
                 "paths" in spec &&
                 "/predicates" in spec.paths &&
+                // "/predicates" in spec.paths || "/meta_knowledge_graph" in spec.paths &&
                 "/query" in spec.paths
             ) {
                 trapi.push({
@@ -32,13 +33,14 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
                     query_operation: {
                         path: '/query',
                         server: spec.servers[0].url,
-                        method: 'post'
+                        method: 'post',
+                        version: spec.info?.['x-trapi']?.version ? spec.info['x-trapi'].version : ''
                     }
-                });
+                })
             }
         } catch (err) {
             debug(
-                `[error]: Unable to parse spec, ${spec ? spec.info.title : spec
+                `[error]: Unable to parse spec, ${spec?.info?.title ? spec.info.title : spec
                 }. Error message is ${err.toString()}`
             );
         }
@@ -50,7 +52,8 @@ const constructQueryUrl = (serverUrl) => {
     if (serverUrl.endsWith("/")) {
         serverUrl = serverUrl.slice(0, -1);
     }
-    return serverUrl + "/predicates";
+    // return version.startsWith('1.1') ? serverUrl + '/meta_knowledge_graph' : serverUrl + '/predicates';
+    return serverUrl + '/predicates';
 }
 
 const getOpsFromPredicatesEndpoint = async (metadata) => {
