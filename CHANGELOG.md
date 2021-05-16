@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.6.0...v2.7.0) (2021-05-16)
+
+
+### Features
+
+* :sparkles: add handler logics for creating v1 metakg ([c1c5011](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/c1c50116dcec2c131c36c8c3ec52502f49e65d2d))
+* :sparkles: add metakg routes to index ([7c7b8e1](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/7c7b8e1fed0f195c8ab5854b8a49d0cf9b71ae96))
+* :sparkles: create route for metakg ([cd379bc](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/cd379bc8f16c491090c2982f5c0fb5fbbc4dda3d))
+
 ## [2.6.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.5.0...v2.6.0) (2021-05-11)
 
 
