@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.6.0...v2.7.0) (2021-05-16)
+
+
+### Features
+
+* :sparkles: add handler logics for creating v1 metakg ([c1c5011](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/c1c50116dcec2c131c36c8c3ec52502f49e65d2d))
+* :sparkles: add metakg routes to index ([7c7b8e1](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/7c7b8e1fed0f195c8ab5854b8a49d0cf9b71ae96))
+* :sparkles: create route for metakg ([cd379bc](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/cd379bc8f16c491090c2982f5c0fb5fbbc4dda3d))
+
+## [2.6.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.5.0...v2.6.0) (2021-05-11)
+
+
+### Features
+
+* :sparkles: upgrade handler to support trapi 1.1.0 ([3cec3f2](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/3cec3f2868864cd4a6501ba441ac4927b8034250))
+* trapi v1.1.0 support, update handler ([3109a8a](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/3109a8a14071198ae038c5001f0d1bd76c566ad2))
+
+
+### Bug Fixes
+
+* :bug: change from NCBIGENE to NCBIGene ([88d6035](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/88d6035d9c9e76451be5514409f3a416da062c55))
+
 ## [2.5.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.4.0...v2.5.0) (2021-04-23)
 
 
