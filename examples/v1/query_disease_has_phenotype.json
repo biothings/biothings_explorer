@@ -3,18 +3,18 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "categories": "biolink:Disease",
-                    "ids": "MONDO:0016575"
+                    "category": "biolink:Disease",
+                    "id": "MONDO:0016575"
                 },
                 "n1": {
-                    "categories": "biolink:PhenotypicFeature"
+                    "category": "biolink:PhenotypicFeature"
                 }
             },
             "edges": {
                 "e01": {
                     "subject": "n0",
                     "object": "n1",
-                    "predicates": "biolink:has_phenotype"
+                    "predicate": "biolink:has_phenotype"
                 }
             }
         }

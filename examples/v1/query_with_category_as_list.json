@@ -3,11 +3,11 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "ids": "UMLS:C0008780",
-                    "categories": "biolink:PhenotypicFeature"
+                    "id": "UMLS:C0008780",
+                    "category": "biolink:PhenotypicFeature"
                 },
                 "n1": {
-                    "categories": [
+                    "category": [
                         "biolink:Disease",
                         "biolink:BiologicalProcess",
                         "biolink:Pathway"

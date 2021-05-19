@@ -3,11 +3,11 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "categories": "biolink:Disease",
-                    "ids": "MONDO:0005252"
+                    "category": "biolink:Disease",
+                    "id": "MONDO:0005252"
                 },
                 "n3": {
-                    "categories": "biolink:ChemicalSubstance"
+                    "category": "biolink:ChemicalSubstance"
                 }
             },
             "edges": {

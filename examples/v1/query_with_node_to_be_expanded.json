@@ -3,18 +3,18 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "ids": "NCBIGene:1017",
-                    "categories": "biolink:Gene"
+                    "id": "NCBIGene:1017",
+                    "category": "biolink:Gene"
                 },
                 "n1": {
-                    "categories": "biolink:NamedThing"
+                    "category": "biolink:NamedThing"
                 }
             },
             "edges": {
                 "e01": {
                     "subject": "n0",
                     "object": "n1",
-                    "predicates": "biolink:participates_in"
+                    "predicate": "biolink:participates_in"
                 }
             }
         }
