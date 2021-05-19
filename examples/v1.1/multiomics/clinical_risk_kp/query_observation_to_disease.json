@@ -1,0 +1,21 @@
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "categories": "biolink:Observation",
+                    "ids": "NCIT:C110935"
+                },
+                "n3": {
+                    "categories": "biolink:DiseaseOrPhenotypicFeature"
+                }
+            },
+            "edges": {
+                "e03": {
+                    "subject": "n0",
+                    "object": "n3"
+                }
+            }
+        }
+    }
+}
