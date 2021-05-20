@@ -2,7 +2,7 @@ const PredicatesHandler = require("../../controllers/predicates");
 
 class RoutePredicatesByTeam {
     setRoutes(app) {
-        app.get('/v1/team/:teamName/meta_knowledge_graph', async (req, res, next) => {
+        app.get('/v1/team/:teamName/predicates', async (req, res, next) => {
             try {
                 const handler = new PredicatesHandler(undefined, req.params.teamName);
                 const predicates = await handler.getPredicates();
