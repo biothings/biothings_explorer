@@ -1,10 +1,10 @@
 const app = require("../../../src/app");
 const request = require('supertest');
 
-describe("Test /v1/meta_knowledge_graph endpoint", () => {
+describe.skip("Test /v1/predicates endpoint", () => {
     test("Should return 200 with valid response", async () => {
         await request(app)
-            .get("/v1/meta_knowledge_graph")
+            .get("/v1/predicates")
             .expect(200)
             .expect('Content-Type', /json/)
             .then((response) => {
