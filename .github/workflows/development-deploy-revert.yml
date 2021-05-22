@@ -23,6 +23,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd ~/opt/BioThings_Explorer_TRAPI
+          git fetch
           git reset ${{ github.event.inputs.git-ref }}
           cp docker-compose-dev.yml docker-compose.yml
           docker-compose up --force-recreate --build -d
