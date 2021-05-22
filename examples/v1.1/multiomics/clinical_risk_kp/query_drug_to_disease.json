@@ -3,11 +3,11 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "categories": "biolink:Drug",
-                    "ids": "CHEBI:86990"
+                    "categories": ["biolink:Drug"],
+                    "ids": ["CHEBI:86990"]
                 },
                 "n3": {
-                    "categories": "biolink:Disease"
+                    "categories": ["biolink:Disease"]
                 }
             },
             "edges": {
