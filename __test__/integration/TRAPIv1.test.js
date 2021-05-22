@@ -3,8 +3,8 @@ const request = require('supertest');
 const fs = require("fs");
 var path = require('path');
 
-
-describe("Testing endpoints", () => {
+//V1 tests are now skipped.
+describe.skip("Testing v1 endpoints", () => {
     const example_foler = path.resolve(__dirname, '../../examples/v1');
     const clinical_risk_kp_folder = path.resolve(__dirname, '../../examples/v1/multiomics/clinical_risk_kp');
     const old_spec_folder = path.resolve(__dirname, "../../examples/v0.9.2");
