@@ -1,9 +1,9 @@
 const app = require("../../../src/app");
 const request = require('supertest');
-const pred = require("../../../src/controllers/predicates");
+const pred = require("../../../src/controllers/meta_knowledge_graph");
 const PredicateLoadingError = require("../../../src/utils/errors/predicates_error");
 const PredicatesLoadingError = require("../../../src/utils/errors/predicates_error");
-jest.mock('../../../src/controllers/predicates');
+jest.mock('../../../src/controllers/meta_knowledge_graph');
 
 
 
