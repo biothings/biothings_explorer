@@ -1,7 +1,7 @@
 const app = require("../../../src/app");
 const request = require('supertest');
 
-describe("Test /v1/predicates endpoint", () => {
+describe.skip("Test /v1/predicates endpoint", () => {
     test("Should return 200 with valid response", async () => {
         await request(app)
             .get("/v1/predicates")

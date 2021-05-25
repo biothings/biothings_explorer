@@ -3,11 +3,11 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "category": "biolink:DiseaseOrPhenotypicFeature",
-                    "id": "MONDO:0005015"
+                    "categories": ["biolink:Drug"],
+                    "ids": ["CHEBI:86990"]
                 },
                 "n3": {
-                    "category": "biolink:DiseaseOrPhenotypicFeature"
+                    "categories": ["biolink:Disease"]
                 }
             },
             "edges": {

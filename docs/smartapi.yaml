@@ -113,7 +113,7 @@ paths:
         return all associations
       tags:
       - metadata
-  /predicates:
+  /meta_knowledge_graph:
     get:
       responses:
         '200':
@@ -139,7 +139,7 @@ paths:
       tags:
       - metadata
       - 0.9.2
-  /v1/predicates:
+  /v1/meta_knowledge_graph:
     get:
       tags:
         - predicates
@@ -166,7 +166,7 @@ paths:
                     'biolink:Gene':
                       - biolink:directly_interacts_with
                       - biolink:decreases_activity_of
-  /v1/smartapi/{smartapi_id}/predicates:
+  /v1/smartapi/{smartapi_id}/meta_knowledge_graph:
     get:
       tags:
         - predicates
@@ -201,7 +201,7 @@ paths:
                     'biolink:Gene':
                       - biolink:directly_interacts_with
                       - biolink:decreases_activity_of
-  /v1/team/{team_name}/predicates:
+  /v1/team/{team_name}/meta_knowledge_graph:
     get:
       tags:
         - predicates

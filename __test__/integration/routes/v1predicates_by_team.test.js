@@ -1,7 +1,7 @@
 const app = require("../../../src/app");
 const request = require('supertest');
 
-describe("Test /v1/team/{team_name}/predicates endpoint", () => {
+describe.skip("Test /v1/team/{team_name}/predicates endpoint", () => {
     test("Query to Text Mining team Should return 200 with valid response", async () => {
         await request(app)
             .get("/v1/team/Text Mining Provider/predicates")

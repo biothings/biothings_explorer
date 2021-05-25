@@ -1,7 +1,7 @@
 const app = require("../../../src/app");
 const request = require('supertest');
 
-describe("Test /v1/smartapi/{smartapi_id}/predicates endpoint", () => {
+describe.skip("Test /v1/smartapi/{smartapi_id}/predicates endpoint", () => {
     test("Query to Text Mining Targeted Association API Should return 200 with valid response", async () => {
         await request(app)
             .get("/v1/smartapi/978fe380a147a8641caf72320862697b/predicates")

@@ -3,12 +3,12 @@ const request = require('supertest');
 const fs = require("fs");
 var path = require('path');
 
-//V1 tests are now skipped.
-describe.skip("Testing v1 endpoints", () => {
-    const example_foler = path.resolve(__dirname, '../../examples/v1');
-    const clinical_risk_kp_folder = path.resolve(__dirname, '../../examples/v1/multiomics/clinical_risk_kp');
+
+describe("Testing v1.1 endpoints", () => {
+    const example_foler = path.resolve(__dirname, '../../examples/v1.1');
+    const clinical_risk_kp_folder = path.resolve(__dirname, '../../examples/v1.1/multiomics/clinical_risk_kp');
     const old_spec_folder = path.resolve(__dirname, "../../examples/v0.9.2");
-    const invalid_example_folder = path.resolve(__dirname, "../../examples/v1/invalid");
+    const invalid_example_folder = path.resolve(__dirname, "../../examples/v1.1/invalid");
     const drug2disease_query = JSON.parse(fs.readFileSync(path.join(clinical_risk_kp_folder, 'query_drug_to_disease.json')));
     const gene2chemical_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_chemicals_physically_interacts_with_genes.json')));
     const disease2gene_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_genes_relate_to_disease.json')));
@@ -16,26 +16,112 @@ describe.skip("Testing v1 endpoints", () => {
     const query_without_category = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_without_input_category.json')))
     const expand_node = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_with_node_to_be_expanded.json')))
 
-    test("GET /v1/predicates", async () => {
+    test("GET /v1/meta_knowledge_graph", async () => {
         await request(app)
-            .get("/v1/predicates")
+            .get("/v1/meta_knowledge_graph")
             .expect(200)
             .expect('Content-Type', /json/)
             .then((response) => {
-                expect(response.body).toHaveProperty("biolink:Gene");
-                expect(response.body["biolink:Gene"]).toHaveProperty("biolink:ChemicalSubstance");
-                expect(response.body["biolink:Gene"]["biolink:ChemicalSubstance"]).toContain("biolink:related_to");
+                expect(response.body).toHaveProperty("nodes");
+                expect(response.body).toHaveProperty("nodes.biolink:Gene");
+                expect(response.body).toHaveProperty("nodes.biolink:Gene.id_prefixes");
+
+                expect(response.body).toHaveProperty("edges");
+                expect(response.body.edges).toEqual(
+                    expect.arrayContaining([
+                      expect.objectContaining({
+                        "subject": "biolink:ChemicalSubstance",
+                        "predicate": "biolink:entity_positively_regulates_entity",
+                        "object": "biolink:Gene"
+                      })
+                    ])
+                );
             })
     })
 
-    test("GET /v1/smartapi/{smartapi_id}/predicates", async () => {
+    test("GET /v1/team/{team_name}/meta_knowledge_graph", async () => {
         await request(app)
-            .get("/v1/smartapi/978fe380a147a8641caf72320862697b/predicates")
+            .get("/v1/team/Service Provider/meta_knowledge_graph")
             .expect(200)
             .expect('Content-Type', /json/)
             .then((response) => {
-                expect(response.body).toHaveProperty("biolink:Gene");
-                expect(response.body["biolink:Gene"]).toHaveProperty("biolink:ChemicalSubstance");
+                expect(response.body).toHaveProperty("nodes");
+                expect(response.body).toHaveProperty("nodes.biolink:Gene");
+                expect(response.body).toHaveProperty("nodes.biolink:Gene.id_prefixes");
+
+                expect(response.body).toHaveProperty("edges");
+                expect(response.body.edges).toEqual(
+                    expect.arrayContaining([
+                      expect.objectContaining({
+                        "subject": "biolink:SequenceVariant",
+                        "predicate": "biolink:located_in",
+                        "object": "biolink:Gene",
+                      })
+                    ])
+                );
+            })
+    })
+
+    test("Query to Text Mining team Should return 200 with valid response", async () => {
+        await request(app)
+            .get("/v1/team/Text Mining Provider/meta_knowledge_graph")
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then((response) => {
+                expect(response.body).toHaveProperty("nodes.biolink:Gene");
+                expect(response.body.edges).toEqual(
+                    expect.arrayContaining([
+                      expect.objectContaining({
+                        "subject": "biolink:ChemicalSubstance",
+                        "predicate": "biolink:entity_positively_regulates_entity",
+                        "object": "biolink:Gene",
+                      })
+                    ])
+                );
+            })
+    })
+
+    test("Query to Invalid team Should return 200 with empty response", async () => {
+        await request(app)
+            .get("/v1/team/wrong team/meta_knowledge_graph")
+            .expect(404)
+            .expect('Content-Type', /json/)
+            .then((response) => {
+                expect(response.body).toEqual({
+                    "error": "Unable to load predicates",
+                    "more_info": "Failed to Load MetaKG",
+                });
+            })
+    })
+
+    test("GET /v1/smartapi/{smartapi_id}/meta_knowledge_graph", async () => {
+        await request(app)
+            // testing with "Text Mining Targeted Association API"
+            .get("/v1/smartapi/978fe380a147a8641caf72320862697b/meta_knowledge_graph")
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then((response) => {
+                expect(response.body).toHaveProperty("nodes.biolink:Protein");
+                expect(response.body.edges).toEqual(
+                    expect.arrayContaining([
+                      expect.objectContaining({
+                        "subject": "biolink:ChemicalSubstance",
+                        "predicate": "biolink:entity_positively_regulates_entity",
+                        "object": "biolink:Gene"
+                      })
+                    ])
+                );
+            })
+    })
+
+    test("Query to Invalid API Should return 404 with error message included", async () => {
+        await request(app)
+            .get("/v1/smartapi/78fe380a147a8641caf72320862697b/meta_knowledge_graph")
+            .expect(404)
+            .expect('Content-Type', /json/)
+            .then((response) => {
+                expect(response.body).toHaveProperty("error", "Unable to load predicates");
+                expect(response.body).toHaveProperty("more_info", "Failed to Load MetaKG");
             })
     })
 
@@ -55,7 +141,8 @@ describe.skip("Testing v1 endpoints", () => {
             })
     })
 
-    test("POST /v1/query with clinical risk kp query", async () => {
+    //Skip this test for now, need to check the actual API data
+    test.skip("POST /v1/query with clinical risk kp query", async () => {
         await request(app)
             .post("/v1/query")
             .send(drug2disease_query)

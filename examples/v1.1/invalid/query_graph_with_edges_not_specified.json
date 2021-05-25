@@ -1,0 +1,16 @@
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "categories": "biolink:Gene",
+                    "ids": "NCBIGene:1017"
+                },
+                "n1": {
+                    "categories": "biolink:ChemicalSubstance"
+                }
+            },
+            "edges": {}
+        }
+    }
+}

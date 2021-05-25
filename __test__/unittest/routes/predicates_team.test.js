@@ -1,13 +1,13 @@
 const app = require("../../../src/app");
 const request = require('supertest');
-const pred = require("../../../src/controllers/predicates");
+const pred = require("../../../src/controllers/meta_knowledge_graph");
 const PredicateLoadingError = require("../../../src/utils/errors/predicates_error");
 const PredicatesLoadingError = require("../../../src/utils/errors/predicates_error");
-jest.mock('../../../src/controllers/predicates');
+jest.mock('../../../src/controllers/meta_knowledge_graph');
 
 
 
-describe("Test /v1/predicates endpoint", () => {
+describe("Test /v1/meta_knowledge_graph endpoint", () => {
 
 
     test("Should return 404 with valid response", async () => {
@@ -15,7 +15,7 @@ describe("Test /v1/predicates endpoint", () => {
             throw new PredicatesLoadingError();
         })
         await request(app)
-            .get("/v1/team/Text Mining Provider/predicates")
+            .get("/v1/team/Text Mining Provider/meta_knowledge_graph")
             .expect(404)
             .expect('Content-Type', /json/)
             .then(res => {

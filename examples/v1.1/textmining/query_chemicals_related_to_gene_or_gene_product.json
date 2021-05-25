@@ -1,0 +1,21 @@
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "categories": "biolink:GeneOrGeneProduct",
+                    "ids": "PR:000008790"
+                },
+                "n1": {
+                    "categories": "biolink:ChemicalSubstance"
+                }
+            },
+            "edges": {
+                "e01": {
+                    "subject": "n0",
+                    "object": "n1"
+                }
+            }
+        }
+    }
+}
