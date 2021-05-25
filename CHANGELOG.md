@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.8.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.7.0...v2.8.0) (2021-05-25)
+
+
+### Features
+
+* :sparkles: added meta_knowledge_graph endpoints by team and ip ([8882df4](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/8882df487e7348918e437fa6f971fadd7b24cb3f))
+
+
+### Bug Fixes
+
+* :bug: fix meta_kg endpoint for a given API ([85ff733](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/85ff733bbaefec91c55d36b9bf62bc4bc16259de))
+
 ## [2.7.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.6.0...v2.7.0) (2021-05-16)
 
 
