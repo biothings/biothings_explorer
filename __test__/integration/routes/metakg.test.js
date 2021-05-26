@@ -94,7 +94,7 @@ describe("Test /metakg endpoint", () => {
             .then((response) => {
                 expect(response.body).toHaveProperty("associations");
                 const apis = Array.from(new Set(response.body.associations.map(item => item.api.name)));
-                expect(apis).toContain("Automat Pharos");
+                expect(apis).toContain("BioLink API");
             })
     })
 })
