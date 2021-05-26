@@ -138,11 +138,11 @@ const getOpsFromPredicatesEndpoints = async (specs) => {
 const updateSmartAPISpecs = async () => {
     const SMARTAPI_URL = 'https://smart-api.info/api/query?q=tags.name:translator&size=150&fields=paths,servers,tags,components.x-bte*,info,_meta';
     const res = await axios.get(SMARTAPI_URL);
-    // const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
+    const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
     const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
-    // fs.writeFile(localFilePath, JSON.stringify(res.data), (err) => {
-    //     if (err) throw err;
-    // });
+    fs.writeFile(localFilePath, JSON.stringify(res.data), (err) => {
+        if (err) throw err;
+    });
     const predicatesInfo = await getOpsFromPredicatesEndpoints(res.data.hits);
     fs.writeFile(predicatesFilePath, JSON.stringify(predicatesInfo), (err) => {
         if (err) throw err;
