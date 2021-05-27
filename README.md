@@ -5,44 +5,29 @@
 
 ## Introduction
 
-This GitHub repo serves as the development repo for the TRAPI API implementation of BioThings Explorer.
+This GitHub repo serves as the development repo for the TRAPI API implementation of **BioThings Explorer (BTE)**. BTE is an engine for autonomously querying a distributed knowledge graph. The distributed knowledge graph is made up of biomedical APIs that have been annotated with semantically-precise descriptions of their inputs and outputs in the [SmartAPI registry](https://smart-api.info/). This project is primarily funded by the [NCATS Translator project](https://ncats.nih.gov/translator).  There is also an older [python version of BioThings Explorer](https://github.com/biothings/biothings_explorer) that is currently not being actively developed.
 
-### What's BioThings Explorer
+An older version of the meta knowledge graph that is consumed by BTE is in this figure (which, although older, gives a nice conceptual visualization of API interoperability):
 
-BioThings Explorer aims at helping users querying and linking results from a variety of biomedical relevant APIs through one interface. The project is funded by the [NCATS Translator project](https://ncats.nih.gov/translator).
+![BTE Meta-KG](diagrams/smartapi_metagraph.png "BioThings Explorer metagraph")
 
-### What's TRAPI
+### What's TRAPI?
 
-TRAPI stands for [Translator Reasoner API](https://github.com/NCATSTranslator/ReasonerAPI). It is a standard defined for APIs developed within NCATS Biomedical Translator project to allow easy information exchange among them.
+TRAPI stands for [Translator Reasoner API](https://github.com/NCATSTranslator/ReasonerAPI). It is a standard defined for APIs developed within NCATS Biomedical Translator project to facilitate information exchange between resources.  BTE exports results via TRAPI to maintain interoperability with other Translator tools.  BTE can also _consume_ knowledge resources that expose the TRAPI interface, but it also can consume APIs that have been annotated in the [SmartAPI registry](https://smart-api.info/) using the [x-bte extension](https://x-bte-extension.readthedocs.io/en/latest/index.html) to the OpenAPI specification.
 
-### Our TRAPI Interface
+### Live TRAPI Instance
 
-Please visit our TRAPI API landing page [here](http://bte_trapi.smart-api.info/).
+We maintain a live instance of this application at https://api.bte.ncats.io/ that can be used for testing.  Query Examples can be found [here](/examples).
 
-
-### Some Query Examples
-
-Query Examples can be found [here](https://github.com/kevinxin90/BioThings_Explorer_TRAPI/tree/master/examples).
 
 ---
 
 
-## Current Development Status
+## Local installations
 
-Currently, the BioThings Explorer TRAPI API implements TRAPI v1.0.0 standard, and can be queried at https://api.bte.ncats.io/v1/query endpoint.
+### Requirements
 
-
-The TRAPI v0.9.2 standard is deprecated. But it can still be tested using https://api.bte.ncats.io/query endpoint.
-
----
-
-## Requirements
-
-For development, you will only need Node.js and a node global package, e.g. npm, installed in your environment.
-
-### Node
-
-NOTE: Node version must be higher than v12.
+For development, you will only need Node.js and a node global package, e.g. npm, installed in your environment. Your Node version must be higher than v12.
 
 
 - #### Node installation on Windows
@@ -75,14 +60,14 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 
 ---
 
-## Install
+### Installation
 
-    $ git clone https://github.com/biothings/BioThings_Explorer_TRAPI`
-    $ cd BioThings_Explorer_TRAPI`
-    $ npm install`
+    $ git clone https://github.com/biothings/BioThings_Explorer_TRAPI
+    $ cd BioThings_Explorer_TRAPI
+    $ npm install
 
 
-## Running the project
+### Running the project
 
     $ npm start
 
@@ -96,11 +81,11 @@ By default, the `/v1/query` endpoint only supports 3 queries per min, you could 
 
 `$ MAX_QUERIES_PER_MIN=5 npm start`
 
-## Simple build for production
+### Simple build for production
 
     $ npm build
 
-## Deploy
+### Deploy
 
 A docker file is included in the base directory and can be used to build the customized container
 
@@ -116,11 +101,14 @@ docker-compose up
 
 Public Docker image located at [link](https://hub.docker.com/repository/docker/biothings/bte_reasoner_api)
 
-## Usage
+### Usage
 
-`http://<HOST>:3000`
+You now can POST queries to `http://<HOST>:3000/v1/query`.  
 
-## Test with local SmartAPI spec
+Query Examples can be found [here](/examples).
+
+
+### Test with local SmartAPI spec
 
 The TRAPI interface has `/test/query` endpoint which uses a SmartAPI spec stored at **test** folder named **smartapi.json**
 
@@ -138,3 +126,8 @@ Then, Run the image and mount your local smartapi spec folder
 Now, you should be able to test your local smartapi using POST queries at:
 
 `http://localhost:3000/test/query`
+
+### Testing on a specific SmartAPI API
+
+By default, BTE queries all APIs specified in the the[ config.js file](https://github.com/biothings/BioThings_Explorer_TRAPI/blob/master/src/routes/v1/config.js).  In some cases, you may want to override that default to specifically query a single API.  For example, the SmartAPI record for the "EBI Proteins API) is [43af91b3d7cae43591083bff9d75c6dd](https://smart-api.info/registry?q=43af91b3d7cae43591083bff9d75c6dd). To instruct BTE to query that API only, you can POST your query to http://localhost:3000/v1/smartapi/43af91b3d7cae43591083bff9d75c6dd/query
+
