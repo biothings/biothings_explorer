@@ -29,7 +29,7 @@ exports.API_LIST = [
     'Multiomics Wellness KP API',
     'BioLink API',
     'LINCS Data Portal API',
-    'EBI Proteins API'
+    'EBI Proteins API',
     'Automat IntAct',
     'Automat Cord19 Scibite',
     'Automat Gtopdb',
