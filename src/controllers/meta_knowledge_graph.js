@@ -6,6 +6,7 @@ const util = require('util');
 const PredicatesLoadingError = require("../utils/errors/predicates_error");
 const ids = require("./ids");
 const readFile = util.promisify(fs.readFile);
+const debug = require("debug")("biothings-explorer-trapi:metakg");
 
 module.exports = class MetaKnowledgeGraphHandler {
     constructor(smartapiID = undefined, team = undefined) {
@@ -19,18 +20,23 @@ module.exports = class MetaKnowledgeGraphHandler {
         const kg = new meta_kg.default(smartapi_specs, predicates);
         try {
             if (smartapiID !== undefined) {
+                debug(`Constructing with SmartAPI ID ${smartapiID}`)
                 kg.constructMetaKGSync(false, { smartAPIID: smartapiID })
             } else if (team !== undefined) {
+                debug(`Constructing with team ${team}`)
                 kg.constructMetaKGSync(false, { teamName: team })
             } else {
+                debug(`Constructing with default`)
                 kg.constructMetaKGSync(true, {})
             }
             if (kg.ops.length === 0) {
-                throw new PredicatesLoadingError("Failed to Load MetaKG");
+                debug(`Found 0 operations`)
+                throw new PredicatesLoadingError("Not Found - 0 operations");
             }
             return kg;
         } catch (error) {
-            throw new PredicatesLoadingError("Failed to Load MetaKG");
+            debug(`ERROR getting graph with ID:${smartapiID} team:${team} because ${error}`)
+            throw new PredicatesLoadingError(`Failed to Load MetaKG: ${error}`);
         }
 
     }
