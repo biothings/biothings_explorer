@@ -13,10 +13,12 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
                 "x-translator" in spec.info &&
                 spec.info["x-translator"].component === "KP" &&
                 "paths" in spec &&
-                "/predicates" in spec.paths &&
-                "/query" in spec.paths
+                "/query" in spec.paths &&
+                "x-trapi" in spec.info &&
+                spec.servers.length &&
+                "/predicates" in spec.paths || "/meta_knowledge_graph" in spec.paths
             ) {
-                trapi.push({
+                let api = {
                     association: {
                         api_name: spec.info.title,
                         smartapi: {
@@ -34,7 +36,21 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
                         server: spec.servers[0].url,
                         method: 'post'
                     }
-                });
+                }
+                // check trapi 1.1 or 1.0
+                if (
+                    "/meta_knowledge_graph" in spec.paths &&
+                    Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
+                    spec.info["x-trapi"].version.includes("1.1")
+                ) {
+                    //1.1
+                    api['predicates_path'] = "/meta_knowledge_graph";
+                    trapi.push(api);
+                }else if("/predicates" in spec.paths ){
+                    //1.0
+                    api['predicates_path'] = "/predicates";
+                    trapi.push(api);
+                }
             }
         } catch (err) {
             debug(
@@ -46,47 +62,76 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
     return trapi;
 }
 
-const constructQueryUrl = (serverUrl) => {
+const constructQueryUrl = (serverUrl, path) => {
     if (serverUrl.endsWith("/")) {
         serverUrl = serverUrl.slice(0, -1);
     }
-    return serverUrl + "/predicates";
+    return serverUrl + path;
 }
 
-const getOpsFromPredicatesEndpoint = async (metadata) => {
+const getPredicatesFromGraphData = (predicate_endpoint, data) => {
+    //if /predicates just return normal response
+    if (predicate_endpoint !== '/meta_knowledge_graph') {
+        return data
+    }
+    // transform graph data to legacy format > object.subject : predicates
+    const predicates = {}
+
+    const addNewPredicates= (edge) => {
+        if (Object.prototype.hasOwnProperty.call(predicates, edge.object)) {
+            predicates[edge.object][edge.subject] = edge.predicate
+        } else {
+            predicates[edge.object] = {}
+            predicates[edge.object][edge.subject] = edge.predicate
+        }
+    }
+
+    if (Object.prototype.hasOwnProperty.call(data, "edges")){
+        data.edges.forEach(edge => addNewPredicates(edge))
+    }else{
+        //some apis still redirect to previous format
+        return data
+    }
+    return predicates
+}
+
+const getOpsFromEndpoint = async (metadata) => {
     return axios
-        .get(constructQueryUrl(metadata.query_operation.server), { timeout: 5000 })
+        .get(constructQueryUrl(metadata.query_operation.server, metadata.predicates_path), { timeout: 5000 })
         .then((res) => {
             if (res.status === 200) {
-                debug(`Successfully get /predicates for ${metadata.query_operation.server}`)
-                return { ...metadata, ...{ predicates: res.data } };
+                debug(`Successfully got ${metadata.predicates_path} for ${metadata.query_operation.server}`)
+                return { ...metadata, ...{ predicates: getPredicatesFromGraphData(metadata.predicates_path, res.data) } };
             }
             debug(
-                `[error]: Unable to get /predicates for ${metadata.query_operation.server} due to query failure with status code ${res.status}`
+                `[error]: API "${metadata.association.api_name}" Unable to get ${metadata.predicates_path}` +
+                ` for ${metadata.query_operation.server} due to query failure with status code ${res.status}`
             );
-            return [];
+            return false;
         })
         .catch((err) => {
             debug(
-                `[error]: Unable to get /predicates for ${metadata.url
+                `[error]: API "${metadata.association.api_name}" failed to get ${metadata.predicates_path} for ${metadata.query_operation.server
                 } due to error ${err.toString()}`
             );
-            return [];
+            return false;
         });
 }
 
 const getOpsFromPredicatesEndpoints = async (specs) => {
     const metadatas = getTRAPIWithPredicatesEndpoint(specs);
     let res = [];
+    debug(`Lining up ${metadatas.length} items to get predicates from`);
     await Promise.allSettled(
-        metadatas.map((metadata) => getOpsFromPredicatesEndpoint(metadata))
+        metadatas.map((metadata) => getOpsFromEndpoint(metadata))
     ).then((results) => {
         results.map((rec) => {
-            if (rec.status === "fulfilled") {
+            if (rec.status === "fulfilled" && rec.value) {
                 res.push(rec.value);
             }
         });
     });
+    debug(`Got ${res.length} successful requests`);
     return res;
 }
 
@@ -108,7 +153,7 @@ module.exports = () => {
         debug(`Updating local copy of SmartAPI specs now at ${new Date().toUTCString()}!`);
         try {
             await updateSmartAPISpecs();
-            debug("Successfull updated the local copy of SmartAPI specs.")
+            debug("Successfully updated the local copy of SmartAPI specs.")
         } catch (err) {
             debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
         }
