@@ -89,7 +89,7 @@ describe("Testing v1.1 endpoints", () => {
             .then((response) => {
                 expect(response.body).toEqual({
                     "error": "Unable to load predicates",
-                    "more_info": "Failed to Load MetaKG",
+                    "more_info": "Failed to Load MetaKG: PredicatesLoadingError: Not Found - 0 operations",
                 });
             })
     })
@@ -121,7 +121,7 @@ describe("Testing v1.1 endpoints", () => {
             .expect('Content-Type', /json/)
             .then((response) => {
                 expect(response.body).toHaveProperty("error", "Unable to load predicates");
-                expect(response.body).toHaveProperty("more_info", "Failed to Load MetaKG");
+                expect(response.body).toHaveProperty("more_info", "Failed to Load MetaKG: PredicatesLoadingError: Not Found - 0 operations");
             })
     })
 
