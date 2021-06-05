@@ -45,9 +45,7 @@
     "@biothings-explorer/query_graph_handler": "^1.17.1",
     "@biothings-explorer/smartapi-kg": "^3.8.1",
     "axios": "^0.21.1",
-    "biothings-explorer-graphql": "2.1.1",
     "body-parser": "^1.19.0",
-    "camelcase": "^6.2.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "debug": "^4.3.1",
@@ -55,7 +53,6 @@
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.6",
     "express-winston": "^4.1.0",
-    "graphql-depth-limit": "^1.1.0",
     "helmet": "^4.4.1",
     "husky": "^4.3.8",
     "lodash": "^4.17.21",
@@ -65,8 +62,7 @@
     "redis": "^3.1.1",
     "snake-case": "^3.0.4",
     "winston": "^3.3.3",
-    "winston-daily-rotate-file": "^4.5.1",
-    "winston-elasticsearch": "^0.7.13"
+    "winston-daily-rotate-file": "^4.5.1"
   },
   "husky": {
     "hooks": {
