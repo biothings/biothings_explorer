@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kevinxin90/single-hop-app.js.git"
+    "url": "git+https://github.com/biothings/BioThings_Explorer_TRAPI.git"
   },
   "keywords": [
     "bte",
@@ -30,9 +30,9 @@
   "author": "jiwen xin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kevinxin90/single-hop-app.js/issues"
+    "url": "https://github.com/biothings/BioThings_Explorer_TRAPI/issues"
   },
-  "homepage": "https://github.com/kevinxin90/single-hop-app.js#readme",
+  "homepage": "https://github.com/biothings/BioThings_Explorer_TRAPI#readme",
   "devDependencies": {
     "artillery": "^1.6.2",
     "coveralls": "^3.1.0",
