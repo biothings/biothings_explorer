@@ -4,7 +4,7 @@
   "description": "App performing single hop query for BioThings Explorer",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon src/server.js",
+    "start": "nodemon --delay 5 src/server.js",
     "test": "jest --forceExit",
     "test-cov": "jest --coverage",
     "coveralls": "jest --coverage --forceExit && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
