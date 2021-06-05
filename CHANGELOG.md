@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.8.1](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.8.0...v2.8.1) (2021-06-05)
+
+
+### Features
+
+* :sparks: update to consume trapi v1.1 apis ([5b2f465](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/5b2f465483b7e817a0d75721ea16e6655b4bd215))
+* transform graph data from v1.1 to legacy format, uncomment code ([b1d2413](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/b1d24135c7831041a17eda277bfb6264959d957a))
+
+
+### Bug Fixes
+
+* add details to meta graph error ([1d36a18](https://github.com/biothings/BioThings_Explorer_TRAPI/commits/1d36a18694e4ca291afda8d25ddc878e33bf1b16))
+
 ## [2.8.0](https://github.com/biothings/BioThings_Explorer_TRAPI/compare/v2.7.0...v2.8.0) (2021-05-25)
 
 
