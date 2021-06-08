@@ -4,6 +4,7 @@
   "description": "App performing single hop query for BioThings Explorer",
   "main": "src/server.js",
   "scripts": {
+    "build": "echo 'no build needed'",
     "start": "nodemon --delay 5 src/server.js",
     "debug": "DEBUG=* nodemon --delay 5 src/server.js",
     "test": "jest --forceExit",
