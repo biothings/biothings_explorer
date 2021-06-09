@@ -13,7 +13,7 @@ install_requires = [
     "aiohttp",
     "pandas",
     "pyyaml",
-    "nest_asyncio",
+    "nest-asyncio",
 ]
 
 from os import path
