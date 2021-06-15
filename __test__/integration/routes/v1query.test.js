@@ -5,6 +5,7 @@ var path = require('path');
 
 describe("Testing /v1/query endpoints", () => {
     const invalid_example_folder = path.resolve(__dirname, "../../../examples/v1.1/invalid");
+    const example_folder = path.resolve(__dirname, '../../../examples/v1.1');
     test("Input query graph that doesn't pass Swagger Validation should return 400 error", async () => {
         const InvalidInputQueryGraph = {
             message1: 1
@@ -56,6 +57,19 @@ describe("Testing /v1/query endpoints", () => {
             .expect('Content-Type', /json/)
             .then(response => {
                 expect(response.body).toHaveProperty("error", "Your input query graph is invalid");
+            })
+    })
+
+    test("Multi-hop query results should have combined edges", async () => {
+        const query = JSON.parse(fs.readFileSync(path.join(example_folder, "query_multihop_gene_gene_chemical.json")));
+        await request(app)
+            .post("/v1/query")
+            .send(query)
+            .set('Accept', 'application/json')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then(response => {
+                expect(Object.keys(response.body.message.results[0].edge_bindings).sort()).toEqual(["e01", "e02"].sort());
             })
     })
 })

@@ -1,0 +1,36 @@
+{
+  "message": {
+    "query_graph": {
+      "nodes": {
+        "n0": {
+          "categories": [
+            "biolink:Gene"
+          ],
+          "ids": [
+            "NCBIGene:3778"
+          ]
+        },
+        "n1": {
+          "categories": [
+            "biolink:Gene"
+          ]
+        },
+        "n2": {
+          "categories": [
+            "biolink:ChemicalSubstance"
+          ]
+        }
+      },
+      "edges": {
+        "e01": {
+          "subject": "n0",
+          "object": "n1"
+        },
+        "e02": {
+          "subject": "n1",
+          "object": "n2"
+        }
+      }
+    }
+  }
+}
