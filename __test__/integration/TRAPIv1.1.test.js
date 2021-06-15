@@ -5,16 +5,16 @@ var path = require('path');
 
 
 describe("Testing v1.1 endpoints", () => {
-    const example_foler = path.resolve(__dirname, '../../examples/v1.1');
+    const example_folder = path.resolve(__dirname, '../../examples/v1.1');
     const clinical_risk_kp_folder = path.resolve(__dirname, '../../examples/v1.1/multiomics/clinical_risk_kp');
     const old_spec_folder = path.resolve(__dirname, "../../examples/v0.9.2");
     const invalid_example_folder = path.resolve(__dirname, "../../examples/v1.1/invalid");
     const drug2disease_query = JSON.parse(fs.readFileSync(path.join(clinical_risk_kp_folder, 'query_drug_to_disease.json')));
-    const gene2chemical_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_chemicals_physically_interacts_with_genes.json')));
-    const disease2gene_query = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_genes_relate_to_disease.json')));
+    const gene2chemical_query = JSON.parse(fs.readFileSync(path.join(example_folder, 'query_chemicals_physically_interacts_with_genes.json')));
+    const disease2gene_query = JSON.parse(fs.readFileSync(path.join(example_folder, 'query_genes_relate_to_disease.json')));
     const query_using_earlier_trapi_spec = JSON.parse(fs.readFileSync(path.join(old_spec_folder, 'query_genes_relate_to_disease.json')));
-    const query_without_category = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_without_input_category.json')))
-    const expand_node = JSON.parse(fs.readFileSync(path.join(example_foler, 'query_with_node_to_be_expanded.json')))
+    const query_without_category = JSON.parse(fs.readFileSync(path.join(example_folder, 'query_without_input_category.json')))
+    const expand_node = JSON.parse(fs.readFileSync(path.join(example_folder, 'query_with_node_to_be_expanded.json')))
 
     test("GET /v1/meta_knowledge_graph", async () => {
         await request(app)
