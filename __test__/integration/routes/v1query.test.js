@@ -69,6 +69,10 @@ describe("Testing /v1/query endpoints", () => {
             .expect(200)
             .expect('Content-Type', /json/)
             .then(response => {
+                expect(
+                  Object.keys(response.body.message.results[0].node_bindings).sort()
+                ).toEqual(["n0", "n1", "n2"].sort());
+
                 expect(Object.keys(response.body.message.results[0].edge_bindings).sort()).toEqual(["e01", "e02"].sort());
             })
     })
