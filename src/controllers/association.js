@@ -3,7 +3,7 @@ const fs = require("fs");
 var path = require('path');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
-const debug = require("debug")("biothings-explorer-trapi:metakg");
+const debug = require("debug")("bte:biothings-explorer-trapi:metakg");
 
 module.exports = async (sub = undefined, obj = undefined, pred = undefined, api = undefined, source = undefined) => {
     const smartapi_specs = path.resolve(__dirname, '../../data/smartapi_specs.json');

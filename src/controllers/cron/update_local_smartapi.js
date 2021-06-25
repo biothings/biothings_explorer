@@ -1,4 +1,4 @@
-const debug = require("debug")("biothings-explorer-trapi:cron");
+const debug = require("debug")("bte:biothings-explorer-trapi:cron");
 const axios = require("axios");
 const fs = require("fs");
 var path = require('path');
