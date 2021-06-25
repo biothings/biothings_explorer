@@ -6,7 +6,8 @@
   "scripts": {
     "build": "echo 'no build needed'",
     "start": "nodemon --delay 5 src/server.js",
-    "debug": "DEBUG=* nodemon --delay 5 src/server.js",
+    "debug": "DEBUG=biomedical-id-resolver,bte* nodemon --delay 5 src/server.js",
+    "debug-all": "DEBUG=* nodemon --delay 5 src/server.js",
     "test": "jest --forceExit",
     "test-cov": "jest --coverage",
     "coveralls": "jest --coverage --forceExit && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
