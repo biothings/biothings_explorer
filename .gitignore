@@ -115,3 +115,5 @@ processed*.txt
 report*.json
 
 .DS_Store
+
+built

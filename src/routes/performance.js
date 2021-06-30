@@ -1,6 +1,6 @@
 var path = require('path');
 const fs = require('fs');
-const debug = require("debug")("biothings-explorer-trapi:performance");
+const debug = require("debug")("bte:biothings-explorer-trapi:performance");
 
 class RoutePerformance {
     setRoutes(app) {

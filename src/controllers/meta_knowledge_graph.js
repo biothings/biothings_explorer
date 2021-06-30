@@ -6,7 +6,7 @@ const util = require('util');
 const PredicatesLoadingError = require("../utils/errors/predicates_error");
 const ids = require("./ids");
 const readFile = util.promisify(fs.readFile);
-const debug = require("debug")("biothings-explorer-trapi:metakg");
+const debug = require("debug")("bte:biothings-explorer-trapi:metakg");
 
 module.exports = class MetaKnowledgeGraphHandler {
     constructor(smartapiID = undefined, team = undefined) {

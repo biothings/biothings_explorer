@@ -30,7 +30,7 @@
 
 #### Make a release
 
-1. When ready, merge the code from "**development**" branch to the master branch
+1. When ready, merge the code from "**development**" branch to the main branch
 
 2. Run one of these commands to make a new release:
 
@@ -45,7 +45,7 @@
 2. Push changes to GitHub:
 
    ```bash
-   git push --follow-tags origin master
+   git push --follow-tags origin main
    ```
 
 3. GitHub Actions will take care the rest of release steps
