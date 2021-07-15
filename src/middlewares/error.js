@@ -2,7 +2,7 @@ const swaggerValidation = require('./validate');
 const QueryGraphHandler = require("@biothings-explorer/query_graph_handler");
 const PredicatesLoadingError = require('../utils/errors/predicates_error');
 const MetaKGLoadingError = require("../utils/errors/metakg_error");
-
+const debug = require("debug")("bte:biothings-explorer-trapi:error_handler");
 class ErrorHandler {
     setRoutes(app) {
         app.use((error, req, res, next) => {
@@ -36,7 +36,7 @@ class ErrorHandler {
             if (error.statusCode === 301) {
                 return res.status(301).redirect('/');
             }
-
+            debug(error);
             return res
                 .status(error.statusCode)
                 .json({ error: error.toString() });
