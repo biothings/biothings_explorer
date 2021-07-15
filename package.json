@@ -1,5 +1,5 @@
 {
-  "name": "@biothings-explorer/single-hop-app",
+  "name": "@biothings-explorer/bte-trapi",
   "version": "2.8.1",
   "description": "App performing single hop query for BioThings Explorer",
   "main": "src/server.js",
