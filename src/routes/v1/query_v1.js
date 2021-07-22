@@ -9,7 +9,7 @@ class V1RouteQuery {
             //logger.info("query /query endpoint")
             try {
                 const queryGraph = req.body.message.query_graph;
-                const handler = new TRAPIGraphHandler.TRAPIQueryHandler({ apiNames: config.API_LIST }, smartAPIPath);
+                const handler = new TRAPIGraphHandler.TRAPIQueryHandler({ apiNames: config.API_LIST, caching: req.query.caching }, smartAPIPath);
                 handler.setQueryGraph(queryGraph);
                 await handler.query();
                 res.setHeader('Content-Type', 'application/json');
