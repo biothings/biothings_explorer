@@ -1,0 +1,24 @@
+{
+    "workflow": [
+        {"id": "lookup"}
+    ],
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "categories": ["biolink:Drug"],
+                    "ids": ["CHEBI:86990"]
+                },
+                "n3": {
+                    "categories": ["biolink:Disease"]
+                }
+            },
+            "edges": {
+                "e03": {
+                    "subject": "n0",
+                    "object": "n3"
+                }
+            }
+        }
+    }
+}
