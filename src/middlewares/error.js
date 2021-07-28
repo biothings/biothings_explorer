@@ -39,7 +39,15 @@ class ErrorHandler {
             debug(error);
             return res
                 .status(error.statusCode)
-                .json({ error: error.toString() });
+                .json({
+                    message: {
+                        query_graph: req.body.message.query_graph,
+                        knowledge_graph: { nodes: {}, edges: {} },
+                        results: []    
+                    },
+                    status: error.statusCode,
+                    description: error.toString() 
+                });
         });
     }
 }
