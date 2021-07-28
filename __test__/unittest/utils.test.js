@@ -32,7 +32,7 @@ describe("Test utility functions", () => {
     describe("Test workflow validator", () => {
         test("undefined workflow", () => {
             let workflow; 
-            expect(() => utils.validateWorkflow(workflow)).toThrow(WorkflowError);
+            expect(utils.validateWorkflow(workflow)).toEqual(undefined);
         })
         
         test("Workflow not in right shape", () => {
