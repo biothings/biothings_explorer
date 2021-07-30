@@ -55,7 +55,7 @@ module.exports = {
             sift_category: ['cadd.sift.cat'],
         },
     },
-    ChemicalSubstance: {
+    SmallMolecule: {
         id_ranks: [
             'CHEBI',
             'CHEMBL.COMPOUND',
@@ -70,7 +70,7 @@ module.exports = {
             'RHEA',
             'name',
         ],
-        semantic: 'ChemicalSubstance',
+        semantic: 'SmallMolecule',
         api_name: 'mychem.info',
         url: 'https://mychem.info/v1/query',
         mapping: {
@@ -123,7 +123,7 @@ module.exports = {
             'RHEA',
             'name',
         ],
-        semantic: 'ChemicalSubstance',
+        semantic: 'SmallMolecule',
         api_name: 'mychem.info',
         url: 'https://mychem.info/v1/query',
         mapping: {
