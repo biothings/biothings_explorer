@@ -20,6 +20,20 @@ module.exports = {
             type_of_gene: ['type_of_gene'],
         },
     },
+    Transcript: {
+        id_ranks: ['ENSEMBL', 'SYMBOL', 'name'],
+        semantic: 'Transcript',
+        api_name: 'mygene.info',
+        url: 'https://mygene.info/v3/query',
+        mapping: {
+            ENSEMBL: ['ensembl.transcript'],
+            SYMBOL: ['symbol'],
+            name: ['name'],
+        },
+        additional_attributes_mapping: {
+            interpro: ['interpro.desc'],
+        },
+      },
     Protein: {
         id_ranks: ['UniProtKB', 'ENSEMBL', 'SYMBOL', 'UMLS', 'name'],
         semantic: 'Protein',
@@ -134,7 +148,7 @@ module.exports = {
         url: 'https://biothings.ncats.io/hpo/query',
         mapping: {
             UMLS: ['xrefs.umls'],
-            SNOMEDCT: ['xrefs.snomed_ct'],
+            SNOMEDCT: ['xrefs.snomed_ct', 'xrefs.snomedct_us'],
             HP: ['_id'],
             MEDDRA: ['xrefs.meddra'],
             EFO: ['xrefs.efo'],
@@ -178,7 +192,7 @@ module.exports = {
         },
     },
     MolecularActivity: {
-        id_ranks: ['GO', 'MetaCyc', 'RHEA', 'KEGG', 'REACT', 'name'],
+        id_ranks: ['GO', 'MetaCyc', 'RHEA', 'KEGG.REACTION', 'REACT', 'name'],
         semantic: 'MolecularActivity',
         api_name: 'Gene Ontology Molecular Function API',
         url: 'https://biothings.ncats.io/go_mf/query',
@@ -186,7 +200,7 @@ module.exports = {
             GO: ['_id'],
             MetaCyc: ['xrefs.metacyc'],
             RHEA: ['xrefs.rhea'],
-            KEGG: ['xrefs.kegg_reaction'],
+            'KEGG.REACTION': ['xrefs.kegg_reaction'],
             REACT: ['xrefs.reactome'],
             name: ['name'],
         },
@@ -211,7 +225,7 @@ module.exports = {
         url: 'https://biothings.ncats.io/go_cc/query',
         mapping: {
             GO: ['_id'],
-            MetaCyc: ['xrefs.metacyc'],
+            MetaCyc: ['xrefs.metacyc'],  // field missing in the API?
             name: ['name'],
         },
     },
@@ -243,7 +257,7 @@ module.exports = {
             UBERON: ['_id'],
             UMLS: ['xrefs.umls'],
             MESH: ['xrefs.mesh'],
-            NCIT: ['xrefs.ncit'],
+            NCIT: ['xrefs.ncit'],  // field missing in the API?
             name: ['name'],
         },
     },
@@ -256,7 +270,7 @@ module.exports = {
             CL: ['_id'],
             NCIT: ['xrefs.ncit'],
             MESH: ['xrefs.mesh'],
-            EFO: ['xrefs.efo'],
+            EFO: ['xrefs.efo'],  // field missing in the API?
             name: ['name'],
         },
     },
