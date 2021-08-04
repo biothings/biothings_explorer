@@ -2,7 +2,7 @@ exports.API_LIST = [
     'QuickGO API',
     'Ontology Lookup Service API',
     'CTD API',
-    'OpenTarget API',
+    // 'OpenTarget API',
     'LitVar API',
     'Human Phenotype Ontology API',
     'UBERON Ontology API',
