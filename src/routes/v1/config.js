@@ -44,4 +44,10 @@ exports.API_LIST = [
     'Automat Pharos',
     'Automat Chembio',
     'Automat Foodb',
+
+    'ICEES COVID Instance API',
+    'ICEES Asthma Instance API',
+    'ICEES DILI Instance API',
+    'Columbia Open Health Data (COHD)'
+
 ];
