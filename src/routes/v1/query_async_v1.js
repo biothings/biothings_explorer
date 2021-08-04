@@ -39,7 +39,7 @@ queryQueue.process(async (job) => {
 
 class V1RouteAsyncQuery {
     setRoutes(app) {
-        app.post('/v1/async_query', swaggerValidation.validate, async (req, res, next) => {
+        app.post('/v1/asyncquery', swaggerValidation.validate, async (req, res, next) => {
             try {
                 // add job to the queue
                 let job = await queryQueue.add({queryGraph: req.body.message.query_graph,
