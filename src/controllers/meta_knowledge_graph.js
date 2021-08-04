@@ -89,8 +89,7 @@ module.exports = class MetaKnowledgeGraphHandler {
                     knowledge_graph.edges.push({
                         subject: input,
                         predicate: pred,
-                        object: output,
-                        relation: null
+                        object: output
                     })
                 })
             })
