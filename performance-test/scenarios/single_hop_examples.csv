@@ -1,7 +1,7 @@
 biolink:Gene,NCBIGene:1018,biolink:Disease
 biolink:Gene,NCBIGene:1019,biolink:Disease
-biolink:ChemicalSubstance,CHEMBL.COMPOUND:CHEMBL744,biolink:Gene
+biolink:SmallMolecule,CHEMBL.COMPOUND:CHEMBL744,biolink:Gene
 biolink:Gene,NCBIGene:1999,biolink:Pathway
 biolink:Disease,MONDO:0016575,biolink:Gene
-biolink:Disease,MONDO:0016575,biolink:ChemicalSubstance
+biolink:Disease,MONDO:0016575,biolink:SmallMolecule
 biolink:Gene,NCBIGene:1017,biolink:Gene

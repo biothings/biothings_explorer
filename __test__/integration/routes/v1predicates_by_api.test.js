@@ -9,7 +9,7 @@ describe.skip("Test /v1/smartapi/{smartapi_id}/predicates endpoint", () => {
             .expect('Content-Type', /json/)
             .then((response) => {
                 expect(response.body).toHaveProperty("biolink:Gene");
-                expect(response.body["biolink:Gene"]).toHaveProperty("biolink:ChemicalSubstance");
+                expect(response.body["biolink:Gene"]).toHaveProperty("biolink:SmallMolecule");
             })
     })
 

@@ -30,7 +30,7 @@ describe("Testing v1.1 endpoints", () => {
                 expect(response.body.edges).toEqual(
                     expect.arrayContaining([
                       expect.objectContaining({
-                        "subject": "biolink:ChemicalSubstance",
+                        "subject": "biolink:SmallMolecule",
                         "predicate": "biolink:entity_positively_regulates_entity",
                         "object": "biolink:Gene"
                       })
@@ -54,7 +54,7 @@ describe("Testing v1.1 endpoints", () => {
                     expect.arrayContaining([
                       expect.objectContaining({
                         "subject": "biolink:SequenceVariant",
-                        "predicate": "biolink:located_in",
+                        "predicate": "biolink:is_sequence_variant_of",
                         "object": "biolink:Gene",
                       })
                     ])
@@ -72,9 +72,9 @@ describe("Testing v1.1 endpoints", () => {
                 expect(response.body.edges).toEqual(
                     expect.arrayContaining([
                       expect.objectContaining({
-                        "subject": "biolink:ChemicalSubstance",
+                        "subject": "biolink:SmallMolecule",
                         "predicate": "biolink:entity_positively_regulates_entity",
-                        "object": "biolink:Gene",
+                        "object": "biolink:Protein",
                       })
                     ])
                 );
@@ -105,9 +105,9 @@ describe("Testing v1.1 endpoints", () => {
                 expect(response.body.edges).toEqual(
                     expect.arrayContaining([
                       expect.objectContaining({
-                        "subject": "biolink:ChemicalSubstance",
+                        "subject": "biolink:SmallMolecule",
                         "predicate": "biolink:entity_positively_regulates_entity",
-                        "object": "biolink:Gene"
+                        "object": "biolink:Protein"
                       })
                     ])
                 );

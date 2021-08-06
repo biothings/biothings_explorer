@@ -32,8 +32,8 @@ paths:
         name: subject
         schema:
           type: string
-      - description: The object type of the association, e.g. ChemicalSubstance
-        example: ChemicalSubstance
+      - description: The object type of the association, e.g. SmallMolecule
+        example: SmallMolecule
         in: query
         name: object
         schema:
@@ -89,8 +89,8 @@ paths:
                           type: object
                       type: object
                     object:
-                      description: The object type of the association, e.g. ChemicalSubstance
-                      example: ChemicalSubstance
+                      description: The object type of the association, e.g. SmallMolecule
+                      example: SmallMolecule
                       type: string
                     predicate:
                       description: The predicate of the association, e.g. physically_interacts_with
@@ -162,7 +162,7 @@ paths:
                     items:
                       type: string
                 example:
-                  'biolink:ChemicalSubstance':
+                  'biolink:SmallMolecule':
                     'biolink:Gene':
                       - biolink:directly_interacts_with
                       - biolink:decreases_activity_of
@@ -197,7 +197,7 @@ paths:
                     items:
                       type: string
                 example:
-                  'biolink:ChemicalSubstance':
+                  'biolink:SmallMolecule':
                     'biolink:Gene':
                       - biolink:directly_interacts_with
                       - biolink:decreases_activity_of
@@ -236,7 +236,7 @@ paths:
                     items:
                       type: string
                 example:
-                  'biolink:ChemicalSubstance':
+                  'biolink:SmallMolecule':
                     'biolink:Gene':
                       - biolink:directly_interacts_with
                       - biolink:decreases_activity_of
@@ -265,7 +265,7 @@ paths:
                       category: "biolink:Disease"
                       id: "MONDO:0005737"
                     n01:
-                      category: "biolink:ChemicalSubstance"
+                      category: "biolink:SmallMolecule"
             schema:
               $ref: '#/components/schemas/Query'
       responses:
@@ -334,7 +334,7 @@ paths:
                       category: "biolink:Gene"
                       id: "NCBIGene:1017"
                     n01:
-                      category: "biolink:ChemicalSubstance"
+                      category: "biolink:SmallMolecule"
             schema:
               $ref: '#/components/schemas/Query'
       responses:
@@ -407,7 +407,7 @@ paths:
                       category: "biolink:Gene"
                       id: "NCBIGene:1017"
                     n01:
-                      category: "biolink:ChemicalSubstance"
+                      category: "biolink:SmallMolecule"
             schema:
               $ref: '#/components/schemas/Query'
       responses:

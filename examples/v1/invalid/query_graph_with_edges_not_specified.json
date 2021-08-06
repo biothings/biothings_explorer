@@ -7,7 +7,7 @@
                     "id": "NCBIGene:1017"
                 },
                 "n1": {
-                    "category": "biolink:ChemicalSubstance"
+                    "category": "biolink:SmallMolecule"
                 }
             },
             "edges": {}

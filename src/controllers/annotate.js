@@ -2,7 +2,7 @@ const axios = require("axios");
 
 const TYPE_TO_ID_MAPPING = {
     "Gene": "NCBIGene",
-    "ChemicalSubstance": "CHEBI",
+    "SmallMolecule": "CHEBI",
     "AnatomicalEntity": "UBERON",
     "BiologicalProcess": "GO",
     "MolecularActivity": "GO",

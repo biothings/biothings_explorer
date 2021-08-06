@@ -25,7 +25,7 @@
                 },
                 {
                     "id": "n2",
-                    "type": "ChemicalSubstance"
+                    "type": "SmallMolecule"
                 }
             ]
         }

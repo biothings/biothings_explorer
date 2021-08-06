@@ -7,7 +7,7 @@
                     "id": "PR:000008790"
                 },
                 "n1": {
-                    "category": "biolink:ChemicalSubstance"
+                    "category": "biolink:SmallMolecule"
                 }
             },
             "edges": {
