@@ -18,7 +18,9 @@ class VCheckQueryStatus {
                     let progress = job._progress;
                     let reason = job.failedReason;
                     let returnvalue = job.returnvalue;
+                    let response = returnvalue.response;
                     res.setHeader('Content-Type', 'application/json');
+                    res.status(returnvalue.status);
                     res.end(JSON.stringify({ id, state, returnvalue, progress, reason }));
                 }
             }
