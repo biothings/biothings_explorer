@@ -27,13 +27,13 @@ describe("Test /metakg endpoint", () => {
 
     test("Should return 200 with valid response when user specify provided by", async () => {
         await request(app)
-            .get("/metakg?provided_by=drugbank")
+            .get("/metakg?provided_by=infores:drugbank")
             .expect(200)
             .expect('Content-Type', /json/)
             .then((response) => {
                 expect(response.body).toHaveProperty("associations");
                 const res = Array.from(new Set(response.body.associations.map(item => item.provided_by)));
-                expect(res).toEqual(['drugbank']);
+                expect(res).toEqual(['infores:drugbank']);
             })
     })
 
@@ -74,7 +74,7 @@ describe("Test /metakg endpoint", () => {
 
     test("Should return 200 with valid response when user specify both subject and object", async () => {
         await request(app)
-            .get("/metakg?object=Gene&subject=ChemicalSubstance")
+            .get("/metakg?object=Gene&subject=SmallMolecule")
             .expect(200)
             .expect('Content-Type', /json/)
             .then((response) => {
@@ -82,7 +82,7 @@ describe("Test /metakg endpoint", () => {
                 const objs = Array.from(new Set(response.body.associations.map(item => item.object)));
                 const subjs = Array.from(new Set(response.body.associations.map(item => item.subject)));
                 expect(objs).toEqual(['Gene']);
-                expect(subjs).toEqual(['ChemicalSubstance']);
+                expect(subjs).toEqual(['SmallMolecule']);
             })
     })
 

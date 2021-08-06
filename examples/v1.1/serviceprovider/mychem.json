@@ -10,7 +10,7 @@
             },
             "nodes": {
                 "n00": {
-                    "categories": "biolink:ChemicalSubstance",
+                    "categories": "biolink:SmallMolecule",
                     "ids": "CHEMBL.COMPOUND:CHEMBL744"
                 },
                 "n01": {

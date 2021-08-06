@@ -17,7 +17,7 @@
         },
         "n2": {
           "categories": [
-            "biolink:ChemicalSubstance"
+            "biolink:SmallMolecule"
           ]
         }
       },

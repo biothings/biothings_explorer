@@ -10,7 +10,7 @@
                     "categories": "biolink:Gene"
                 },
                 "n2": {
-                    "categories": "biolink:ChemicalSubstance"
+                    "categories": "biolink:SmallMolecule"
                 }
             },
             "edges": {

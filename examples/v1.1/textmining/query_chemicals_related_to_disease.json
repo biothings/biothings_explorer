@@ -7,7 +7,7 @@
                     "ids": "MONDO:0005252"
                 },
                 "n3": {
-                    "categories": "biolink:ChemicalSubstance"
+                    "categories": "biolink:SmallMolecule"
                 }
             },
             "edges": {
