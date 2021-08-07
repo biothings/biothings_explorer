@@ -5,16 +5,16 @@
                 "e00": {
                     "object": "n01",
                     "subject": "n00",
-                    "predicates": "biolink:functional_association"
+                    "predicates": ["biolink:functional_association"]
                 }
             },
             "nodes": {
                 "n00": {
-                    "categories": "biolink:Gene",
-                    "ids": "ENSEMBL:ENSG00000123374"
+                    "categories": ["biolink:Gene"],
+                    "ids": ["ENSEMBL:ENSG00000123374"]
                 },
                 "n01": {
-                    "categories": "biolink:BiologicalProcess"
+                    "categories": ["biolink:BiologicalProcess"]
                 }
             }
         }

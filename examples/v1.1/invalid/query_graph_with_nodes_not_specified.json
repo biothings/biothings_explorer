@@ -6,7 +6,7 @@
                 "e01": {
                     "subject": "n0",
                     "object": "n1",
-                    "predicates": "biolink:physically_interacts_with"
+                    "predicates": ["biolink:physically_interacts_with"]
                 }
             }
         }
