@@ -3,18 +3,18 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "categories": "biolink:Gene",
-                    "ids": "NCBIGene:1017"
+                    "categories": ["biolink:Gene"],
+                    "ids": ["NCBIGene:1017"]
                 },
                 "n1": {
-                    "categories": "biolink:SmallMolecule"
+                    "categories": ["biolink:SmallMolecule"]
                 }
             },
             "edges": {
                 "e01": {
                     "subject": "n0",
                     "object": "n1",
-                    "predicates": "biolink:physically_interacts_with"
+                    "predicates": ["biolink:physically_interacts_with"]
                 }
             }
         }

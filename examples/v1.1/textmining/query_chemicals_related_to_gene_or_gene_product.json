@@ -3,11 +3,11 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "categories": "biolink:Protein",
-                    "ids": "PR:000008790"
+                    "categories": ["biolink:Protein"],
+                    "ids": ["PR:000008790"]
                 },
                 "n1": {
-                    "categories": "biolink:SmallMolecule"
+                    "categories": ["biolink:SmallMolecule"]
                 }
             },
             "edges": {

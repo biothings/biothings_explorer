@@ -3,11 +3,11 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "categories": "biolink:Observation",
-                    "ids": "NCIT:C110935"
+                    "categories": ["biolink:Observation"],
+                    "ids": ["NCIT:C110935"]
                 },
                 "n3": {
-                    "categories": "biolink:DiseaseOrPhenotypicFeature"
+                    "categories": ["biolink:DiseaseOrPhenotypicFeature"]
                 }
             },
             "edges": {

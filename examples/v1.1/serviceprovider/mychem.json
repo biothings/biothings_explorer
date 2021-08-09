@@ -5,16 +5,16 @@
                 "e00": {
                     "object": "n01",
                     "subject": "n00",
-                    "predicates": "biolink:physically_interacts_with"
+                    "predicates": ["biolink:physically_interacts_with"]
                 }
             },
             "nodes": {
                 "n00": {
-                    "categories": "biolink:SmallMolecule",
-                    "ids": "CHEMBL.COMPOUND:CHEMBL744"
+                    "categories": ["biolink:SmallMolecule"],
+                    "ids": ["CHEMBL.COMPOUND:CHEMBL744"]
                 },
                 "n01": {
-                    "categories": "biolink:Gene"
+                    "categories": ["biolink:Gene"]
                 }
             }
         }
