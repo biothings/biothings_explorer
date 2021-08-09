@@ -5,6 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "build": "echo 'no build needed'",
+    "prod": "node src/server.js",
     "start": "nodemon --ignore './data/' src/server.js",
     "debug": "DEBUG=biomedical-id-resolver,bte* nodemon --ignore './data/' src/server.js",
     "debug-all": "DEBUG=* nodemon --ignore './data/' src/server.js",

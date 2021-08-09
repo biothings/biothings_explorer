@@ -2,7 +2,7 @@ exports.API_LIST = [
     'QuickGO API',
     'Ontology Lookup Service API',
     'CTD API',
-    'OpenTarget API',
+    // 'OpenTarget API',
     'LitVar API',
     'Human Phenotype Ontology API',
     'UBERON Ontology API',
@@ -44,4 +44,10 @@ exports.API_LIST = [
     'Automat Pharos',
     'Automat Chembio',
     'Automat Foodb',
+
+    'ICEES COVID Instance API',
+    'ICEES Asthma Instance API',
+    'ICEES DILI Instance API',
+    'Columbia Open Health Data (COHD)'
+
 ];
