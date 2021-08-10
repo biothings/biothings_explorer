@@ -1,15 +1,26 @@
 const Queue = require('bull');
+const { createBullBoard } = require('@bull-board/api')
+const { BullAdapter } = require('@bull-board/api/bullAdapter')
+const { ExpressAdapter } = require('@bull-board/express')
 const path = require("path");
 const axios = require('axios')
+const serverAdapter = require("../../bulladapter");
+const app = require('../../app');
 const config = require("./config");
 const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate");
 const smartAPIPath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
 
-
 // create job queue
 const queryQueue = new Queue('get query graph', process.env.REDIS_HOST ?
     `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` : 'redis://127.0.0.1:6379');
+
+const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
+    queues: [
+        new BullAdapter(queryQueue),
+    ],
+    serverAdapter:serverAdapter
+})
 
 queryQueue.on('global:completed', (jobId, result) => {
     console.log(`Job completed with result ${result}`);
