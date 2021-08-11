@@ -127,6 +127,35 @@ Now, you should be able to test your local smartapi using POST queries at:
 
 `http://localhost:3000/test/query`
 
+### Asynchronous queries
+
+You can also use our asynchronous query which supports webhooks.
+You can do the following:
+
+POST on `http://localhost:3000/asyncquery`. This endpoint behaves similarly to the `http://localhost:3000/query` endpoint.
+
+**Key differences**
+- Instead of waiting for the query to complete an *id* is returned which you can then use to check the query status.
+- An additional *callback_url* parameter can be used which we will use to perform a POST request to send the data to. (optional)
+
+**Checking the query status**
+
+You can perform a POST request to the `http://localhost:3000/check_async_query/<id>` to check the query status.
+Example response:
+
+```
+{
+  'id': '1', 
+  'state': 'completed', 
+  'returnvalue': {
+    'response': { ... },
+    'status': 200,
+    'callback': 'Data sent to callback_url'
+  }, 
+  'progress': 0
+}
+```
+
 ### Testing on a specific SmartAPI API
 
 By default, BTE queries all APIs specified in the the[ config.js file](https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/routes/v1/config.js).  In some cases, you may want to override that default to specifically query a single API.  For example, the SmartAPI record for the "EBI Proteins API) is [43af91b3d7cae43591083bff9d75c6dd](https://smart-api.info/registry?q=43af91b3d7cae43591083bff9d75c6dd). To instruct BTE to query that API only, you can POST your query to http://localhost:3000/v1/smartapi/43af91b3d7cae43591083bff9d75c6dd/query
