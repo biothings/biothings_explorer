@@ -164,7 +164,7 @@ const updateSmartAPISpecs = async () => {
     const res = await axios.get(SMARTAPI_URL);
     const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
     const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
-    fs.writeFile(localFilePath, JSON.stringify(res.data), (err) => {
+    fs.writeFile(localFilePath, JSON.stringify({hits: res.data.hits}), (err) => {
         if (err) throw err;
     });
     const predicatesInfo = await getOpsFromPredicatesEndpoints(res.data.hits);
@@ -173,7 +173,7 @@ const updateSmartAPISpecs = async () => {
     });
 }
 module.exports = () => {
-    cron.schedule('*/10 * * * *', async () => {
+    cron.schedule('* * * * *', async () => {
         debug(`Updating local copy of SmartAPI specs now at ${new Date().toUTCString()}!`);
         try {
             await updateSmartAPISpecs();
