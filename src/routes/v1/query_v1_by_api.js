@@ -2,6 +2,7 @@ const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate")
 const path = require("path");
 const smartAPIPath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
+const predicatesPath = path.resolve(__dirname, '../../../data/predicates.json');
 const utils = require("../../utils/common");
 
 class RouteQueryV1ByAPI {
@@ -18,7 +19,7 @@ class RouteQueryV1ByAPI {
                         enableIDResolution
                     },
                     smartAPIPath,
-                    undefined,
+                    predicatesPath,
                     false
                 );
                 handler.setQueryGraph(queryGraph);

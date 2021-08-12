@@ -102,11 +102,13 @@ const getPredicatesFromGraphData = (predicate_endpoint, data) => {
     const predicates = {}
 
     const addNewPredicates= (edge) => {
-        if (Object.prototype.hasOwnProperty.call(predicates, edge.object)) {
-            predicates[edge.object][edge.subject] = edge.predicate
-        } else {
+        if (!Object.prototype.hasOwnProperty.call(predicates, edge.object)) {
             predicates[edge.object] = {}
-            predicates[edge.object][edge.subject] = edge.predicate
+        }
+        if (Array.isArray(predicates[edge.object][edge.subject])) {
+            predicates[edge.object][edge.subject].push(edge.predicate);
+        } else {
+            predicates[edge.object][edge.subject] = [edge.predicate];
         }
     }
 
