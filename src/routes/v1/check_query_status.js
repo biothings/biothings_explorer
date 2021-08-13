@@ -26,6 +26,18 @@ class VCheckQueryStatus {
                         let reason = job.failedReason;
                         if(reason){
                             res.setHeader('Content-Type', 'application/json');
+                            if(reason.includes('Promise timed out')){
+                                // something might break when calculating process.env.JOB_TIMEOUT so wrap it in try catch
+                                try {
+                                    // This will always be using the variable from process.env instead of the value that actually timed out during runtime
+                                    // To display the true timed out value extract it from "reason"
+                                    res.end(JSON.stringify({ id, state,
+                                        reason: `This job was stopped after running over ${parseInt(process.env.JOB_TIMEOUT) / 1000}s`  }));
+                                }catch (e){
+                                    res.end(JSON.stringify({ id, state, reason  }));
+                                }
+                                return
+                            }
                             res.end(JSON.stringify({ id, state, reason  }));
                             return
                         }
@@ -36,7 +48,8 @@ class VCheckQueryStatus {
                         res.end(JSON.stringify({ id, state, returnvalue, progress, reason }));
                     }
                 }else{
-                    res.status(503).end();
+                    res.setHeader('Content-Type', 'application/json');
+                    res.status(503).end(JSON.stringify({'error': 'Redis service is unavailable'}));
                 }
             }
             catch (error) {

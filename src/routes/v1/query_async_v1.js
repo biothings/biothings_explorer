@@ -102,7 +102,8 @@ class V1RouteAsyncQuery {
                     // return the job id so the user can check on it later
                     res.end(JSON.stringify({id: job.id}));
                 }else{
-                    res.status(503).end();
+                    res.setHeader('Content-Type', 'application/json');
+                    res.status(503).end(JSON.stringify({'error': 'Redis service is unavailable'}));
                 }
             }
             catch (error) {
