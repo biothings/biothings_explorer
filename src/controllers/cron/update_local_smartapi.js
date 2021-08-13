@@ -173,7 +173,7 @@ const updateSmartAPISpecs = async () => {
     });
 }
 module.exports = () => {
-    cron.schedule('* * * * *', async () => {
+    cron.schedule('*/10 * * * *', async () => {
         debug(`Updating local copy of SmartAPI specs now at ${new Date().toUTCString()}!`);
         try {
             await updateSmartAPISpecs();
