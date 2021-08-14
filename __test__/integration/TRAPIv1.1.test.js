@@ -201,8 +201,8 @@ describe("Testing v1.1 endpoints", () => {
                 expect(response.body.message.knowledge_graph).toHaveProperty("nodes");
                 expect(response.body.message.knowledge_graph).toHaveProperty("edges");
                 expect(response.body.message.knowledge_graph.nodes).toHaveProperty("MONDO:0016575");
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("UMLS:C0008780");
-                expect(response.body.message.knowledge_graph.nodes["UMLS:C0008780"]).toHaveProperty("categories", ["biolink:PhenotypicFeature"]);
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("HP:0012265");
+                expect(response.body.message.knowledge_graph.nodes["HP:0012265"]).toHaveProperty("categories", ["biolink:PhenotypicFeature"]);
             })
     })
 
