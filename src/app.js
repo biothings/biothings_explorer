@@ -10,8 +10,8 @@ class App {
         this.app = this.config.setConfig();
         routes.setRoutes(this.app);
         try {
-            serverAdapter.setBasePath('/admin/queues')
-            this.app.use('/admin/queues', serverAdapter.getRouter());
+            //serverAdapter.setBasePath('/admin/queues')
+            //this.app.use('/admin/queues', serverAdapter.getRouter());
         }catch (e){
 
         }
