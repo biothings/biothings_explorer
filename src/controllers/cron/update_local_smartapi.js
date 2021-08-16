@@ -3,6 +3,11 @@ const axios = require("axios");
 const fs = require("fs");
 var path = require('path');
 const cron = require('node-cron');
+const util = require("util");
+const readFile = util.promisify(fs.readFile);
+const yaml = require("js-yaml");
+var url = require('url')
+
 
 const getTRAPIWithPredicatesEndpoint = (specs) => {
     const trapi = [];
@@ -166,6 +171,7 @@ const updateSmartAPISpecs = async () => {
     const res = await axios.get(SMARTAPI_URL);
     const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
     const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
+    await getAPIOverrides(res.data);
     fs.writeFile(localFilePath, JSON.stringify({hits: res.data.hits}), (err) => {
         if (err) throw err;
     });
@@ -174,6 +180,58 @@ const updateSmartAPISpecs = async () => {
         if (err) throw err;
     });
 }
+
+const getAPIOverrides = async (data) => {
+    const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
+    let overrides;
+    try {
+        overrides = JSON.parse((await readFile(overridesPath)));
+    } catch (error) {
+        debug(`ERROR getting API Overrides file because ${error}`);
+        return;
+    }
+    // if only_overrides is enabled, only overridden apis are used
+    if (overrides.conf.only_overrides) {
+        debug("Override specifies removal of undeclared APIs")
+        data.hits = [];
+    }
+    await Promise.all(Object.keys(overrides.apis).map(async (id) => {
+        let override;
+        try {
+            try { // in case of file:///
+                const filepath = path.resolve(__dirname, "../../../data" + url.fileURLToPath(overrides.apis[id]));
+                override = yaml.load((await readFile(filepath)));
+            } catch (error) {
+                if (error instanceof TypeError) {
+                    override = yaml.load((await axios.get(overrides.apis[id])).data);
+                } else {
+                    debug(`ERROR getting override for API ID ${id} because ${error}`);
+                    return;
+                }
+            }
+            debug(`Successfully got override ${id} from ${overrides.apis[id]}`)
+        } catch (error) {
+            debug(`ERROR getting override for API ID ${id} because ${error}`);
+            return;
+        }
+        override._id = id;
+        override._meta = {
+            date_created: undefined,
+            last_updated: undefined,
+            url: overrides.apis[id],
+            username: undefined,
+        };
+        const index = overrides.conf.only_overrides ? -1 : data.hits.findIndex(hit => hit._id === id);
+        if (index === -1) {
+            data.hits.push(override);
+        } else {
+            data.hits[index] = override;
+        }
+        return;
+    }));
+};
+
+
 module.exports = () => {
     cron.schedule('*/10 * * * *', async () => {
         debug(`Updating local copy of SmartAPI specs now at ${new Date().toUTCString()}!`);
@@ -184,4 +242,21 @@ module.exports = () => {
             debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
         }
     });
+
+    const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
+    let overrides
+    try {
+        overrides = JSON.parse(fs.readFileSync(overridesPath));
+    } catch (error) {
+        debug(`ERROR getting API Overrides file because ${error}`);
+        return;
+    }
+    if (Object.keys(overrides.apis).length > 0) {
+        debug(`API Override(s) set. Updating local SmartAPI specs with overrides now at ${new Date().toUTCString()}!`);
+        try {
+            updateSmartAPISpecs();
+        } catch (error) {
+            debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
+        }
+    }
 }
