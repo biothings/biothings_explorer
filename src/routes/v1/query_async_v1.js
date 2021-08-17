@@ -1,12 +1,7 @@
 const Queue = require('bull');
-const { createBullBoard } = require('@bull-board/api')
-const { BullAdapter } = require('@bull-board/api/bullAdapter')
-const { ExpressAdapter } = require('@bull-board/express')
 const path = require("path");
 const axios = require('axios')
-const serverAdapter = require("../../bulladapter");
 const redisClient = require('../../utils/cache/redis-client');
-const app = require('../../app');
 const config = require("./config");
 const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate");
@@ -24,12 +19,6 @@ if(redisClient){
         }).on('error', function (error){
         console.log('err', error)
     });
-    const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
-        queues: [
-            new BullAdapter(queryQueue),
-        ],
-        serverAdapter:serverAdapter
-    })
 }
 
 if(queryQueue){
