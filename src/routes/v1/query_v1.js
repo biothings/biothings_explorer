@@ -13,7 +13,7 @@ class V1RouteQuery {
             try {
                 utils.validateWorkflow(req.body.workflow);
                 const queryGraph = req.body.message.query_graph;
-                const handler = new TRAPIGraphHandler.TRAPIQueryHandler({ apiNames: config.API_LIST, caching: req.query.caching }, smartAPIPath, predicatesPath);
+                const handler = new TRAPIGraphHandler.TRAPIQueryHandler({ apiList: config.API_LIST, caching: req.query.caching }, smartAPIPath, predicatesPath);
                 handler.setQueryGraph(queryGraph);
                 await handler.query();
                 res.setHeader('Content-Type', 'application/json');
