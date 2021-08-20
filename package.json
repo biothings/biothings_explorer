@@ -56,7 +56,6 @@
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.6",
     "express-winston": "^4.1.0",
-    "file-url": "^4.0.0",
     "helmet": "^4.4.1",
     "husky": "^4.3.8",
     "js-yaml": "^4.1.0",
