@@ -116,7 +116,7 @@ You may configure a set of API IDs to override from local files or URLs.
 
 If the environment variable `API_OVERRIDE=true` is set (e.g. `API_OVERRIDE=true npm run debug --workspace=@biothings-explorer/bte-trapi`), then `/config/smartapi_overrides.json` is checked at server start and overrides are applied, as well as during subsequent `smartapi_specs.json` updates.
 
-Override files are expected to be in yaml format, with local files expected in the `data` folder. If overrides are specified with IDs not in the current SmartAPI spec, they will be appended as new API hits with a log warning.
+Override files may be specified as a URL which returns the expected yaml file, a `file:///` URL which will search with the `data` folder as the root directory, or an arbitrary filepath. Regardless, override files are expected to be in yaml format. If overrides are specified with IDs not in the current SmartAPI spec, they will be appended as new API hits with a log warning.
 
 You may also set `only_overrides` to `true` in the config to remove all other APIs and keep only the specified overrides.
 
