@@ -116,16 +116,12 @@ exports.API_LIST = [
         name: 'Automat IntAct (trapi v-1.1.2)'
     },
     {
-        id: '4d2dfc41e256dc6e652e648eee7829a9',
-        name: 'Automat Cord19 Scibite (trapi v-1.1.2)'
+        id: '0a93684206ec6a13812ff2867a445c4e',
+        name: 'Automat Cord19 (trapi v-1.1.2)'
     },
     {
         id: 'c8b1619535bd598406049f4dc51e1702',
         name: 'Automat Gtopdb (trapi v-1.1.2)'
-    },
-    {
-        id: '4d242ec3f86786729f109b0e9088a0d7',
-        name: 'Automat Cord19 Scigraph (trapi v-1.1.2)'
     },
     {
         id: '994a667dafe2e2c1d42a5390a6fba9aa',
@@ -159,6 +155,30 @@ exports.API_LIST = [
         id: '1fd2f4cc6b3b6b1f7cda594b00607270',
         name: 'Automat Foodb (trapi v-1.1.2)'
     },
+    // other Automat APIs we could try out
+    // ask: is Automat CTD still up / valid?
+    //      would Automat Viral Proteome, Chemical normalization, Ontological Hierarchy be useful?
+    //      could we use Automat Biolink or Human GOA rather than our APIs?
+    // {
+    //     id: '62811dab25864feb191aad0b23503813',
+    //     name: 'Automat GTEx (trapi v-1.1.2)'
+    // },
+    // {
+    //     id: '4f94c54ada189ecfe08491f662986fd6',
+    //     name: 'Automat Robokop KG (trapi v-1.1.2)'
+    // },
+    // {
+    //     id: '7deb474184d551fdfa69c28a9bc46073',
+    //     name: 'Automat Textmining KP (trapi v-1.1.2)'
+    // },
+    // {
+    //     id: '3437ede0d451c90f67097c56b230e022',
+    //     name: 'Automat Viral Proteome (trapi v-1.1.2)'
+    // },
+    // {
+    //     id: 'bd612e18f86d9097b02c0d83344b46b7',
+    //     name: 'Automat CTD (trapi v-1.1.2)'
+    // },
     {
         id: '65292eac9a88e3a895be21f19b554767',
         name: 'ICEES COVID-19 Instance API'
