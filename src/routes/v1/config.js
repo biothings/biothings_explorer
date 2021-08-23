@@ -1,8 +1,8 @@
 exports.API_LIST = [
     'QuickGO API', //1f277e1563fcfd124bfae2cc3c4bcdec
     'Ontology Lookup Service API', //1c056ffc7ed0dd1229e71c4752239465
-    'CTD API', //?
-    // 'OpenTarget API',
+    // 'CTD API',  // has no smartapi registration right now, registry github has an old entry...
+    // 'OpenTarget API',  // defunct api, outdated smartapi registration
     'LitVar API', //dca415f2d792976af9d642b7e73f7a41
     'Human Phenotype Ontology API', //a5b0ec6bfde5008984d4b6cde402d61f
     'UBERON Ontology API', //ec6d76016ef40f284359d17fbf78df20
@@ -24,26 +24,32 @@ exports.API_LIST = [
     'Gene Ontology Molecular Activity API', //34bad236d77bea0a0ee6c6cba5be54a6
     'Gene Ontology Cellular Component API', //f339b28426e7bf72028f60feefcd7465
     'BioThings DGIdb API', //e3edd325c76f2992a111b43a907a4870
-    // 'Text Mining CO-OCCURRENCE API',
+    // 'Text Mining CO-OCCURRENCE API',   // removing since too many results when queried
     'Text Mining Targeted Association API', //978fe380a147a8641caf72320862697b
     'Multiomics Wellness KP API', //02af7d098ab304e80d6f4806c3527027
     'BioLink API', //d22b657426375a5295e7da8a303b9893
     'LINCS Data Portal API', //1ad2cba40cb25cd70d00aa8fba9cfaf3
     'EBI Proteins API', //43af91b3d7cae43591083bff9d75c6dd
-    'Automat IntAct (trapi v-1.1.0)', //bee0cc86f86d88b83f613b674e2bd92e
-    'Automat Cord19 Scibite (trapi v-1.1.0)', //4d2dfc41e256dc6e652e648eee7829a9
-    'Automat Gtopdb (trapi v-1.1.0)', //c8b1619535bd598406049f4dc51e1702
-    'Automat KEGG', //?
-    'Automat Cord19 Scigraph (trapi v-1.1.0)', //4d242ec3f86786729f109b0e9088a0d7
-    'Automat Uberongraph (trapi v-1.1.0)', //994a667dafe2e2c1d42a5390a6fba9aa
-    'Automat Human GOA (trapi v-1.1.0)', //2c9fff2f09c71302659faeb515bbb2b8
-    'Automat HGNC (trapi v-1.1.0)', //255ea57924924b721919b9ee17a07894
-    'Automat HMDB (trapi v-1.1.0)', //c3e55e3a28cf14e147b55e6e09b32b9b
-    'Automat Hetio (trapi v-1.1.0)', //3a8ad755bbd6f4fdfc0a18c8020d6d58
-    'Automat Panther (trapi v-1.1.0)', //c3e55e3a28cf14e147b55e6e09b32b9b
-    'Automat Pharos (trapi v-1.1.0)', //e0031784afd7cb4e97e266d11df3a9e4
-    'Automat Chembio', //?
-    'Automat Foodb (trapi v-1.1.0)', //1fd2f4cc6b3b6b1f7cda594b00607270
+    'Automat IntAct (trapi v-1.1.2)', //bee0cc86f86d88b83f613b674e2bd92e
+    'Automat Gtopdb (trapi v-1.1.2)', //c8b1619535bd598406049f4dc51e1702
+    'Automat Cord19 (trapi v-1.1.2)', //0a93684206ec6a13812ff2867a445c4e
+    'Automat Uberongraph (trapi v-1.1.2)', //994a667dafe2e2c1d42a5390a6fba9aa
+    'Automat Human GOA (trapi v-1.1.2)', //2c9fff2f09c71302659faeb515bbb2b8
+    'Automat HGNC (trapi v-1.1.2)', //255ea57924924b721919b9ee17a07894
+    'Automat HMDB (trapi v-1.1.2)', //c3e55e3a28cf14e147b55e6e09b32b9b
+    'Automat Hetio (trapi v-1.1.2)', //3a8ad755bbd6f4fdfc0a18c8020d6d58
+    'Automat Panther (trapi v-1.1.2)', //c3e55e3a28cf14e147b55e6e09b32b9b
+    'Automat Pharos (trapi v-1.1.2)', //e0031784afd7cb4e97e266d11df3a9e4
+    'Automat Foodb (trapi v-1.1.2)', //1fd2f4cc6b3b6b1f7cda594b00607270
+    // other Automat APIs we could try out
+    // ask: is Automat CTD still up / valid?
+    //      would Automat Viral Proteome, Chemical normalization, Ontological Hierarchy be useful?
+    //      could we use Automat Biolink or Human GOA rather than our APIs?
+    // 'Automat GTEx (trapi v-1.1.2)', //62811dab25864feb191aad0b23503813
+    // 'Automat Robokop KG (trapi v-1.1.2)', //4f94c54ada189ecfe08491f662986fd6
+    // 'Automat Textmining KP (trapi v-1.1.2)', //7deb474184d551fdfa69c28a9bc46073
+    // 'Automat Viral Proteome (trapi v-1.1.2)', //3437ede0d451c90f67097c56b230e022
+    // 'Automat CTD (trapi v-1.1.2)', //bd612e18f86d9097b02c0d83344b46b7
 
     'ICEES COVID-19 Instance API', //65292eac9a88e3a895be21f19b554767
     'ICEES Asthma Instance API', //0864c0912390d0876c3c34a00acb5c3b
