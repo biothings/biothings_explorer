@@ -24,7 +24,7 @@ exports.API_LIST = [
         id: '1c056ffc7ed0dd1229e71c4752239465',
         name: 'Ontology Lookup Service API'
     },
-    // "pending" BioThings APIs
+    // "pending" BioThings APIs, annotated by x-bte
     {
         id: 'e3edd325c76f2992a111b43a907a4870',
         name: 'BioThings DGIdb API'
@@ -65,7 +65,7 @@ exports.API_LIST = [
         id: 'ec6d76016ef40f284359d17fbf78df20',
         name: 'UBERON Ontology API'
     },
-    // Core BioThings APIs
+    // Core BioThings APIs, annotated with x-bte
     {
         id: '8f08d1446e0bb9c2b323713ce83e2bd3',
         name: 'MyChem.info API'
@@ -82,7 +82,7 @@ exports.API_LIST = [
         id: '09c8782d9f4027712e65b95424adba79',
         name: 'MyVariant.info API'
     },
-    // SEMMED BioThings APIs
+    // SEMMED BioThings APIs, annotated with x-bte
     {
         id: '0c9f1154a1986f1774057af4c1caa5b2',
         name: 'SEMMED Anatomy API'
@@ -107,7 +107,7 @@ exports.API_LIST = [
         id: '2dffb89df7f970b6a07e816e255d33ec',
         name: 'SEMMED Phenotype API'
     },
-    // Multiomics Provider collab
+    // Multiomics Provider collab, annotated with x-bte
     {
         id: 'd86a24f6027ffe778f84ba10a7a1861a',
         name: 'Clinical Risk KP API'
@@ -116,13 +116,13 @@ exports.API_LIST = [
         id: '02af7d098ab304e80d6f4806c3527027',
         name: 'Multiomics Wellness KP API'
     },
-    // Text Mining Provider collab
+    // Text Mining Provider collab, annotated with x-bte
     // - removed Text Mining Co-occurrence API since there were issues using it with BTE (too many answers)
     {
         id: '978fe380a147a8641caf72320862697b',
         name: 'Text Mining Targeted Association API'
     },
-    // Automat APIs
+    // Automat APIs, ingested through TRAPI
     {
     // this API overlaps with our Biolink API registration, but we have bugs with our ingest...
     //   this may have been updated more recently / transformed data into TRAPI format
@@ -210,7 +210,7 @@ exports.API_LIST = [
         id: '3437ede0d451c90f67097c56b230e022',
         name: 'Automat Viral Proteome (trapi v-1.1.2)'
     },
-    // Clinical-data-based APIs from other Translator teams
+    // Clinical-data-based APIs from other Translator teams, ingested through TRAPI
     {
         id: '70117385218edc9bc01633829011dfcf',
         name: 'Columbia Open Health Data (COHD)'
