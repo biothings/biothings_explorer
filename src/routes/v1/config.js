@@ -30,6 +30,10 @@ exports.API_LIST = [
         name: 'BioThings DGIdb API'
     },
     {
+        id: '32f36164fabed5d3abe6c2fd899c9418',
+        name: 'BioThings iDISK API'
+    },
+    {
         id: 'a7f784626a426d054885a5f33f17d3f8',
         name: 'DISEASES API'
     },
@@ -113,18 +117,42 @@ exports.API_LIST = [
         name: 'Multiomics Wellness KP API'
     },
     // Text Mining Provider collab
+    // - removed Text Mining Co-occurrence API since there were issues using it with BTE (too many answers)
     {
         id: '978fe380a147a8641caf72320862697b',
         name: 'Text Mining Targeted Association API'
     },
     // Automat APIs
     {
+    // this API overlaps with our Biolink API registration, but we have bugs with our ingest...
+    //   this may have been updated more recently / transformed data into TRAPI format
+        id: '05a5f5d18b4f2c532367561778571c9a',
+        name: 'Automat Biolink (trapi v-1.1.2)'
+    },
+    {
+        id: 'b0b36734630fdeb93252ebab7939535e',
+        name: 'Automat Chemical normalization (trapi v-1.1.2)'
+    },
+    {
         id: '0a93684206ec6a13812ff2867a445c4e',
         name: 'Automat Cord19 (trapi v-1.1.2)'
     },
     {
+        id: 'a192b537c4113cc585088511574dbe64',
+        name: 'Automat Covidkop KG (trapi v-1.1.2)'
+    },
+    {
+    // this may overlap with info we have in MyDisease, MyChem, and other APIs...
+        id: 'bd612e18f86d9097b02c0d83344b46b7',
+        name: 'Automat CTD (trapi v-1.1.2)'
+    },
+    {
         id: '1fd2f4cc6b3b6b1f7cda594b00607270',
         name: 'Automat Foodb (trapi v-1.1.2)'
+    },
+    {
+        id: '62811dab25864feb191aad0b23503813',
+        name: 'Automat GTEx (trapi v-1.1.2)'
     },
     {
         id: 'c8b1619535bd598406049f4dc51e1702',
@@ -142,13 +170,19 @@ exports.API_LIST = [
         id: 'c3e55e3a28cf14e147b55e6e09b32b9b',
         name: 'Automat HMDB (trapi v-1.1.2)'
     },
-    {
+    {  
+    // this API overlaps with our BioThings GO APIs, but
+    //   may have been updated more recently / transformed data into TRAPI format
         id: '2c9fff2f09c71302659faeb515bbb2b8',
         name: 'Automat Human GOA (trapi v-1.1.2)'
     },
     {
         id: 'bee0cc86f86d88b83f613b674e2bd92e',
         name: 'Automat IntAct (trapi v-1.1.2)'
+    },
+    {
+        id: '2bb65b7ea0cd1d40f4e9147836b750e2',
+        name: 'Automat Ontological Hierarchy (trapi v-1.1.2)'
     },
     {
         id: 'c3e55e3a28cf14e147b55e6e09b32b9b',
@@ -159,33 +193,23 @@ exports.API_LIST = [
         name: 'Automat Pharos (trapi v-1.1.2)'
     },
     {
+        id: '4f94c54ada189ecfe08491f662986fd6',
+        name: 'Automat Robokop KG (trapi v-1.1.2)'
+    },
+    {
+    // not sure if this API overlaps with Text Mining Targeted Association API or
+    //   Text Mining Co-occurrrence API...
+        id: '7deb474184d551fdfa69c28a9bc46073',
+        name: 'Automat Textmining KP (trapi v-1.1.2)'
+    },
+    {
         id: '994a667dafe2e2c1d42a5390a6fba9aa',
         name: 'Automat Uberongraph (trapi v-1.1.2)'
     },
-    // other Automat APIs we could try out
-    // ask: is Automat CTD still up / valid?
-    //      would Automat Viral Proteome, Chemical normalization, Ontological Hierarchy be useful?
-    //      could we use Automat Biolink or Human GOA rather than our APIs?
-    // {
-    //     id: '62811dab25864feb191aad0b23503813',
-    //     name: 'Automat GTEx (trapi v-1.1.2)'
-    // },
-    // {
-    //     id: '4f94c54ada189ecfe08491f662986fd6',
-    //     name: 'Automat Robokop KG (trapi v-1.1.2)'
-    // },
-    // {
-    //     id: '7deb474184d551fdfa69c28a9bc46073',
-    //     name: 'Automat Textmining KP (trapi v-1.1.2)'
-    // },
-    // {
-    //     id: '3437ede0d451c90f67097c56b230e022',
-    //     name: 'Automat Viral Proteome (trapi v-1.1.2)'
-    // },
-    // {
-    //     id: 'bd612e18f86d9097b02c0d83344b46b7',
-    //     name: 'Automat CTD (trapi v-1.1.2)'
-    // },
+    {
+        id: '3437ede0d451c90f67097c56b230e022',
+        name: 'Automat Viral Proteome (trapi v-1.1.2)'
+    },
     // Clinical-data-based APIs from other Translator teams
     {
         id: '70117385218edc9bc01633829011dfcf',
