@@ -1,4 +1,5 @@
 const debug = require("debug")("bte:biothings-explorer-trapi:cron");
+const warning = require("warning");
 const axios = require("axios");
 const fs = require("fs");
 var path = require('path');
@@ -7,7 +8,7 @@ const util = require("util");
 const readFile = util.promisify(fs.readFile);
 const yaml = require("js-yaml");
 var url = require('url')
-
+const validUrl = require('valid-url')
 
 const getTRAPIWithPredicatesEndpoint = (specs) => {
     const trapi = [];
@@ -198,22 +199,32 @@ const getAPIOverrides = async (data) => {
     await Promise.all(Object.keys(overrides.apis).map(async (id) => {
         let override;
         try {
-            try { // in case of file:///
-                const filepath = path.resolve(__dirname, "../../../data" + url.fileURLToPath(overrides.apis[id]));
-                override = yaml.load((await readFile(filepath)));
-            } catch (error) {
-                if (error instanceof TypeError) {
-                    override = yaml.load((await axios.get(overrides.apis[id])).data);
+            const filepath = path.resolve(__dirname, + "../../../data" + url.fileURLToPath(overrides.apis[id]));
+            override = yaml.load(await readFile(filepath));
+        } catch (e1) {
+            if (e1 instanceof TypeError) {
+                if (validUrl.isWebUri(overrides.apis[id])) {
+                    try {
+                        override = yaml.load((await axios.get(overrides.apis[id])).data);
+                    } catch (weberror) {
+                        debug(`ERROR getting override for API ID ${id} because ${weberror}`);
+                        return;
+                    }
                 } else {
-                    debug(`ERROR getting override for API ID ${id} because ${error}`);
-                    return;
+                    try {
+                        const filepath = path.resolve(__dirname, overrides.apis[id]);
+                        override = yaml.load(await readFile(filepath));
+                    } catch (filerror) {
+                        debug(`ERROR getting override for API ID ${id} because ${filerror}`);
+                        return;
+                    }
                 }
+            } else {
+              debug(`ERROR getting override for API ID ${id} because ${e1}`);
+              return;
             }
-            debug(`Successfully got override ${id} from ${overrides.apis[id]}`)
-        } catch (error) {
-            debug(`ERROR getting override for API ID ${id} because ${error}`);
-            return;
         }
+        debug(`Successfully got override ${id} from ${overrides.apis[id]}`)
         override._id = id;
         override._meta = {
             date_created: undefined,
@@ -223,6 +234,7 @@ const getAPIOverrides = async (data) => {
         };
         const index = overrides.conf.only_overrides ? -1 : data.hits.findIndex(hit => hit._id === id);
         if (index === -1) {
+            warning(index !== -1, `Overridden API ID ${id} not recognized, appending as new API hit.`);
             data.hits.push(override);
         } else {
             data.hits[index] = override;

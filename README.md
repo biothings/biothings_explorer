@@ -103,12 +103,42 @@ Public Docker image located at [link](https://hub.docker.com/repository/docker/b
 
 ### Usage
 
-You now can POST queries to `http://<HOST>:3000/v1/query`.  
+You now can POST queries to `http://<HOST>:3000/v1/query`.
 
 Query Examples can be found [here](/examples).
 
 
-### Test with local SmartAPI spec
+### Testing with Alternate SmartAPI Specs (local or hosted)
+
+#### Using `API_OVERRIDE=true`
+
+You may configure a set of API IDs to override from local files or URLs.
+
+If the environment variable `API_OVERRIDE=true` is set (e.g. `API_OVERRIDE=true npm run debug --workspace=@biothings-explorer/bte-trapi`), then `/config/smartapi_overrides.json` is checked at server start and overrides are applied, as well as during subsequent `smartapi_specs.json` updates.
+
+Override files may be specified as a URL which returns the expected yaml file, a `file:///` URL which will search with the `data` folder as the root directory, or an arbitrary filepath. Regardless, override files are expected to be in yaml format. If overrides are specified with IDs not in the current SmartAPI spec, they will be appended as new API hits with a log warning.
+
+You may also set `only_overrides` to `true` in the config to remove all other APIs and keep only the specified overrides.
+
+Example:
+
+Replace the latest MyGene.info API with a specific revision, and the MyChem.info API with a local test version:
+
+```JSON
+{
+  "conf": {
+    "only_overrides": false
+  },
+  "apis": {
+    "59dce17363dce279d389100834e43648": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/8b36f46d59c82d19b5cba40421a6ca9c2ed62e6b/mygene.info/openapi_full.yml",
+    "8f08d1446e0bb9c2b323713ce83e2bd3": "file:///mychem_test.yaml"
+  }
+}
+```
+
+#### Using `/test/query`
+
+*This method is deprecated, and may be subject to removal in the future.*
 
 The TRAPI interface has `/test/query` endpoint which uses a SmartAPI spec stored at **test** folder named **smartapi.json**
 
@@ -130,4 +160,3 @@ Now, you should be able to test your local smartapi using POST queries at:
 ### Testing on a specific SmartAPI API
 
 By default, BTE queries all APIs specified in the the[ config.js file](https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/routes/v1/config.js).  In some cases, you may want to override that default to specifically query a single API.  For example, the SmartAPI record for the "EBI Proteins API) is [43af91b3d7cae43591083bff9d75c6dd](https://smart-api.info/registry?q=43af91b3d7cae43591083bff9d75c6dd). To instruct BTE to query that API only, you can POST your query to http://localhost:3000/v1/smartapi/43af91b3d7cae43591083bff9d75c6dd/query
-
