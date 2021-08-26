@@ -244,32 +244,36 @@ const getAPIOverrides = async (data) => {
 
 
 module.exports = () => {
-    cron.schedule('*/10 * * * *', async () => {
-        debug(`Updating local copy of SmartAPI specs now at ${new Date().toUTCString()}!`);
-        try {
-            await updateSmartAPISpecs();
-            debug("Successfully updated the local copy of SmartAPI specs.")
-        } catch (err) {
-            debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
-        }
-    });
-
-    if (process.env.API_OVERRIDE === 'true') {
-        const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
-        let overrides
-        try {
-            overrides = JSON.parse(fs.readFileSync(overridesPath));
-        } catch (error) {
-            debug(`ERROR getting API Overrides file because ${error}`);
-            return;
-        }
-        if (Object.keys(overrides.apis).length > 0) {
-            debug(`API Override(s) set. Updating local SmartAPI specs with overrides now at ${new Date().toUTCString()}!`);
+    if (!(process.env.DISABLE_SMARTAPI_SYNC === 'true')) {
+        cron.schedule('*/10 * * * *', async () => {
+            debug(`Updating local copy of SmartAPI specs now at ${new Date().toUTCString()}!`);
             try {
-                updateSmartAPISpecs();
-            } catch (error) {
+                await updateSmartAPISpecs();
+                debug("Successfully updated the local copy of SmartAPI specs.")
+            } catch (err) {
                 debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
             }
+        });
+
+        if (process.env.API_OVERRIDE === 'true') {
+            const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
+            let overrides
+            try {
+                overrides = JSON.parse(fs.readFileSync(overridesPath));
+            } catch (error) {
+                debug(`ERROR getting API Overrides file because ${error}`);
+                return;
+            }
+            if (Object.keys(overrides.apis).length > 0) {
+                debug(`API Override(s) set. Updating local SmartAPI specs with overrides now at ${new Date().toUTCString()}!`);
+                try {
+                    updateSmartAPISpecs();
+                } catch (error) {
+                    debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
+                }
+            }
         }
+    } else {
+        debug(`DISABLE_SMARTAPI_SYNC=true, server process ${process.pid} disabling smartapi updates.`)
     }
 }
