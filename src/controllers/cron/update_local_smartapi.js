@@ -244,7 +244,21 @@ const getAPIOverrides = async (data) => {
 
 
 module.exports = () => {
-    if (!(process.env.DISABLE_SMARTAPI_SYNC === 'true')) {
+    let disable_smartapi_sync = process.env.DISABLE_SMARTAPI_SYNC === 'true';
+    if (disable_smartapi_sync) {
+        debug(`DISABLE_SMARTAPI_SYNC=true, server process ${process.pid} disabling smartapi updates.`);
+    } else {
+        if (process.env.INSTANCE_ID){
+            // check if it's a PM2 cluster node and in this case,
+            // only instance #0 will sync from SmartAPI
+            disable_smartapi_sync = process.env.INSTANCE_ID !== "0";
+            if (disable_smartapi_sync) {
+                debug(`Running as a children process, server process ${process.pid} disabling smartapi updates.`);
+            }
+        }
+    }
+
+    if (!disable_smartapi_sync) {
         cron.schedule('*/10 * * * *', async () => {
             debug(`Updating local copy of SmartAPI specs now at ${new Date().toUTCString()}!`);
             try {
@@ -273,7 +287,5 @@ module.exports = () => {
                 }
             }
         }
-    } else {
-        debug(`DISABLE_SMARTAPI_SYNC=true, server process ${process.pid} disabling smartapi updates.`)
     }
 }
