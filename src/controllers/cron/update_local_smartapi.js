@@ -171,7 +171,9 @@ const updateSmartAPISpecs = async () => {
     const res = await axios.get(SMARTAPI_URL);
     const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
     const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
-    await getAPIOverrides(res.data);
+    if (process.env.API_OVERRIDE === "true") {
+        await getAPIOverrides(res.data);
+    }
     fs.writeFile(localFilePath, JSON.stringify({hits: res.data.hits}), (err) => {
         if (err) throw err;
     });
@@ -245,6 +247,7 @@ const getAPIOverrides = async (data) => {
 
 module.exports = () => {
     let disable_smartapi_sync = process.env.DISABLE_SMARTAPI_SYNC === 'true';
+    let api_override = process.env.API_OVERRIDE === 'true';
     if (disable_smartapi_sync) {
         debug(`DISABLE_SMARTAPI_SYNC=true, server process ${process.pid} disabling smartapi updates.`);
     } else {
@@ -269,7 +272,7 @@ module.exports = () => {
             }
         });
 
-        if (process.env.API_OVERRIDE === 'true') {
+        if (api_override) {
             const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
             let overrides
             try {
