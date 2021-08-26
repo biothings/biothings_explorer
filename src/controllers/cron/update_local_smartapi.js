@@ -1,5 +1,4 @@
 const debug = require("debug")("bte:biothings-explorer-trapi:cron");
-const warning = require("warning");
 const axios = require("axios");
 const fs = require("fs");
 var path = require('path');
@@ -234,7 +233,7 @@ const getAPIOverrides = async (data) => {
         };
         const index = overrides.conf.only_overrides ? -1 : data.hits.findIndex(hit => hit._id === id);
         if (index === -1) {
-            warning(index !== -1, `Overridden API ID ${id} not recognized, appending as new API hit.`);
+            debug(`[warning] Overridden API ID ${id} not recognized, appending as new API hit.`);
             data.hits.push(override);
         } else {
             data.hits[index] = override;
