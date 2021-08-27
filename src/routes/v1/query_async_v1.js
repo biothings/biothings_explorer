@@ -6,6 +6,17 @@ const config = require("./config");
 const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate");
 const smartAPIPath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
+const { v4: uuidv4 } = require('uuid');
+const URL = require("url").URL;
+
+const stringIsAValidUrl = (s) => {
+    try {
+        new URL(s);
+        return true;
+    } catch (err) {
+        return false;
+    }
+};
 
 // create job queue
 let queryQueue = null;
@@ -14,7 +25,11 @@ if(redisClient){
         `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` : 'redis://127.0.0.1:6379',
         {
             defaultJobOptions: {
-                timeout: process.env.JOB_TIMEOUT
+                timeout: process.env.JOB_TIMEOUT,
+            },
+            settings: {
+                maxStalledCount: 0,
+                lockDuration: 300000
             }
         }).on('error', function (error){
         console.log('err', error)
@@ -43,7 +58,7 @@ async function jobToBeDone(queryGraph, caching, webhook_url){
         }
     }
     if(webhook_url){
-        if(!webhook_url.startsWith('https://') && !webhook_url.startsWith('http://')){
+        if(!stringIsAValidUrl(webhook_url)){
             return {
                 response: response,
                 status: 200,
@@ -64,6 +79,12 @@ async function jobToBeDone(queryGraph, caching, webhook_url){
                 callback: `Request failed, received code ${e.response.status}`
             }
         }
+    }else{
+        return {
+            response: response,
+            status: 200,
+            callback: 'Callback url was not provided'
+        };
     }
     return {
         response: response,
@@ -84,9 +105,15 @@ class V1RouteAsyncQuery {
             try {
                 if(queryQueue){
                     // add job to the queue
-                    let job = await queryQueue.add({queryGraph: req.body.message.query_graph,
-                        webhook_url: req.body.callback_url,
-                        caching: req.query.caching});
+                    let job = await queryQueue.add(
+                        {
+                            queryGraph: req.body.message.query_graph,
+                            webhook_url: req.body.callback_url,
+                            caching: req.query.caching
+                        },
+                        {
+                            jobId: uuidv4()
+                        });
                     res.setHeader('Content-Type', 'application/json');
                     // return the job id so the user can check on it later
                     res.end(JSON.stringify({id: job.id}));

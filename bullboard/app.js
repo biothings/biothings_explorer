@@ -8,7 +8,7 @@ const { createBullBoard } = require('@bull-board/api')
 const { BullAdapter } = require('@bull-board/api/bullAdapter')
 const { ExpressAdapter } = require('@bull-board/express')
 
-var indexRouter = require('./routes/index');
+//var indexRouter = require('./routes/index');
 
 var app = express();
 
@@ -31,9 +31,9 @@ const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
   serverAdapter:serverAdapter
 })
 
-app.use('/', indexRouter);
-serverAdapter.setBasePath('/admin/queues')
-app.use('/admin/queues', serverAdapter.getRouter());
+//app.use('/', indexRouter);
+//serverAdapter.setBasePath('/')
+app.use('/', serverAdapter.getRouter());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

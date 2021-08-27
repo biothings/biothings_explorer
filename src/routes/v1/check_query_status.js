@@ -44,7 +44,7 @@ class VCheckQueryStatus {
                         let returnvalue = job.returnvalue;
                         let response = returnvalue?.response;
                         res.setHeader('Content-Type', 'application/json');
-                        res.status(returnvalue?.status);
+                        res.status(returnvalue?.status || 200);
                         res.end(JSON.stringify({ id, state, returnvalue, progress, reason }));
                     }
                 }else{
