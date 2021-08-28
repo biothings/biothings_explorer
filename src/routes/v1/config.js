@@ -212,9 +212,16 @@ exports.API_LIST = [
     },
     // Clinical-data-based APIs from other Translator teams, ingested through TRAPI
     {
-        id: '70117385218edc9bc01633829011dfcf',
-        name: 'Columbia Open Health Data (COHD)'
+        id: 'e164faae56a28c4cfa2d721978b04da4',
+        name: 'Columbia Open Health Data (COHD) TRAPI 1.1'
     },
+    // notes on COHD:
+    // - when BTE moves to TRAPI 1.2, we probably need to change registration to use
+    //   COHD TRAPI 1.2 instance / 51c178099fa2dc99b5d8fff8bf9f1a0d
+    // - DON'T INGEST 'Columbia Open Health Data (COHD)'/70117385218edc9bc01633829011dfcf
+    //   IT IS NOT TRAPI (and may be outdated?)
+    // - COHD for COVID-19 should work but BTE gets a 500 when retrieving meta_knowledge_graph...
+    //   smartapi ID fc8245e92c970298449294fc04211869
     {
         id: '0864c0912390d0876c3c34a00acb5c3b',
         name: 'ICEES Asthma Instance API'
