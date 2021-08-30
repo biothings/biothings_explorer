@@ -20,7 +20,7 @@ const stringIsAValidUrl = (s) => {
 
 // create job queue
 let queryQueue = null;
-if(redisClient){
+if(redisClient.client){
     queryQueue = new Queue('get query graph', process.env.REDIS_HOST ?
         `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` : 'redis://127.0.0.1:6379',
         {
