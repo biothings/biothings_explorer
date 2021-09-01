@@ -8,9 +8,10 @@ The queries within a group should return the same information (number of knowled
 
 ### One-hop
 
-Direction possibilities: &#8594; and &#8592;
+Direction possibilities: → and ←
 
-1A: Gene ID (KCNMA1) &#8594; Disease (canonical Predict)
+1A: Gene ID (KCNMA1) → Disease (canonical Predict)
+Example edge: NCBIGene:3778-biolink:gene_associated_with_condition-MONDO:0005252
 ```
 {
     "message": {
@@ -35,7 +36,8 @@ Direction possibilities: &#8594; and &#8592;
 }
 ```
 
-1B: Gene ID (KCNMA1) &#8592; Disease 
+1B: Disease → Gene ID (KCNMA1)
+Example edge: MONDO:0005252-biolink:condition_associated_with_gene-NCBIGene:3778
 ```
 {
     "message": {
@@ -62,9 +64,12 @@ Direction possibilities: &#8594; and &#8592;
 
 ### Two-hop
 
-Direction possibilities: &#8594; &#8594;, &#8592; &#8594;, &#8592; &#8592;, &#8594; &#8592;
+Direction possibilities: → →, ← →, ← ←, → ←
 
-2A: Disease ID (Alzheimer disease) &#8594; BiologicalProcessOrActivity &#8594; SmallMolecule (canonical Predict)
+2A: Disease ID (Alzheimer disease) → BiologicalProcessOrActivity → SmallMolecule (canonical Predict)
+Example edges:
+- MONDO:0004975-biolink:correlated_with-GO:0019318 (no asymmetrical predicates on this step)
+- GO:0019318-biolink:has_participant-PUBCHEM.COMPOUND:206 
 ```
 {
     "message": {
@@ -96,7 +101,10 @@ Direction possibilities: &#8594; &#8594;, &#8592; &#8594;, &#8592; &#8592;, &#85
 }
 ```
 
-2B: Disease ID (Alzheimer disease) &#8592; BiologicalProcessOrActivity &#8594; SmallMolecule
+2B: Disease ID (Alzheimer disease) ← BiologicalProcessOrActivity → SmallMolecule
+Example edges:
+- GO:0019318-biolink:correlated_with-MONDO:0004975 (no asymmetrical predicates on this step)
+- GO:0019318-biolink:has_participant-PUBCHEM.COMPOUND:206 
 ```
 {
     "message": {
@@ -128,7 +136,10 @@ Direction possibilities: &#8594; &#8594;, &#8592; &#8594;, &#8592; &#8592;, &#85
 }
 ```
 
-2C: Disease ID (Alzheimer disease) &#8592; BiologicalProcessOrActivity &#8592; SmallMolecule
+2C: Disease ID (Alzheimer disease) ← BiologicalProcessOrActivity ← SmallMolecule
+Example edges: 
+- GO:0019318-biolink:correlated_with-MONDO:0004975 (no asymmetrical predicates on this step)
+- PUBCHEM.COMPOUND:206-biolink:participates_in-GO:0019318 
 ```
 {
     "message": {
@@ -160,7 +171,10 @@ Direction possibilities: &#8594; &#8594;, &#8592; &#8594;, &#8592; &#8592;, &#85
 }
 ```
 
-2D: Disease ID (Alzheimer disease) &#8594; BiologicalProcessOrActivity &#8592; SmallMolecule
+2D: Disease ID (Alzheimer disease) → BiologicalProcessOrActivity ← SmallMolecule
+Example edges: 
+- MONDO:0004975-biolink:correlated_with-GO:0019318 (no asymmetrical predicates on this step)
+- PUBCHEM.COMPOUND:206-biolink:participates_in-GO:0019318 
 ```
 {
     "message": {
@@ -196,9 +210,10 @@ Direction possibilities: &#8594; &#8594;, &#8592; &#8594;, &#8592; &#8592;, &#85
 
 ### One-hop
 
-Direction possibilities: &#8594; and &#8592;
+Direction possibilities: → and ←
 
-3A: Pathway ID (RORA activates gene expression (Homo sapiens)) &#8594; Gene ID (CPT1A) (canonical Explain)
+3A: Pathway ID (RORA activates gene expression (Homo sapiens)) → Gene ID (CPT1A) (canonical Explain)
+Expected edge: REACT:R-HSA-1368082-biolink:has_participant-NCBIGene:1374
 ```
 {
     "message": {
@@ -224,7 +239,8 @@ Direction possibilities: &#8594; and &#8592;
 }
 ```
 
-3B: Pathway ID (RORA activates gene expression (Homo sapiens)) &#8592; Gene ID (CPT1A) (canonical Explain)
+3B: Gene ID (CPT1A) → Pathway ID (RORA activates gene expression (Homo sapiens))
+Expected edge: NCBIGene:1374-biolink:participates_in-REACT:R-HSA-1368082
 ```
 {
     "message": {
@@ -252,9 +268,12 @@ Direction possibilities: &#8594; and &#8592;
 
 ### Two-hop
 
-Direction possibilities: -> <-, -> ->, <- <-, <- ->
+Direction possibilities: → ←, → →, ← ←, ← →
 
-4A: SmallMolecule ID (celecoxib) -> Disease <- Gene ID (PTGS1) (canonical Explain)
+4A: SmallMolecule ID (celecoxib) → Disease ← Gene ID (PTGS1) (canonical Explain)
+Example edges:
+- PUBCHEM.COMPOUND:2662-biolink:causes_adverse_event-MONDO:0018874
+- NCBIGene:5742-biolink:gene_associated_with_condition-MONDO:0018874 
 ```
 {
     "message": {
@@ -287,7 +306,10 @@ Direction possibilities: -> <-, -> ->, <- <-, <- ->
 }
 ```
 
-4B: SmallMolecule ID (celecoxib) -> Disease -> Gene ID (PTGS1)
+4B: SmallMolecule ID (celecoxib) → Disease → Gene ID (PTGS1)
+Example edges:
+- PUBCHEM.COMPOUND:2662-biolink:causes_adverse_event-MONDO:0018874
+- MONDO:0018874-biolink:condition_associated_with_gene-NCBIGene:5742
 ```
 {
     "message": {
@@ -320,7 +342,10 @@ Direction possibilities: -> <-, -> ->, <- <-, <- ->
 }
 ```
 
-4C: SmallMolecule ID (celecoxib) <- Disease <- Gene ID (PTGS1)
+4C: SmallMolecule ID (celecoxib) ← Disease ← Gene ID (PTGS1)
+Example edges:
+- MONDO:0018874-biolink:adverse_event_caused_by-PUBCHEM.COMPOUND:2662
+- NCBIGene:5742-biolink:gene_associated_with_condition-MONDO:0018874
 ```
 {
     "message": {
@@ -353,7 +378,10 @@ Direction possibilities: -> <-, -> ->, <- <-, <- ->
 }
 ```
 
-4D: SmallMolecule ID (celecoxib) <- Disease -> Gene ID (PTGS1)
+4D: SmallMolecule ID (celecoxib) ← Disease → Gene ID (PTGS1)
+Example edges:
+- MONDO:0018874-biolink:adverse_event_caused_by-PUBCHEM.COMPOUND:2662
+- MONDO:0018874-biolink:condition_associated_with_gene-NCBIGene:5742
 ```
 {
     "message": {
