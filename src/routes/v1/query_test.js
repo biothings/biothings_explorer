@@ -8,7 +8,6 @@ class RouteQueryTest {
         app.post('/test/query', swaggerValidation.validate, async (req, res, next) => {
             try {
                 const queryGraph = req.body.message.query_graph;
-                console.log("smartapi", smartAPIPath)
                 const handler = new TRAPIGraphHandler.TRAPIQueryHandler({}, smartAPIPath, undefined, false);
                 handler.setQueryGraph(queryGraph);
                 await handler.query();

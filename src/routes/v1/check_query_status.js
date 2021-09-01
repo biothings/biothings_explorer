@@ -3,7 +3,7 @@ const redisClient = require('../../utils/cache/redis-client');
 
 let queryQueue;
 
-if(redisClient.client){
+if(Object.keys(redisClient).length !== 0){
     queryQueue = new Queue('get query graph');
 }
 

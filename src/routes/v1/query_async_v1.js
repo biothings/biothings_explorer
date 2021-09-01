@@ -20,7 +20,7 @@ const stringIsAValidUrl = (s) => {
 
 // create job queue
 let queryQueue = null;
-if(redisClient.client){
+if(Object.keys(redisClient).length !== 0){
     queryQueue = new Queue('get query graph', process.env.REDIS_HOST ?
         `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` : 'redis://127.0.0.1:6379',
         {
@@ -38,7 +38,7 @@ if(redisClient.client){
 
 if(queryQueue){
     queryQueue.on('global:completed', (jobId, result) => {
-        console.log(`Job completed with result ${result}`);
+        //console.log(`Job completed with result ${result}`);
     });
 }
 
@@ -71,7 +71,7 @@ async function jobToBeDone(queryGraph, caching, webhook_url){
                     'Content-Type': 'application/json'
                 }
             });
-            console.log(res)
+            //console.log(res)
         }catch (e){
             return {
                 response: response,
