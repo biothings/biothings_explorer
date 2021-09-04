@@ -30,7 +30,7 @@ describe("Testing v1.1 endpoints", () => {
                 expect(response.body.edges).toEqual(
                     expect.arrayContaining([
                       expect.objectContaining({
-                        "subject": "biolink:ChemicalSubstance",
+                        "subject": "biolink:SmallMolecule",
                         "predicate": "biolink:entity_positively_regulates_entity",
                         "object": "biolink:Gene"
                       })
@@ -54,7 +54,7 @@ describe("Testing v1.1 endpoints", () => {
                     expect.arrayContaining([
                       expect.objectContaining({
                         "subject": "biolink:SequenceVariant",
-                        "predicate": "biolink:located_in",
+                        "predicate": "biolink:is_sequence_variant_of",
                         "object": "biolink:Gene",
                       })
                     ])
@@ -72,9 +72,9 @@ describe("Testing v1.1 endpoints", () => {
                 expect(response.body.edges).toEqual(
                     expect.arrayContaining([
                       expect.objectContaining({
-                        "subject": "biolink:ChemicalSubstance",
+                        "subject": "biolink:SmallMolecule",
                         "predicate": "biolink:entity_positively_regulates_entity",
-                        "object": "biolink:Gene",
+                        "object": "biolink:Protein",
                       })
                     ])
                 );
@@ -105,9 +105,9 @@ describe("Testing v1.1 endpoints", () => {
                 expect(response.body.edges).toEqual(
                     expect.arrayContaining([
                       expect.objectContaining({
-                        "subject": "biolink:ChemicalSubstance",
+                        "subject": "biolink:SmallMolecule",
                         "predicate": "biolink:entity_positively_regulates_entity",
-                        "object": "biolink:Gene"
+                        "object": "biolink:Protein"
                       })
                     ])
                 );
@@ -201,8 +201,8 @@ describe("Testing v1.1 endpoints", () => {
                 expect(response.body.message.knowledge_graph).toHaveProperty("nodes");
                 expect(response.body.message.knowledge_graph).toHaveProperty("edges");
                 expect(response.body.message.knowledge_graph.nodes).toHaveProperty("MONDO:0016575");
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("UMLS:C0008780");
-                expect(response.body.message.knowledge_graph.nodes["UMLS:C0008780"]).toHaveProperty("categories", ["biolink:PhenotypicFeature"]);
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("HP:0012265");
+                expect(response.body.message.knowledge_graph.nodes["HP:0012265"]).toHaveProperty("categories", ["biolink:PhenotypicFeature"]);
             })
     })
 

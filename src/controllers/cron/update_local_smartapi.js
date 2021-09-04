@@ -3,6 +3,11 @@ const axios = require("axios");
 const fs = require("fs");
 var path = require('path');
 const cron = require('node-cron');
+const util = require("util");
+const readFile = util.promisify(fs.readFile);
+const yaml = require("js-yaml");
+var url = require('url')
+const validUrl = require('valid-url')
 
 const getTRAPIWithPredicatesEndpoint = (specs) => {
     const trapi = [];
@@ -102,11 +107,13 @@ const getPredicatesFromGraphData = (predicate_endpoint, data) => {
     const predicates = {}
 
     const addNewPredicates= (edge) => {
-        if (Object.prototype.hasOwnProperty.call(predicates, edge.object)) {
-            predicates[edge.object][edge.subject] = edge.predicate
-        } else {
+        if (!Object.prototype.hasOwnProperty.call(predicates, edge.object)) {
             predicates[edge.object] = {}
-            predicates[edge.object][edge.subject] = edge.predicate
+        }
+        if (Array.isArray(predicates[edge.object][edge.subject])) {
+            predicates[edge.object][edge.subject].push(edge.predicate);
+        } else {
+            predicates[edge.object][edge.subject] = [edge.predicate];
         }
     }
 
@@ -164,7 +171,10 @@ const updateSmartAPISpecs = async () => {
     const res = await axios.get(SMARTAPI_URL);
     const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
     const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
-    fs.writeFile(localFilePath, JSON.stringify(res.data), (err) => {
+    if (process.env.API_OVERRIDE === "true") {
+        await getAPIOverrides(res.data);
+    }
+    fs.writeFile(localFilePath, JSON.stringify({hits: res.data.hits}), (err) => {
         if (err) throw err;
     });
     const predicatesInfo = await getOpsFromPredicatesEndpoints(res.data.hits);
@@ -172,14 +182,113 @@ const updateSmartAPISpecs = async () => {
         if (err) throw err;
     });
 }
-module.exports = () => {
-    cron.schedule('*/10 * * * *', async () => {
-        debug(`Updating local copy of SmartAPI specs now at ${new Date().toUTCString()}!`);
+
+const getAPIOverrides = async (data) => {
+    const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
+    let overrides;
+    try {
+        overrides = JSON.parse((await readFile(overridesPath)));
+    } catch (error) {
+        debug(`ERROR getting API Overrides file because ${error}`);
+        return;
+    }
+    // if only_overrides is enabled, only overridden apis are used
+    if (overrides.conf.only_overrides) {
+        debug("Override specifies removal of undeclared APIs")
+        data.hits = [];
+    }
+    await Promise.all(Object.keys(overrides.apis).map(async (id) => {
+        let override;
         try {
-            await updateSmartAPISpecs();
-            debug("Successfully updated the local copy of SmartAPI specs.")
-        } catch (err) {
-            debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
+            const filepath = path.resolve(__dirname, + "../../../data" + url.fileURLToPath(overrides.apis[id]));
+            override = yaml.load(await readFile(filepath));
+        } catch (e1) {
+            if (e1 instanceof TypeError) {
+                if (validUrl.isWebUri(overrides.apis[id])) {
+                    try {
+                        override = yaml.load((await axios.get(overrides.apis[id])).data);
+                    } catch (weberror) {
+                        debug(`ERROR getting override for API ID ${id} because ${weberror}`);
+                        return;
+                    }
+                } else {
+                    try {
+                        const filepath = path.resolve(__dirname, overrides.apis[id]);
+                        override = yaml.load(await readFile(filepath));
+                    } catch (filerror) {
+                        debug(`ERROR getting override for API ID ${id} because ${filerror}`);
+                        return;
+                    }
+                }
+            } else {
+              debug(`ERROR getting override for API ID ${id} because ${e1}`);
+              return;
+            }
         }
-    });
+        debug(`Successfully got override ${id} from ${overrides.apis[id]}`)
+        override._id = id;
+        override._meta = {
+            date_created: undefined,
+            last_updated: undefined,
+            url: overrides.apis[id],
+            username: undefined,
+        };
+        const index = overrides.conf.only_overrides ? -1 : data.hits.findIndex(hit => hit._id === id);
+        if (index === -1) {
+            debug(`[warning] Overridden API ID ${id} not recognized, appending as new API hit.`);
+            data.hits.push(override);
+        } else {
+            data.hits[index] = override;
+        }
+        return;
+    }));
+};
+
+
+module.exports = () => {
+    let disable_smartapi_sync = process.env.DISABLE_SMARTAPI_SYNC === 'true';
+    let api_override = process.env.API_OVERRIDE === 'true';
+    if (disable_smartapi_sync) {
+        debug(`DISABLE_SMARTAPI_SYNC=true, server process ${process.pid} disabling smartapi updates.`);
+    } else {
+        if (process.env.INSTANCE_ID){
+            // check if it's a PM2 cluster node and in this case,
+            // only instance #0 will sync from SmartAPI
+            disable_smartapi_sync = process.env.INSTANCE_ID !== "0";
+            if (disable_smartapi_sync) {
+                debug(`Running as a children process, server process ${process.pid} disabling smartapi updates.`);
+            }
+        }
+    }
+
+    if (!disable_smartapi_sync) {
+        cron.schedule('*/10 * * * *', async () => {
+            debug(`Updating local copy of SmartAPI specs now at ${new Date().toUTCString()}!`);
+            try {
+                await updateSmartAPISpecs();
+                debug("Successfully updated the local copy of SmartAPI specs.")
+            } catch (err) {
+                debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
+            }
+        });
+
+        if (api_override) {
+            const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
+            let overrides
+            try {
+                overrides = JSON.parse(fs.readFileSync(overridesPath));
+            } catch (error) {
+                debug(`ERROR getting API Overrides file because ${error}`);
+                return;
+            }
+            if (Object.keys(overrides.apis).length > 0) {
+                debug(`API Override(s) set. Updating local SmartAPI specs with overrides now at ${new Date().toUTCString()}!`);
+                try {
+                    updateSmartAPISpecs();
+                } catch (error) {
+                    debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
+                }
+            }
+        }
+    }
 }

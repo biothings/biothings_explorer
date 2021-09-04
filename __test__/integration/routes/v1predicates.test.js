@@ -9,8 +9,8 @@ describe.skip("Test /v1/predicates endpoint", () => {
             .expect('Content-Type', /json/)
             .then((response) => {
                 expect(response.body).toHaveProperty("biolink:Gene");
-                expect(response.body["biolink:Gene"]).toHaveProperty("biolink:ChemicalSubstance");
-                expect(response.body["biolink:Gene"]["biolink:ChemicalSubstance"]).toContain("biolink:related_to");
+                expect(response.body["biolink:Gene"]).toHaveProperty("biolink:SmallMolecule");
+                expect(response.body["biolink:Gene"]["biolink:SmallMolecule"]).toContain("biolink:related_to");
             })
     })
 })

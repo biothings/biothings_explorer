@@ -75,20 +75,6 @@ describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
             })
     })
 
-    test("Query to Text Mining Targeted Association KP should have id resolution turned off", async () => {
-        const query = JSON.parse(fs.readFileSync(path.join(example_folder, "textmining/query_chemicals_related_to_gene_or_gene_product.json")));
-        await request(app)
-            .post("/v1/smartapi/978fe380a147a8641caf72320862697b/query/")
-            .send(query)
-            .set('Accept', 'application/json')
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .then(response => {
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("CHEBI:32677")
-                expect(response.body.message.knowledge_graph.nodes["CHEBI:32677"].attributes[0].value).toEqual(["CHEBI:32677"])
-            })
-    })
-
     test("Query to non-Text Mining KPs should have id resolution turned on", async () => {
         const query = JSON.parse(fs.readFileSync(path.join(example_folder, "serviceprovider/mychem.json")));
         await request(app)

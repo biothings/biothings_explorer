@@ -21,12 +21,12 @@ describe("Test association module", () => {
     })
 
     test("If obj specified, should only return associations related to the obj", async () => {
-        const res = await assoc(undefined, 'ChemicalSubstance');
+        const res = await assoc(undefined, 'SmallMolecule');
         const outputTypes = new Set(res.map(item => item.object));
         const inputTypes = new Set(res.map(item => item.subject));
         expect(inputTypes.size).toBeGreaterThan(1);
         expect(Array.from(outputTypes)).toHaveLength(1);
-        expect(Array.from(outputTypes)).toEqual(['ChemicalSubstance'])
+        expect(Array.from(outputTypes)).toEqual(['SmallMolecule'])
     })
 
     test("If pred specified, should only return associations related to the pred", async () => {
@@ -48,21 +48,21 @@ describe("Test association module", () => {
     })
 
     test("If source specified, should only return associations related to the source", async () => {
-        const res = await assoc(undefined, undefined, undefined, undefined, "drugbank");
+        const res = await assoc(undefined, undefined, undefined, undefined, "infores:drugbank");
         const sources = new Set(res.map(item => item.provided_by));
         const inputTypes = new Set(res.map(item => item.subject));
         expect(inputTypes.size).toBeGreaterThan(1);
         expect(Array.from(sources)).toHaveLength(1);
-        expect(Array.from(sources)).toEqual(['drugbank'])
+        expect(Array.from(sources)).toEqual(['infores:drugbank'])
     })
 
     test("If both sub and obj specified, should only return associations related to both sub and obj", async () => {
-        const res = await assoc('Gene', 'ChemicalSubstance');
+        const res = await assoc('Gene', 'SmallMolecule');
         const outputTypes = new Set(res.map(item => item.object));
         const inputTypes = new Set(res.map(item => item.subject));
         expect(Array.from(inputTypes)).toHaveLength(1);
         expect(Array.from(outputTypes)).toHaveLength(1);
         expect(Array.from(inputTypes)).toEqual(['Gene']);
-        expect(Array.from(outputTypes)).toEqual(['ChemicalSubstance']);
+        expect(Array.from(outputTypes)).toEqual(['SmallMolecule']);
     })
 })
