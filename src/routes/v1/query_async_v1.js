@@ -6,7 +6,7 @@ const config = require("./config");
 const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate");
 const smartAPIPath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
-const { v4: uuidv4 } = require('uuid');
+const shortid = require('shortid');
 const URL = require("url").URL;
 
 const stringIsAValidUrl = (s) => {
@@ -112,7 +112,7 @@ class V1RouteAsyncQuery {
                             caching: req.query.caching
                         },
                         {
-                            jobId: uuidv4()
+                            jobId: shortid.generate()
                         });
                     res.setHeader('Content-Type', 'application/json');
                     // return the job id so the user can check on it later
