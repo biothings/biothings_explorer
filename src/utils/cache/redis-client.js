@@ -5,7 +5,7 @@ let client;
 
 const enableRedis = (!(process.env.REDIS_HOST === undefined)) && (!(process.env.REDIS_PORT === undefined));
 
-if (!enableRedis === true) {
+if (enableRedis === true) {
     const details = {
         port: process.env.REDIS_PORT,
         host: process.env.REDIS_HOST,
@@ -14,7 +14,7 @@ if (!enableRedis === true) {
     client = redis.createClient(details);
 }
 
-const redisClient = (!enableRedis === true) ? {
+const redisClient = (enableRedis === true) ? {
     ...client,
     getAsync: promisify(client.get).bind(client),
     setAsync: promisify(client.set).bind(client),

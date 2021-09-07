@@ -6,7 +6,7 @@ const config = require("./config");
 const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate");
 const smartAPIPath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
-const shortid = require('shortid');
+const { nanoid } = require('nanoid')
 const URL = require("url").URL;
 
 const stringIsAValidUrl = (s) => {
@@ -105,13 +105,13 @@ class V1RouteAsyncQuery {
             try {
                 if(queryQueue){
                     // add job to the queue
-                    const jobId = shortid.generate();
+                    const jobId = nanoid(10);
                     const url = process.env.API_URL ? `${process.env.API_URL}/check_query_status/${jobId}` :
                         `http://localhost:${process.env.PORT ? process.env.PORT : 3000}/v1/check_query_status/${jobId}`;
                     let job = await queryQueue.add(
                         {
                             queryGraph: req.body.message.query_graph,
-                            webhook_url: req.body.callback_url,
+                            webhook_url: req.body.callback_url || req.body['callback'],
                             caching: req.query.caching
                         },
                         {
