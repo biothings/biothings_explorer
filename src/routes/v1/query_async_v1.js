@@ -105,6 +105,9 @@ class V1RouteAsyncQuery {
             try {
                 if(queryQueue){
                     // add job to the queue
+                    const jobId = shortid.generate();
+                    const url = process.env.API_URL ? `${process.env.API_URL}/check_query_status/${jobId}` :
+                        `http://localhost:${process.env.PORT ? process.env.PORT : 3000}/v1/check_query_status/${jobId}`;
                     let job = await queryQueue.add(
                         {
                             queryGraph: req.body.message.query_graph,
@@ -112,11 +115,12 @@ class V1RouteAsyncQuery {
                             caching: req.query.caching
                         },
                         {
-                            jobId: shortid.generate()
+                            jobId: jobId,
+                            url: url
                         });
                     res.setHeader('Content-Type', 'application/json');
                     // return the job id so the user can check on it later
-                    res.end(JSON.stringify({id: job.id}));
+                    res.end(JSON.stringify({id: job.id, url}));
                 }else{
                     res.setHeader('Content-Type', 'application/json');
                     res.status(503).end(JSON.stringify({'error': 'Redis service is unavailable'}));
