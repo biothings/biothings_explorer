@@ -1,19 +1,31 @@
 const Queue = require('bull');
 const path = require("path");
-const axios = require('axios')
+const axios = require('axios');
+const { nanoid } = require('nanoid');
 const redisClient = require('../../utils/cache/redis-client');
 const config = require("./config");
 const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate");
 const smartAPIPath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
+const predicatesPath = path.resolve(__dirname, '../../../data/predicates.json');
 const utils = require("../../utils/common");
-const {asyncquery} = require('../../controllers/asyncquery')
-const queryQueue = require('../../controllers/query_queue')
-const URL = require("url").URL;
+const {asyncquery} = require('../../controllers/asyncquery');
+const {queryQueue} = require('../../controllers/query_queue');
 
-async function jobToBeDone(queryGraph, caching, webhook_url){
-    const handler = new TRAPIGraphHandler.TRAPIQueryHandler({ apiNames: config.API_LIST, caching: caching }, smartAPIPath);
+async function jobToBeDone(queryGraph, smartAPIID, caching, enableIDResolution, workflow, webhook_url){
+    utils.validateWorkflow(workflow);
+    const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
+        {
+            smartAPIID,
+            caching,
+            enableIDResolution
+        },
+        smartAPIPath,
+        predicatesPath,
+        false
+    );
     handler.setQueryGraph(queryGraph);
+
     let response = null
     try{
         await handler.query();
@@ -64,17 +76,27 @@ async function jobToBeDone(queryGraph, caching, webhook_url){
 
 if(queryQueue){
     queryQueue.process(async (job) => {
-        return jobToBeDone(job.data.queryGraph, job.data.caching, job.data.webhook_url);
+        return jobToBeDone(
+            job.data.queryGraph,
+            job.data.smartAPIID,
+            job.data.caching,
+            job.data.enableIDResolution,
+            job.data.workflow,
+            job.data.webhook_url);
     });
 }
 
-class V1RouteAsyncQuery {
+class V1RouteAsyncQueryByAPI {
     setRoutes(app) {
-        app.post('/v1/asyncquery', swaggerValidation.validate, async (req, res, next) => {
+        app.post('/v1/smartapi/:smartapi_id/asyncquery', swaggerValidation.validate, async (req, res, next) => {
+            const enableIDResolution = (['5be0f321a829792e934545998b9c6afe', '978fe380a147a8641caf72320862697b'].includes(req.params.smartapi_id)) ? false : true;
             let queueData = {
                 queryGraph: req.body.message.query_graph,
+                smartAPIID: req.params.smartapi_id,
+                caching: req.query.caching,
+                workflow: req.body.workflow,
                 webhook_url: req.body.callback_url || req.body['callback'],
-                caching: req.query.caching
+                enableIDResolution
             }
             await asyncquery(req, res, next, queueData)
         });
@@ -83,4 +105,4 @@ class V1RouteAsyncQuery {
 
 
 
-module.exports = new V1RouteAsyncQuery();
+module.exports = new V1RouteAsyncQueryByAPI();

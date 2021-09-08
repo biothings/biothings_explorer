@@ -22,7 +22,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const bullQueue = new Queue('get query graph')
+let details = { port: process.env.REDIS_PORT, host: process.env.REDIS_HOST }
+if( process.env.REDIS_PASSWORD) {
+  details.password = process.env.REDIS_PASSWORD
+}
+
+const bullQueue = new Queue('get query graph', process.env.REDIS_HOST ?
+    { redis: details } : 'redis://127.0.0.1:6379')
+
 const serverAdapter = new ExpressAdapter();
 const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
   queues: [
