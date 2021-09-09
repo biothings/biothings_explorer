@@ -1,22 +1,32 @@
 const axios = require('axios')
 const { nanoid } = require('nanoid')
 const utils = require('../utils/common')
-const queryQueue = require('./query_queue');
 
-exports.asyncquery = async (req, res, next, queueData) => {
+exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
     try {
         if(queryQueue){
-            // add job to the queue
             const jobId = nanoid(10);
+
+            // add job to the queue
+            let url
+            if(queryQueue.name==='get query graph'){
+                url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}`
+            }
+            if(queryQueue.name==='get query graph by api'){
+                url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}?by=api`
+            }
+            if(queryQueue.name==='get query graph by team'){
+                url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}?by=team`
+            }
             let job = await queryQueue.add(
                 queueData,
                 {
                     jobId: jobId,
-                    url: `${req.hostname}/v1/check_query_status/${jobId}`
+                    url: url
                 });
             res.setHeader('Content-Type', 'application/json');
             // return the job id so the user can check on it later
-            res.end(JSON.stringify({id: job.id, url: `${req.protocol}://${req.hostname}/v1/check_query_status/${jobId}`}));
+            res.end(JSON.stringify({id: job.id, url: url}));
         }else{
             res.setHeader('Content-Type', 'application/json');
             res.status(503).end(JSON.stringify({'error': 'Redis service is unavailable'}));

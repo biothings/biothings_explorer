@@ -10,7 +10,9 @@ const smartAPIPath = path.resolve(__dirname, '../../../data/smartapi_specs.json'
 const predicatesPath = path.resolve(__dirname, '../../../data/predicates.json');
 const utils = require("../../utils/common");
 const {asyncquery} = require('../../controllers/asyncquery');
-const {queryQueue} = require('../../controllers/query_queue');
+const {getQueryQueue} = require('../../controllers/asyncquery_queue');
+
+queryQueue = getQueryQueue('get query graph by api')
 
 async function jobToBeDone(queryGraph, smartAPIID, caching, enableIDResolution, workflow, webhook_url){
     utils.validateWorkflow(workflow);
@@ -89,6 +91,8 @@ if(queryQueue){
 class V1RouteAsyncQueryByAPI {
     setRoutes(app) {
         app.post('/v1/smartapi/:smartapi_id/asyncquery', swaggerValidation.validate, async (req, res, next) => {
+            queryQueue = getQueryQueue('get query graph by api')
+
             const enableIDResolution = (['5be0f321a829792e934545998b9c6afe', '978fe380a147a8641caf72320862697b'].includes(req.params.smartapi_id)) ? false : true;
             let queueData = {
                 queryGraph: req.body.message.query_graph,
@@ -98,7 +102,7 @@ class V1RouteAsyncQueryByAPI {
                 webhook_url: req.body.callback_url || req.body['callback'],
                 enableIDResolution
             }
-            await asyncquery(req, res, next, queueData)
+            await asyncquery(req, res, next, queueData, queryQueue)
         });
     }
 }

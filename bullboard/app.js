@@ -27,13 +27,19 @@ if( process.env.REDIS_PASSWORD) {
   details.password = process.env.REDIS_PASSWORD
 }
 
-const bullQueue = new Queue('get query graph', process.env.REDIS_HOST ?
+const bullQueue1 = new Queue('get query graph', process.env.REDIS_HOST ?
+    { redis: details } : 'redis://127.0.0.1:6379')
+const bullQueue2 = new Queue('get query graph by team', process.env.REDIS_HOST ?
+    { redis: details } : 'redis://127.0.0.1:6379')
+const bullQueue3 = new Queue('get query graph by api', process.env.REDIS_HOST ?
     { redis: details } : 'redis://127.0.0.1:6379')
 
 const serverAdapter = new ExpressAdapter();
 const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
   queues: [
-    new BullAdapter(bullQueue),
+    new BullAdapter(bullQueue1),
+    new BullAdapter(bullQueue2),
+    new BullAdapter(bullQueue3),
   ],
   serverAdapter:serverAdapter
 })
