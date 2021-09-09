@@ -22,8 +22,7 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
                 "x-trapi" in spec.info &&
                 spec.servers.length &&
                 "/predicates" in spec.paths ||
-                "/meta_knowledge_graph" in spec.paths ||
-                "/1.1/meta_knowledge_graph" in spec.paths
+                "/meta_knowledge_graph" in spec.paths
             ) {
                 let api = {
                     association: {
