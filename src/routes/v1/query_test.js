@@ -11,7 +11,7 @@ class RouteQueryTest {
                 console.log("smartapi", smartAPIPath)
                 const handler = new TRAPIGraphHandler.TRAPIQueryHandler({}, smartAPIPath, undefined, false);
                 handler.setQueryGraph(queryGraph);
-                await handler.query();
+                await handler.query_2();
                 res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify(handler.getResponse()));
             }
