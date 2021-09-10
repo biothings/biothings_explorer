@@ -246,8 +246,9 @@ const getAPIOverrides = async (data) => {
 
 
 module.exports = () => {
+    // not meant to be used with server started
+    // rather, if just this function is imported and run (e.g. using workspace script)
     let sync_and_exit = process.env.SYNC_AND_EXIT === 'true';
-
     if (sync_and_exit) {
         console.log("Syncing SmartAPI specs with subsequent exit...");
         updateSmartAPISpecs().then(() => {
