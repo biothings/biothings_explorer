@@ -3,10 +3,10 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "id": "UMLS:C0008780"
+                    "ids": "UMLS:C0008780"
                 },
                 "n1": {
-                    "category": "biolink:Gene"
+                    "categories": "biolink:Gene"
                 }
             },
             "edges": {

@@ -1,6 +1,7 @@
 const app = require("../../../src/app");
 const request = require('supertest');
 
+// no one is really using the BTE /metakg endpoint and it is not publically advertised in its SmartAPI registration...
 describe("Test /metakg endpoint", () => {
     test("Should return 200 with valid response using default values", async () => {
         await request(app)
@@ -27,13 +28,13 @@ describe("Test /metakg endpoint", () => {
 
     test("Should return 200 with valid response when user specify provided by", async () => {
         await request(app)
-            .get("/metakg?provided_by=infores:drugbank")
+            .get("/metakg?provided_by=infores:disgenet")
             .expect(200)
             .expect('Content-Type', /json/)
             .then((response) => {
                 expect(response.body).toHaveProperty("associations");
                 const res = Array.from(new Set(response.body.associations.map(item => item.provided_by)));
-                expect(res).toEqual(['infores:drugbank']);
+                expect(res).toEqual(['infores:disgenet']);
             })
     })
 

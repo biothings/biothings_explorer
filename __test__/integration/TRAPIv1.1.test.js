@@ -201,8 +201,8 @@ describe("Testing v1.1 endpoints", () => {
                 expect(response.body.message.knowledge_graph).toHaveProperty("nodes");
                 expect(response.body.message.knowledge_graph).toHaveProperty("edges");
                 expect(response.body.message.knowledge_graph.nodes).toHaveProperty("MONDO:0016575");
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("HP:0012265");
-                expect(response.body.message.knowledge_graph.nodes["HP:0012265"]).toHaveProperty("categories", ["biolink:PhenotypicFeature"]);
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("NCBIGene:93");
+                expect(response.body.message.knowledge_graph.nodes["NCBIGene:93"]).toHaveProperty("categories", ["biolink:Gene"]);
             })
     })
 
