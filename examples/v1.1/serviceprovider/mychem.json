@@ -3,9 +3,8 @@
         "query_graph": {
             "edges": {
                 "e00": {
-                    "object": "n01",
                     "subject": "n00",
-                    "predicates": ["biolink:physically_interacts_with"]
+                    "object": "n01"
                 }
             },
             "nodes": {

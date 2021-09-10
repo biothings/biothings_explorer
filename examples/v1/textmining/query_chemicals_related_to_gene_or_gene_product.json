@@ -3,11 +3,11 @@
         "query_graph": {
             "nodes": {
                 "n0": {
-                    "category": "biolink:GeneOrGeneProduct",
-                    "id": "PR:000008790"
+                    "categories": ["biolink:GeneOrGeneProduct"],
+                    "ids": ["PR:000008790"]
                 },
                 "n1": {
-                    "category": "biolink:SmallMolecule"
+                    "categories": ["biolink:SmallMolecule"]
                 }
             },
             "edges": {
