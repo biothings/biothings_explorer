@@ -48,12 +48,12 @@ describe("Test association module", () => {
     })
 
     test("If source specified, should only return associations related to the source", async () => {
-        const res = await assoc(undefined, undefined, undefined, undefined, "infores:drugbank");
+        const res = await assoc(undefined, undefined, undefined, undefined, "infores:disgenet");
         const sources = new Set(res.map(item => item.provided_by));
         const inputTypes = new Set(res.map(item => item.subject));
         expect(inputTypes.size).toBeGreaterThan(1);
         expect(Array.from(sources)).toHaveLength(1);
-        expect(Array.from(sources)).toEqual(['infores:drugbank'])
+        expect(Array.from(sources)).toEqual(['infores:disgenet'])
     })
 
     test("If both sub and obj specified, should only return associations related to both sub and obj", async () => {

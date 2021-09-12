@@ -60,8 +60,10 @@ describe("Testing /v1/team/{team_name}/query endpoints", () => {
                 expect(response.body).toHaveProperty("error", "Your input query graph is invalid");
             })
     })
-
-    test("Query to Text Mining KPs should have id resolution turned off", async () => {
+    // 2021-09-09: need to update the example query
+    // also skipping because this API and its x-bte annotation will soon change. 
+    //   Once both are updated, can review this test and its desired behavior again...
+    test.skip("Query to Text Mining KPs should have id resolution turned off", async () => {
         const query = JSON.parse(fs.readFileSync(path.join(example_folder, "textmining/query_chemicals_related_to_gene_or_gene_product.json")));
         await request(app)
             .post("/v1/team/Text Mining Provider/query/")
@@ -75,7 +77,8 @@ describe("Testing /v1/team/{team_name}/query endpoints", () => {
             })
     })
 
-    test("Query to Service Provider KPs should have id resolution turned on", async () => {
+    // 2021-09-09: need to update the example query, and keep in mind the use of the new SRI-ID-resolver, and the way node attributes are structured...
+    test.skip("Query to Service Provider KPs should have id resolution turned on", async () => {
         const query = JSON.parse(fs.readFileSync(path.join(example_folder, "textmining/query_chemicals_related_to_gene_or_gene_product.json")));
         await request(app)
             .post("/v1/team/Service Provider/query/")

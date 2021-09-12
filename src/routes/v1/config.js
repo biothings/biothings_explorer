@@ -211,10 +211,10 @@ exports.API_LIST = [
         name: 'Automat Viral Proteome (trapi v-1.1.2)'
     },
     // Clinical-data-based APIs from other Translator teams, ingested through TRAPI
-    {
-        id: 'e164faae56a28c4cfa2d721978b04da4',
-        name: 'Columbia Open Health Data (COHD) TRAPI 1.1'
-    },
+    // {
+    //     id: 'e164faae56a28c4cfa2d721978b04da4',
+    //     name: 'Columbia Open Health Data (COHD) TRAPI 1.1'
+    // },
     // notes on COHD:
     // - when BTE moves to TRAPI 1.2, we probably need to change registration to use
     //   COHD TRAPI 1.2 instance / 51c178099fa2dc99b5d8fff8bf9f1a0d
