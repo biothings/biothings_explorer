@@ -30,7 +30,7 @@ async function jobToBeDone(queryGraph, smartAPIID, caching, enableIDResolution, 
 
     let response = null
     try{
-        await handler.query();
+        await handler.query_2();
         response = handler.getResponse();
     }catch (e){
         console.error(e)
