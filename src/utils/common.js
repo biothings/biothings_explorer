@@ -1,4 +1,5 @@
 const WorkflowError = require("./errors/workflow_error");
+const URL = require("url").URL;
 
 exports.removeQuotesFromQuery = (queryString) => {
     if (queryString.startsWith('"') && queryString.endsWith('"')) {
@@ -18,3 +19,12 @@ exports.validateWorkflow = (workflow) => {
         throw new WorkflowError("BTE doesn't handle the operations specified in the workflow field.");
     }
 }
+
+exports.stringIsAValidUrl = (s) => {
+    try {
+        new URL(s);
+        return true;
+    } catch (err) {
+        return false;
+    }
+};

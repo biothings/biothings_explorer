@@ -40,7 +40,7 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
-
+bullboard/node_modules
 # TypeScript v1 declaration files
 typings/
 
@@ -117,3 +117,5 @@ report*.json
 .DS_Store
 
 built
+.idea
+/.idea
