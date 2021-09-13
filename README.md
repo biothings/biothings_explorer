@@ -217,6 +217,7 @@ The returned response looks like this:
 
     You can perform a GET request to the `http://localhost:3000/check_async_query/<id>` to check the query status. When the query is finished, the example response will look like this (query result is returned in `returnvalue` field):
 
+
     ```
     {
       'id': 'N96xbq25zP', 
@@ -232,6 +233,7 @@ The returned response looks like this:
    2. **Return result via a callback URL**
    
     When a callback URL is provided in the input sent to `/v1/asyncquery`, like this:
+
     ```
     {
         "callback": "https://example.com/handle_query_result",
@@ -243,6 +245,7 @@ The returned response looks like this:
         }
     }
     ```
+    
     Once the query is executed, its query result will be sent to this callback URL via POST. The status can also be checked via `/check_async_query/<id>` endpoint:
 
     ```
