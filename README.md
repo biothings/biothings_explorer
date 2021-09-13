@@ -159,32 +159,104 @@ Now, you should be able to test your local smartapi using POST queries at:
 
 ### Asynchronous queries
 
-You can also use our asynchronous query which supports webhooks.
-You can do the following:
+You can also use our asynchronous query with both web callback and polling support.
 
-POST on `http://localhost:3000/asyncquery`. This endpoint behaves similarly to the `http://localhost:3000/query` endpoint.
+To sumbit an async query:
 
-**Key differences**
-- Instead of waiting for the query to complete an *id* is returned which you can then use to check the query status.
-- An additional *callback_url* parameter can be used which we will use to perform a POST request to send the data to. (optional)
+POST on `http://localhost:3000/asyncquery`. This endpoint behaves similarly to the `http://localhost:3000/query` endpoint with the same query graph as the input.
 
-**Checking the query status**
+```
+POST  {{base_url}}/v1/asyncquery
+Content-Type: application/json
 
-You can perform a POST request to the `http://localhost:3000/check_async_query/<id>` to check the query status.
-Example response:
+{
+    "message": {
+        "query_graph": {
+            "edges": {
+                "e0": {
+                    "subject": "n0",
+                    "object": "n1",
+                    "predicates": [
+                        "biolink:decreases_abundance_of",
+                        "biolink:decreases_activity_of",
+                        "biolink:decreases_expression_of"
+                    ]
+                }
+            },
+            "nodes": {
+                "n0": {
+                    "categories": ["biolink:SmallMolecule"],
+                    "name": "some chemical"
+                },
+                "n1": {
+                    "name": "EGFR",
+                    "ids": ["NCBIGene:1956"]
+                }
+            }
+        }
+    }
+}
+
+```
+
+
+**Key differences in an async query**
+- Instead of waiting for the query to complete a job *id* is returned which you can then use to check the query status.
+- If an additional *callback* parameter is provided, we will send the query result to this callback URL via POST (optional).
+
+The returned response looks like this:
 
 ```
 {
-  'id': '1', 
-  'state': 'completed', 
-  'returnvalue': {
-    'response': { ... },
-    'status': 200,
-    'callback': 'Data sent to callback_url'
-  }, 
-  'progress': 0
+  "id": "N96xbq25zP",
+  "url": "http://localhost:3000/v1/check_query_status/N96xbq25zP"
 }
 ```
+
+  1. **Checking the query status**
+
+    You can perform a GET request to the `http://localhost:3000/check_async_query/<id>` to check the query status. When the query is finished, the example response will look like this (query result is returned in `returnvalue` field):
+
+    ```
+    {
+      'id': 'N96xbq25zP', 
+      'state': 'completed', 
+      'returnvalue': {
+        'response': { ... },
+        'status': 200
+      }, 
+      'progress': 0
+    }
+    ```
+
+   2. **Return result via a callback URL**
+   
+    When a callback URL is provided in the input sent to `/v1/asyncquery`, like this:
+    ```
+    {
+        "callback": "https://example.com/handle_query_result",
+        "message": {
+            "query_graph": {
+                   ...
+                }
+            }
+        }
+    }
+    ```
+    Once the query is executed, its query result will be sent to this callback URL via POST. The status can also be checked via `/check_async_query/<id>` endpoint:
+
+    ```
+    {
+      'id': 'N96xbq25zP',
+      'state': 'completed', 
+      'returnvalue': {
+        'response': { ... },
+        'status': 200
+        'callback': 'Data sent to callback_url'
+      }, 
+      'progress': 0
+    }
+    ```
 
 ### Testing on a specific SmartAPI API
 
