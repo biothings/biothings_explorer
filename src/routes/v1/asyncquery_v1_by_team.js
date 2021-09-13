@@ -37,7 +37,7 @@ async function jobToBeDone(queryGraph, teamName, caching, enableIDResolution, wo
         return {
             response: response,
             status: 400,
-            callback: ''
+            callback: null
         }
     }
     if(webhook_url){
@@ -72,7 +72,7 @@ async function jobToBeDone(queryGraph, teamName, caching, enableIDResolution, wo
     return {
         response: response,
         status: 200,
-        callback: 'Data sent to callback_url'
+        callback: 'Data sent to callback url'
     };
 }
 

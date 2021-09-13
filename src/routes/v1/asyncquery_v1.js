@@ -62,7 +62,7 @@ async function jobToBeDone(queryGraph, caching, workflow, webhook_url){
     return {
         response: response,
         status: 200,
-        callback: 'Data sent to callback_url'
+        callback: 'Data sent to callback url'
     };
 }
 

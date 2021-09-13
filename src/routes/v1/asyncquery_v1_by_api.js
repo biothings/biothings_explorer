@@ -72,7 +72,7 @@ async function jobToBeDone(queryGraph, smartAPIID, caching, enableIDResolution, 
     return {
         response: response,
         status: 200,
-        callback: 'Data sent to callback_url'
+        callback: 'Data sent to callback url'
     };
 }
 
