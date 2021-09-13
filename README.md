@@ -213,29 +213,30 @@ The returned response looks like this:
 }
 ```
 
+**You can then retrieve query results in two ways:**
+
   1. **Checking the query status**
 
-    You can perform a GET request to the `http://localhost:3000/check_async_query/<id>` to check the query status. When the query is finished, the example response will look like this (query result is returned in `returnvalue` field):
+     You can perform a GET request to the `http://localhost:3000/check_async_query/<id>` to check the query status. When the query is finished, the example response will look like this (query result is returned in `returnvalue` field):
 
-
-    ```
-    {
-      'id': 'N96xbq25zP', 
-      'state': 'completed', 
-      'returnvalue': {
-        'response': { ... },
-        'status': 200
-      }, 
-      'progress': 0
-    }
-    ```
+     ```
+     {
+       'id': 'N96xbq25zP', 
+       'state': 'completed', 
+       'returnvalue': {
+         'response': { ... },
+         'status': 200
+       }, 
+       'progress': 0
+     }
+     ```
 
    2. **Return result via a callback URL**
    
-    When a callback URL is provided in the input sent to `/v1/asyncquery`, like this:
+      When a callback URL is provided in the input sent to `/v1/asyncquery`, like this:
 
-    ```
-    {
+      ```
+      {
         "callback": "https://example.com/handle_query_result",
         "message": {
             "query_graph": {
@@ -243,23 +244,23 @@ The returned response looks like this:
                 }
             }
         }
-    }
-    ```
-    
-    Once the query is executed, its query result will be sent to this callback URL via POST. The status can also be checked via `/check_async_query/<id>` endpoint:
+      }
+      ```
 
-    ```
-    {
-      'id': 'N96xbq25zP',
-      'state': 'completed', 
-      'returnvalue': {
-        'response': { ... },
-        'status': 200
-        'callback': 'Data sent to callback_url'
-      }, 
-      'progress': 0
-    }
-    ```
+      Once the query is executed, its query result will be sent to this callback URL via POST. The status can also be checked via `/check_async_query/<id>` endpoint:
+
+      ```
+      {
+        'id': 'N96xbq25zP',
+        'state': 'completed', 
+        'returnvalue': {
+          'response': { ... },
+          'status': 200
+          'callback': 'Data sent to callback_url'
+        }, 
+        'progress': 0
+      }
+      ```
 
 ### Testing on a specific SmartAPI API
 
