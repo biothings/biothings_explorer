@@ -171,14 +171,15 @@ const updateSmartAPISpecs = async () => {
     const res = await axios.get(SMARTAPI_URL);
     const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
     const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
+    const writeFunc = process.env.SYNC_AND_EXIT === "true" ? fs.writeFileSync : fs.writeFile;
     if (process.env.API_OVERRIDE === "true") {
         await getAPIOverrides(res.data);
     }
-    fs.writeFile(localFilePath, JSON.stringify({hits: res.data.hits}), (err) => {
+    writeFunc(localFilePath, JSON.stringify({ hits: res.data.hits }), (err) => {
         if (err) throw err;
     });
     const predicatesInfo = await getOpsFromPredicatesEndpoints(res.data.hits);
-    fs.writeFile(predicatesFilePath, JSON.stringify(predicatesInfo), (err) => {
+    writeFunc(predicatesFilePath, JSON.stringify(predicatesInfo), (err) => {
         if (err) throw err;
     });
 }
