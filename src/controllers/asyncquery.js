@@ -42,7 +42,7 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
 exports.asyncqueryResponse = async (handler, webhook_url) => {
     let response = null
     try{
-        await handler.query();
+        await handler.query_2();
         response = handler.getResponse();
     }catch (e){
         console.error(e)
