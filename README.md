@@ -107,6 +107,11 @@ You now can POST queries to `http://<HOST>:3000/v1/query`.
 
 Query Examples can be found [here](/examples).
 
+### Syncing SmartAPI Specifications
+
+By default, this package does not automatically sync the latest SmartAPI Specifications. You may set it to do so by setting either `NODE_ENV=production` or `SMARTAPI_SYNC=true` as environment variables (e.g. `SMARTAPI_SYNC=true npm start`). `SMARTAPI_SYNC` overrides the behavior of `NODE_ENV`.
+
+You may additionally manually trigger a one-time sync by using `npm run smartapi_sync` prior to running the project.
 
 ### Testing with Alternate SmartAPI Specs (local or hosted)
 

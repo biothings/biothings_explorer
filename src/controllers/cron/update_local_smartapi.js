@@ -246,8 +246,25 @@ const getAPIOverrides = async (data) => {
 
 
 module.exports = () => {
-    let disable_smartapi_sync = process.env.DISABLE_SMARTAPI_SYNC === 'true';
+    // not meant to be used with server started
+    // rather, if just this function is imported and run (e.g. using workspace script)
+    let sync_and_exit = process.env.SYNC_AND_EXIT === 'true';
+    if (sync_and_exit) {
+        console.log("Syncing SmartAPI specs with subsequent exit...");
+        updateSmartAPISpecs().then(() => {
+            console.log("SmartAPI sync successful.");
+            process.exit(0);
+        });
+        return;
+    }
+
+    let schedule_sync = process.env.NODE_ENV === 'production';
+    let manual_sync = process.env.SMARTAPI_SYNC === 'true'
+        ? true : process.env.SMARTAPI_SYNC === 'false'
+            ? false
+            : undefined;
     let api_override = process.env.API_OVERRIDE === 'true';
+    disable_smartapi_sync = manual_sync || (schedule_sync && typeof manual_sync === "undefined");
     if (disable_smartapi_sync) {
         debug(`DISABLE_SMARTAPI_SYNC=true, server process ${process.pid} disabling smartapi updates.`);
     } else {
