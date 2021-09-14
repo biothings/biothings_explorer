@@ -201,7 +201,7 @@ const getAPIOverrides = async (data) => {
     await Promise.all(Object.keys(overrides.apis).map(async (id) => {
         let override;
         try {
-            const filepath = path.resolve(__dirname, + "../../../data" + url.fileURLToPath(overrides.apis[id]));
+            const filepath = path.resolve(__dirname, "../../../data" + url.fileURLToPath(overrides.apis[id]));
             override = yaml.load(await readFile(filepath));
         } catch (e1) {
             if (e1 instanceof TypeError) {
@@ -209,7 +209,7 @@ const getAPIOverrides = async (data) => {
                     try {
                         override = yaml.load((await axios.get(overrides.apis[id])).data);
                     } catch (weberror) {
-                        debug(`ERROR getting override for API ID ${id} because ${weberror}`);
+                        debug(`ERROR getting URL-hosted override for API ID ${id} because ${weberror}`);
                         return;
                     }
                 } else {
@@ -217,12 +217,12 @@ const getAPIOverrides = async (data) => {
                         const filepath = path.resolve(__dirname, overrides.apis[id]);
                         override = yaml.load(await readFile(filepath));
                     } catch (filerror) {
-                        debug(`ERROR getting override for API ID ${id} because ${filerror}`);
+                        debug(`ERROR getting local file override for API ID ${id} because ${filerror}`);
                         return;
                     }
                 }
             } else {
-              debug(`ERROR getting override for API ID ${id} because ${e1}`);
+              debug(`ERROR getting 'file:///' override for API ID ${id} because ${e1}`);
               return;
             }
         }
