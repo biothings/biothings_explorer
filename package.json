@@ -18,7 +18,7 @@
     "release:patch": "standard-version --release-as patch",
     "release:major": "standard-version --release-as major",
     "siege-local": "artillery run -e local --output report_local.json --config performance-test/config.yaml performance-test/scenarios/query.yaml",
-    "smartapi_sync": "SYNC_AND_EXIT=true node ./scripts/smartapi_sync.js"
+    "smartapi_sync": "DEBUG=* SYNC_AND_EXIT=true node ./scripts/smartapi_sync.js"
   },
   "repository": {
     "type": "git",
