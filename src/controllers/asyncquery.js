@@ -1,11 +1,13 @@
 const axios = require('axios')
-const { nanoid } = require('nanoid')
+const { customAlphabet } = require('nanoid')
 const utils = require('../utils/common')
 
 exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
     try {
         if(queryQueue){
-            const jobId = nanoid(10);
+            const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
+
+            const jobId = nanoid();
 
             // add job to the queue
             let url
