@@ -267,7 +267,7 @@ module.exports = () => {
     let api_override = process.env.API_OVERRIDE === 'true';
     disable_smartapi_sync = !(manual_sync || (schedule_sync && typeof manual_sync === "undefined"));
     if (disable_smartapi_sync) {
-        debug(`DISABLE_SMARTAPI_SYNC=true, server process ${process.pid} disabling smartapi updates.`);
+        debug(`SmartAPI sync disabled, server process ${process.pid} disabling smartapi updates.`);
     } else {
         if (process.env.INSTANCE_ID){
             // check if it's a PM2 cluster node and in this case,
