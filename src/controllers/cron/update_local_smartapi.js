@@ -171,14 +171,15 @@ const updateSmartAPISpecs = async () => {
     const res = await axios.get(SMARTAPI_URL);
     const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
     const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
+    const writeFunc = process.env.SYNC_AND_EXIT === "true" ? fs.writeFileSync : fs.writeFile;
     if (process.env.API_OVERRIDE === "true") {
         await getAPIOverrides(res.data);
     }
-    fs.writeFile(localFilePath, JSON.stringify({hits: res.data.hits}), (err) => {
+    writeFunc(localFilePath, JSON.stringify({ hits: res.data.hits }), (err) => {
         if (err) throw err;
     });
     const predicatesInfo = await getOpsFromPredicatesEndpoints(res.data.hits);
-    fs.writeFile(predicatesFilePath, JSON.stringify(predicatesInfo), (err) => {
+    writeFunc(predicatesFilePath, JSON.stringify(predicatesInfo), (err) => {
         if (err) throw err;
     });
 }
@@ -200,7 +201,7 @@ const getAPIOverrides = async (data) => {
     await Promise.all(Object.keys(overrides.apis).map(async (id) => {
         let override;
         try {
-            const filepath = path.resolve(__dirname, + "../../../data" + url.fileURLToPath(overrides.apis[id]));
+            const filepath = path.resolve(__dirname, "../../../data" + url.fileURLToPath(overrides.apis[id]));
             override = yaml.load(await readFile(filepath));
         } catch (e1) {
             if (e1 instanceof TypeError) {
@@ -208,7 +209,7 @@ const getAPIOverrides = async (data) => {
                     try {
                         override = yaml.load((await axios.get(overrides.apis[id])).data);
                     } catch (weberror) {
-                        debug(`ERROR getting override for API ID ${id} because ${weberror}`);
+                        debug(`ERROR getting URL-hosted override for API ID ${id} because ${weberror}`);
                         return;
                     }
                 } else {
@@ -216,12 +217,12 @@ const getAPIOverrides = async (data) => {
                         const filepath = path.resolve(__dirname, overrides.apis[id]);
                         override = yaml.load(await readFile(filepath));
                     } catch (filerror) {
-                        debug(`ERROR getting override for API ID ${id} because ${filerror}`);
+                        debug(`ERROR getting local file override for API ID ${id} because ${filerror}`);
                         return;
                     }
                 }
             } else {
-              debug(`ERROR getting override for API ID ${id} because ${e1}`);
+              debug(`ERROR getting 'file:///' override for API ID ${id} because ${e1}`);
               return;
             }
         }
@@ -246,10 +247,27 @@ const getAPIOverrides = async (data) => {
 
 
 module.exports = () => {
-    let disable_smartapi_sync = process.env.DISABLE_SMARTAPI_SYNC === 'true';
+    // not meant to be used with server started
+    // rather, if just this function is imported and run (e.g. using workspace script)
+    let sync_and_exit = process.env.SYNC_AND_EXIT === 'true';
+    if (sync_and_exit) {
+        console.log("Syncing SmartAPI specs with subsequent exit...");
+        updateSmartAPISpecs().then(() => {
+            console.log("SmartAPI sync successful.");
+            process.exit(0);
+        });
+        return;
+    }
+
+    let schedule_sync = process.env.NODE_ENV === 'production';
+    let manual_sync = process.env.SMARTAPI_SYNC === 'true'
+        ? true : process.env.SMARTAPI_SYNC === 'false'
+            ? false
+            : undefined;
     let api_override = process.env.API_OVERRIDE === 'true';
+    disable_smartapi_sync = !(manual_sync || (schedule_sync && typeof manual_sync === "undefined"));
     if (disable_smartapi_sync) {
-        debug(`DISABLE_SMARTAPI_SYNC=true, server process ${process.pid} disabling smartapi updates.`);
+        debug(`SmartAPI sync disabled, server process ${process.pid} disabling smartapi updates.`);
     } else {
         if (process.env.INSTANCE_ID){
             // check if it's a PM2 cluster node and in this case,
