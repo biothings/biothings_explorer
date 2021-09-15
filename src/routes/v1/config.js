@@ -138,10 +138,11 @@ exports.API_LIST = [
         id: '0a93684206ec6a13812ff2867a445c4e',
         name: 'Automat Cord19 (trapi v-1.1.2)'
     },
-    {
-        id: 'a192b537c4113cc585088511574dbe64',
-        name: 'Automat Covidkop KG (trapi v-1.1.2)'
-    },
+    // seems to repeat a lot of data that is in the other APIs
+    // {
+    //     id: 'a192b537c4113cc585088511574dbe64',
+    //     name: 'Automat Covidkop KG (trapi v-1.1.2)'
+    // },
     {
     // this may overlap with info we have in MyDisease, MyChem, and other APIs...
         id: 'bd612e18f86d9097b02c0d83344b46b7',
@@ -197,10 +198,11 @@ exports.API_LIST = [
         id: 'e0031784afd7cb4e97e266d11df3a9e4',
         name: 'Automat Pharos (trapi v-1.1.2)'
     },
-    {
-        id: '4f94c54ada189ecfe08491f662986fd6',
-        name: 'Automat Robokop KG (trapi v-1.1.2)'
-    },
+    // seems to repeat a lot of data that is in the other APIs
+    // {
+    //     id: '4f94c54ada189ecfe08491f662986fd6',
+    //     name: 'Automat Robokop KG (trapi v-1.1.2)'
+    // },
     {
     // not sure if this API overlaps with Text Mining Targeted Association API or
     //   Text Mining Co-occurrrence API...
