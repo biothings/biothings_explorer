@@ -129,10 +129,11 @@ exports.API_LIST = [
         id: '05a5f5d18b4f2c532367561778571c9a',
         name: 'Automat Biolink (trapi v-1.1.2)'
     },
-    {
-        id: 'b0b36734630fdeb93252ebab7939535e',
-        name: 'Automat Chemical normalization (trapi v-1.1.2)'
-    },
+    // this API is outdated and only uses ChemicalSubstance right
+    // {
+    //     id: 'b0b36734630fdeb93252ebab7939535e',
+    //     name: 'Automat Chemical normalization (trapi v-1.1.2)'
+    // },
     {
         id: '0a93684206ec6a13812ff2867a445c4e',
         name: 'Automat Cord19 (trapi v-1.1.2)'
@@ -145,6 +146,10 @@ exports.API_LIST = [
     // this may overlap with info we have in MyDisease, MyChem, and other APIs...
         id: 'bd612e18f86d9097b02c0d83344b46b7',
         name: 'Automat CTD (trapi v-1.1.2)'
+    },
+    {
+        id: '2214bd48772b8a9da0a399fd10c79f91',
+        name: 'Automat DrugCentral (trapi v-1.1.2)'
     },
     {
         id: '1fd2f4cc6b3b6b1f7cda594b00607270',
