@@ -277,7 +277,7 @@ Several environment variables are supported for various purposes, listed below:
 
 - `NODE_ENV` When set as `NODE_ENV=production`, the package runs in production mode, including synchronizing the latest SmartAPI specifications on a schedule.
 - `SMARTAPI_SYNC=true|false` May be set to override all SmartAPI syncing behavior.
-- `API_OVERRIDE=true|false` May be set to set overrides for specific APIs (see [Using `API_OVERRIDE=true`](#Using-`API_OVERRIDE=true`))
+- `API_OVERRIDE=true|false` May be set to set overrides for specific APIs (see [Using `API_OVERRIDE=true`](#using-api_overridetrue))
 - `RESULT_CACHING=true|false` May be set to enable or disable the use of caching for query result edges. Requires `REDIS_HOST` and `REDIS_PORT` to be enabled.
 - `REDIS_HOST` The hostname of the Redis server to be used for caching.
 - `REDIS_PORT` The port of the Redis server to be used for caching.
