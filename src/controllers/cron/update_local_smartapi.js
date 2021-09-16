@@ -186,7 +186,7 @@ const getAPIOverrides = async (data) => {
     await Promise.all(Object.keys(overrides.apis).map(async (id) => {
         let override;
         try {
-            const filepath = path.resolve(__dirname, "../../../data" + url.fileURLToPath(overrides.apis[id]));
+            const filepath = path.resolve(__dirname, url.fileURLToPath(overrides.apis[id]));
             override = yaml.load(await readFile(filepath));
         } catch (e1) {
             if (e1 instanceof TypeError) {
