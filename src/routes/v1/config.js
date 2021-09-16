@@ -126,105 +126,108 @@ exports.API_LIST = [
     {
     // this API overlaps with our Biolink API registration, but we have bugs with our ingest...
     //   this may have been updated more recently / transformed data into TRAPI format
-        id: '05a5f5d18b4f2c532367561778571c9a',
-        name: 'Automat Biolink (trapi v-1.1.2)'
+        id: '6a3c22bbb4d533c15013a3f9000a8709',
+        name: 'Automat Biolink (trapi v-1.2.0)'
     },
-    // this API is outdated and only uses ChemicalSubstance right
+    {
+        // this may overlap with info we have in MyDisease, MyChem, and other APIs...
+            id: '8956303f273baaa76202ff3195bd6a64',
+            name: 'Automat CTD (trapi v-1.2.0)'
+    },
+    // // this API is outdated and only uses ChemicalSubstance right
     // {
-    //     id: 'b0b36734630fdeb93252ebab7939535e',
-    //     name: 'Automat Chemical normalization (trapi v-1.1.2)'
+    //     id: '90996aee88fce45a834976e7b3539db1',
+    //     name: 'Automat Chemical normalization (trapi v-1.2.0)'
     // },
     {
-        id: '0a93684206ec6a13812ff2867a445c4e',
-        name: 'Automat Cord19 (trapi v-1.1.2)'
+        id: '2c3c45487f65330b058946cd46dbbfa1',
+        name: 'Automat Cord19 (trapi v-1.2.0)'
     },
-    // seems to repeat a lot of data that is in the other APIs
+    // // seems to repeat a lot of data that is in the other APIs
     // {
-    //     id: 'a192b537c4113cc585088511574dbe64',
-    //     name: 'Automat Covidkop KG (trapi v-1.1.2)'
+    //     id: '040cddc8d77b1518979da6686f11e89e',
+    //     name: 'Automat Covidkop KG (trapi v-1.2.0)'
     // },
+
     {
-    // this may overlap with info we have in MyDisease, MyChem, and other APIs...
-        id: 'bd612e18f86d9097b02c0d83344b46b7',
-        name: 'Automat CTD (trapi v-1.1.2)'
+        id: '03c1982f2e3ba3710da20aa9c01a00f6',
+        name: 'Automat DrugCentral (trapi v-1.2.0)'
     },
     {
-        id: '2214bd48772b8a9da0a399fd10c79f91',
-        name: 'Automat DrugCentral (trapi v-1.1.2)'
+        id: '7ba4ef33f17ab1fd4f106f105b19a1bc',
+        name: 'Automat Foodb (trapi v-1.2.0)'
     },
     {
-        id: '1fd2f4cc6b3b6b1f7cda594b00607270',
-        name: 'Automat Foodb (trapi v-1.1.2)'
+        id: '0f4e5f1293de2074ccebe01b14567574',
+        name: 'Automat GTEx (trapi v-1.2.0)'
     },
     {
-        id: '62811dab25864feb191aad0b23503813',
-        name: 'Automat GTEx (trapi v-1.1.2)'
+        id: '8f358795cbbdc9b4fef53346b67033be',
+        name: 'Automat GWAS Catalog (trapi v-1.2.0)'
     },
     {
-        id: 'c8b1619535bd598406049f4dc51e1702',
-        name: 'Automat Gtopdb (trapi v-1.1.2)'
+        id: '694e7960fdab1827f2f6004c3db01e40',
+        name: 'Automat Gtopdb (trapi v-1.2.0)'
     },
     {
-        id: '3a8ad755bbd6f4fdfc0a18c8020d6d58',
-        name: 'Automat Hetio (trapi v-1.1.2)'
+        id: 'b4d881e4443ab6f94b4fb7bcbb49e983',
+        name: 'Automat HGNC (trapi v-1.2.0)'
     },
     {
-        id: '255ea57924924b721919b9ee17a07894',
-        name: 'Automat HGNC (trapi v-1.1.2)'
+        id: '3a31d671dbaf211d8b7f502aec2d609d',
+        name: 'Automat HMDB (trapi v-1.2.0)'
     },
     {
-        id: 'c3e55e3a28cf14e147b55e6e09b32b9b',
-        name: 'Automat HMDB (trapi v-1.1.2)'
+        id: '6c7642a4bf213769361c8f9ec1be88f2',
+        name: 'Automat Hetio (trapi v-1.2.0)'
     },
     {  
     // this API overlaps with our BioThings GO APIs, but
     //   may have been updated more recently / transformed data into TRAPI format
-        id: '2c9fff2f09c71302659faeb515bbb2b8',
-        name: 'Automat Human GOA (trapi v-1.1.2)'
+        id: '6118e4e713af49f48b37788593fd3fcb',
+        name: 'Automat Human GOA (trapi v-1.2.0)'
     },
     {
-        id: 'bee0cc86f86d88b83f613b674e2bd92e',
-        name: 'Automat IntAct (trapi v-1.1.2)'
+        id: 'c7f31bbfb232c337ae29b80eea9cfa37',
+        name: 'Automat IntAct (trapi v-1.2.0)'
     },
     {
-        id: '2bb65b7ea0cd1d40f4e9147836b750e2',
-        name: 'Automat Ontological Hierarchy (trapi v-1.1.2)'
+        id: '9326397c93c0ab17b9907d307a76f7b7',
+        name: 'Automat Ontological Hierarchy (trapi v-1.2.0)'
     },
     {
-        id: 'c3e55e3a28cf14e147b55e6e09b32b9b',
-        name: 'Automat Panther (trapi v-1.1.2)'
+        id: 'd907e918a38e85c8e93ee3a0dcfc95d4',
+        name: 'Automat Panther (trapi v-1.2.0)'
     },
     {
-        id: 'e0031784afd7cb4e97e266d11df3a9e4',
-        name: 'Automat Pharos (trapi v-1.1.2)'
+        id: '0de0fcb872ddd6daddb9eee27e95996f',
+        name: 'Automat Pharos (trapi v-1.2.0)'
     },
     // seems to repeat a lot of data that is in the other APIs
     // {
-    //     id: '4f94c54ada189ecfe08491f662986fd6',
-    //     name: 'Automat Robokop KG (trapi v-1.1.2)'
+    //     id: '882388ba314a61484ba79268bcc93675',
+    //     name: 'Automat Robokop KG (trapi v-1.2.0)'
     // },
     {
     // not sure if this API overlaps with Text Mining Targeted Association API or
     //   Text Mining Co-occurrrence API...
-        id: '7deb474184d551fdfa69c28a9bc46073',
-        name: 'Automat Textmining KP (trapi v-1.1.2)'
+        id: 'd2eecc42b6ae9109b12bcd215c787479',
+        name: 'Automat Textmining KP (trapi v-1.2.0)'
     },
     {
-        id: '994a667dafe2e2c1d42a5390a6fba9aa',
-        name: 'Automat Uberongraph (trapi v-1.1.2)'
+        id: 'af7ad4d2e2438ed9406af963d963cd33',
+        name: 'Automat Uberongraph (trapi v-1.2.0)'
     },
     {
-        id: '3437ede0d451c90f67097c56b230e022',
-        name: 'Automat Viral Proteome (trapi v-1.1.2)'
+        id: 'fe351cf879d06616e655d46ee915c2e4',
+        name: 'Automat Viral Proteome (trapi v-1.2.0)'
     },
-    // Clinical-data-based APIs from other Translator teams, ingested through TRAPI
+    // // Clinical-data-based APIs from other Translator teams, ingested through TRAPI
     // {
-    //     id: 'e164faae56a28c4cfa2d721978b04da4',
-    //     name: 'Columbia Open Health Data (COHD) TRAPI 1.1'
+    //     id: '51c178099fa2dc99b5d8fff8bf9f1a0d',
+    //     name: 'COHD TRAPI 1.2'
     // },
     // notes on COHD:
-    // - when BTE moves to TRAPI 1.2, we probably need to change registration to use
-    //   COHD TRAPI 1.2 instance / 51c178099fa2dc99b5d8fff8bf9f1a0d
     // - DON'T INGEST 'Columbia Open Health Data (COHD)'/70117385218edc9bc01633829011dfcf
     //   IT IS NOT TRAPI (and may be outdated?)
     // - COHD for COVID-19 should work but BTE gets a 500 when retrieving meta_knowledge_graph...
