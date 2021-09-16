@@ -21,7 +21,6 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
                 "/query" in spec.paths &&
                 "x-trapi" in spec.info &&
                 spec.servers.length &&
-                "/predicates" in spec.paths ||
                 "/meta_knowledge_graph" in spec.paths
             ) {
                 let api = {
@@ -55,11 +54,7 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
                         trapi.push(api);
                     }
                 }
-                else if ("/predicates" in spec.paths ){
-                    //1.0
-                    api['predicates_path'] = "/predicates";
-                    trapi.push(api);
-                } else {
+                else {
                     debug(
                         `[error]: Unable to parse spec, ${spec ? spec.info.title : spec
                         }. Endpoint required not found.`
