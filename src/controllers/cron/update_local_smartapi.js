@@ -186,7 +186,7 @@ const getAPIOverrides = async (data) => {
     await Promise.all(Object.keys(overrides.apis).map(async (id) => {
         let override;
         try {
-            const filepath = path.resolve(__dirname, url.fileURLToPath(overrides.apis[id]));
+            const filepath = path.resolve(url.fileURLToPath(overrides.apis[id]));
             override = yaml.load(await readFile(filepath));
         } catch (e1) {
             if (e1 instanceof TypeError) {
@@ -199,7 +199,7 @@ const getAPIOverrides = async (data) => {
                     }
                 } else {
                     try {
-                        const filepath = path.resolve(__dirname, overrides.apis[id]);
+                        const filepath = path.resolve(overrides.apis[id]);
                         override = yaml.load(await readFile(filepath));
                     } catch (filerror) {
                         debug(`ERROR getting local file override for API ID ${id} because ${filerror}`);
