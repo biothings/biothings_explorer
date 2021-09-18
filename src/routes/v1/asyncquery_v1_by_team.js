@@ -14,7 +14,7 @@ const {getQueryQueue} = require('../../controllers/asyncquery_queue');
 
 queryQueue = getQueryQueue('get query graph by team')
 
-async function jobToBeDone(queryGraph, teamName, caching, enableIDResolution, workflow, webhook_url){
+async function jobToBeDone(queryGraph, teamName, caching, enableIDResolution, workflow, callback_url){
     utils.validateWorkflow(workflow);
     const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
         {
@@ -27,7 +27,7 @@ async function jobToBeDone(queryGraph, teamName, caching, enableIDResolution, wo
         false
     );
     handler.setQueryGraph(queryGraph);
-    return await asyncqueryResponse(handler, webhook_url);
+    return await asyncqueryResponse(handler, callback_url);
 }
 
 if(queryQueue){
@@ -38,7 +38,7 @@ if(queryQueue){
             job.data.caching,
             job.data.enableIDResolution,
             job.data.workflow,
-            job.data.webhook_url);
+            job.data.callback_url);
     });
 }
 
@@ -53,7 +53,7 @@ class V1RouteAsyncQueryByTeam {
                 teamName: req.params.team_name,
                 caching: req.query.caching,
                 workflow: req.body.workflow,
-                webhook_url: req.body.callback_url || req.body['callback'],
+                callback_url: req.body.callback_url || req.body['callback'],
                 enableIDResolution
             }
             await asyncquery(req, res, next, queueData, queryQueue)

@@ -14,16 +14,16 @@ const URL = require("url").URL;
 
 queryQueue = getQueryQueue('get query graph')
 
-async function jobToBeDone(queryGraph, caching, workflow, webhook_url){
+async function jobToBeDone(queryGraph, caching, workflow, callback_url){
     utils.validateWorkflow(workflow);
     const handler = new TRAPIGraphHandler.TRAPIQueryHandler({ apiNames: config.API_LIST, caching: caching }, smartAPIPath, predicatesPath);
     handler.setQueryGraph(queryGraph);
-    return await asyncqueryResponse(handler, webhook_url);
+    return await asyncqueryResponse(handler, callback_url);
 }
 
 if(queryQueue){
     queryQueue.process(async (job) => {
-        return jobToBeDone(job.data.queryGraph, job.data.caching, job.data.workflow, job.data.webhook_url);
+        return jobToBeDone(job.data.queryGraph, job.data.caching, job.data.workflow, job.data.callback_url);
     });
 }
 
@@ -36,7 +36,7 @@ class V1RouteAsyncQuery {
             let queueData = {
                 queryGraph: req.body.message.query_graph,
                 workflow: req.body.workflow,
-                webhook_url: req.body.callback_url || req.body['callback'],
+                callback_url: req.body.callback_url || req.body['callback'],
                 caching: req.query.caching
             }
             await asyncquery(req, res, next, queueData, queryQueue)

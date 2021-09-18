@@ -39,8 +39,9 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
     }
 }
 
-exports.asyncqueryResponse = async (handler, webhook_url) => {
+exports.asyncqueryResponse = async (handler, callback_url) => {
     let response = null
+    let callback_response = null;
     try{
         await handler.query_2();
         response = handler.getResponse();
@@ -52,8 +53,8 @@ exports.asyncqueryResponse = async (handler, webhook_url) => {
             callback: ''
         }
     }
-    if(webhook_url){
-        if(!utils.stringIsAValidUrl(webhook_url)){
+    if(callback_url){
+        if(!utils.stringIsAValidUrl(callback_url)){
             return {
                 response: response,
                 status: 200,
@@ -61,7 +62,7 @@ exports.asyncqueryResponse = async (handler, webhook_url) => {
             }
         }
         try{
-            const res = await axios.post(webhook_url, JSON.stringify(response), {
+            callback_response = await axios.post(callback_url, JSON.stringify(response), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -70,20 +71,19 @@ exports.asyncqueryResponse = async (handler, webhook_url) => {
         }catch (e){
             return {
                 response: response,
-                status: 200,
+                status: e.response.status,
                 callback: `Request failed, received code ${e.response.status}`
             }
         }
     }else{
         return {
             response: response,
-            status: 200,
             callback: 'Callback url was not provided'
         };
     }
     return {
         response: response,
-        status: 200,
+        status: callback_response.status,
         callback: 'Data sent to callback_url'
     };
 }
