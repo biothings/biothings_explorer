@@ -119,9 +119,9 @@ You may additionally manually trigger a one-time sync by using `npm run smartapi
 
 You may configure a set of API IDs to override from local files or URLs.
 
-If the environment variable `API_OVERRIDE=true` is set (e.g. `API_OVERRIDE=true npm run debug --workspace=@biothings-explorer/bte-trapi`), then `/config/smartapi_overrides.json` is checked at server start and overrides are applied, as well as during subsequent `smartapi_specs.json` updates.
+If the environment variable `API_OVERRIDE=true` is set (e.g. `API_OVERRIDE=true npm run debug --workspace=@biothings-explorer/bte-trapi`), then `/config/smartapi_overrides.json` is checked at server start and overrides are applied, as well as during subsequent `smartapi_specs.json` updates. Note that syncing must be enabled (`SMARTAPI_SYNC=true`) in order for `API_OVERRIDE` to take effect.
 
-Override files may be specified as a URL which returns the expected yaml file, a `file:///` URL which will search with the `data` folder as the root directory, or an arbitrary filepath. Regardless, override files are expected to be in yaml format. If overrides are specified with IDs not in the current SmartAPI spec, they will be appended as new API hits with a log warning.
+Override files may be specified as a URL which returns the expected yaml file or a `file:///` URI or arbitrary filepath, either of which must contain the absolute path to your override file. Regardless, override files are expected to be in yaml format. If overrides are specified with IDs not in the current SmartAPI spec, they will be appended as new API hits with a log warning.
 
 You may also set `only_overrides` to `true` in the config to remove all other APIs and keep only the specified overrides.
 
@@ -161,6 +161,10 @@ Then, Run the image and mount your local smartapi spec folder
 Now, you should be able to test your local smartapi using POST queries at:
 
 `http://localhost:3000/test/query`
+
+### Testing on a specific SmartAPI API
+
+By default, BTE queries all APIs specified in the the[ config.js file](https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/routes/v1/config.js).  In some cases, you may want to override that default to specifically query a single API.  For example, the SmartAPI record for the "EBI Proteins API) is [43af91b3d7cae43591083bff9d75c6dd](https://smart-api.info/registry?q=43af91b3d7cae43591083bff9d75c6dd). To instruct BTE to query that API only, you can POST your query to http://localhost:3000/v1/smartapi/43af91b3d7cae43591083bff9d75c6dd/query
 
 ### Asynchronous queries
 
@@ -226,18 +230,18 @@ The returned response looks like this:
 
      ```
      {
-       'id': 'N96xbq25zP', 
-       'state': 'completed', 
+       'id': 'N96xbq25zP',
+       'state': 'completed',
        'returnvalue': {
          'response': { ... },
          'status': 200
-       }, 
+       },
        'progress': 0
      }
      ```
 
    2. **Return result via a callback URL**
-   
+
       When a callback URL is provided in the input sent to `/v1/asyncquery`, like this:
 
       ```
@@ -257,16 +261,25 @@ The returned response looks like this:
       ```
       {
         'id': 'N96xbq25zP',
-        'state': 'completed', 
+        'state': 'completed',
         'returnvalue': {
           'response': { ... },
           'status': 200
           'callback': 'Data sent to callback_url'
-        }, 
+        },
         'progress': 0
       }
       ```
 
-### Testing on a specific SmartAPI API
+### Environment Variables
 
-By default, BTE queries all APIs specified in the the[ config.js file](https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/routes/v1/config.js).  In some cases, you may want to override that default to specifically query a single API.  For example, the SmartAPI record for the "EBI Proteins API) is [43af91b3d7cae43591083bff9d75c6dd](https://smart-api.info/registry?q=43af91b3d7cae43591083bff9d75c6dd). To instruct BTE to query that API only, you can POST your query to http://localhost:3000/v1/smartapi/43af91b3d7cae43591083bff9d75c6dd/query
+Several environment variables are supported for various purposes, listed below:
+
+- `NODE_ENV` When set as `NODE_ENV=production`, the package runs in production mode, including synchronizing the latest SmartAPI specifications on a schedule.
+- `SMARTAPI_SYNC=true|false` May be set to override all SmartAPI syncing behavior.
+- `API_OVERRIDE=true|false` May be set to set overrides for specific APIs (see [Using `API_OVERRIDE=true`](#using-api_overridetrue))
+- `RESULT_CACHING=true|false` May be set to enable or disable the use of caching for query result edges. Requires `REDIS_HOST` and `REDIS_PORT` to be enabled.
+- `REDIS_HOST` The hostname of the Redis server to be used for caching.
+- `REDIS_PORT` The port of the Redis server to be used for caching.
+- `REDIS_PASSWORD` The password for the Redis server, if applicable.
+- `DEBUG` May be set to capture different package debug logs by match to comma-separated strings.

@@ -11,7 +11,6 @@ const validUrl = require('valid-url')
 
 const getTRAPIWithPredicatesEndpoint = (specs) => {
     const trapi = [];
-    let special_cases = []
     specs.map((spec) => {
         try {
             if (
@@ -22,9 +21,7 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
                 "/query" in spec.paths &&
                 "x-trapi" in spec.info &&
                 spec.servers.length &&
-                "/predicates" in spec.paths ||
-                "/meta_knowledge_graph" in spec.paths ||
-                "/1.1/meta_knowledge_graph" in spec.paths
+                "/meta_knowledge_graph" in spec.paths
             ) {
                 let api = {
                     association: {
@@ -45,30 +42,19 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
                         method: 'post'
                     }
                 }
-                // check trapi 1.1 or 1.0
-                if (
-                    "/meta_knowledge_graph" in spec.paths &&
-                    Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
-                    spec.info["x-trapi"].version.includes("1.1")
-                ) {
-                    //1.1
-                    api['predicates_path'] = "/meta_knowledge_graph";
-                    trapi.push(api);
+                // check TRAPI latest accepted version
+                if ("/meta_knowledge_graph" in spec.paths) {
+                    if (
+                        (Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
+                        spec.info["x-trapi"].version.includes("1.1")) ||
+                        (Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
+                        spec.info["x-trapi"].version.includes("1.2"))
+                    ) {
+                        api['predicates_path'] = "/meta_knowledge_graph";
+                        trapi.push(api);
+                    }
                 }
-                else if (
-                    "/1.1/meta_knowledge_graph" in spec.paths &&
-                    Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
-                    spec.info["x-trapi"].version.includes("1.1")
-                ) {
-                    //1.1
-                    api['predicates_path'] = "/1.1/meta_knowledge_graph";
-                    trapi.push(api);
-                    special_cases.push({name: spec.info['title'], id: spec['_id']})
-                } else if ("/predicates" in spec.paths ){
-                    //1.0
-                    api['predicates_path'] = "/predicates";
-                    trapi.push(api);
-                } else {
+                else {
                     debug(
                         `[error]: Unable to parse spec, ${spec ? spec.info.title : spec
                         }. Endpoint required not found.`
@@ -82,12 +68,6 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
             );
         }
     });
-    if (special_cases.length) {
-        debug(
-            `Found some APIs with unexpected endpoint "/1.1/meta_knowledge_graph":`
-        );
-        debug(`${JSON.stringify(special_cases)}`);
-    }
     return trapi;
 }
 
@@ -100,7 +80,7 @@ const constructQueryUrl = (serverUrl, path) => {
 
 const getPredicatesFromGraphData = (predicate_endpoint, data) => {
     //if /predicates just return normal response
-    if (!['/meta_knowledge_graph', '/1.1/meta_knowledge_graph'].includes(predicate_endpoint)) {
+    if (predicate_endpoint !== '/meta_knowledge_graph') {
         return data
     }
     // transform graph data to legacy format > object.subject : predicates
@@ -201,7 +181,7 @@ const getAPIOverrides = async (data) => {
     await Promise.all(Object.keys(overrides.apis).map(async (id) => {
         let override;
         try {
-            const filepath = path.resolve(__dirname, "../../../data" + url.fileURLToPath(overrides.apis[id]));
+            const filepath = path.resolve(url.fileURLToPath(overrides.apis[id]));
             override = yaml.load(await readFile(filepath));
         } catch (e1) {
             if (e1 instanceof TypeError) {
@@ -214,7 +194,7 @@ const getAPIOverrides = async (data) => {
                     }
                 } else {
                     try {
-                        const filepath = path.resolve(__dirname, overrides.apis[id]);
+                        const filepath = path.resolve(overrides.apis[id]);
                         override = yaml.load(await readFile(filepath));
                     } catch (filerror) {
                         debug(`ERROR getting local file override for API ID ${id} because ${filerror}`);

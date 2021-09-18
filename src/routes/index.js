@@ -1,7 +1,4 @@
 const routesMetaKG = require("./metakg");
-const routesV1Predicates = require("./v1/predicates_v1");
-const routesV1PredicatesByAPI = require("./v1/predicates_v1_by_api");
-const routesV1PredicatesByTeam = require("./v1/predicates_v1_by_team");
 const routesFrontPage = require("./frontpage");
 const routesPerformance = require("./performance");
 const routesV1QueryByAPI = require("./v1/query_v1_by_api");
@@ -21,15 +18,12 @@ const LoggingHandler = require("../middlewares/logging");
 class Routes {
     setRoutes(app) {
         routesMetaKG.setRoutes(app);
-        routesV1Predicates.setRoutes(app);
         routesV1MetaKG.setRoutes(app);
         routesV1AsyncQuery.setRoutes(app);
         routesV1AsyncQueryByAPI.setRoutes(app);
         routesV1AsyncQueryByTeam.setRoutes(app);
         routesV1MetaKGByAPI.setRoutes(app);
         routesV1MetaKGByTeam.setRoutes(app);
-        routesV1PredicatesByAPI.setRoutes(app);
-        routesV1PredicatesByTeam.setRoutes(app);
         routesV1CheckQueryStatus.setRoutes(app);
         routesFrontPage.setRoutes(app);
         routesPerformance.setRoutes(app);
