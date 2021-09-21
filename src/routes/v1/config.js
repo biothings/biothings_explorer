@@ -9,7 +9,7 @@ exports.API_LIST = [
         name: 'EBI Proteins API'
     },
     {
-        id: '1ad2cba40cb25cd70d00aa8fba9cfaf3',
+        id: '9ee398a738916a98b612068cc022454f',
         name: 'LINCS Data Portal API'
     },
     {
