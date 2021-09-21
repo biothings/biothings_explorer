@@ -32,7 +32,7 @@ async function jobToBeDone(queryGraph, smartAPIID, caching, enableIDResolution, 
 
 if(queryQueue){
     queryQueue.process(async (job) => {
-        return jobToBeDone(
+        return await jobToBeDone(
             job.data.queryGraph,
             job.data.smartAPIID,
             job.data.caching,

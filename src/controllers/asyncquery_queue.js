@@ -13,9 +13,10 @@ exports.getQueryQueue = (name) => {
             {
                 defaultJobOptions: {
                     timeout: process.env.JOB_TIMEOUT,
+                    removeOnFail: true
                 },
                 settings: {
-                    maxStalledCount: 0,
+                    maxStalledCount: 1,
                     lockDuration: 300000
                 }
             }).on('error', function (error){

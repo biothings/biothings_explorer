@@ -71,19 +71,20 @@ exports.asyncqueryResponse = async (handler, callback_url) => {
         }catch (e){
             return {
                 response: response,
-                status: e.response.status,
-                callback: `Request failed, received code ${e.response.status}`
+                status: e.response?.status,
+                callback: `Request failed, received code ${e.response?.status}`
             }
         }
     }else{
         return {
             response: response,
+            status: 200,
             callback: 'Callback url was not provided'
         };
     }
     return {
         response: response,
-        status: callback_response.status,
+        status: callback_response?.status,
         callback: 'Data sent to callback_url'
     };
 }

@@ -23,7 +23,7 @@ async function jobToBeDone(queryGraph, caching, workflow, callback_url){
 
 if(queryQueue){
     queryQueue.process(async (job) => {
-        return jobToBeDone(job.data.queryGraph, job.data.caching, job.data.workflow, job.data.callback_url);
+        return await jobToBeDone(job.data.queryGraph, job.data.caching, job.data.workflow, job.data.callback_url);
     });
 }
 
