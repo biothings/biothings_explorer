@@ -48,8 +48,11 @@ exports.asyncqueryResponse = async (handler, callback_url) => {
     }catch (e){
         console.error(e)
         return {
-            response: response,
-            status: 400,
+            response: {
+                error: e?.name,
+                message: e?.message
+            },
+            status: e?.statusCode,
             callback: ''
         }
     }
