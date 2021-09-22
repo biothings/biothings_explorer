@@ -222,11 +222,11 @@ exports.API_LIST = [
         id: 'fe351cf879d06616e655d46ee915c2e4',
         name: 'Automat Viral Proteome (trapi v-1.2.0)'
     },
-    // // Clinical-data-based APIs from other Translator teams, ingested through TRAPI
-    // {
-    //     id: '51c178099fa2dc99b5d8fff8bf9f1a0d',
-    //     name: 'COHD TRAPI 1.2'
-    // },
+    // Clinical-data-based APIs from other Translator teams, ingested through TRAPI
+    {
+        id: '51c178099fa2dc99b5d8fff8bf9f1a0d',
+        name: 'COHD TRAPI 1.2'
+    },
     // notes on COHD:
     // - DON'T INGEST 'Columbia Open Health Data (COHD)'/70117385218edc9bc01633829011dfcf
     //   IT IS NOT TRAPI (and may be outdated?)
