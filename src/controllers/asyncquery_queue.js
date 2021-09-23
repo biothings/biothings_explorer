@@ -17,7 +17,8 @@ exports.getQueryQueue = (name) => {
                 },
                 settings: {
                     maxStalledCount: 1,
-                    lockDuration: 300000
+                    //lockDuration: 300000
+                    lockDuration: 3600000   // 60min
                 }
             }).on('error', function (error){
             console.log('err', error)
