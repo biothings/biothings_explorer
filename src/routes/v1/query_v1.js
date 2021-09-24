@@ -21,7 +21,7 @@ class V1RouteQuery {
                     next(result.err);
                 } else {
                     res.setHeader("Content-Type", "application/json");
-                    res.end(JSON.stringify(result));
+                    res.end(JSON.stringify(result.msg));
                 }
             } catch (error) {
                 next(error);
@@ -41,9 +41,9 @@ class V1RouteQuery {
             handler.setQueryGraph(queryGraph);
             await handler.query_2();
 
-            parentPort.postMessage(handler.getResponse());
+            parentPort.postMessage({msg: handler.getResponse()});
         } catch (error) {
-            parentPort.postMessage(error);
+            parentPort.postMessage({err: error});
         }
     }
 }
