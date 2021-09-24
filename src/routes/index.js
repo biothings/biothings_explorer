@@ -34,6 +34,10 @@ class Routes {
         routesQueryTest.setRoutes(app);
         ErrorHandler.setRoutes(app);
     }
+
 }
 
-module.exports = new Routes();
+module.exports = {
+    routes: new Routes(),
+    threadHandlers: {query_v1: routesV1Query.workerHandler}
+}

@@ -1,6 +1,6 @@
 const express = require('express');
 const Config = require("./config/index");
-const routes = require("./routes/index");
+const { routes } = require("./routes/index");
 
 class App {
     constructor() {
