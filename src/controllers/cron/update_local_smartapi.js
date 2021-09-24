@@ -132,7 +132,7 @@ const getOpsFromEndpoint = async (metadata) => {
 const getOpsFromPredicatesEndpoints = async (specs) => {
     const metadatas = getTRAPIWithPredicatesEndpoint(specs);
     let res = [];
-    debug(`Lining up ${metadatas.length} items to get predicates from`);
+    debug(`Now caching predicates from ${metadatas.length} TRAPI APIs`);
     await Promise.allSettled(
         metadatas.map((metadata) => getOpsFromEndpoint(metadata))
     ).then((results) => {
@@ -155,6 +155,7 @@ const updateSmartAPISpecs = async () => {
     if (process.env.API_OVERRIDE === "true") {
         await getAPIOverrides(res.data);
     }
+    debug(`Retrieved ${res.data.total} SmartAPI records`);
     //clean _score fields
     const hits = res.data.hits;
     hits.forEach(function(obj){ delete obj._score });
