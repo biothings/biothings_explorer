@@ -8,9 +8,11 @@ const readFile = util.promisify(fs.readFile);
 const yaml = require("js-yaml");
 var url = require('url')
 const validUrl = require('valid-url')
+const config = require("../../config/smartapi_exclusions");
 
 const getTRAPIWithPredicatesEndpoint = (specs) => {
     const trapi = [];
+    let excluded_list = config.EXCLUDE_LIST.map((api) => api.id);
     specs.map((spec) => {
         try {
             if (
@@ -21,7 +23,8 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
                 "/query" in spec.paths &&
                 "x-trapi" in spec.info &&
                 spec.servers.length &&
-                "/meta_knowledge_graph" in spec.paths
+                "/meta_knowledge_graph" in spec.paths &&
+                !excluded_list.includes(spec._id)
             ) {
                 let api = {
                     association: {
