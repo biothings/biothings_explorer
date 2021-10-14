@@ -1,9 +1,4 @@
-const Queue = require('bull');
 const path = require("path");
-const axios = require('axios')
-const { nanoid } = require('nanoid')
-const redisClient = require('../../utils/cache/redis-client');
-const config = require("./config");
 const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate");
 const smartAPIPath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
