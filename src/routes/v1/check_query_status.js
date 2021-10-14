@@ -1,4 +1,3 @@
-const Queue = require('bull');
 const redisClient = require('../../utils/cache/redis-client');
 const {getQueryQueue} = require('../../controllers/asyncquery_queue');
 
