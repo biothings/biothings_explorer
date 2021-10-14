@@ -12,7 +12,7 @@ if (enableRedis === true) {
         port: process.env.REDIS_PORT,
     };
     if (process.env.REDIS_PASSWORD) { details.auth_pass = process.env.REDIS_PASSWORD }
-    if (process.end.REDIS_TLS_ENABLED) { details.tls = { checkServerIdentity: () => undefined } }
+    if (process.env.REDIS_TLS_ENABLED) { details.tls = { checkServerIdentity: () => undefined } }
     client = redis.createClient(details);
 }
 
