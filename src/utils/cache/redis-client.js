@@ -1,4 +1,5 @@
 const redis = require("redis");
+const { checkServerIdentity } = require("tls");
 const { promisify } = require("util");
 
 let client;
@@ -7,10 +8,11 @@ const enableRedis = (!(process.env.REDIS_HOST === undefined)) && (!(process.env.
 
 if (enableRedis === true) {
     const details = {
-        port: process.env.REDIS_PORT,
         host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT,
     };
-    if (process.env.REDIS_PASSWORD) { details.password = process.env.REDIS_PASSWORD }
+    if (process.env.REDIS_PASSWORD) { details.auth_pass = process.env.REDIS_PASSWORD }
+    if (process.end.REDIS_TLS_ENABLED) { details.tls = { checkServerIdentity: () => undefined } }
     client = redis.createClient(details);
 }
 
