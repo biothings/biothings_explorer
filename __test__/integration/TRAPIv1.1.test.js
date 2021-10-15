@@ -74,7 +74,7 @@ describe("Testing v1.1 endpoints", () => {
                       expect.objectContaining({
                         "subject": "biolink:SmallMolecule",
                         "predicate": "biolink:entity_positively_regulates_entity",
-                        "object": "biolink:Protein",
+                        "object": "biolink:Gene",
                       })
                     ])
                 );
@@ -107,7 +107,7 @@ describe("Testing v1.1 endpoints", () => {
                       expect.objectContaining({
                         "subject": "biolink:SmallMolecule",
                         "predicate": "biolink:entity_positively_regulates_entity",
-                        "object": "biolink:Protein"
+                        "object": "biolink:Gene"
                       })
                     ])
                 );

@@ -68,7 +68,8 @@ exports.asyncqueryResponse = async (handler, callback_url) => {
             callback_response = await axios.post(callback_url, JSON.stringify(response), {
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                timeout: 300000   // 5min
             });
             //console.log(res)
         }catch (e){

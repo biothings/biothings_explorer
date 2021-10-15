@@ -8,7 +8,7 @@ const PORT = Number.parseInt(process.env.PORT) || 3000;
 cron();
 
 if (isMainThread) {
-  app.listen(PORT, () => console.log(`App listening at http://localhost:3000`))
+  app.listen(PORT, () => console.log(`App listening at http://localhost:${PORT}`));
 } else {
   threadHandlers[workerData.route](workerData.req, parentPort);
 }

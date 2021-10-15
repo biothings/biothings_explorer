@@ -1,7 +1,4 @@
-const Queue = require('bull');
 const path = require("path");
-const axios = require('axios')
-const redisClient = require('../../utils/cache/redis-client');
 const config = require("./config");
 const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate");
@@ -10,13 +7,12 @@ const predicatesPath = path.resolve(__dirname, '../../../data/predicates.json');
 const utils = require("../../utils/common");
 const {asyncquery, asyncqueryResponse} = require('../../controllers/asyncquery')
 const {getQueryQueue} = require('../../controllers/asyncquery_queue')
-const URL = require("url").URL;
 
 queryQueue = getQueryQueue('get query graph')
 
 async function jobToBeDone(queryGraph, caching, workflow, callback_url){
     utils.validateWorkflow(workflow);
-    const handler = new TRAPIGraphHandler.TRAPIQueryHandler({ apiNames: config.API_LIST, caching: caching }, smartAPIPath, predicatesPath);
+    const handler = new TRAPIGraphHandler.TRAPIQueryHandler({ apiList: config.API_LIST, caching: caching }, smartAPIPath, predicatesPath);
     handler.setQueryGraph(queryGraph);
     return await asyncqueryResponse(handler, callback_url);
 }

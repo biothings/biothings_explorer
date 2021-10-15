@@ -64,7 +64,7 @@ module.exports = class Config {
     setLimiter() {
         const limiter = rateLimit({
             windowMs: 1 * 60 * 1000, //1min
-            max: process.env.MAX_QUERIES_PER_MIN || 30
+            max: process.env.MAX_QUERIES_PER_MIN || 15
         });
         this.app.use("/v1/query", limiter);
     }

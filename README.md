@@ -119,7 +119,9 @@ You may additionally manually trigger a one-time sync by using `npm run smartapi
 
 You may configure a set of API IDs to override from local files or URLs.
 
-If the environment variable `API_OVERRIDE=true` is set (e.g. `API_OVERRIDE=true npm run debug --workspace=@biothings-explorer/bte-trapi`), then `/config/smartapi_overrides.json` is checked at server start and overrides are applied, as well as during subsequent `smartapi_specs.json` updates. Note that syncing must be enabled (`SMARTAPI_SYNC=true`) in order for `API_OVERRIDE` to take effect.
+If the environment variable `API_OVERRIDE=true` is set (e.g. `SMARTAPI_SYNC=true API_OVERRIDE=true npm run debug --workspace=@biothings-explorer/bte-trapi`), then `/config/smartapi_overrides.json` is checked at server start and overrides are applied, as well as during subsequent `smartapi_specs.json` updates. Note that syncing must be enabled (`SMARTAPI_SYNC=true`) in order for `API_OVERRIDE` to take effect. 
+
+Alternatively, you may choose to only get `smartapi_specs.json` and apply overrides once by running `API_OVERRIDE=true npm run smartapi_sync --workspace='@biothings-explorer/bte-trapi'`, removing the requirement of enabling `SMARTAPI_SYNC` while running the server.
 
 Override files may be specified as a URL which returns the expected yaml file or a `file:///` URI or arbitrary filepath, either of which must contain the absolute path to your override file. Regardless, override files are expected to be in yaml format. If overrides are specified with IDs not in the current SmartAPI spec, they will be appended as new API hits with a log warning.
 
@@ -136,7 +138,7 @@ Replace the latest MyGene.info API with a specific revision, and the MyChem.info
   },
   "apis": {
     "59dce17363dce279d389100834e43648": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/8b36f46d59c82d19b5cba40421a6ca9c2ed62e6b/mygene.info/openapi_full.yml",
-    "8f08d1446e0bb9c2b323713ce83e2bd3": "file:///mychem_test.yaml"
+    "8f08d1446e0bb9c2b323713ce83e2bd3": "file:///absolute/path/to/file/mychem_test.yaml"
   }
 }
 ```

@@ -8,9 +8,11 @@ const readFile = util.promisify(fs.readFile);
 const yaml = require("js-yaml");
 var url = require('url')
 const validUrl = require('valid-url')
+const config = require("../../config/smartapi_exclusions");
 
 const getTRAPIWithPredicatesEndpoint = (specs) => {
     const trapi = [];
+    let excluded_list = config.EXCLUDE_LIST.map((api) => api.id);
     specs.map((spec) => {
         try {
             if (
@@ -21,7 +23,8 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
                 "/query" in spec.paths &&
                 "x-trapi" in spec.info &&
                 spec.servers.length &&
-                "/meta_knowledge_graph" in spec.paths
+                "/meta_knowledge_graph" in spec.paths &&
+                !excluded_list.includes(spec._id)
             ) {
                 let api = {
                     association: {
@@ -132,7 +135,7 @@ const getOpsFromEndpoint = async (metadata) => {
 const getOpsFromPredicatesEndpoints = async (specs) => {
     const metadatas = getTRAPIWithPredicatesEndpoint(specs);
     let res = [];
-    debug(`Lining up ${metadatas.length} items to get predicates from`);
+    debug(`Now caching predicates from ${metadatas.length} TRAPI APIs`);
     await Promise.allSettled(
         metadatas.map((metadata) => getOpsFromEndpoint(metadata))
     ).then((results) => {
@@ -147,7 +150,7 @@ const getOpsFromPredicatesEndpoints = async (specs) => {
 }
 
 const updateSmartAPISpecs = async () => {
-    const SMARTAPI_URL = 'https://smart-api.info/api/query?q=tags.name:translator&size=150&fields=paths,servers,tags,components.x-bte*,info,_meta';
+    const SMARTAPI_URL = 'https://smart-api.info/api/query?q=tags.name:translator&size=200&sort=_id&fields=paths,servers,tags,components.x-bte*,info,_meta';
     const res = await axios.get(SMARTAPI_URL);
     const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
     const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
@@ -155,7 +158,11 @@ const updateSmartAPISpecs = async () => {
     if (process.env.API_OVERRIDE === "true") {
         await getAPIOverrides(res.data);
     }
-    writeFunc(localFilePath, JSON.stringify({ hits: res.data.hits }), (err) => {
+    debug(`Retrieved ${res.data.total} SmartAPI records`);
+    //clean _score fields
+    const hits = res.data.hits;
+    hits.forEach(function(obj){ delete obj._score });
+    writeFunc(localFilePath, JSON.stringify({ hits: hits }), (err) => {
         if (err) throw err;
     });
     const predicatesInfo = await getOpsFromPredicatesEndpoints(res.data.hits);
