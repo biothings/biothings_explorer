@@ -13,10 +13,12 @@ module.exports = function runWorker(task) {
                 reject(new Error(`Worker exited with code ${code}`));
             }
         });
-        const timeout = parseInt(process.env.REQUEST_TIMEOUT || 300000);
-        setTimeout(() => {
-            worker.terminate();
-            reject(new Error(`Request timed out (exceeded time limit of ${timeout}ms)`));
-        }, timeout);
+        const timeout = parseInt(process.env.REQUEST_TIMEOUT) * 1000;
+        if (timeout) {
+            setTimeout(() => {
+                worker.terminate();
+                reject(new Error(`Request timed out (exceeded time limit of ${timeout}s)`));
+            }, timeout);
+        }
     });
 };
