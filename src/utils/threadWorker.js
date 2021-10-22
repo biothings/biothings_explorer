@@ -7,10 +7,18 @@ module.exports = function runWorker(task) {
         const worker = new Worker(path.resolve(__dirname, "../server.js"), {
             workerData: { req: task.req, route: task.route },
         });
+        let reqDone, cacheDone = false;
         worker.on("message", (...args) => {
             const workerID = worker.threadId;
-            worker.terminate().then(() => debug(`Worker thread ${workerID} completed task, terminated successfully.`));
-            resolve(...args);
+            if (args[0].cacheDone) {
+                cacheDone = true;
+            } else {
+                reqDone = true;
+                resolve(...args);
+            }
+            if (reqDone && cacheDone) {
+                worker.terminate().then(() => debug(`Worker thread ${workerID} completed task, terminated successfully.`));
+            }
         });
         worker.on("error", reject);
         worker.on("exit", code => {
