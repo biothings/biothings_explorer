@@ -34,6 +34,25 @@ class Routes {
         routesQueryTest.setRoutes(app);
         ErrorHandler.setRoutes(app);
     }
+
 }
 
-module.exports = new Routes();
+module.exports = {
+    routes: new Routes(),
+    threadHandlers: {
+        query_v1: routesV1Query.workerHandler,
+        query_v1_by_api: routesV1QueryByAPI.workerHandler,
+        query_v1_by_team: routesV1QueryByTeam.workerHandler,
+        query_test: routesQueryTest.workerHandler,
+        asyncquery_v1: routesV1AsyncQuery.workerHandler, //TODO
+        asyncquery_v1_by_api: routesV1AsyncQueryByAPI.workerHandler, //TODO
+        asyncquery_v1_by_team: routesV1AsyncQueryByTeam.workerHandler, //TODO
+        check_query_status: routesV1CheckQueryStatus.workerHandler, //TODO
+        // Not threaded due to being lightweight/speed being higher priority
+        performance: routesPerformance.workerHandler,
+        metakg: routesMetaKG.workerHandler,
+        meta_knowledge_graph_v1: routesV1MetaKG.workerHandler,
+        meta_knowledge_graph_v1_by_api: routesV1MetaKGByAPI.workerHandler,
+        meta_knowledge_graph_v1_by_team: routesV1MetaKGByTeam.workerHandler,
+    }
+}
