@@ -25,6 +25,11 @@ exports.API_LIST = [
         name: 'Ontology Lookup Service API'
     },
     // "pending" BioThings APIs, annotated by x-bte
+      // SEMMED BioThings APIs, annotated with x-bte
+    {
+        id: '1d288b3a3caf75d541ffaae3aab386c8',
+        name: 'BioThings SEMMEDDB API'
+    },
     {
         id: 'e3edd325c76f2992a111b43a907a4870',
         name: 'BioThings DGIdb API'
@@ -81,31 +86,6 @@ exports.API_LIST = [
     {
         id: '09c8782d9f4027712e65b95424adba79',
         name: 'MyVariant.info API'
-    },
-    // SEMMED BioThings APIs, annotated with x-bte
-    {
-        id: '0c9f1154a1986f1774057af4c1caa5b2',
-        name: 'SEMMED Anatomy API'
-    },
-    {
-        id: '5a7d625d50fc518d33db48cf39ce9b30',
-        name: 'SEMMED Biological Process API'
-    },
-    {
-        id: '7c07eca4ef5ceb532d06c0180e86aedd',
-        name: 'SEMMED Chemical API'
-    },
-    {
-        id: 'ed0ee52921c7cbce24033ffd1369922e',
-        name: 'SEMMED Disease API'
-    },
-    {
-        id: '81955d376a10505c1c69cd06dbda3047',
-        name: 'SEMMED Gene API'
-    },
-    {
-        id: '2dffb89df7f970b6a07e816e255d33ec',
-        name: 'SEMMED Phenotype API'
     },
     // Multiomics Provider collab, annotated with x-bte
     {
