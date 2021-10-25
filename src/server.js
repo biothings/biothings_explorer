@@ -10,6 +10,7 @@ async function main() {
     const PORT = Number.parseInt(process.env.PORT) || 3000;
     cron();
     app.listen(PORT, () => console.log(`App listening at http://localhost:${PORT}`));
+    process.env.DEBUG_COLORS = 'true';
   } else {
     debug(`Worker thread ${threadId} beginning task.`);
     await threadHandlers[workerData.route](workerData.req, parentPort);
