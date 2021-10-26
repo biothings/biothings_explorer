@@ -87,19 +87,46 @@ By default, the `/v1/query` endpoint only supports 3 queries per min, you could 
 
 ### Deploy
 
-A docker file is included in the base directory and can be used to build the customized container
+A Dockerfile is included in the base directory of the [workspace](https://github.com/biothings/bte-trapi-workspace) and may be used to build and run the server in a container that simulates the production environment.
+
+To build:
 
 ```bash
-docker build -t bte_reasoner_api .
+docker build --rm --force-rm --compress --squash -t biothings/bte-trapi .
 ```
 
-Container can be built and started using docker-compose
+*note: --squash requires experimental features to be enabled, however it may be omitted*
+
+To run:
+
+```bash
+docker run -it --rm -p 3000:3000 --name bte-trapi biothings/bte-trapi
+```
+
+Run with debug logs enabled:
+
+```bash
+docker run -it --rm -p 3000:3000 --name bte-trapi -e DEBUG="biomedical-id-resolver,bte*" biothings/bte-trapi
+```
+
+The container may also be run with a redis-server running at a given host, which enables caching and use of the async endpoints:
+
+```bash
+docker run -it --rm -p 3000:3000 --name bte-trapi  -e REDIS_HOST=host.docker.internal -e REDIS_PORT=6379 -e DEBUG="biomedical-id-resolver,bte*" biothings/
+```
+
+Log into the container:
+```bash
+docker exec -ti bte-trapi sh
+```
+
+The container can be built and started using docker-compose
 
 ```bash
 docker-compose up
 ```
 
-Public Docker image located at [link](https://hub.docker.com/repository/docker/biothings/bte_reasoner_api)
+Public Docker image located at [here](https://hub.docker.com/repository/docker/biothings/bte_reasoner_api)
 
 ### Usage
 
@@ -119,7 +146,7 @@ You may additionally manually trigger a one-time sync by using `npm run smartapi
 
 You may configure a set of API IDs to override from local files or URLs.
 
-If the environment variable `API_OVERRIDE=true` is set (e.g. `SMARTAPI_SYNC=true API_OVERRIDE=true npm run debug --workspace=@biothings-explorer/bte-trapi`), then `/config/smartapi_overrides.json` is checked at server start and overrides are applied, as well as during subsequent `smartapi_specs.json` updates. Note that syncing must be enabled (`SMARTAPI_SYNC=true`) in order for `API_OVERRIDE` to take effect. 
+If the environment variable `API_OVERRIDE=true` is set (e.g. `SMARTAPI_SYNC=true API_OVERRIDE=true npm run debug --workspace=@biothings-explorer/bte-trapi`), then `/config/smartapi_overrides.json` is checked at server start and overrides are applied, as well as during subsequent `smartapi_specs.json` updates. Note that syncing must be enabled (`SMARTAPI_SYNC=true`) in order for `API_OVERRIDE` to take effect.
 
 Alternatively, you may choose to only get `smartapi_specs.json` and apply overrides once by running `API_OVERRIDE=true npm run smartapi_sync --workspace='@biothings-explorer/bte-trapi'`, removing the requirement of enabling `SMARTAPI_SYNC` while running the server.
 
@@ -143,26 +170,21 @@ Replace the latest MyGene.info API with a specific revision, and the MyChem.info
 }
 ```
 
-#### Using `/test/query`
+#### Using `API_OVERRIDE=true` with Docker container
 
-*This method is deprecated, and may be subject to removal in the future.*
+You may wish to use a container to test your custom API/annotations. After making changes to your override list (example above) you will need to rebuild the container:
 
-The TRAPI interface has `/test/query` endpoint which uses a SmartAPI spec stored at **test** folder named **smartapi.json**
+```bash
+docker build --rm --force-rm --compress --squash -t biothings/bte-trapi .
+```
 
-If you would like to use the `/test/query` endpoint to test a local SmartAPI spec, you can mount the your local folder containing the SmartAPI spec to the folder **/home/node/app/test** in the container. [Note: The SmartAPI spec must be named **smartapi.json**]
+*note: --squash requires experimental features to be enabled, however it may be omitted*
 
-You could do so using the following commands:
+To run the container with overrides and debug logging enabled:
 
-First pull the biothings/bte_reasoner_api image from Docker Hub:
-`docker pull biothings/bte_reasoner_api`
-
-Then, Run the image and mount your local smartapi spec folder
-
-`docker run -p 3000:3000 -v [local_folder_contain_smartapi_spec]:/home/node/app/test -d biothings/bte_reasoner_api`
-
-Now, you should be able to test your local smartapi using POST queries at:
-
-`http://localhost:3000/test/query`
+```bash
+docker run -it --rm -p 3000:3000 --name bte-trapi -e DEBUG="biomedical-id-resolver,bte*" -e API_OVERRIDE=true biothings/bte-trapi
+```
 
 ### Testing on a specific SmartAPI API
 
