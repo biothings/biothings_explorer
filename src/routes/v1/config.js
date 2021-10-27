@@ -224,4 +224,8 @@ exports.API_LIST = [
         id: '9dd890397a7b8d98fbe247d56cac2b8f',
         name: 'ICEES DILI Instance API'
     },
+    {
+        id: '855adaa128ce5aa58a091d99e520d396',
+        name: 'Connections Hypothesis Provider API'
+    },
 ];
