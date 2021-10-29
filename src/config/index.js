@@ -67,5 +67,11 @@ module.exports = class Config {
             max: process.env.MAX_QUERIES_PER_MIN || 15
         });
         this.app.use("/v1/query", limiter);
+        this.app.use("/v1/team/:team_name/query", limiter);
+        this.app.use("/v1/team/:team_name/query", limiter);
+        this.app.use("/test/query", limiter);
+        this.app.use("/v1/meta_knowledge_graph", limiter);
+        this.app.use("/v1/team/:teamName/meta_knowledge_graph", limiter);
+        this.app.use("/v1/smartapi/:smartapiID/meta_knowledge_graph", limiter);
     }
 }
