@@ -217,11 +217,10 @@ exports.API_LIST = [
         name: 'ICEES Asthma Instance API'
     },
     {
-        id: '65292eac9a88e3a895be21f19b554767',
-        name: 'ICEES COVID-19 Instance API'
-    },
-    {
         id: '9dd890397a7b8d98fbe247d56cac2b8f',
         name: 'ICEES DILI Instance API'
     },
+    // notes on ICEES:
+    // - don't ingest the COVID APIs (they may be broken / not actively developed)
+
 ];
