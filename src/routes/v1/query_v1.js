@@ -39,7 +39,7 @@ class V1RouteQuery {
                 predicatesPath,
             );
             handler.setQueryGraph(queryGraph);
-            await handler.query_2();
+            await handler.query();
 
             parentPort.postMessage({msg: handler.getResponse()});
         } catch (error) {
