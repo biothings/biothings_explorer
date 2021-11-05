@@ -29,7 +29,7 @@ class RouteQueryTest {
             const queryGraph = req.body.message.query_graph;
             const handler = new TRAPIGraphHandler.TRAPIQueryHandler({}, smartAPIPath, undefined, false);
             handler.setQueryGraph(queryGraph);
-            await handler.query_2();
+            await handler.query();
             parentPort.postMessage({msg: handler.getResponse()});
         } catch (error) {
             parentPort.postMessage({err: error});
