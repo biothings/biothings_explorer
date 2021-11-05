@@ -7,16 +7,26 @@ module.exports = function runWorker(task) {
         const worker = new Worker(path.resolve(__dirname, "../server.js"), {
             workerData: { req: task.req, route: task.route },
         });
-        let reqDone, cacheDone = false;
+        let reqDone = false;
+        let cacheSteps;
+        try {
+            cacheSteps = Object.keys(task.req.body.message.query_graph.edges).length;
+        } catch (e) {
+            cacheSteps = 0;
+        }
         worker.on("message", (...args) => {
             const workerID = worker.threadId;
             if (args[0].cacheDone) {
-                cacheDone = true;
+                if (typeof args[0].cacheDone === 'number') {
+                    cacheSteps -= args[0].cacheDone;
+                } else {
+                    cacheSteps = 0;
+                }
             } else {
                 reqDone = true;
                 resolve(...args);
             }
-            if (reqDone && cacheDone) {
+            if (reqDone && cacheSteps === 0) {
                 worker.terminate().then(() => debug(`Worker thread ${workerID} completed task, terminated successfully.`));
             }
         });
