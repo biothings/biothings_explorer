@@ -8,29 +8,30 @@ module.exports = function runWorker(task) {
             workerData: { req: task.req, route: task.route },
         });
         let reqDone = false;
-        let cacheSteps;
-        try {
-            cacheSteps = Object.keys(task.req.body.message.query_graph.edges).length;
-        } catch (e) {
-            cacheSteps = 0;
-        }
+        let cacheInProgress = 0;
         worker.on("message", (...args) => {
             const workerID = worker.threadId;
+            if (args[0].cacheInProgress) {
+                cacheInProgress += 1;
+            }
             if (args[0].cacheDone) {
                 if (typeof args[0].cacheDone === 'number') {
-                    cacheSteps -= args[0].cacheDone;
+                    cacheInProgress -= args[0].cacheDone;
                 } else {
-                    cacheSteps = 0;
+                    cacheInProgress = 0;
                 }
-            } else {
+            } else if (args[0].msg) {
                 reqDone = true;
                 resolve(...args);
             }
-            if (reqDone && cacheSteps === 0) {
+            if (reqDone && cacheInProgress <= 0) {
                 worker.terminate().then(() => debug(`Worker thread ${workerID} completed task, terminated successfully.`));
             }
         });
-        worker.on("error", reject);
+        worker.on("error", (...args) => {
+            reqDone = true; // allows caching to finish if any was started.
+            reject(...args);
+        });
         worker.on("exit", code => {
             if (code !== 0) {
                 reject(new Error(`Worker ${worker.threadId} exited with code ${code}`));
