@@ -12,7 +12,9 @@ class ErrorHandler {
                     more_info: error.errors
                 });
             }
-            if (error instanceof QueryGraphHandler.InvalidQueryGraphError) {
+            // read stack when instance or err is broken
+            if (error instanceof QueryGraphHandler.InvalidQueryGraphError ||
+                error.stack.includes("InvalidQueryGraphError")) {
                 return res.status(400).json({
                     error: "Your input query graph is invalid",
                     more_info: error.message

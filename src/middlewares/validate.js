@@ -1,4 +1,8 @@
 const swaggerValidation = require('openapi-validator-middleware');
+const path = require('path');
+
+const schema = path.join(__dirname, '../../docs/smartapi.yaml');
+
 const inputValidationOptions = {
     formats: [
         { name: 'double', pattern: /\d+(\.\d+)?/ },
@@ -15,6 +19,6 @@ const inputValidationOptions = {
     //firstError: true,
     expectFormFieldsInBody: true
 };
-swaggerValidation.init("docs/smartapi.yaml", inputValidationOptions);
+swaggerValidation.init(schema, inputValidationOptions);
 
 module.exports = swaggerValidation;

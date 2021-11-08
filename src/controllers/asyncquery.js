@@ -43,7 +43,7 @@ exports.asyncqueryResponse = async (handler, callback_url) => {
     let response = null
     let callback_response = null;
     try{
-        await handler.query_2();
+        await handler.query();
         response = handler.getResponse();
     }catch (e){
         console.error(e)
