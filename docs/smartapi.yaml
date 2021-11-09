@@ -248,6 +248,13 @@ paths:
       summary: Query BioThings Explorer TRAPI API as ARA
       description: ''
       operationId: query
+      parameters:
+        - description: option to choose whether or not to enable caching
+          in: query
+          name: caching
+          required: false
+          schema:
+            type: boolean
       requestBody:
         description: Query information to be submitted
         required: true
@@ -317,6 +324,12 @@ paths:
           required: true
           schema:
             type: string
+        - description: option to choose whether or not to enable caching
+          in: query
+          name: caching
+          required: false
+          schema:
+            type: boolean
       requestBody:
         description: Query information to be submitted
         required: true
@@ -390,6 +403,12 @@ paths:
               - Multiomics Provider
               - Text Mining Provider
               - Service Provider
+        - description: option to choose whether or not to enable caching
+          in: query
+          name: caching
+          required: false
+          schema:
+            type: boolean
       requestBody:
         description: Query information to be submitted
         required: true
