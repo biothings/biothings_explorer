@@ -1,180 +1,65 @@
-openapi: 3.0.1
+openapi: 3.0.2
 info:
   contact:
-    email: kevinxin@scripps.edu
-    name: Jiwen Xin
-    url: https://github.com/kevinxin90
+    email: asu@scripps.edu
+    name: Andrew Su
+    url: https://github.com/andrewsu
   description: A ReasonerStdAPI for BioThings Explorer
   termsOfService: https://biothings.io/about
   title: BioThings Explorer ReasonerStdAPI
-  version: 1.0.0
-  x-reasoner_standard_version: 1.0.0
+  version: 2.8.1
+  x-trapi:
+    version: 1.2.0
+    asyncquery: true
+    operations:
+      - lookup
   x-translator:
+    infores: "infores:biothings-explorer"
+    biolink-version: 2.2.8
     component: ARA
     team:
       - Exploring Agent
 servers:
-- url: https://api.bte.ncats.io
+- url: https://api.bte.ncats.io/v1
+  description: Production server
+  x-maturity: production
+- url: https://dev.api.bte.ncats.io/v1
+  description: Dev server
+  x-maturity: development
+- url: https://bte.ci.transltr.io/v1
+  description: CI deployment server
+  x-maturity: staging
 tags:
-- name: 1.0.0
-- name: 0.9.2
-- name: translator
-- name: biothings
-- name: metadata
+- name: 1.2.0
+- name: meta_knowledge_graph
 - name: query
+- name: asyncquery
+- name: translator
+- name: trapi
+- name: biothings
 paths:
-  /metakg:
-    get:
-      parameters:
-      - description: The subject type of the association, e.g. Gene
-        example: Gene
-        in: query
-        name: subject
-        schema:
-          type: string
-      - description: The object type of the association, e.g. SmallMolecule
-        example: SmallMolecule
-        in: query
-        name: object
-        schema:
-          type: string
-      - description: The predicate of the association, e.g. Gene
-        example: physically_interacts_with
-        in: query
-        name: predicate
-        schema:
-          type: string
-      - description: The API providing the association, e.g. MyChem.info API
-        example: MyChem.info API
-        in: query
-        name: api
-        schema:
-          type: string
-      - description: The data source providing the association, e.g. drugbank
-        example: drugbank
-        in: query
-        name: provided_by
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                description: Array of all associations
-                items:
-                  properties:
-                    api:
-                      description: The api providing the association, e.g. MyChem.info
-                      properties:
-                        name:
-                          description: The api providing the association, e.g. MyChem.info
-                          example: MyChem.info API
-                          type: string
-                        smartapi:
-                          description: smartapi related data
-                          properties:
-                            id:
-                              description: unique smartapi id for the api
-                              example: 8f08d1446e0bb9c2b323713ce83e2bd3
-                              type: string
-                            metadata:
-                              description: the url for smartapi specification
-                              example: https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/master/mychem.info/openapi_full.yml
-                              type: string
-                            ui:
-                              description: the web UI url for the API
-                              example: https://smart-api.info/ui/8f08d1446e0bb9c2b323713ce83e2bd3
-                              type: string
-                          type: object
-                      type: object
-                    object:
-                      description: The object type of the association, e.g. SmallMolecule
-                      example: SmallMolecule
-                      type: string
-                    predicate:
-                      description: The predicate of the association, e.g. physically_interacts_with
-                      example: physically_interacts_with
-                      type: string
-                    provided_by:
-                      description: The data source providing the association, e.g.
-                        ChEMBL
-                      example: ChEMBL
-                      type: string
-                    subject:
-                      description: The subject type of the association, e.g. Gene
-                      example: Gene
-                      type: string
-                  type: object
-                type: array
-          description: Association information including subject, object, predicate,
-            api, provided_by and smartapi info.
-      summary: retrieve associations within smartapi, if no parameters provided, will
-        return all associations
-      tags:
-      - metadata
   /meta_knowledge_graph:
     get:
+      tags:
+        - meta_knowledge_graph
+      summary: Meta knowledge graph representation of this TRAPI web service.
+      description: Returns meta knowledge graph representation of this TRAPI web service.
       responses:
-        '200':
+        '200':  
+          description: Successful Response          
           content:
             application/json:
               schema:
-                additionalProperties:
-                  additionalProperties:
-                    description: Array of predicates
-                    items:
-                      type: string
-                    type: array
-                  description: Target map
-                  type: object
-                description: Source map
-                example:
-                  chemical_substance:
-                    chemical_substance:
-                    - correlated_with
-                type: object
-          description: Predicates by source and target
-      summary: Get supported relationships by source and target
-      tags:
-      - metadata
-      - 0.9.2
-  /v1/meta_knowledge_graph:
+                $ref: '#/components/schemas/MetaKnowledgeGraph'
+  /smartapi/{smartapi_id}/meta_knowledge_graph:
     get:
       tags:
-        - predicates
-        - 1.0.0
-      summary: Get supported relationships by source and target
-      responses:
-        '200':
-          description: Predicates by source and target
-          content:
-            application/json:
-              schema:
-                description: Source map
-                type: object
-                additionalProperties:
-                  description: Target map
-                  type: object
-                  additionalProperties:
-                    description: Array of predicates
-                    type: array
-                    items:
-                      type: string
-                example:
-                  'biolink:SmallMolecule':
-                    'biolink:Gene':
-                      - biolink:directly_interacts_with
-                      - biolink:decreases_activity_of
-  /v1/smartapi/{smartapi_id}/meta_knowledge_graph:
-    get:
-      tags:
-        - predicates
-        - 1.0.0
-      summary: Get supported relationships by source and target for individual smartAPI
+        - meta_knowledge_graph
+      summary: TRAPI-compliant Meta knowledge graph representation for an individual SmartAPI KP API (that has x-bte annotation)
+      description: Returns a TRAPI-compliant meta knowledge graph representation of an individual SmartAPI KP API (that has x-bte annotation)
       parameters:
         - description: SmartAPI ID of an API, you can get it from https://smart-api.info/registry
-          example: 978fe380a147a8641caf72320862697b
+          example: 8f08d1446e0bb9c2b323713ce83e2bd3
           in: path
           name: smartapi_id
           required: true
@@ -182,31 +67,17 @@ paths:
             type: string
       responses:
         '200':
-          description: Predicates by source and target
+          description: Successful Response
           content:
             application/json:
               schema:
-                description: Source map
-                type: object
-                additionalProperties:
-                  description: Target map
-                  type: object
-                  additionalProperties:
-                    description: Array of predicates
-                    type: array
-                    items:
-                      type: string
-                example:
-                  'biolink:SmallMolecule':
-                    'biolink:Gene':
-                      - biolink:directly_interacts_with
-                      - biolink:decreases_activity_of
-  /v1/team/{team_name}/meta_knowledge_graph:
+                $ref: '#/components/schemas/MetaKnowledgeGraph'
+  /team/{team_name}/meta_knowledge_graph:
     get:
       tags:
-        - predicates
-        - 1.0.0
-      summary: Get supported relationships by source and target for a KP/ARA team
+        - meta_knowledge_graph
+      summary: TRAPI-compliant Meta knowledge graph representation for one KP/ARA team's SmartAPI KP APIs (that have x-bte annotation)
+      description: Returns a TRAPI-compliant meta knowledge graph representation of one team's set of SmartAPI KP APIs (that have x-bte annotation)
       parameters:
         - description: Translator Team Name, e.g. Service Provider, Multiomics Provider
           example: Multiomics Provider
@@ -221,32 +92,16 @@ paths:
               - Service Provider
       responses:
         '200':
-          description: Predicates by source and target
+          description: Successful Response
           content:
             application/json:
               schema:
-                description: Source map
-                type: object
-                additionalProperties:
-                  description: Target map
-                  type: object
-                  additionalProperties:
-                    description: Array of predicates
-                    type: array
-                    items:
-                      type: string
-                example:
-                  'biolink:SmallMolecule':
-                    'biolink:Gene':
-                      - biolink:directly_interacts_with
-                      - biolink:decreases_activity_of
-  /v1/query:
+                $ref: '#/components/schemas/MetaKnowledgeGraph'
+  /query:
     post:
       tags:
         - query
-        - 1.0.0
-      summary: Query BioThings Explorer TRAPI API as ARA
-      description: ''
+      summary: Query BioThings Explorer TRAPI API as ARA with a TRAPI query
       operationId: query
       parameters:
         - description: option to choose whether or not to enable caching
@@ -260,19 +115,6 @@ paths:
         required: true
         content:
           application/json:
-            example:
-              message:
-                query_graph:
-                  edges:
-                    e00:
-                      subject: n00
-                      object: n01
-                  nodes:
-                    n00:
-                      category: "biolink:Disease"
-                      id: "MONDO:0005737"
-                    n01:
-                      category: "biolink:SmallMolecule"
             schema:
               $ref: '#/components/schemas/Query'
       responses:
@@ -308,17 +150,15 @@ paths:
               schema:
                 type: string
       x-swagger-router-controller: swagger_server.controllers.query_controller
-  /v1/smartapi/{smartapi_id}/query:
+  /smartapi/{smartapi_id}/query:
     post:
       tags:
         - query
-        - 1.0.0
-      summary: Query individual SmartAPI as TRAPI service using SmartAPI ID
-      description: ''
+      summary: Query individual SmartAPI KP API (that has x-bte annotation) as a TRAPI API
       operationId: querySmartAPI
       parameters:
         - description: SmartAPI ID of an API, you can get it from https://smart-api.info/registry
-          example: 978fe380a147a8641caf72320862697b
+          example: 8f08d1446e0bb9c2b323713ce83e2bd3
           in: path
           name: smartapi_id
           required: true
@@ -335,19 +175,6 @@ paths:
         required: true
         content:
           application/json:
-            example:
-              message:
-                query_graph:
-                  edges:
-                    e00:
-                      subject: n00
-                      object: n01
-                  nodes:
-                    n00:
-                      category: "biolink:Gene"
-                      id: "NCBIGene:1017"
-                    n01:
-                      category: "biolink:SmallMolecule"
             schema:
               $ref: '#/components/schemas/Query'
       responses:
@@ -383,12 +210,13 @@ paths:
               schema:
                 type: string
       x-swagger-router-controller: swagger_server.controllers.query_controller
-  /v1/team/{team_name}/query:
+  /team/{team_name}/query:
     post:
       tags:
         - query
-        - 1.0.0
-      summary: Query individual Translator team as individual TRAPI service using team name
+      summary: >-
+        Query an individual Translator team's SMARTAPI KP APIs (that have x-bte annotation) as an individual TRAPI
+        service using team name
       description: ''
       operationId: queryTeam
       parameters:
@@ -414,19 +242,6 @@ paths:
         required: true
         content:
           application/json:
-            example:
-              message:
-                query_graph:
-                  edges:
-                    e00:
-                      subject: n00
-                      object: n01
-                  nodes:
-                    n00:
-                      category: "biolink:Gene"
-                      id: "NCBIGene:1017"
-                    n01:
-                      category: "biolink:SmallMolecule"
             schema:
               $ref: '#/components/schemas/Query'
       responses:
@@ -462,127 +277,164 @@ paths:
               schema:
                 type: string
       x-swagger-router-controller: swagger_server.controllers.query_controller
-  /query/:
+  /asyncquery:
     post:
+      tags:
+        - asyncquery
+      summary: Initiate a query with a callback to receive the response
+      description: ''
       requestBody:
+        description: Query information to be submitted
+        required: true
         content:
           application/json:
-            example:
-              message:
-                query_graph:
-                  edges:
-                  - id: e00
-                    source_id: n00
-                    target_id: n01
-                  - id: e01
-                    source_id: n01
-                    target_id: n02
-                  nodes:
-                  - curie: MONDO:0005737
-                    id: n00
-                    type: disease
-                  - id: n01
-                    set: true
-                    type: gene
-                  - id: n02
-                    type: chemical_substance
             schema:
-              $ref: '#/components/schemas/Query'
-        description: A message with question graph.
-        required: true
+              $ref: '#/components/schemas/AsyncQuery'
       responses:
         '200':
+          description: >-
+            The query is accepted for processing and the Response will be
+            sent to the callback url when complete.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Message'
-          description: A message with knowledge graph and answers.
-      summary: Get answers to a question
-      tags:
-      - 0.9.2
-      - query
-  /smartapi/{smartapi_id}/query/:
+                type: string
+        '400':
+          description: >-
+            Bad request. The request is invalid according to this OpenAPI
+            schema OR a specific identifier is believed to be invalid somehow
+            (not just unrecognized).
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: >-
+            Internal server error.
+          content:
+            application/json:
+              schema:
+                type: string
+        '501':
+          description: >-
+            Not implemented.
+          content:
+            application/json:
+              schema:
+                type: string
+  /smartapi/{smartapi_id}/asyncquery:
     post:
+      tags:
+        - asyncquery
+      summary: >- 
+        Initiate a query with a callback to receive the response. This endpoint is for individual SmartAPI KP APIs 
+        (that have x-bte annotation) as a TRAPI API
       parameters:
-      - description: SmartAPI ID of an API, you can get it from https://smart-api.info/registry
-        example: 978fe380a147a8641caf72320862697b
-        in: path
-        name: smartapi_id
-        required: true
-        schema:
-          type: string
+        - description: SmartAPI ID of an API, you can get it from https://smart-api.info/registry
+          example: 8f08d1446e0bb9c2b323713ce83e2bd3
+          in: path
+          name: smartapi_id
+          required: true
+          schema:
+            type: string
       requestBody:
+        description: Query information to be submitted
+        required: true
         content:
           application/json:
-            example:
-              message:
-                query_graph:
-                  edges:
-                  - id: e00
-                    source_id: n00
-                    target_id: n01
-                  nodes:
-                  - curie: NCBIGene:1017
-                    id: n00
-                    type: gene
-                  - id: n01
-                    type: chemical_substance
             schema:
-              $ref: '#/components/schemas/Query'
-        description: A message with question graph.
-        required: true
+              $ref: '#/components/schemas/AsyncQuery'
       responses:
         '200':
+          description: >-
+            The query is accepted for processing and the Response will be
+            sent to the callback url when complete.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Message'
-          description: A message with knowledge graph and answers.
-      summary: Get answers to a question using a specific API
-      tags:
-      - 0.9.2
-      - query
-  /source/{source_name}/query/:
+                type: string
+        '400':
+          description: >-
+            Bad request. The request is invalid according to this OpenAPI
+            schema OR a specific identifier is believed to be invalid somehow
+            (not just unrecognized).
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: >-
+            Internal server error.
+          content:
+            application/json:
+              schema:
+                type: string
+        '501':
+          description: >-
+            Not implemented.
+          content:
+            application/json:
+              schema:
+                type: string
+  /team/{team_name}/asyncquery:
     post:
+      tags:
+        - asyncquery
+      summary: >-
+        Initiate a query with a callback to receive the response. This endpoint is for querying an individual Translator team's 
+        SMARTAPI KP APIs (that have x-bte annotation) as an individual TRAPI service using team name
+      description: ''
       parameters:
-      - description: The name of the data source
-        example: drugbank
-        in: path
-        name: source_name
-        required: true
-        schema:
-          type: string
+        - description: Translator Team Name, e.g. Service Provider, Multiomics Provider
+          example: Text Mining Provider
+          in: path
+          name: team_name
+          required: true
+          schema:
+            type: string
+            enum:
+              - Multiomics Provider
+              - Text Mining Provider
+              - Service Provider
       requestBody:
+        description: Query information to be submitted
+        required: true
         content:
           application/json:
-            example:
-              message:
-                query_graph:
-                  edges:
-                  - id: e00
-                    source_id: n00
-                    target_id: n01
-                  nodes:
-                  - curie: NCBIGene:1017
-                    id: n00
-                    type: gene
-                  - id: n01
-                    type: chemical_substance
             schema:
-              $ref: '#/components/schemas/Query'
-        description: A message with question graph.
-        required: true
+              $ref: '#/components/schemas/AsyncQuery'
       responses:
         '200':
+          description: >-
+            The query is accepted for processing and the Response will be
+            sent to the callback url when complete.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Message'
-          description: A message with knowledge graph and answers.
-      summary: Get answers to a question using a specific data source.
-      tags:
-      - 0.9.2
-      - query
+                type: string
+        '400':
+          description: >-
+            Bad request. The request is invalid according to this OpenAPI
+            schema OR a specific identifier is believed to be invalid somehow
+            (not just unrecognized).
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: >-
+            Internal server error.
+          content:
+            application/json:
+              schema:
+                type: string
+        '501':
+          description: >-
+            Not implemented.
+          content:
+            application/json:
+              schema:
+                type: string
 components:
   schemas:
     Query:
@@ -605,8 +457,60 @@ components:
             example, the fill operation requires a non-empty query_graph field
             as part of the Message, whereas other operations, e.g. overlay,
             require non-empty results and knowledge_graph fields.
+        log_level:
+          description: The least critical level of logs to return
+          allOf:
+            - $ref: '#/components/schemas/LogLevel'
+          nullable: true
+        workflow:
+          description: List of workflow steps to be executed.
+          # allOf:
+          #   - $ref: http://standards.ncats.io/workflow/1.0.0/schema
+          nullable: true
       additionalProperties: true
       required:
+        - message
+    AsyncQuery:
+      description: >-
+        The AsyncQuery class is effectively the same as the Query class but
+        it requires a callback property.
+      x-body-name: request_body
+      type: object
+      properties:
+        callback:
+          type: string
+          format: uri
+          pattern: ^https?://
+          description: >-
+            Upon completion, this server will send a POST request to the
+            callback URL with `Content-Type: application/json` header and
+            request body containing a JSON-encoded `Response` object.
+            The server MAY POST `Response` objects before work is fully
+            complete to provide interim results with a Response.status
+            value of 'Running'. If a POST operation to the callback URL
+            does not succeed, the server SHOULD retry the POST at least
+            once.
+        message:
+          $ref: '#/components/schemas/Message'
+          description: >-
+            The query Message is a serialization of the user request. Content
+            of the Message object depends on the intended TRAPI operation. For
+            example, the fill operation requires a non-empty query_graph field
+            as part of the Message, whereas other operations, e.g. overlay,
+            require non-empty results and knowledge_graph fields.
+        log_level:
+          description: The least critical level of logs to return
+          allOf:
+            - $ref: '#/components/schemas/LogLevel'
+          nullable: true
+        workflow:
+          description: List of workflow steps to be executed.
+          # allOf:
+          #   - $ref: http://standards.ncats.io/workflow/1.0.0/schema
+          nullable: true
+      additionalProperties: true
+      required:
+        - callback
         - message
     Response:
       type: object
@@ -642,6 +546,11 @@ components:
           items:
             $ref: '#/components/schemas/LogEntry'
           nullable: true
+        workflow:
+          description: List of workflow steps that were executed.
+          # allOf:
+          #   - $ref: http://standards.ncats.io/workflow/1.0.0/schema
+          nullable: true
       additionalProperties: true
       required:
         - message
@@ -659,27 +568,39 @@ components:
       properties:
         results:
           description: >-
-            List of all returned Result objects for the query posed
+            List of all returned Result objects for the query posed.
+            The list SHOULD NOT be assumed to be ordered. The 'score' property,
+             if present, MAY be used to infer result rankings.
           type: array
           items:
             $ref: '#/components/schemas/Result'
           nullable: true
         query_graph:
-          type: object
           description: >-
             QueryGraph object that contains a serialization of a query in the
             form of a graph
-          $ref: '#/components/schemas/QueryGraph'
+          allOf:
+            - $ref: '#/components/schemas/QueryGraph'
           nullable: true
         knowledge_graph:
-          type: object
           description: >-
             KnowledgeGraph object that contains lists of nodes and edges
             in the thought graph corresponding to the message
-          $ref: '#/components/schemas/KnowledgeGraph'
+          allOf:
+            - $ref: '#/components/schemas/KnowledgeGraph'
           nullable: true
       additionalProperties: false
     LogEntry:
+      description: >-
+        The LogEntry object contains information useful for tracing
+        and debugging across Translator components.  Although an
+        individual component (for example, an ARA or KP) may have its
+        own logging and debugging infrastructure, this internal
+        information is not, in general, available to other components.
+        In addition to a timestamp and logging level, LogEntry
+        includes a string intended to be read by a human, along with
+        one of a standardized set of codes describing the condition of
+        the component sending the message.
       type: object
       properties:
         timestamp:
@@ -689,13 +610,8 @@ components:
           example: '2020-09-03T18:13:49+00:00'
           nullable: true
         level:
-          type: string
-          description: Logging level
-          enum:
-            - ERROR
-            - WARNING
-            - INFO
-            - DEBUG
+          allOf:
+            - $ref: '#/components/schemas/LogLevel'
           nullable: true
         code:
           type: string
@@ -708,6 +624,14 @@ components:
           description: A human-readable log message
           nullable: true
       additionalProperties: true
+    LogLevel:
+      type: string
+      description: Logging level
+      enum:
+        - ERROR
+        - WARNING
+        - INFO
+        - DEBUG
     Result:
       type: object
       description: >-
@@ -743,6 +667,15 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/EdgeBinding'
+        score:
+          type: number
+          format: float
+          example: 163.233
+          description: >-
+            A numerical score associated with this result indicating the
+            relevance or confidence of this result relative to others in the
+            returned set. Higher MUST be better.
+          nullable: true
       additionalProperties: true
       required:
         - node_bindings
@@ -772,24 +705,41 @@ components:
         id:
           type: string
           description: The key identifier of a specific KnowledgeGraph Edge.
+        attributes:
+          type: array
+          description: >-
+            A list of attributes providing further information about the
+            edge binding. This is not intended for capturing edge attributes
+            and should only be used for properties that vary from result to
+            result.
+          items:
+            $ref: '#/components/schemas/Attribute'
+          nullable: true
       additionalProperties: true
       required:
         - id
     KnowledgeGraph:
       type: object
       description: >-
-        A thought graph associated with this result. This will commonly be a
-        linear path subgraph from one concept to another, but related items
-        aside of the path may be included.
+        The knowledge graph associated with a set of results. The instances
+        of Node and Edge defining this graph represent instances of
+        biolink:NamedThing (concept nodes) and biolink:Association
+        (relationship edges) representing (Attribute) annotated knowledge
+        returned from the knowledge sources and inference agents wrapped by
+        the given TRAPI implementation.
       properties:
         nodes:
           type: object
-          description: List of nodes in the KnowledgeGraph
+          description: >-
+            Dictionary of Node instances used in the KnowledgeGraph,
+            referenced elsewhere in the TRAPI output by the dictionary key.
           additionalProperties:
             $ref: '#/components/schemas/Node'
         edges:
           type: object
-          description: List of edges in the KnowledgeGraph
+          description: >-
+            Dictionary of Edge instances used in the KnowledgeGraph,
+            referenced elsewhere in the TRAPI output by the dictionary key.
           additionalProperties:
             $ref: '#/components/schemas/Edge'
       additionalProperties: true
@@ -826,23 +776,23 @@ components:
         - edges
     QNode:
       type: object
-      description: A node in the QueryGraph
+      description: A node in the QueryGraph used to represent an entity in a
+        query. If a CURIE is not specified, any nodes matching the category
+        of the QNode will be returned in the Results.
       properties:
-        id:
-          oneOf:
-            - $ref: '#/components/schemas/CURIE'
-            - type: array
-              items:
-                $ref: '#/components/schemas/CURIE'
-          example: OMIM:603903
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/CURIE'
+          minItems: 1
+          example: [OMIM:603903]
           description: CURIE identifier for this node
           nullable: true
-        category:
-          oneOf:
-            - $ref: '#/components/schemas/BiolinkEntity'
-            - type: array
-              items:
-                $ref: '#/components/schemas/BiolinkEntity'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiolinkEntity'
+          minItems: 1
           nullable: true
         is_set:
           type: boolean
@@ -858,34 +808,32 @@ components:
             with is_set=True is connected to a QNode (n2) with is_set=True,
             each n1 must be connected to at least one n2.
           default: false
+        constraints:
+          type: array
+          description: >-
+            A list of contraints applied to a query node.
+            If there are multiple items, they must all be true (equivalent
+            to AND)
+          items:
+            $ref: '#/components/schemas/QueryConstraint'
+          default: []
       additionalProperties: true
     QEdge:
       type: object
       description: >-
         An edge in the QueryGraph used as an filter pattern specification in a
-        query. If optional predicate or relation properties are not specified,
-        they are assumed to be wildcard matches to the target knowledge space.
+        query. If the optional predicate property is not specified,
+        it is assumed to be a wildcard match to the target knowledge space.
         If specified, the ontological inheritance hierarchy associated with
-        the terms provided is assumed, such that edge bindings returned may be
-        an exact match to the given QEdge predicate or relation term ('class'),
-        or to a term which is a subclass of the QEdge specified term.
+        the term provided is assumed, such that edge bindings returned may be
+        an exact match to the given QEdge predicate term,
+        or to a term that is a descendant of the QEdge predicate term.
       properties:
-        predicate:
-          oneOf:
-            - $ref: '#/components/schemas/BiolinkRelation'
-            - type: array
-              items:
-                $ref: '#/components/schemas/BiolinkRelation'
-          nullable: true
-        relation:
-          type: string
-          example: RO:0002447
-          description: >-
-            Query constraint against the relationship type term of this edge,
-            as originally specified by, or curated by inference from, the
-            original external source of knowledge. Note that this should
-            often be specified as predicate ontology term CURIE, although
-            this may not be strictly enforced.
+        predicates:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiolinkPredicate'
+          minItems: 1
           nullable: true
         subject:
           type: string
@@ -901,6 +849,15 @@ components:
             Corresponds to the map key identifier of the
             object concept node anchoring the query filter
             pattern for the query relationship edge.
+        constraints:
+          type: array
+          description: >-
+            A list of contraints applied to a query edge.
+            If there are multiple items, they must all be true (equivalent
+            to AND)
+          items:
+            $ref: '#/components/schemas/QueryConstraint'
+          default: []
       additionalProperties: true
       required:
         - subject
@@ -917,12 +874,10 @@ components:
           example: Haptoglobin
           description: Formal name of the entity
           nullable: true
-        category:
-          oneOf:
-            - $ref: '#/components/schemas/BiolinkEntity'
-            - type: array
-              items:
-                $ref: '#/components/schemas/BiolinkEntity'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiolinkEntity'
           nullable: true
         attributes:
           type: array
@@ -934,46 +889,159 @@ components:
     Attribute:
       type: object
       description: >-
-        Generic attribute for a node or an edge that expands key-value pair
-        concept by including a type of this attribute from a suitable ontology,
-        a source of this attribute, and (optionally) a url with additional
-        information about this attribute.
+        Generic attribute for a node or an edge that expands the key-value
+        pair concept by including fields for additional metadata. These fields
+        can be used to describe the source of the statement made in a key-value
+        pair of the attribute object, or describe the attribute's value itself
+        including its semantic type, or a url providing additional information
+        about it. An attribute may be further qualified with a SubAttribute
+        (for example to provide confidence intervals on a value).
       properties:
-        name:
-          type: string
-          description: >-
-            Human-readable name or label for the attribute. If appropriate,
-            should be the name of the semantic type term.
-          example: PubMed Identifier
-          nullable: true
-        value:
-          example: 32529952
-          description: >-
-            Value of the attribute. May be any data type, including a list.
-        type:
+        attribute_type_id:
           $ref: '#/components/schemas/CURIE'
           description: >-
-            CURIE of the semantic type of the attribute. For properties
-            defined by the Biolink model this should be a biolink CURIE,
-            otherwise, if possible, from the EDAM ontology. If a suitable
-            identifier does not exist, enter a descriptive phrase here and
-            submit the new type for consideration by the appropriate
-            authority.
-          example: EDAM:data_1187
-        url:
+            The 'key' of the attribute object, holding a CURIE of an ontology
+            property defining the attribute (preferably the CURIE of a
+            Biolink association slot). This property captures the relationship
+            asserted to hold between the value of the attribute, and the node
+            or edge from  which it hangs. For example, that a value of
+            '0.000153' represents a p-value supporting an edge, or that
+            a value of 'ChEMBL' represents the original source of the knowledge
+            expressed in the edge.
+          example: Biolink:has_p-value_evidence, Biolink:has_original_source
+        original_attribute_name:
           type: string
           description: >-
-            Human-consumable URL to link out and provide additional information
-            about the attribute (not the node or the edge).
-          example: https://pubmed.ncbi.nlm.nih.gov/32529952
+            The term used by the original source of an attribute to describe
+            the meaning or significance of the value it captures. This may be
+            a column name in a source tsv file, or a key in a source json
+            document for the field in the data that held the attribute's
+            value. Capturing this information  where possible lets us preserve
+            what the original source said. Note that the data type is string'
+            but the contents of the field could also be a CURIE of a third
+            party ontology term.
+          example: p-value
           nullable: true
-        source:
+        value:
+          description: >-
+            Value of the attribute. May be any data type, including a list.
+          example: 0.000153
+        value_type_id:
+          allOf:
+            - $ref: '#/components/schemas/CURIE'
+          description: >-
+            CURIE describing the semantic type of an  attribute's value. Use
+            a Biolink class if possible, otherwise a term from an external
+            ontology. If a suitable CURIE/identifier does not exist, enter a
+            descriptive phrase here and submit the new type for consideration
+            by the appropriate authority.
+          example: EDAM:data_1187
+          nullable: true
+        attribute_source:
           type: string
-          description: Source of the attribute, preferably as a CURIE prefix.
+          description: >-
+            The source of the core assertion made by the key-value pair of an
+            attribute object. Use a CURIE or namespace designator for this
+            resource where possible.
           example: UniProtKB
           nullable: true
+        value_url:
+          type: string
+          description: >-
+            Human-consumable URL linking to a web document that provides
+            additional information about an  attribute's value (not the node
+            or the edge fom which it hangs).
+          example: https://pubmed.ncbi.nlm.nih.gov/32529952
+          nullable: true
+        description:
+          type: string
+          description: >-
+            Human-readable description for the attribute and its value.
+          example: Assertion Authored By Dr. Trans L. Ator
+          nullable: true
+        attributes:
+          type: array
+          description: >-
+            A list of attributes providing further information about the
+            parent attribute (for example to provide provenance
+            information about the parent attribute).
+          items:
+            $ref: '#/components/schemas/SubAttribute'
+          nullable: true
       required:
-        - type
+        - attribute_type_id
+        - value
+      additionalProperties: false
+    SubAttribute:
+      type: object
+      description: >-
+        Second-level attribute that can be used to qualify information
+        contained in a primary Attribute attached to a Node or Edge.
+      properties:
+        attribute_type_id:
+          $ref: '#/components/schemas/CURIE'
+          description: >-
+            The 'key' of the attribute object, holding a CURIE of an ontology
+            property defining the attribute (preferably the CURIE of a
+            Biolink association slot). This property captures the relationship
+            asserted to hold between the value of the attribute, and the node
+            or edge from  which it hangs. For example, that a value of
+            '0.000153' represents a p-value supporting an edge, or that
+            a value of 'ChEMBL' represents the original source of the knowledge
+            expressed in the edge.
+          example: Biolink:has_p-value_evidence, Biolink:has_original_source
+        original_attribute_name:
+          type: string
+          description: >-
+            The term used by the original source of an attribute to describe
+            the meaning or significance of the value it captures. This may be
+            a column name in a source tsv file, or a key in a source json
+            document for the field in the data that held the attribute's
+            value. Capturing this information  where possible lets us preserve
+            what the original source said. Note that the data type is string'
+            but the contents of the field could also be a CURIE of a third
+            party ontology term.
+          example: p-value
+          nullable: true
+        value:
+          description: >-
+            Value of the attribute. May be any data type, including a list.
+          example: 0.000153
+        value_type_id:
+          allOf:
+            - $ref: '#/components/schemas/CURIE'
+          description: >-
+            CURIE describing the semantic type of an  attribute's value. Use
+            a Biolink class if possible, otherwise a term from an external
+            ontology. If a suitable CURIE/identifier does not exist, enter a
+            descriptive phrase here and submit the new type for consideration
+            by the appropriate authority.
+          example: EDAM:data_1187
+          nullable: true
+        attribute_source:
+          type: string
+          description: >-
+            The source of the core assertion made by the key-value pair of an
+            attribute object. Use a CURIE or namespace designator for this
+            resource where possible.
+          example: UniProtKB
+          nullable: true
+        value_url:
+          type: string
+          description: >-
+            Human-consumable URL linking to a web document that provides
+            additional information about an  attribute's value (not the node
+            or the edge fom which it hangs).
+          example: https://pubmed.ncbi.nlm.nih.gov/32529952
+          nullable: true
+        description:
+          type: string
+          description: >-
+            Human-readable description for the attribute and its value.
+          example: Assertion Authored By Dr. Trans L. Ator
+          nullable: true
+      required:
+        - attribute_type_id
         - value
       additionalProperties: false
     Edge:
@@ -985,15 +1053,7 @@ components:
       properties:
         predicate:
           allOf:
-            - $ref: '#/components/schemas/BiolinkRelation'
-          nullable: true
-        relation:
-          type: string
-          example: RO:0002447
-          description: >-
-            The relationship type term of this edge, originally specified by,
-            or curated by inference from, the original source of knowledge.
-            This should generally be specified as predicate ontology CURIE.
+            - $ref: '#/components/schemas/BiolinkPredicate'
           nullable: true
         subject:
           $ref: '#/components/schemas/CURIE'
@@ -1028,17 +1088,227 @@ components:
         description: Biolink model entities
         url: https://biolink.github.io/biolink-model/docs/NamedThing.html
       example: biolink:PhenotypicFeature
-    BiolinkRelation:
+    BiolinkPredicate:
       description: >-
-        CURIE for a Biolink slot, related_to or a child thereof (snake_case)
+        CURIE for a Biolink 'predicate' slot, taken from the Biolink slot
+        ('is_a') hierarchy rooted in biolink:related_to (snake_case). This
+        predicate defines the Biolink relationship between the subject and
+        object nodes of a biolink:Association defining a knowledge graph edge.
       type: string
       pattern: ^biolink:[a-z][a-z_]*$
       externalDocs:
-        description: Biolink model relations
+        description: Biolink model predicates
         url: https://biolink.github.io/biolink-model/docs/related_to.html
       example: biolink:interacts_with
     CURIE:
       type: string
-      description: A Compact URI
+      description: >-
+        A Compact URI, consisting of a prefix and a reference separated
+        by a colon, such as UniProtKB:P00738. Via an external context
+        definition, the CURIE prefix and colon may be replaced by a URI
+        prefix, such as http://identifiers.org/uniprot/, to form a full
+        URI.
       externalDocs:
         url: https://www.w3.org/TR/2010/NOTE-curie-20101216/
+    MetaKnowledgeGraph:
+      type: object
+      description: >-
+        Knowledge-map representation of this TRAPI web service. The meta
+        knowledge graph is composed of the union of most specific categories
+        and predicates for each node and edge.
+      properties:
+        nodes:
+          type: object
+          description: >-
+            Collection of the most specific node categories provided by
+            this TRAPI web service, indexed by Biolink class CURIEs.
+            A node category is only exposed here if there is
+            node for which that is the most specific category available.
+          additionalProperties:
+            $ref: '#/components/schemas/MetaNode'
+        edges:
+          type: array
+          description: >-
+            List of the most specific edges/predicates provided by this TRAPI
+            web service. A predicate is only exposed here if there is an edge
+            for which the predicate is the most specific available.
+          items:
+            $ref: '#/components/schemas/MetaEdge'
+      required:
+        - nodes
+        - edges
+    MetaNode:
+      type: object
+      description: >-
+        Description of a node category provided by this TRAPI web service.
+      properties:
+        id_prefixes:
+          type: array
+          description: >-
+            List of CURIE prefixes for the node category that this TRAPI web
+            service understands and accepts on the input.
+          items:
+            type: string
+          minItems: 1
+          example: [CHEMBL.COMPOUND, INCHIKEY]
+        attributes:
+          type: array
+          description: >-
+            Node attributes provided by this TRAPI web service.
+          items:
+            $ref: '#/components/schemas/MetaAttribute'
+          nullable: true
+      required:
+        - id_prefixes
+      additionalProperties: false
+    MetaEdge:
+      type: object
+      description: >-
+        Edge in a meta knowledge map describing relationship between a subject
+        Biolink class and an object Biolink class.
+      properties:
+        subject:
+          $ref: '#/components/schemas/BiolinkEntity'
+          description: >-
+            Subject node category of this relationship edge.
+          example: biolink:ChemicalSubstance
+        predicate:
+          $ref: '#/components/schemas/BiolinkPredicate'
+          description: >-
+            Biolink relationship between the subject and object categories.
+          example: biolink:affects
+        object:
+          $ref: '#/components/schemas/BiolinkEntity'
+          description: >-
+            Object node category of this relationship edge.
+          example: biolink:Protein
+        attributes:
+          type: array
+          description: >-
+            Edge attributes provided by this TRAPI web service.
+          items:
+            $ref: '#/components/schemas/MetaAttribute'
+          nullable: true
+      required:
+        - subject
+        - predicate
+        - object
+      additionalProperties: false
+    MetaAttribute:
+      type: object
+      properties:
+        attribute_type_id:
+          $ref: '#/components/schemas/CURIE'
+          description: >-
+            Type of an attribute provided by this TRAPI web service
+            (preferably the CURIE of a Biolink association slot)
+          example: biolink:p_value
+        attribute_source:
+          type: string
+          description: >-
+            Source of an attribute provided by this TRAPI web service.
+          example: infores:chembl
+          nullable: true
+        original_attribute_names:
+          type: array
+          items:
+            type: string
+          description: >-
+            Names of an the attribute as provided by the source.
+          nullable: true
+          minItems: 1
+        constraint_use:
+          type: boolean
+          description: >-
+            Indicates whether this attribute can be used as a query
+            constraint.
+          default: false
+        constraint_name:
+          type: string
+          description: >-
+            Human-readable name or label for the constraint concept.
+            Required whenever constraint_use is true.
+          example: p-value
+          nullable: true
+      required:
+        - attribute_type_id
+    QueryConstraint:
+      type: object
+      description: >-
+        Generic query constraint for a query node or query edge
+      properties:
+        id:
+          allOf:
+            - $ref: '#/components/schemas/CURIE'
+          description: >-
+            CURIE of the concept being constrained. For properties
+            defined by the Biolink model this SHOULD be a biolink CURIE.
+            otherwise, if possible, from the EDAM ontology. If a suitable
+            CURIE does not exist, enter a descriptive phrase here and
+            submit the new type for consideration by the appropriate
+            authority.
+          example: EDAM:data_0844
+        name:
+          type: string
+          description: >-
+            Human-readable name or label for the constraint concept.
+            If appropriate, it SHOULD be the term name of the CURIE used
+            as the 'id'. This is redundant but required for human
+            readability.
+          example: molecular mass
+        not:
+          type: boolean
+          default: false
+        operator:
+          type: string
+          description: >-
+            Relationship between the database value and the constraint value
+            for the specified id. The operators ==, >, and < mean
+            is exactly equal to, is greater than, and is less than,
+            respectively. The 'matches' operator indicates that the value
+            is a regular expression to be evaluated. If value is a list type,
+            then at least one evaluation must be true (equivalent to OR).
+            This means that the == operator with a list acts like a SQL 'IN'
+            clause. The 'not' property negates the operator such that not
+            and == means 'not equal to' (or 'not in' for a list), and not >
+            means <=, and not < means >=, and not matches means does not
+            match. The '==' operator SHOULD NOT be used in a manner that
+            describes an "is a" subclass relationship for the parent QNode.
+          enum:
+            - ==
+            - '>'
+            - <
+            - matches
+        value:
+          example: 57.0
+          description: >-
+            Value of the attribute. May be any data type, including a list.
+            If the value is a list and there are multiple items, at least one
+            comparison must be true (equivalent to OR). If 'value' is of data
+            type 'object', the keys of the object MAY be treated as a list.
+            A 'list' data type paired with the '>' or '<' operators will
+            encode extraneous comparisons, but this is permitted as it is in
+            SQL and other languages.
+        unit_id:
+          example: UO:0000222
+          description: >-
+            CURIE of the units of the value or list of values in the 'value'
+            property. The Units of Measurement Ontology (UO) should be used
+            if possible. The unit_id MUST be provided for (lists of)
+            numerical values that correspond to a quantity that has units.
+          nullable: true
+        unit_name:
+          example: kilodalton
+          description: >-
+            Term name that is associated with the CURIE of the units
+            of the value or list of values in the 'value'
+            property. The Units of Measurement Ontology (UO) SHOULD be used
+            if possible. This property SHOULD be provided if a unit_id is
+            provided. This is redundant but recommended for human readability.
+          nullable: true
+      required:
+        - name
+        - id
+        - operator
+        - value
+      additionalProperties: false
