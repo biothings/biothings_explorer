@@ -47,8 +47,8 @@ paths:
       summary: Meta knowledge graph representation of this TRAPI web service.
       description: Returns meta knowledge graph representation of this TRAPI web service.
       responses:
-        '200':  
-          description: Successful Response          
+        '200':
+          description: Successful Response
           content:
             application/json:
               schema:
@@ -279,21 +279,21 @@ paths:
               schema:
                 type: string
       x-swagger-router-controller: swagger_server.controllers.query_controller
-  /check_query_status/{job_id}:
+  /check_query_status/{id}:
     get:
       tags:
         - asyncquery
       summary: >-
-        This endpoint should be used when a Query was sent to BTE through an /asyncquery 
-        endpoint without a callback property: BTE then handled it in a polling manner and 
-        provided a job-id. The job-id can be used here to check the status or retrieve 
+        This endpoint should be used when a Query was sent to BTE through an /asyncquery
+        endpoint without a callback property: BTE then handled it in a polling manner and
+        provided a job id. The job id can be used here to check the status or retrieve
         the Response.
       description: ''
       parameters:
         - description: job-id
           ## could add example like hY2BrhJfcN (successfully completed) or ovllMzFfCe (failed)
           in: path
-          name: job_id
+          name: id
           required: true
           schema:
             type: string
@@ -311,7 +311,7 @@ paths:
                   id:
                     description: the job-id
                     type: string
-                  state: 
+                  state:
                     description: the status of the job
                   reason:
                     description: when the state is 'failed', this field states a reason for the failure
@@ -319,7 +319,7 @@ paths:
                   returnvalue:
                     ## returnvalue.response is where the TRAPI Response is
                     description: >-
-                      When the state is 'completed', this will contain the TRAPI Response object. Note 
+                      When the state is 'completed', this will contain the TRAPI Response object. Note
                       that BTE might return an error, no results, etc as a Response...
                     type: object
                     properties:
@@ -331,12 +331,12 @@ paths:
       tags:
         - asyncquery
       summary: >-
-        Initiate a query that will be handled in an asynchronous manner (there is a 
-        queue and queries will be executed in the order that they enter the queue). 
-        For BTE, it is optional to have a callback property in the request-body. If 
-        the callback property is not included, BTE will handle the query in a polling 
-        manner: it will provide a job-id that can be used to check the status or retrieve 
-        the Response using the /v1/check_query_status/{job_id} endpoint.
+        Initiate a query that will be handled in an asynchronous manner (there is a
+        queue and queries will be executed in the order that they enter the queue).
+        For BTE, it is optional to have a callback property in the request-body. If
+        the callback property is not included, BTE will handle the query in a polling
+        manner: it will provide a job-id that can be used to check the status or retrieve
+        the Response using the /v1/check_query_status/{id} endpoint.
       description: ''
       parameters:
         - description: option to choose whether or not to enable caching
@@ -355,12 +355,12 @@ paths:
       responses:
         '200':
           description: >-
-            The query is accepted for processing. The behavior will depend on whether 
-            the callback property is included. If the callback property is included, 
-            the Response will be sent to the callback url when complete. If the callback 
-            property is not included, BTE will handle the query in a polling manner: it 
-            will provide a job-id that can be used to check the status or retrieve 
-            the Response using the /v1/check_query_status/{job_id} endpoint.
+            The query is accepted for processing. The behavior will depend on whether
+            the callback property is included. If the callback property is included,
+            the Response will be sent to the callback url when complete. If the callback
+            property is not included, BTE will handle the query in a polling manner: it
+            will provide a job-id that can be used to check the status or retrieve
+            the Response using the /v1/check_query_status/{id} endpoint.
           content:
             application/json:
               schema:
@@ -392,16 +392,16 @@ paths:
     post:
       tags:
         - asyncquery
-      summary: >- 
-        This endpoint is for individual SmartAPI KP APIs (that have x-bte annotation), to query 
-        them through a TRAPI API interface (BTE). 
+      summary: >-
+        This endpoint is for individual SmartAPI KP APIs (that have x-bte annotation), to query
+        them through a TRAPI API interface (BTE).
 
-        Initiate a query that will be handled in an asynchronous manner (there is a 
-        queue and queries will be executed in the order that they enter the queue). 
-        For BTE, it is optional to have a callback property in the request-body. If 
-        the callback property is not included, BTE will handle the query in a polling 
-        manner: it will provide a job-id that can be used to check the status or retrieve 
-        the Response using the /v1/check_query_status/{job_id} endpoint.
+        Initiate a query that will be handled in an asynchronous manner (there is a
+        queue and queries will be executed in the order that they enter the queue).
+        For BTE, it is optional to have a callback property in the request-body. If
+        the callback property is not included, BTE will handle the query in a polling
+        manner: it will provide a job-id that can be used to check the status or retrieve
+        the Response using the /v1/check_query_status/{id} endpoint.
       parameters:
         - description: SmartAPI ID of an API, you can get it from https://smart-api.info/registry
           example: 8f08d1446e0bb9c2b323713ce83e2bd3
@@ -426,12 +426,12 @@ paths:
       responses:
         '200':
           description: >-
-            The query is accepted for processing. The behavior will depend on whether 
-            the callback property is included. If the callback property is included, 
-            the Response will be sent to the callback url when complete. If the callback 
-            property is not included, BTE will handle the query in a polling manner: it 
-            will provide a job-id that can be used to check the status or retrieve 
-            the Response using the /v1/check_query_status/{job_id} endpoint.
+            The query is accepted for processing. The behavior will depend on whether
+            the callback property is included. If the callback property is included,
+            the Response will be sent to the callback url when complete. If the callback
+            property is not included, BTE will handle the query in a polling manner: it
+            will provide a job-id that can be used to check the status or retrieve
+            the Response using the /v1/check_query_status/{id} endpoint.
           content:
             application/json:
               schema:
@@ -464,15 +464,15 @@ paths:
       tags:
         - asyncquery
       summary: >-
-        This endpoint is for querying an individual Translator team's SMARTAPI KP APIs 
-        (that have x-bte annotation) through a TRAPI API interface (BTE). 
+        This endpoint is for querying an individual Translator team's SMARTAPI KP APIs
+        (that have x-bte annotation) through a TRAPI API interface (BTE).
 
-        Initiate a query that will be handled in an asynchronous manner (there is a 
-        queue and queries will be executed in the order that they enter the queue). 
-        For BTE, it is optional to have a callback property in the request-body. If 
-        the callback property is not included, BTE will handle the query in a polling 
-        manner: it will provide a job-id that can be used to check the status or retrieve 
-        the Response using the /v1/check_query_status/{job_id} endpoint.
+        Initiate a query that will be handled in an asynchronous manner (there is a
+        queue and queries will be executed in the order that they enter the queue).
+        For BTE, it is optional to have a callback property in the request-body. If
+        the callback property is not included, BTE will handle the query in a polling
+        manner: it will provide a job-id that can be used to check the status or retrieve
+        the Response using the /v1/check_query_status/{id} endpoint.
       description: ''
       parameters:
         - description: Translator Team Name, e.g. Service Provider, Multiomics Provider
@@ -502,12 +502,12 @@ paths:
       responses:
         '200':
           description: >-
-            The query is accepted for processing. The behavior will depend on whether 
-            the callback property is included. If the callback property is included, 
-            the Response will be sent to the callback url when complete. If the callback 
-            property is not included, BTE will handle the query in a polling manner: it 
-            will provide a job-id that can be used to check the status or retrieve 
-            the Response using the /v1/check_query_status/{job_id} endpoint.
+            The query is accepted for processing. The behavior will depend on whether
+            the callback property is included. If the callback property is included,
+            the Response will be sent to the callback url when complete. If the callback
+            property is not included, BTE will handle the query in a polling manner: it
+            will provide a job-id that can be used to check the status or retrieve
+            the Response using the /v1/check_query_status/{id} endpoint.
           content:
             application/json:
               schema:
@@ -609,7 +609,7 @@ components:
           #   - $ref: http://standards.ncats.io/workflow/1.0.0/schema
           nullable: true
       additionalProperties: true
-      ## BTE does not require the callback property, see the asyncquery 
+      ## BTE does not require the callback property, see the asyncquery
       ##   endpoint summary and 200 response description
       required:
         # - callback
