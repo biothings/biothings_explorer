@@ -510,7 +510,6 @@ components:
           nullable: true
       additionalProperties: true
       required:
-        - callback
         - message
     Response:
       type: object

@@ -2,5 +2,7 @@
   "conf": {
     "only_overrides": false
   },
-  "apis": {}
+  "apis": {
+    "8f08d1446e0bb9c2b323713ce83e2bd3": "file:///Users/marco/Desktop/mychem.yaml"
+  }
 }
