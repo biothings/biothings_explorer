@@ -47,6 +47,12 @@ exports.asyncqueryResponse = async (handler, callback_url) => {
         response = handler.getResponse();
     }catch (e){
         console.error(e)
+        //TODO: check error formatting
+        //error posted to cb
+        response = {
+            error: e?.name,
+            message: e?.message
+        };
         if (!callback_url) {
             return {
                 response: {
