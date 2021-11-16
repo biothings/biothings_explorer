@@ -47,13 +47,15 @@ exports.asyncqueryResponse = async (handler, callback_url) => {
         response = handler.getResponse();
     }catch (e){
         console.error(e)
-        return {
-            response: {
-                error: e?.name,
-                message: e?.message
-            },
-            status: e?.statusCode,
-            callback: ''
+        if (!callback_url) {
+            return {
+                response: {
+                    error: e?.name,
+                    message: e?.message
+                },
+                status: e?.statusCode,
+                callback: ''
+            }
         }
     }
     if(callback_url){
