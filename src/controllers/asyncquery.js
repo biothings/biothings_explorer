@@ -47,14 +47,11 @@ exports.asyncqueryResponse = async (handler, callback_url) => {
         response = handler.getResponse();
     }catch (e){
         console.error(e)
-        return {
-            response: {
-                error: e?.name,
-                message: e?.message
-            },
-            status: e?.statusCode,
-            callback: ''
-        }
+        //shape error > will be handled below
+        response = {
+            error: e?.name,
+            message: e?.message
+        };
     }
     if(callback_url){
         if(!utils.stringIsAValidUrl(callback_url)){
