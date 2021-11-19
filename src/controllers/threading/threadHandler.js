@@ -28,6 +28,9 @@ const createNewWorker = async (req, route) => {
             } else if (args[0].msg) { // request has finished with a message
                 reqDone = true;
                 resolve(...args);
+            } else if (args[0].err) {
+                reqDone = true;
+                reject(args[0].err);
             }
             if (reqDone && cacheInProgress <= 0) {
                 worker.terminate().then(() => debug(`Worker thread ${workerID} completed task, terminated successfully.`));
@@ -101,7 +104,7 @@ module.exports = {
             parentPort.postMessage({ err: error });
             return undefined;
         } else {
-            return response;
+            return error;
         }
     }
 }
