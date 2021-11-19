@@ -104,7 +104,7 @@ module.exports = {
             parentPort.postMessage({ err: error });
             return undefined;
         } else {
-            return error;
+            throw error;
         }
     }
 }
