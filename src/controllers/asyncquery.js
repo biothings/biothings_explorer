@@ -66,7 +66,8 @@ exports.asyncqueryResponse = async (handler, callback_url) => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                timeout: 300000   // 5min
+                timeout: 300000,   // 5min
+                maxBodyLength: 2 * 1000 * 1000 * 1000 // 2GB
             });
             //console.log(res)
         }catch (e){
