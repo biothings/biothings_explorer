@@ -98,10 +98,10 @@ exports.API_LIST = [
     },
     // Text Mining Provider collab, annotated with x-bte
     // - removed Text Mining Co-occurrence API since there were issues using it with BTE (too many answers)
-    // {
-    //     id: '978fe380a147a8641caf72320862697b',
-    //     name: 'Text Mining Targeted Association API'
-    // },
+    {
+        id: '978fe380a147a8641caf72320862697b',
+        name: 'Text Mining Targeted Association API'
+    },
     // Automat APIs, ingested through TRAPI
     {
     // this API overlaps with our Biolink API registration, but we have bugs with our ingest...
