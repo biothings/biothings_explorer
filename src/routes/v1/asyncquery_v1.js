@@ -1,26 +1,12 @@
 const path = require("path");
-const config = require("./config");
-const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate");
-const smartAPIPath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
-const predicatesPath = path.resolve(__dirname, '../../../data/predicates.json');
-const utils = require("../../utils/common");
-const {asyncquery, asyncqueryResponse} = require('../../controllers/asyncquery')
-const {getQueryQueue} = require('../../controllers/asyncquery_queue')
+const { asyncquery } = require('../../controllers/async/asyncquery')
+const { getQueryQueue } = require('../../controllers/async/asyncquery_queue')
 
 queryQueue = getQueryQueue('get query graph')
 
-async function jobToBeDone(queryGraph, caching, workflow, callback_url){
-    utils.validateWorkflow(workflow);
-    const handler = new TRAPIGraphHandler.TRAPIQueryHandler({ apiList: config.API_LIST, caching: caching }, smartAPIPath, predicatesPath);
-    handler.setQueryGraph(queryGraph);
-    return await asyncqueryResponse(handler, callback_url);
-}
-
-if(queryQueue){
-    queryQueue.process(async (job) => {
-        return await jobToBeDone(job.data.queryGraph, job.data.caching, job.data.workflow, job.data.callback_url);
-    });
+if (queryQueue) {
+    queryQueue.process(path.resolve(__dirname, "../../controllers/async/processors/async_v1.js"));
 }
 
 class V1RouteAsyncQuery {

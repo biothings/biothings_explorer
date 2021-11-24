@@ -1,5 +1,5 @@
 const redisClient = require('../../utils/cache/redis-client');
-const {getQueryQueue} = require('../../controllers/asyncquery_queue');
+const { getQueryQueue } = require('../../controllers/async/asyncquery_queue');
 
 let queryQueue;
 

@@ -98,10 +98,10 @@ exports.API_LIST = [
     },
     // Text Mining Provider collab, annotated with x-bte
     // - removed Text Mining Co-occurrence API since there were issues using it with BTE (too many answers)
-    {
-        id: '978fe380a147a8641caf72320862697b',
-        name: 'Text Mining Targeted Association API'
-    },
+    // {
+    //     id: '978fe380a147a8641caf72320862697b',
+    //     name: 'Text Mining Targeted Association API'
+    // },
     // Automat APIs, ingested through TRAPI
     {
     // this API overlaps with our Biolink API registration, but we have bugs with our ingest...
@@ -161,7 +161,7 @@ exports.API_LIST = [
         id: '6c7642a4bf213769361c8f9ec1be88f2',
         name: 'Automat Hetio (trapi v-1.2.0)'
     },
-    {  
+    {
     // this API overlaps with our BioThings GO APIs, but
     //   may have been updated more recently / transformed data into TRAPI format
         id: '6118e4e713af49f48b37788593fd3fcb',
@@ -219,7 +219,7 @@ exports.API_LIST = [
     {
         id: '9dd890397a7b8d98fbe247d56cac2b8f',
         name: 'ICEES DILI Instance API'
-    },    
+    },
     // notes on ICEES:
     // - don't ingest the COVID APIs (they may be broken / not actively developed)
     {

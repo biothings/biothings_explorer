@@ -1,5 +1,5 @@
 const Queue = require('bull');
-const redisClient = require('../utils/cache/redis-client');
+const redisClient = require('../../utils/cache/redis-client');
 
 exports.getQueryQueue = (name) => {
     let queryQueue = null;
@@ -26,4 +26,3 @@ exports.getQueryQueue = (name) => {
     }
     return queryQueue
 }
-
