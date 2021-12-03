@@ -1,40 +1,12 @@
 const path = require("path");
-const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const swaggerValidation = require("../../middlewares/validate");
-const smartAPIPath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
-const predicatesPath = path.resolve(__dirname, '../../../data/predicates.json');
-const utils = require("../../utils/common");
-const {asyncquery, asyncqueryResponse} = require('../../controllers/asyncquery');
-const {getQueryQueue} = require('../../controllers/asyncquery_queue');
+const { asyncquery } = require('../../controllers/async/asyncquery');
+const { getQueryQueue } = require('../../controllers/async/asyncquery_queue');
 
 queryQueue = getQueryQueue('get query graph by team')
 
-async function jobToBeDone(queryGraph, teamName, caching, enableIDResolution, workflow, callback_url){
-    utils.validateWorkflow(workflow);
-    const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
-        {
-            teamName,
-            caching,
-            enableIDResolution
-        },
-        smartAPIPath,
-        predicatesPath,
-        false
-    );
-    handler.setQueryGraph(queryGraph);
-    return await asyncqueryResponse(handler, callback_url);
-}
-
-if(queryQueue){
-    queryQueue.process(async (job) => {
-        return await jobToBeDone(
-            job.data.queryGraph,
-            job.data.teamName,
-            job.data.caching,
-            job.data.enableIDResolution,
-            job.data.workflow,
-            job.data.callback_url);
-    });
+if (queryQueue) {
+    queryQueue.process(path.resolve(__dirname, "../../controllers/async/processors/async_v1_by_team.js"));
 }
 
 class V1RouteAsyncQueryByTeam {
