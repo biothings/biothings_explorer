@@ -1,6 +1,7 @@
 const axios = require('axios')
 const { customAlphabet } = require('nanoid')
 const utils = require('../../utils/common')
+const LogEntry = require("@biothings-explorer/query_graph_handler").LogEntry;
 
 exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
     try {
@@ -21,7 +22,7 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
                 url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}?by=team`
             }
             let job = await queryQueue.add(
-                queueData,
+                {...queueData, url },
                 {
                     jobId: jobId,
                     url: url
@@ -39,18 +40,22 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
     }
 }
 
-exports.asyncqueryResponse = async (handler, callback_url) => {
+exports.asyncqueryResponse = async (handler, callback_url, jobURL = null) => {
     let response = null
     let callback_response = null;
     try{
         await handler.query();
         response = handler.getResponse();
+        if (jobURL) {
+            response.logs.unshift(new LogEntry('DEBUG', null, `job status available at: ${jobURL}`).getLog());
+        }
     }catch (e){
         console.error(e)
         //shape error > will be handled below
         response = {
             error: e?.name,
-            message: e?.message
+            message: e?.message,
+            trace: process.env.NODE_ENV === 'production' ? undefined : e?.stack
         };
     }
     if(callback_url){

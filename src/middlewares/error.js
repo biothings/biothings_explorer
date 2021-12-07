@@ -45,10 +45,11 @@ class ErrorHandler {
                     message: {
                         query_graph: req.body.message.query_graph,
                         knowledge_graph: { nodes: {}, edges: {} },
-                        results: []    
+                        results: []
                     },
                     status: error.statusCode,
-                    description: error.toString() 
+                    description: error.toString(),
+                    trace: process.env.NODE_ENV === 'production' ? undefined : error.stack
                 });
         });
     }

@@ -5,7 +5,7 @@ const predicatesPath = path.resolve(__dirname, '../../../../data/predicates.json
 const { asyncqueryResponse } = require('../asyncquery');
 const utils = require("../../../utils/common");
 
-async function jobToBeDone(queryGraph, teamName, caching, enableIDResolution, workflow, callback_url){
+async function jobToBeDone(jobURL, queryGraph, teamName, caching, enableIDResolution, workflow, callback_url){
     utils.validateWorkflow(workflow);
     const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
         {
@@ -18,11 +18,12 @@ async function jobToBeDone(queryGraph, teamName, caching, enableIDResolution, wo
         false
     );
     handler.setQueryGraph(queryGraph);
-    return await asyncqueryResponse(handler, callback_url);
+    return await asyncqueryResponse(handler, callback_url, jobURL);
 }
 
 module.exports = async (job) => {
     return await jobToBeDone(
+        job.data.url,
         job.data.queryGraph,
         job.data.teamName,
         job.data.caching,
