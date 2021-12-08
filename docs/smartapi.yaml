@@ -37,7 +37,7 @@ tags:
 - name: translator
 - name: trapi
 - name: biothings
-## Note: BTE has custom behavior so DO NOT blindly copy-pate the TRAPI specs / schemas below
+## Note: BTE has custom behavior so DO NOT blindly copy-paste the TRAPI specs / schemas below
 ##       instead go through it and copy-paste in sections as-needed
 paths:
   /meta_knowledge_graph:
@@ -297,6 +297,17 @@ paths:
           required: true
           schema:
             type: string
+        - description: >-
+            used to retrieve jobs when they are sent to the team-specific asyncquery endpoint 
+            (use by=team) or the api-specific asyncquery endpoint (use by=api)
+          in: query
+          name: by
+          required: false
+          schema:
+            type: string
+            enum: 
+              - "api"
+              - "team"
       responses:
         '200':
           description: Returns status. If successfully completed, it will return a TRAPI Response object
