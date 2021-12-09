@@ -324,6 +324,9 @@ paths:
                     type: string
                   state:
                     description: the status of the job
+                    type: string
+                  progress:
+                    description: currently not used (set to 0). It could be used to indicate job progress.
                   reason:
                     description: when the state is 'failed', this field states a reason for the failure
                     type: string
@@ -331,9 +334,18 @@ paths:
                     ## returnvalue.response is where the TRAPI Response is
                     description: >-
                       When the state is 'completed', this will contain the TRAPI Response object. Note
-                      that BTE might return an error, no results, etc as a Response...
+                      that BTE might return an error, no results, etc as a Response...When the job isn't 
+                      completed yet, its value is null. If a failure happened, BTE might not return this key.
                     type: object
                     properties:
+                      status:
+                        description: the status of the callback response, or 200 if there was no callback provided
+                        type: integer
+                      callback:
+                        description: >-
+                          provides info about the attempt to send the results to the callback url 
+                          (whether a callback url was provided, if it failed/succeeded, if the url wasn't valid).
+                        type: string
                       response:
                         $ref: '#/components/schemas/Response'
   ## note that the AsyncQuery schema is changed to make callback optional
