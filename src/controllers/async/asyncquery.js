@@ -7,19 +7,18 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
         if(queryQueue){
             const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
 
-            const jobId = nanoid();
+            let jobId = nanoid();
 
             // add job to the queue
             let url
-            if(queryQueue.name==='get query graph'){
-                url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}`
+            if(queryQueue.name==='bte_query_queue_by_api'){
+                jobId = `BA_${jobId}`
             }
-            if(queryQueue.name==='get query graph by api'){
-                url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}?by=api`
+            if(queryQueue.name==='bte_query_queue_by_team'){
+                jobId = `BT_${jobId}`
             }
-            if(queryQueue.name==='get query graph by team'){
-                url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}?by=team`
-            }
+            url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}`
+
             let job = await queryQueue.add(
                 queueData,
                 {
