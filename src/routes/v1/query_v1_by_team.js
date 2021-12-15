@@ -28,6 +28,7 @@ class RouteQueryV1ByTeam {
                 {
                     teamName: req.params.team_name,
                     caching: req.query.caching,
+                    maxResultsPerEdge: req.query.max_results_per_edge,
                     enableIDResolution
                 },
                 smartAPIPath,

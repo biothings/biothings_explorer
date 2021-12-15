@@ -21,6 +21,7 @@ class V1RouteAsyncQueryByTeam {
                 caching: req.query.caching,
                 workflow: req.body.workflow,
                 callback_url: req.body.callback_url || req.body['callback'],
+                maxResultsPerEdge: req.query.max_results_per_edge,
                 enableIDResolution
             }
             await asyncquery(req, res, next, queueData, queryQueue)

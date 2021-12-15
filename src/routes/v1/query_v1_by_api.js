@@ -28,6 +28,7 @@ class RouteQueryV1ByAPI {
                 {
                     smartAPIID: req.params.smartapi_id,
                     caching: req.query.caching,
+                    maxResultsPerEdge: req.query.max_results_per_edge, 
                     enableIDResolution
                 },
                 smartAPIPath,

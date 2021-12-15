@@ -112,6 +112,12 @@ paths:
           required: false
           schema:
             type: boolean
+        - description: maximum number of results to get back from querying each edge to limit exploding queries (-1 for uncapped)
+          in: query
+          name: max_results_per_edge
+          required: false
+          schema:
+            type: integer
       requestBody:
         description: Query information to be submitted
         required: true
@@ -172,6 +178,12 @@ paths:
           required: false
           schema:
             type: boolean
+        - description: maximum number of results to get back from querying each edge to limit exploding queries (-1 for uncapped)
+          in: query
+          name: max_results_per_edge
+          required: false
+          schema:
+            type: integer
       requestBody:
         description: Query information to be submitted
         required: true
@@ -239,6 +251,12 @@ paths:
           required: false
           schema:
             type: boolean
+        - description: maximum number of results to get back from querying each edge to limit exploding queries (-1 for uncapped)
+          in: query
+          name: max_results_per_edge
+          required: false
+          schema:
+            type: integer
       requestBody:
         description: Query information to be submitted
         required: true
@@ -345,6 +363,12 @@ paths:
           required: false
           schema:
             type: boolean
+        - description: maximum number of results to get back from querying each edge to limit exploding queries (-1 for uncapped)
+          in: query
+          name: max_results_per_edge
+          required: false
+          schema:
+            type: integer
       requestBody:
         description: Query information to be submitted
         required: true
@@ -416,6 +440,12 @@ paths:
           required: false
           schema:
             type: boolean
+        - description: maximum number of results to get back from querying each edge to limit exploding queries (-1 for uncapped)
+          in: query
+          name: max_results_per_edge
+          required: false
+          schema:
+            type: integer
       requestBody:
         description: Query information to be submitted
         required: true
@@ -492,6 +522,12 @@ paths:
           required: false
           schema:
             type: boolean
+        - description: maximum number of results to get back from querying each edge to limit exploding queries (-1 for uncapped)
+          in: query
+          name: max_results_per_edge
+          required: false
+          schema:
+            type: integer
       requestBody:
         description: Query information to be submitted
         required: true

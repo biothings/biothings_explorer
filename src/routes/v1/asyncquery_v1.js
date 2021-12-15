@@ -19,7 +19,8 @@ class V1RouteAsyncQuery {
                 queryGraph: req.body.message.query_graph,
                 workflow: req.body.workflow,
                 callback_url: req.body.callback_url || req.body['callback'],
-                caching: req.query.caching
+                caching: req.query.caching,
+                maxResultsPerEdge: req.query.max_results_per_edge 
             }
             await asyncquery(req, res, next, queueData, queryQueue)
         });
