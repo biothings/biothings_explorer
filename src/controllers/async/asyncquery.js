@@ -40,20 +40,24 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
     }
 }
 
+async function compressResponse(response) {
+    const responseSize = Buffer.byteLength(JSON.stringify(response));
+    if (responseSize > 5000000) { // compress anything over 5MB
+        console.log(`COMPRESSION: ORIGINAL SIZE ${responseSize}`);
+        response = lz4.encode(JSON.stringify(response));
+        console.log(`COMPRESSION: COMPRESSED SIZE ${Buffer.byteLength(response)}`);
+    }
+    return response;
+}
+
 exports.asyncqueryResponse = async (handler, callback_url, jobURL = null) => {
     let response = null
     let callback_response = null;
     try {
         await handler.query();
         response = handler.getResponse();
-        const responseSize = Buffer.byteLength(JSON.stringify(response));
         if (jobURL) {
             response.logs.unshift(new LogEntry('DEBUG', null, `job status available at: ${jobURL}`).getLog());
-        }
-        if (responseSize > 5000000) { // compress anything over 5MB
-            console.log(`COMPRESSION: ORIGINAL SIZE ${responseSize}`);
-            response = lz4.encode(JSON.stringify(response));
-            console.log(`COMPRESSION: COMPRESSED SIZE ${Buffer.byteLength(response)}`);
         }
     } catch (e) {
         console.error(e)
@@ -67,7 +71,7 @@ exports.asyncqueryResponse = async (handler, callback_url, jobURL = null) => {
     if (callback_url) {
         if (!utils.stringIsAValidUrl(callback_url)) {
             return {
-                response: response,
+                response: await compressResponse(response),
                 status: 200,
                 callback: 'The callback url must be a valid url'
             }
@@ -83,20 +87,20 @@ exports.asyncqueryResponse = async (handler, callback_url, jobURL = null) => {
             //console.log(res)
         } catch (e) {
             return {
-                response: response,
+                response: await compressResponse(response),
                 status: e.response?.status,
                 callback: `Request failed, received code ${e.response?.status}`
             }
         }
     } else {
         return {
-            response: response,
+            response: await compressResponse(response),
             status: 200,
             callback: 'Callback url was not provided'
         };
     }
     return {
-        response: response,
+        response: await compressResponse(response),
         status: callback_response?.status,
         callback: 'Data sent to callback_url'
     };
