@@ -1,5 +1,6 @@
+const Queue = require('bull');
 const redisClient = require('../../utils/cache/redis-client');
-const { getQueryQueue } = require('../../controllers/async/asyncquery_queue');
+const {getQueryQueue} = require('../../controllers/async/asyncquery_queue');
 
 let queryQueue;
 
@@ -10,16 +11,14 @@ class VCheckQueryStatus {
         app.get('/v1/check_query_status/:id', swaggerValidation.validate, async (req, res, next) => {
             //logger.info("query /query endpoint")
             try {
-                let by = req.query.by;
+                let id = req.params.id;
                 if(Object.keys(redisClient).length !== 0){
-                    if(!by){
-                        queryQueue = getQueryQueue('get query graph')
-                    }
-                    if(by==='api'){
-                        queryQueue = getQueryQueue('get query graph by api')
-                    }
-                    if(by==='team'){
-                        queryQueue = getQueryQueue('get query graph by team')
+                    if(id.startsWith('BT_')){
+                        queryQueue = getQueryQueue('bte_query_queue_by_team')
+                    } else if(id.startsWith('BA_')){
+                        queryQueue = getQueryQueue('bte_query_queue_by_api')
+                    }else{
+                        queryQueue = getQueryQueue('bte_query_queue')
                     }
                 }
                 if(queryQueue){
