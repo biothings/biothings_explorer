@@ -3,34 +3,34 @@ const { customAlphabet } = require('nanoid');
 const utils = require('../../utils/common');
 const redisClient = require('@biothings-explorer/query_graph_handler').redisClient;
 const async = require('async');
+const LogEntry = require("@biothings-explorer/query_graph_handler").LogEntry;
 
 exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
     try {
         if(queryQueue){
             const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
 
-            const jobId = nanoid();
+            let jobId = nanoid();
 
             // add job to the queue
             let url
-            if(queryQueue.name==='get query graph'){
-                url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}`
+            if (queryQueue.name==='bte_query_queue_by_api') {
+                jobId = `BA_${jobId}`
             }
-            if(queryQueue.name==='get query graph by api'){
-                url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}?by=api`
+            if (queryQueue.name==='bte_query_queue_by_team') {
+                jobId = `BT_${jobId}`
             }
-            if(queryQueue.name==='get query graph by team'){
-                url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}?by=team`
-            }
+            url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}`
+
             let job = await queryQueue.add(
-                queueData,
+                {...queueData, url },
                 {
                     jobId: jobId,
                     url: url
                 });
             res.setHeader('Content-Type', 'application/json');
             // return the job id so the user can check on it later
-            res.end(JSON.stringify({id: job.id, url: url}));
+            res.end(JSON.stringify({ id: job.id, url: url }));
         }else{
             res.setHeader('Content-Type', 'application/json');
             res.status(503).end(JSON.stringify({'error': 'Redis service is unavailable'}));
@@ -111,25 +111,27 @@ exports.getQueryResponse = async (jobID) => {
     unlock();
   }
   return response ? response : undefined;
-  // TODO implement
 }
 
-exports.asyncqueryResponse = async (handler, callback_url, jobID = null) => {
+exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL = null) => {
     let response;
     let callback_response;
     try {
         await handler.query();
         response = handler.getResponse();
+        if (jobURL) {
+            response.logs.unshift(new LogEntry('DEBUG', null, `job status available at: ${jobURL}`).getLog());
+        }
         if (jobID) {
             await storeQueryResponse(jobID, response);
         }
-        response = true;
     } catch (e) {
         console.error(e)
         //shape error > will be handled below
         response = {
             error: e?.name,
-            message: e?.message
+            message: e?.message,
+            trace: process.env.NODE_ENV === 'production' ? undefined : e?.stack
         };
     }
     if (callback_url) {

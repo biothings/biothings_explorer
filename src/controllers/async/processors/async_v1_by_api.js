@@ -1,11 +1,11 @@
 const path = require("path");
 const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
-const smartAPIPath = path.resolve(__dirname, '../../../../data/smartapi_specs.json');
-const predicatesPath = path.resolve(__dirname, '../../../../data/predicates.json');
+const smartAPIPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${process.env.STATIC_PATH}/data/smartapi_specs.json` : '../../../../data/smartapi_specs.json');
+const predicatesPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${process.env.STATIC_PATH}/data/predicates.json` : '../../../../data/predicates.json');
 const { asyncqueryResponse } = require('../asyncquery');
 const utils = require("../../../utils/common");
 
-async function jobToBeDone(queryGraph, smartAPIID, caching, enableIDResolution, workflow, callback_url){
+async function jobToBeDone(jobURL, queryGraph, smartAPIID, caching, enableIDResolution, workflow, callback_url){
     utils.validateWorkflow(workflow);
     const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
         {
@@ -18,11 +18,12 @@ async function jobToBeDone(queryGraph, smartAPIID, caching, enableIDResolution, 
         false
     );
     handler.setQueryGraph(queryGraph);
-    return await asyncqueryResponse(handler, callback_url);
+    return await asyncqueryResponse(handler, callback_url, jobURL);
 }
 
 module.exports = async (job) => {
     return await jobToBeDone(
+            job.data.url,
             job.data.queryGraph,
             job.data.smartAPIID,
             job.data.caching,
