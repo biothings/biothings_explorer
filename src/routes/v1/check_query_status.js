@@ -50,7 +50,7 @@ class VCheckQueryStatus {
                             return
                         }
                         let returnvalue = job.returnvalue;
-                        if (returnvalue.response && !returnvalue.response.error) {
+                        if (returnvalue?.response && !returnvalue?.response?.error) {
                             returnvalue.response = await getQueryResponse(id);
                         }
                         let response = returnvalue?.response;
