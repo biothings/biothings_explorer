@@ -112,7 +112,7 @@ paths:
           required: false
           schema:
             type: boolean
-        - description: maximum number of results to get back from querying each edge to limit exploding queries (-1 for uncapped)
+        - description: maximum number of records to get back from querying each edge to limit exploding queries (turned off by default)
           in: query
           name: max_results_per_edge
           required: false
@@ -178,7 +178,7 @@ paths:
           required: false
           schema:
             type: boolean
-        - description: maximum number of results to get back from querying each edge to limit exploding queries (-1 for uncapped)
+        - description: maximum number of records to get back from querying each edge to limit exploding queries (turned off by default)
           in: query
           name: max_results_per_edge
           required: false
@@ -251,7 +251,7 @@ paths:
           required: false
           schema:
             type: boolean
-        - description: maximum number of results to get back from querying each edge to limit exploding queries (-1 for uncapped)
+        - description: maximum number of records to get back from querying each edge to limit exploding queries (turned off by default)
           in: query
           name: max_results_per_edge
           required: false
@@ -363,7 +363,7 @@ paths:
           required: false
           schema:
             type: boolean
-        - description: maximum number of results to get back from querying each edge to limit exploding queries (-1 for uncapped)
+        - description: maximum number of records to get back from querying each edge to limit exploding queries (turned off by default)
           in: query
           name: max_results_per_edge
           required: false
@@ -440,7 +440,7 @@ paths:
           required: false
           schema:
             type: boolean
-        - description: maximum number of results to get back from querying each edge to limit exploding queries (-1 for uncapped)
+        - description: maximum number of records to get back from querying each edge to limit exploding queries (turned off by default)
           in: query
           name: max_results_per_edge
           required: false
@@ -522,7 +522,7 @@ paths:
           required: false
           schema:
             type: boolean
-        - description: maximum number of results to get back from querying each edge to limit exploding queries (-1 for uncapped)
+        - description: maximum number of records to get back from querying each edge to limit exploding queries (turned off by default)
           in: query
           name: max_results_per_edge
           required: false
