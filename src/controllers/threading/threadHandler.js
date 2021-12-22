@@ -25,7 +25,7 @@ const createNewWorker = async (req, route) => {
                 cacheInProgress = args[0].cacheDone
                     ? cacheInProgress - 1 // a caching handler has finished caching
                     : 0 // caching has been entirely cancelled
-            } else if (args[0].msg) { // request has finished with a message
+            } else if (typeof args[0].msg !== 'undefined') { // request has finished with a message
                 reqDone = true;
                 resolve(...args);
             } else if (args[0].err) {
@@ -60,7 +60,7 @@ const createNewWorker = async (req, route) => {
 }
 
 module.exports = {
-    runTask: async (req, task, route) => {
+    runTask: async (req, task, route, res = undefined) => {
         return new Promise(async (resolve, reject) => {
             try {
                 req = {  // obj communicable between threads
@@ -75,8 +75,11 @@ module.exports = {
                 };
                 if (!(process.env.USE_THREADING === 'false')) {
                     const response = await createNewWorker(req, route);
-                    if (response.msg) {
-                        resolve(response.msg);
+                    if (typeof response.msg !== 'undefined') {
+                        if (response.status) {
+                            res?.status(response.status);
+                        }
+                        resolve(response.msg ? response.msg : undefined); // null msg means keep response body empty
                     } else if (response.err) {
                         reject(response.err);
                     } else {
@@ -91,9 +94,9 @@ module.exports = {
             }
         });
     },
-    taskResponse: (response) => {
+    taskResponse: (response, status = undefined) => {
         if (parentPort) {
-            parentPort.postMessage({ msg: response });
+            parentPort.postMessage({ msg: response, status: status});
             return undefined;
         } else {
             return response;

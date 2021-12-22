@@ -12,7 +12,7 @@ const Assembler = require('stream-json/Assembler');
 
 exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
     try {
-        if(queryQueue){
+        if (queryQueue) {
             const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
 
             let jobId = nanoid();
