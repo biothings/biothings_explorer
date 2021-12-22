@@ -4,6 +4,11 @@ const utils = require('../../utils/common');
 const redisClient = require('@biothings-explorer/query_graph_handler').redisClient;
 const async = require('async');
 const LogEntry = require("@biothings-explorer/query_graph_handler").LogEntry;
+const lz4 = require('lz4');
+const { Readable } = require('stream');
+const chunker = require('stream-chunker');
+const { parser } = require('stream-json');
+const Assembler = require('stream-json/Assembler');
 
 exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
     try {
@@ -45,73 +50,53 @@ async function storeQueryResponse(jobID, response) {
   const unlock = await redisClient.lock(`asyncQueryResult${jobID}Lock`);
   try {
     // workflow
-    await Promise.all(
-      response.workflow?.map(async (obj, i) => {
-        await redisClient.hsetAsync(`asyncQueryResult_${jobID}_workflow`, String(i), JSON.stringify(obj));
-      }),
-    );
-    // query graph
-    await redisClient.setAsync(`asyncQueryResult_${jobID}_querygraph`, JSON.stringify(response.message?.query_graph));
-    // kg nodes
-    if (response.message?.knowledge_graph?.nodes) {
-      await Promise.all(
-        Object.entries(response.message.knowledge_graph.nodes).map(async ([nodeID, node]) => {
-          await redisClient.hsetAsync(`asyncQueryResult_${jobID}_nodes`, nodeID, JSON.stringify(node));
-        }),
-      );
-    }
-    // edges
-    if (response.message?.knowledge_graph?.edges) {
-      await Promise.all(
-        Object.entries(response.message.knowledge_graph.edges).map(async ([edgeID, edge]) => {
-          await redisClient.hsetAsync(`asyncQueryResult_${jobID}_edges`, edgeID, JSON.stringify(edge));
-        }),
-      );
-    }
-    // results
-    await Promise.all(
-      response.message?.results?.map(async (result, i) => {
-        await redisClient.hsetAsync(`asyncQueryResult_${jobID}_results`, String(i), JSON.stringify(result));
-      }),
-    );
+    await redisClient.setAsync(`asyncQueryResult_${jobID}_workflow`, JSON.stringify(response.workflow));
+    // message
+    const input = Readable.from(JSON.stringify(response.message));
+    const encoder = lz4.createEncoderStream(); // TODO get block size setting working!?
+    await new Promise((resolve) => {
+        let i = 0;
+        input
+          // .pipe(encoder)
+          .pipe(chunker(10000000, {flush: true}))
+          .on("data", async chunk => {
+            await redisClient.hsetAsync(`asyncQueryResult_${jobID}_message`, String(i++), lz4.encode(chunk).toString('base64url'));
+          })
+          .on('end', () => {
+            resolve()
+          });
+    })
     // logs
-    await Promise.all(
-      response.logs?.map(async (log, i) => {
-        await redisClient.hsetAsync(`asyncQueryResult_${jobID}_logs`, String(i), JSON.stringify(log));
-      }),
-    );
+    await redisClient.setAsync(`asyncQueryResult_${jobID}_logs`, lz4.encode(JSON.stringify(response.logs)).toString('base64url'));
   } finally {
     unlock();
   }
 }
 
-exports.getQueryResponse = async (jobID) => {
+exports.getQueryResponse = async jobID => {
   const unlock = await redisClient.lock(`asyncQueryResult${jobID}Lock`);
-  let response;
   try {
-    response = {
-      workflow: Object.entries(await redisClient.hgetallAsync(`asyncQueryResult_${jobID}_workflow`))
-        .sort(([key1], [key2]) => parseInt(key1) - parseInt(key2))
-        .map(([key, val]) => JSON.parse(val)),
-      message: {
-        query_graph: JSON.parse(await redisClient.getAsync(`asyncQueryResult_${jobID}_querygraph`)),
-        knowledge_graph: {
-          nodes: await redisClient.hgetallAsync(`asyncQueryResult_${jobID}_nodes`),
-          edges: await redisClient.hgetallAsync(`asyncQueryResult_${jobID}_edges`),
-        },
-        results: Object.entries(await redisClient.hgetallAsync(`asyncQueryResult_${jobID}_results`))
+    const response = {
+      workflow: JSON.parse(await redisClient.getAsync(`asyncQueryResult_${jobID}_workflow`)),
+      message: await new Promise(async (resolve, reject) => {
+        const msgDecoded = Object.entries(await redisClient.hgetallAsync(`asyncQueryResult_${jobID}_message`))
           .sort(([key1], [key2]) => parseInt(key1) - parseInt(key2))
-          .map(([key, val]) => JSON.parse(val)),
-      },
-      logs: Object.entries(await redisClient.hgetallAsync(`asyncQueryResult_${jobID}_logs`))
-        .sort(([key1], [key2]) => parseInt(key1) - parseInt(key2))
-        .map(([key, val]) => JSON.parse(val)),
+          .map(([key, val]) => lz4.decode(Buffer.from(val, "base64url")).toString(), "");
+
+        const msgStream = Readable.from(msgDecoded);
+        const pipeline = msgStream.pipe(parser());
+        const asm = Assembler.connectTo(pipeline);
+        asm.on("done", asm => resolve(asm.current));
+      }),
+      logs: JSON.parse(
+        lz4.decode(Buffer.from(await redisClient.getAsync(`asyncQueryResult_${jobID}_logs`), "base64url")),
+      ),
     };
+    return response ? response : undefined;
   } finally {
     unlock();
   }
-  return response ? response : undefined;
-}
+};
 
 exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL = null) => {
     let response;

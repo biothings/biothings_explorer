@@ -53,7 +53,7 @@ class VCheckQueryStatus {
                         if (returnvalue?.response && !returnvalue?.response?.error) {
                             returnvalue.response = await getQueryResponse(id);
                         }
-                        let response = returnvalue?.response;
+                        // let response = returnvalue?.response;
                         res.setHeader('Content-Type', 'application/json');
                         res.status(returnvalue?.status || 200);
                         res.end(JSON.stringify({ id, state, returnvalue, progress, reason }));
