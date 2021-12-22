@@ -70,6 +70,7 @@
     "redis": "^3.1.1",
     "snake-case": "^3.0.4",
     "stream-chunker": "^1.2.8",
+    "stream-json": "^1.7.3",
     "valid-url": "^1.0.9",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.1"
