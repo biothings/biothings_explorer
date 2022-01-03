@@ -47,55 +47,66 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
 }
 
 async function storeQueryResponse(jobID, response) {
-  const unlock = await redisClient.lock(`asyncQueryResult${jobID}Lock`);
-  try {
-    // workflow
-    await redisClient.setAsync(`asyncQueryResult_${jobID}_workflow`, JSON.stringify(response.workflow));
-    // message
-    const input = Readable.from(JSON.stringify(response.message));
-    const encoder = lz4.createEncoderStream(); // TODO get block size setting working!?
-    await new Promise((resolve) => {
-        let i = 0;
-        input
-          // .pipe(encoder)
-          .pipe(chunker(10000000, {flush: true}))
-          .on("data", async chunk => {
-            await redisClient.hsetAsync(`asyncQueryResult_${jobID}_message`, String(i++), lz4.encode(chunk).toString('base64url'));
-          })
-          .on('end', () => {
-            resolve()
-          });
-    })
-    // logs
-    await redisClient.setAsync(`asyncQueryResult_${jobID}_logs`, lz4.encode(JSON.stringify(response.logs)).toString('base64url'));
-  } finally {
-    unlock();
-  }
+    const unlock = await redisClient.lock(`asyncQueryResult${jobID}Lock`);
+    try {
+        // workflow
+        await redisClient.setAsync(`asyncQueryResult_${jobID}_workflow`, JSON.stringify(response.workflow));
+        // message
+        const input = Readable.from(JSON.stringify(response.message));
+        const encoder = lz4.createEncoderStream(); // TODO get block size setting working!?
+        await new Promise((resolve) => {
+            let i = 0;
+            input
+            // .pipe(encoder)
+            .pipe(chunker(10000000, {flush: true}))
+            .on("data", async chunk => {
+                await redisClient.hsetAsync(`asyncQueryResult_${jobID}_message`, String(i++), lz4.encode(chunk).toString('base64url'));
+            })
+            .on('end', () => {
+                resolve()
+            });
+        })
+        // logs
+        await redisClient.setAsync(`asyncQueryResult_${jobID}_logs`, lz4.encode(JSON.stringify(response.logs)).toString('base64url'));
+        // expiry
+        const defaultExpirySeconds = 7 * 24 * 60 * 60 // one 7-day week
+        await redisClient.expireAsync(`asyncQueryResult_${jobID}_workflow`, process.env.ASYNC_COMPLETED_EXPIRE_TIME || defaultExpirySeconds);
+        await redisClient.expireAsync(`asyncQueryResult_${jobID}_message`, process.env.ASYNC_COMPLETED_EXPIRE_TIME || defaultExpirySeconds);
+        await redisClient.expireAsync(`asyncQueryResult_${jobID}_logs`, process.env.ASYNC_COMPLETED_EXPIRE_TIME || defaultExpirySeconds);
+    } finally {
+        unlock();
+    }
 }
 
 exports.getQueryResponse = async jobID => {
-  const unlock = await redisClient.lock(`asyncQueryResult${jobID}Lock`);
-  try {
-    const response = {
-      workflow: JSON.parse(await redisClient.getAsync(`asyncQueryResult_${jobID}_workflow`)),
-      message: await new Promise(async (resolve, reject) => {
-        const msgDecoded = Object.entries(await redisClient.hgetallAsync(`asyncQueryResult_${jobID}_message`))
-          .sort(([key1], [key2]) => parseInt(key1) - parseInt(key2))
-          .map(([key, val]) => lz4.decode(Buffer.from(val, "base64url")).toString(), "");
+    const unlock = await redisClient.lock(`asyncQueryResult${jobID}Lock`);
+    try {
+        const workflow = JSON.parse(await redisClient.getAsync(`asyncQueryResult_${jobID}_workflow`));
+        if (!workflow) {
+            return null;
+        }
+        const message = await new Promise(async (resolve, reject) => {
+            const msgDecoded = Object.entries(await redisClient.hgetallAsync(`asyncQueryResult_${jobID}_message`))
+                .sort(([key1], [key2]) => parseInt(key1) - parseInt(key2))
+                .map(([key, val]) => lz4.decode(Buffer.from(val, "base64url")).toString(), "");
 
-        const msgStream = Readable.from(msgDecoded);
-        const pipeline = msgStream.pipe(parser());
-        const asm = Assembler.connectTo(pipeline);
-        asm.on("done", asm => resolve(asm.current));
-      }),
-      logs: JSON.parse(
-        lz4.decode(Buffer.from(await redisClient.getAsync(`asyncQueryResult_${jobID}_logs`), "base64url")),
-      ),
-    };
-    return response ? response : undefined;
-  } finally {
-    unlock();
-  }
+            const msgStream = Readable.from(msgDecoded);
+            const pipeline = msgStream.pipe(parser());
+            const asm = Assembler.connectTo(pipeline);
+            asm.on("done", asm => resolve(asm.current));
+        });
+        const logs = JSON.parse(
+            lz4.decode(Buffer.from(await redisClient.getAsync(`asyncQueryResult_${jobID}_logs`), "base64url")),
+        );
+        const response = {
+            workflow: workflow,
+            message: message,
+            logs: logs,
+        };
+        return response ? response : undefined;
+    } finally {
+        unlock();
+    }
 };
 
 exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL = null) => {

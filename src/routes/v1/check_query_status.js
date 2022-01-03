@@ -66,7 +66,13 @@ class VCheckQueryStatus {
                     }
                     let returnvalue = job.returnvalue;
                     if (returnvalue?.response && !returnvalue?.response?.error) {
-                        returnvalue.response = await getQueryResponse(id);
+                        const storedResponse = await getQueryResponse(id);
+                        if (storedResponse) {
+                            returnvalue.response = storedResponse;
+                        } else {
+                            state = 'completed (results expired)';
+                            returnvalue.response = 'expired';
+                        }
                     }
                     // let response = returnvalue?.response;
                     taskResponse({ id, state, returnvalue, progress, reason }, returnvalue?.status || 200);
