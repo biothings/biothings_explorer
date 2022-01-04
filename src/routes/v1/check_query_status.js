@@ -43,6 +43,7 @@ class VCheckQueryStatus {
                 if (job === null) {
                     taskResponse(null, 404)
                 } else {
+                    await queryQueue.isReady();
                     let state = await job.getState();
                     let progress = job._progress;
                     let reason = job.failedReason;
