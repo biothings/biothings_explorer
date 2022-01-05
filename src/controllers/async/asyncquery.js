@@ -124,6 +124,9 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
             message: e?.message,
             trace: process.env.NODE_ENV === 'production' ? undefined : e?.stack
         };
+        if (jobID) {
+            await storeQueryResponse(jobID, response);
+        }
     }
     if (callback_url) {
         if (!utils.stringIsAValidUrl(callback_url)) {
