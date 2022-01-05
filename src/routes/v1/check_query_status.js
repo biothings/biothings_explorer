@@ -60,10 +60,10 @@ class VCheckQueryStatus {
                                     reason: `This job was stopped after running over ${parseInt(process.env.JOB_TIMEOUT) / 1000}s`
                                 };
                             } catch (e) {
-                                return { id, state, reason  };
+                                taskResponse({ id, state, reason });
                             }
                         }
-                        return { id, state, reason };
+                        taskResponse({ id, state, reason });
                     }
                     let returnvalue = job.returnvalue;
                     if (returnvalue?.response && !returnvalue?.response?.error) {

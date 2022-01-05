@@ -28,7 +28,7 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
             url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}`
 
             let job = await queryQueue.add(
-                {...queueData, url },
+                { ...queueData, url },
                 {
                     jobId: jobId,
                     url: url
@@ -36,9 +36,9 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
             res.setHeader('Content-Type', 'application/json');
             // return the job id so the user can check on it later
             res.end(JSON.stringify({ id: job.id, url: url }));
-        }else{
+        } else {
             res.setHeader('Content-Type', 'application/json');
-            res.status(503).end(JSON.stringify({'error': 'Redis service is unavailable'}));
+            res.status(503).end(JSON.stringify({ 'error': 'Redis service is unavailable' }));
         }
     }
     catch (error) {
@@ -69,7 +69,7 @@ async function storeQueryResponse(jobID, response) {
         // logs
         await redisClient.setAsync(`asyncQueryResult_${jobID}_logs`, lz4.encode(JSON.stringify(response.logs)).toString('base64url'));
         // expiry
-        const defaultExpirySeconds = 7 * 24 * 60 * 60 // one 7-day week
+        const defaultExpirySeconds = String(7 * 24 * 60 * 60); // one 7-day week
         await redisClient.expireAsync(`asyncQueryResult_${jobID}_workflow`, process.env.ASYNC_COMPLETED_EXPIRE_TIME || defaultExpirySeconds);
         await redisClient.expireAsync(`asyncQueryResult_${jobID}_message`, process.env.ASYNC_COMPLETED_EXPIRE_TIME || defaultExpirySeconds);
         await redisClient.expireAsync(`asyncQueryResult_${jobID}_logs`, process.env.ASYNC_COMPLETED_EXPIRE_TIME || defaultExpirySeconds);
@@ -81,10 +81,11 @@ async function storeQueryResponse(jobID, response) {
 exports.getQueryResponse = async jobID => {
     const unlock = await redisClient.lock(`asyncQueryResult${jobID}Lock`);
     try {
-        const workflow = JSON.parse(await redisClient.getAsync(`asyncQueryResult_${jobID}_workflow`));
-        if (!workflow) {
+        const workflowData = await redisClient.getAsync(`asyncQueryResult_${jobID}_workflow`);
+        if (!workflowData) {
             return null;
         }
+        const workflow = JSON.parse(workflowData);
         const message = await new Promise(async (resolve, reject) => {
             const msgDecoded = Object.entries(await redisClient.hgetallAsync(`asyncQueryResult_${jobID}_message`))
                 .sort(([key1], [key2]) => parseInt(key1) - parseInt(key2))
