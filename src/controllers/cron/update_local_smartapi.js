@@ -10,6 +10,8 @@ var url = require('url')
 const validUrl = require('valid-url')
 const config = require("../../config/smartapi_exclusions");
 
+const userAgent = `BTE/${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'} Node/${process.version} ${process.platform}`;
+
 const getTRAPIWithPredicatesEndpoint = (specs) => {
     const trapi = [];
     let excluded_list = config.EXCLUDE_LIST.map((api) => api.id);
@@ -151,7 +153,7 @@ const getOpsFromPredicatesEndpoints = async (specs) => {
 
 const updateSmartAPISpecs = async () => {
     const SMARTAPI_URL = 'https://smart-api.info/api/query?q=tags.name:translator&size=200&sort=_id&fields=paths,servers,tags,components.x-bte*,info,_meta';
-    const res = await axios.get(SMARTAPI_URL);
+    const res = await axios.get(SMARTAPI_URL, { headers: { 'User-Agent': userAgent } });
     const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
     const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
     const writeFunc = process.env.SYNC_AND_EXIT === "true" ? fs.writeFileSync : fs.writeFile;
@@ -194,7 +196,7 @@ const getAPIOverrides = async (data) => {
             if (e1 instanceof TypeError) {
                 if (validUrl.isWebUri(overrides.apis[id])) {
                     try {
-                        override = yaml.load((await axios.get(overrides.apis[id])).data);
+                        override = yaml.load((await axios.get(overrides.apis[id])).data, { headers: { 'User-Agent': userAgent } });
                     } catch (weberror) {
                         debug(`ERROR getting URL-hosted override for API ID ${id} because ${weberror}`);
                         return;
