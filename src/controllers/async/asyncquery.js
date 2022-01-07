@@ -46,7 +46,7 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
 }
 
 async function storeQueryResponse(jobID, response) {
-    const unlock = await redisClient.lock(`asyncQueryResult${jobID}Lock`);
+    const unlock = await redisClient.lock(`asyncQueryResult:lock:${jobID}`);
     try {
         const defaultExpirySeconds = String(7 * 24 * 60 * 60); // one 7-day week
         const entries = [];
@@ -78,7 +78,7 @@ async function storeQueryResponse(jobID, response) {
 }
 
 exports.getQueryResponse = async jobID => {
-    const unlock = await redisClient.lock(`asyncQueryResult${jobID}Lock`);
+    const unlock = await redisClient.lock(`asyncQueryResult:lock${jobID}`);
     try {
         const entries = await redisClient.getAsync(`asyncQueryResult:entries:${jobID}`);
         if (!entries) {
