@@ -43,7 +43,7 @@ class ErrorHandler {
                 .status(error.statusCode)
                 .json({
                     message: {
-                        query_graph: req.body.message.query_graph,
+                        query_graph: req.body?.message?.query_graph,
                         knowledge_graph: { nodes: {}, edges: {} },
                         results: []
                     },

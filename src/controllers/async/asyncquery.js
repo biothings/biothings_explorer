@@ -1,37 +1,43 @@
-const axios = require('axios')
-const { customAlphabet } = require('nanoid')
-const utils = require('../../utils/common')
+const axios = require('axios');
+const { customAlphabet } = require('nanoid');
+const utils = require('../../utils/common');
+const redisClient = require('@biothings-explorer/query_graph_handler').redisClient;
 const LogEntry = require("@biothings-explorer/query_graph_handler").LogEntry;
+const lz4 = require('lz4');
+const { Readable } = require('stream');
+const chunker = require('stream-chunker');
+const { parser } = require('stream-json');
+const Assembler = require('stream-json/Assembler');
 
 exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
     try {
-        if(queryQueue){
+        if (queryQueue) {
             const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
 
             let jobId = nanoid();
 
             // add job to the queue
             let url
-            if(queryQueue.name==='bte_query_queue_by_api'){
+            if (queryQueue.name==='bte_query_queue_by_api') {
                 jobId = `BA_${jobId}`
             }
-            if(queryQueue.name==='bte_query_queue_by_team'){
+            if (queryQueue.name==='bte_query_queue_by_team') {
                 jobId = `BT_${jobId}`
             }
             url = `${req.protocol}://${req.header('host')}/v1/check_query_status/${jobId}`
 
             let job = await queryQueue.add(
-                {...queueData, url },
+                { ...queueData, url },
                 {
                     jobId: jobId,
                     url: url
                 });
             res.setHeader('Content-Type', 'application/json');
             // return the job id so the user can check on it later
-            res.end(JSON.stringify({id: job.id, url: url}));
-        }else{
+            res.end(JSON.stringify({ id: job.id, url: url }));
+        } else {
             res.setHeader('Content-Type', 'application/json');
-            res.status(503).end(JSON.stringify({'error': 'Redis service is unavailable'}));
+            res.status(503).end(JSON.stringify({ 'error': 'Redis service is unavailable' }));
         }
     }
     catch (error) {
@@ -39,16 +45,78 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
     }
 }
 
-exports.asyncqueryResponse = async (handler, callback_url, jobURL = null) => {
-    let response = null
-    let callback_response = null;
-    try{
+async function storeQueryResponse(jobID, response) {
+    const unlock = await redisClient.lock(`asyncQueryResult:lock:${jobID}`);
+    try {
+        const defaultExpirySeconds = String(7 * 24 * 60 * 60); // one 7-day week
+        const entries = [];
+        // encode each property separately (accessible separately)
+        await Promise.all(Object.entries(response).map(async ([key, value]) => {
+            const input = Readable.from(JSON.stringify(value));
+            await new Promise((resolve) => {
+                let i = 0;
+                input
+                // .pipe(encoder)
+                .pipe(chunker(10000000, {flush: true}))
+                .on("data", async chunk => {
+                    await redisClient.hsetAsync(`asyncQueryResult:${jobID}:${key}`, String(i++), lz4.encode(chunk).toString('base64url'));
+                })
+                .on('end', () => {
+                    resolve()
+                });
+            })
+            await redisClient.expireAsync(`asyncQueryResult:${jobID}:${key}`, process.env.ASYNC_COMPLETED_EXPIRE_TIME || defaultExpirySeconds);
+            entries.push(key);
+        }));
+        // register all keys so they can be properly retrieved
+        await redisClient.setAsync(`asyncQueryResult:entries:${jobID}`, JSON.stringify(entries));
+        await redisClient.expireAsync(`asyncQueryResult:entries:${jobID}`, process.env.ASYNC_COMPLETED_EXPIRE_TIME || defaultExpirySeconds);
+
+    } finally {
+        unlock();
+    }
+}
+
+exports.getQueryResponse = async jobID => {
+    const unlock = await redisClient.lock(`asyncQueryResult:lock${jobID}`);
+    try {
+        const entries = await redisClient.getAsync(`asyncQueryResult:entries:${jobID}`);
+        if (!entries) {
+            return null;
+        }
+        const values = await Promise.all(JSON.parse(entries).map(async (key) => {
+            const value = await new Promise(async (resolve) => {
+                const msgDecoded = Object.entries(await redisClient.hgetallAsync(`asyncQueryResult:${jobID}:${key}`))
+                    .sort(([key1], [key2]) => parseInt(key1) - parseInt(key2))
+                    .map(([key, val]) => lz4.decode(Buffer.from(val, "base64url")).toString(), "");
+
+                const msgStream = Readable.from(msgDecoded);
+                const pipeline = msgStream.pipe(parser());
+                const asm = Assembler.connectTo(pipeline);
+                    asm.on("done", asm => resolve(asm.current));
+            });
+            return [key, value];
+        }));
+        const response = Object.fromEntries(values);
+        return response ? response : undefined;
+    } finally {
+        unlock();
+    }
+};
+
+exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL = null) => {
+    let response;
+    let callback_response;
+    try {
         await handler.query();
         response = handler.getResponse();
         if (jobURL) {
             response.logs.unshift(new LogEntry('DEBUG', null, `job status available at: ${jobURL}`).getLog());
         }
-    }catch (e){
+        if (jobID) {
+            await storeQueryResponse(jobID, response);
+        }
+    } catch (e) {
         console.error(e)
         //shape error > will be handled below
         response = {
@@ -56,16 +124,19 @@ exports.asyncqueryResponse = async (handler, callback_url, jobURL = null) => {
             message: e?.message,
             trace: process.env.NODE_ENV === 'production' ? undefined : e?.stack
         };
+        if (jobID) {
+            await storeQueryResponse(jobID, response);
+        }
     }
-    if(callback_url){
-        if(!utils.stringIsAValidUrl(callback_url)){
+    if (callback_url) {
+        if (!utils.stringIsAValidUrl(callback_url)) {
             return {
-                response: response,
+                response: true,
                 status: 200,
                 callback: 'The callback url must be a valid url'
             }
         }
-        try{
+        try {
             callback_response = await axios.post(callback_url, JSON.stringify(response), {
                 headers: {
                     'Content-Type': 'application/json'
@@ -74,22 +145,22 @@ exports.asyncqueryResponse = async (handler, callback_url, jobURL = null) => {
                 maxBodyLength: 2 * 1000 * 1000 * 1000 // 2GB
             });
             //console.log(res)
-        }catch (e){
+        } catch (e) {
             return {
-                response: response,
+                response: true,
                 status: e.response?.status,
                 callback: `Request failed, received code ${e.response?.status}`
             }
         }
-    }else{
+    } else {
         return {
-            response: response,
+            response: true,
             status: 200,
             callback: 'Callback url was not provided'
         };
     }
     return {
-        response: response,
+        response: true,
         status: callback_response?.status,
         callback: 'Data sent to callback_url'
     };
