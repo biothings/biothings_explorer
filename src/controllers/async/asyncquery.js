@@ -50,8 +50,14 @@ async function storeQueryResponse(jobID, response) {
     try {
         const defaultExpirySeconds = String(7 * 24 * 60 * 60); // one 7-day week
         const entries = [];
+        if (typeof response === 'undefined') {
+            return;
+        }
         // encode each property separately (accessible separately)
         await Promise.all(Object.entries(response).map(async ([key, value]) => {
+            if (typeof value === 'undefined') {
+                return;
+            }
             const input = Readable.from(JSON.stringify(value));
             await new Promise((resolve) => {
                 let i = 0;
