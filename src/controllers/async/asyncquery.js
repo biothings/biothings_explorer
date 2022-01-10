@@ -143,9 +143,11 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
             }
         }
         try {
+            const userAgent = `BTE/${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'} Node/${process.version} ${process.platform}`;
             callback_response = await axios.post(callback_url, JSON.stringify(response), {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'User-Agent': userAgent,
                 },
                 timeout: 300000,   // 5min
                 maxBodyLength: 2 * 1000 * 1000 * 1000 // 2GB

@@ -45,11 +45,13 @@ module.exports = class NGDFilter {
                 "fields": "association.ngd",
                 "dotfield": true
             }
+            const userAgent = `BTE/${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'} Node/${process.version} ${process.platform}`;
             tmp = await axios.post("https://biothings.ncats.io/text_mining_co_occurrence_kp/query",
                 JSON.stringify(query),
                 {
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'User-Agent': userAgent,
                     }
                 })
             result = [...result, ...tmp.data];
