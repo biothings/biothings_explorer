@@ -8,6 +8,7 @@ let queryQueue;
 
 const swaggerValidation = require("../../middlewares/validate");
 const { runTask, taskResponse, taskError } = require("../../controllers/threading/threadHandler");
+const debug = require('debug')('bte:biothings-explorer-trapi:async');
 
 class VCheckQueryStatus {
     setRoutes(app) {
@@ -25,6 +26,7 @@ class VCheckQueryStatus {
     async task(req) {
         //logger.info("query /query endpoint")
         try {
+            debug(`checking query status of job ${req.params.id}`);
             let by = req.query.by;
             let id = req.params.id;
             let queryQueue;
