@@ -19,6 +19,7 @@ class V1RouteAsyncQueryByAPI {
                 queryGraph: req.body.message.query_graph,
                 smartAPIID: req.params.smartapi_id,
                 caching: req.query.caching,
+                logLevel: req.body.log_level,
                 workflow: req.body.workflow,
                 callback_url: req.body.callback_url || req.body['callback'],
                 enableIDResolution

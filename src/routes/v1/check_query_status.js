@@ -3,6 +3,7 @@ const redisClient = require('../../utils/cache/redis-client');
 const { getQueryQueue } = require('../../controllers/async/asyncquery_queue');
 const { getQueryResponse } = require('../../controllers/async/asyncquery');
 const lz4 = require('lz4');
+const utils = require('../../utils/common');
 
 let queryQueue;
 
@@ -67,7 +68,7 @@ class VCheckQueryStatus {
                     }
                     let returnvalue = job.returnvalue;
                     if (returnvalue?.response && !returnvalue?.response?.error) {
-                        const storedResponse = await getQueryResponse(id);
+                        const storedResponse = await getQueryResponse(id, req.query.log_level);
                         if (storedResponse) {
                             returnvalue.response = storedResponse;
                         } else {

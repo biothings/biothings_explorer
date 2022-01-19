@@ -297,6 +297,18 @@ paths:
           required: true
           schema:
             type: string
+        - description: option to override original query log level
+          in: query
+          name: log_level
+          required: false
+          schema:
+            type: string
+            description: Logging level
+            enum:
+              - ERROR
+              - WARNING
+              - INFO
+              - DEBUG
       responses:
         '200':
           description: Returns status. If successfully completed, it will return a TRAPI Response object

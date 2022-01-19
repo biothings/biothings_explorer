@@ -33,7 +33,9 @@ class V1RouteQuery {
             handler.setQueryGraph(queryGraph);
             await handler.query();
 
-            return taskResponse(handler.getResponse());
+            const response = handler.getResponse();
+            utils.filterForLogLevel(response, req.body.log_level);
+            return taskResponse(response);
         } catch (error) {
             return taskError(error);
         }

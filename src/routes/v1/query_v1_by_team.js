@@ -36,7 +36,9 @@ class RouteQueryV1ByTeam {
             );
             handler.setQueryGraph(queryGraph);
             await handler.query();
-            taskResponse(handler.getResponse());
+            const response = handler.getResponse();
+            utils.filterForLogLevel(response, req.body.log_level);
+            taskResponse(response);
         } catch (error) {
             taskError(error);
         }
