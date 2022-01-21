@@ -45,7 +45,7 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
     }
 }
 
-async function storeQueryResponse(jobID, response) {
+async function storeQueryResponse(jobID, response, logLevel = null) {
     const unlock = await redisClient.lock(`asyncQueryResult:lock:${jobID}`);
     try {
         const defaultExpirySeconds = String(7 * 24 * 60 * 60); // one 7-day week
@@ -77,19 +77,23 @@ async function storeQueryResponse(jobID, response) {
         // register all keys so they can be properly retrieved
         await redisClient.setAsync(`asyncQueryResult:entries:${jobID}`, JSON.stringify(entries));
         await redisClient.expireAsync(`asyncQueryResult:entries:${jobID}`, process.env.ASYNC_COMPLETED_EXPIRE_TIME || defaultExpirySeconds);
+        // remember log_level setting from original query
+        await redisClient.setAsync(`asyncQueryResult:logLevel:${jobID}`, JSON.stringify(logLevel));
+        await redisClient.expireAsync(`asyncQueryResult:logLevel:${jobID}`, process.env.ASYNC_COMPLETED_EXPIRE_TIME || defaultExpirySeconds);
 
     } finally {
         unlock();
     }
 }
 
-exports.getQueryResponse = async jobID => {
+exports.getQueryResponse = async (jobID, logLevel = null) => {
     const unlock = await redisClient.lock(`asyncQueryResult:lock${jobID}`);
     try {
         const entries = await redisClient.getAsync(`asyncQueryResult:entries:${jobID}`);
         if (!entries) {
             return null;
         }
+        const originalLogLevel = await redisClient.getAsync(`asyncQueryResult:logLevel:${jobID}`);
         const values = await Promise.all(JSON.parse(entries).map(async (key) => {
             const value = await new Promise(async (resolve) => {
                 const msgDecoded = Object.entries(await redisClient.hgetallAsync(`asyncQueryResult:${jobID}:${key}`))
@@ -104,6 +108,11 @@ exports.getQueryResponse = async jobID => {
             return [key, value];
         }));
         const response = Object.fromEntries(values);
+        if (response.logs && logLevel) {
+            utils.filterForLogLevel(response, logLevel);
+        } else if (response.logs && originalLogLevel) {
+            utils.filterForLogLevel(response, originalLogLevel);
+        }
         return response ? response : undefined;
     } finally {
         unlock();
@@ -117,10 +126,10 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
         await handler.query();
         response = handler.getResponse();
         if (jobURL) {
-            response.logs.unshift(new LogEntry('DEBUG', null, `job status available at: ${jobURL}`).getLog());
+            response.logs.unshift(new LogEntry('INFO', null, `job status available at: ${jobURL}`).getLog());
         }
         if (jobID) {
-            await storeQueryResponse(jobID, response);
+            await storeQueryResponse(jobID, response, handler.options.logLevel);
         }
     } catch (e) {
         console.error(e)

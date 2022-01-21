@@ -19,6 +19,7 @@ class V1RouteAsyncQueryByTeam {
                 queryGraph: queryGraph,
                 teamName: req.params.team_name,
                 caching: req.query.caching,
+                logLevel: req.body.log_level,
                 workflow: req.body.workflow,
                 callback_url: req.body.callback_url || req.body['callback'],
                 enableIDResolution

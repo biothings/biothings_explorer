@@ -28,3 +28,17 @@ exports.stringIsAValidUrl = (s) => {
         return false;
     }
 };
+
+exports.filterForLogLevel = (response, logLevel) => {
+    const logLevels = {
+        ERROR: 3,
+        WARNING: 2,
+        INFO: 1,
+        DEBUG: 0
+    }
+    if (logLevel && Object.keys(logLevels).includes(logLevel)) {
+        response.logs = response.logs.filter(log => {
+            return logLevels[log.level] >= logLevels[logLevel]
+        });
+    }
+}
