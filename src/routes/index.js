@@ -44,11 +44,11 @@ module.exports = {
         query_v1_by_api: routesV1QueryByAPI.task,
         query_v1_by_team: routesV1QueryByTeam.task,
         query_test: routesQueryTest.task,
-        asyncquery_v1: routesV1AsyncQuery.task, //TODO
-        asyncquery_v1_by_api: routesV1AsyncQueryByAPI.task, //TODO
-        asyncquery_v1_by_team: routesV1AsyncQueryByTeam.task, //TODO
-        check_query_status: routesV1CheckQueryStatus.task, //TODO
+        check_query_status: routesV1CheckQueryStatus.task,
         // Not threaded due to being lightweight/speed being higher priority
+        asyncquery_v1: routesV1AsyncQuery.task,
+        asyncquery_v1_by_api: routesV1AsyncQueryByAPI.task,
+        asyncquery_v1_by_team: routesV1AsyncQueryByTeam.task,
         performance: routesPerformance.task,
         metakg: routesMetaKG.task,
         meta_knowledge_graph_v1: routesV1MetaKG.task,

@@ -19,7 +19,7 @@ async function jobToBeDone(jobID, queryGraph, teamName, caching, enableIDResolut
         false
     );
     handler.setQueryGraph(queryGraph);
-    return await asyncqueryResponse(handler, callback_url, jobID, jobURL);
+    return await asyncqueryResponse(handler, callback_url, jobID, jobURL, queryGraph);
 }
 
 module.exports = async (job) => {

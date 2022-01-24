@@ -19,7 +19,7 @@ async function jobToBeDone(jobID, queryGraph, smartAPIID, caching, enableIDResol
         false
     );
     handler.setQueryGraph(queryGraph);
-    return await asyncqueryResponse(handler, callback_url, jobID, jobURL);
+    return await asyncqueryResponse(handler, callback_url, jobID, jobURL, queryGraph);
 }
 
 module.exports = async (job) => {

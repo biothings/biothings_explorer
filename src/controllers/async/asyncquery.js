@@ -119,7 +119,7 @@ exports.getQueryResponse = async (jobID, logLevel = null) => {
     }
 };
 
-exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL = null) => {
+exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL = null, queryGraph = null) => {
     let response;
     let callback_response;
     try {
@@ -135,9 +135,14 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
         console.error(e)
         //shape error > will be handled below
         response = {
-            error: e?.name,
-            message: e?.message,
-            trace: process.env.NODE_ENV === 'production' ? undefined : e?.stack
+                message: {
+                    query_graph: queryGraph,
+                    knowledge_graph: { nodes: {}, edges: {} },
+                    results: []
+                },
+                status: 500,
+                description: e.toString(),
+                trace: process.env.NODE_ENV === 'production' ? undefined : e.stack
         };
         if (jobID) {
             await storeQueryResponse(jobID, response);
