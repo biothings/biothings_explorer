@@ -24,7 +24,7 @@ async function jobToBeDone(jobID, queryGraph, smartAPIID, caching, enableIDResol
 
 module.exports = async (job) => {
     return await jobToBeDone(
-        job.data.id,
+        job.id,
         job.data.queryGraph,
         job.data.smartAPIID,
         job.data.caching,
