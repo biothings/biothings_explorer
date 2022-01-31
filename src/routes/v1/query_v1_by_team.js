@@ -27,7 +27,7 @@ class RouteQueryV1ByTeam {
             const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
                 {
                     teamName: req.params.team_name,
-                    caching: req.query.caching,
+                    ...req.query,
                     enableIDResolution
                 },
                 smartAPIPath,

@@ -18,10 +18,10 @@ class V1RouteAsyncQueryByTeam {
             let queueData = {
                 queryGraph: queryGraph,
                 teamName: req.params.team_name,
-                caching: req.query.caching,
                 logLevel: req.body.log_level,
                 workflow: req.body.workflow,
                 callback_url: req.body.callback_url || req.body['callback'],
+                ...req.query,
                 enableIDResolution
             }
             await asyncquery(req, res, next, queueData, queryQueue)

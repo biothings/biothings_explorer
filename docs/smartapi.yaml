@@ -112,6 +112,12 @@ paths:
           required: false
           schema:
             type: boolean
+        - description: dryrun a query (logs the queries BTE will make)
+          in: query
+          name: dryrun
+          require: false
+          schema:
+            type: boolean
       requestBody:
         description: Query information to be submitted
         required: true
@@ -170,6 +176,12 @@ paths:
           in: query
           name: caching
           required: false
+          schema:
+            type: boolean
+        - description: dryrun a query (logs the queries BTE will make)
+          in: query
+          name: dryrun
+          require: false
           schema:
             type: boolean
       requestBody:
@@ -237,6 +249,12 @@ paths:
           in: query
           name: caching
           required: false
+          schema:
+            type: boolean
+        - description: dryrun a query (logs the queries BTE will make)
+          in: query
+          name: dryrun
+          require: false
           schema:
             type: boolean
       requestBody:
@@ -357,6 +375,12 @@ paths:
           required: false
           schema:
             type: boolean
+        - description: dryrun a query (logs the queries BTE will make)
+          in: query
+          name: dryrun
+          require: false
+          schema:
+            type: boolean
       requestBody:
         description: Query information to be submitted
         required: true
@@ -426,6 +450,12 @@ paths:
           in: query
           name: caching
           required: false
+          schema:
+            type: boolean
+        - description: dryrun a query (logs the queries BTE will make)
+          in: query
+          name: dryrun
+          require: false
           schema:
             type: boolean
       requestBody:
@@ -502,6 +532,12 @@ paths:
           in: query
           name: caching
           required: false
+          schema:
+            type: boolean
+        - description: dryrun a query (logs the queries BTE will make)
+          in: query
+          name: dryrun
+          require: false
           schema:
             type: boolean
       requestBody:

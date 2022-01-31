@@ -27,7 +27,7 @@ class RouteQueryV1ByAPI {
             const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
                 {
                     smartAPIID: req.params.smartapi_id,
-                    caching: req.query.caching,
+                    ...req.query,
                     enableIDResolution
                 },
                 smartAPIPath,
