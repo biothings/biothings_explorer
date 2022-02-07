@@ -115,7 +115,7 @@ paths:
         - description: dryrun a query (logs the queries BTE will make)
           in: query
           name: dryrun
-          require: false
+          required: false
           schema:
             type: boolean
       requestBody:
@@ -181,7 +181,7 @@ paths:
         - description: dryrun a query (logs the queries BTE will make)
           in: query
           name: dryrun
-          require: false
+          required: false
           schema:
             type: boolean
       requestBody:
@@ -254,7 +254,7 @@ paths:
         - description: dryrun a query (logs the queries BTE will make)
           in: query
           name: dryrun
-          require: false
+          required: false
           schema:
             type: boolean
       requestBody:
@@ -378,7 +378,7 @@ paths:
         - description: dryrun a query (logs the queries BTE will make)
           in: query
           name: dryrun
-          require: false
+          required: false
           schema:
             type: boolean
       requestBody:
@@ -455,7 +455,7 @@ paths:
         - description: dryrun a query (logs the queries BTE will make)
           in: query
           name: dryrun
-          require: false
+          required: false
           schema:
             type: boolean
       requestBody:
@@ -537,7 +537,7 @@ paths:
         - description: dryrun a query (logs the queries BTE will make)
           in: query
           name: dryrun
-          require: false
+          required: false
           schema:
             type: boolean
       requestBody:
