@@ -93,7 +93,7 @@ exports.getQueryResponse = async (jobID, logLevel = null) => {
         if (!entries) {
             return null;
         }
-        const originalLogLevel = await redisClient.getAsync(`asyncQueryResult:logLevel:${jobID}`);
+        const originalLogLevel = JSON.parse(await redisClient.getAsync(`asyncQueryResult:logLevel:${jobID}`));
         const values = await Promise.all(JSON.parse(entries).map(async (key) => {
             const value = await new Promise(async (resolve) => {
                 const msgDecoded = Object.entries(await redisClient.hgetallAsync(`asyncQueryResult:${jobID}:${key}`))

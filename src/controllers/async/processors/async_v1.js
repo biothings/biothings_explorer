@@ -6,10 +6,10 @@ const predicatesPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${proc
 const utils = require("../../../utils/common");
 const { asyncqueryResponse } = require("../asyncquery");
 
-async function jobToBeDone(jobID, queryGraph, caching, workflow, callback_url, jobURL = null, logLevel = null) {
+async function jobToBeDone(jobID, queryGraph, workflow, callback_url, options, jobURL = null) {
     utils.validateWorkflow(workflow);
     const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
-        { apiList: config.API_LIST, caching: caching, logLevel: logLevel },
+        { apiList: config.API_LIST, ...options },
         smartAPIPath,
         predicatesPath,
     );
@@ -22,10 +22,9 @@ module.exports = async job => {
   return await jobToBeDone(
     job.id,
     job.data.queryGraph,
-    job.data.caching,
     job.data.workflow,
     job.data.callback_url,
-    job.data.url,
-    job.data.logLevel,
+    job.data.options,
+    job.data.url
   );
 };

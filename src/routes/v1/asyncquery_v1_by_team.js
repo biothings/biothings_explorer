@@ -21,7 +21,7 @@ class V1RouteAsyncQueryByTeam {
                 logLevel: req.body.log_level,
                 workflow: req.body.workflow,
                 callback_url: req.body.callback_url || req.body['callback'],
-                ...req.query,
+                options: { logLevel: req.body.log_level, ...req.query },
                 enableIDResolution
             }
             await asyncquery(req, res, next, queueData, queryQueue)

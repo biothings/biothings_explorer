@@ -18,10 +18,9 @@ class V1RouteAsyncQueryByAPI {
             let queueData = {
                 queryGraph: req.body.message.query_graph,
                 smartAPIID: req.params.smartapi_id,
-                logLevel: req.body.log_level,
                 workflow: req.body.workflow,
                 callback_url: req.body.callback_url || req.body['callback'],
-                ...req.query,
+                options: { logLevel: req.body.log_level, ...req.query },
                 // enableIDResolution
             }
             await asyncquery(req, res, next, queueData, queryQueue)
