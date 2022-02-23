@@ -15,7 +15,7 @@ info:
       - lookup
   x-translator:
     infores: "infores:biothings-explorer"
-    biolink-version: 2.2.8
+    biolink-version: 2.2.13
     component: ARA
     team:
       - Exploring Agent
