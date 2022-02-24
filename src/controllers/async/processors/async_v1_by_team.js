@@ -29,7 +29,7 @@ module.exports = async (job) => {
         job.data.enableIDResolution,
         job.data.workflow,
         job.data.callback_url,
-        options,
+        job.data.options,
         job.data.url,
     );
 };
