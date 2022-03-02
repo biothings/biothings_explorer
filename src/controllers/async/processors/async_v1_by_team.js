@@ -5,14 +5,13 @@ const predicatesPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${proc
 const { asyncqueryResponse } = require('../asyncquery');
 const utils = require("../../../utils/common");
 
-async function jobToBeDone(jobID, queryGraph, teamName, caching, enableIDResolution, workflow, callback_url, jobURL = null, logLevel = null){
+async function jobToBeDone(jobID, queryGraph, teamName, enableIDResolution, workflow, callback_url, options, jobURL = null){
     utils.validateWorkflow(workflow);
     const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
         {
             teamName,
-            caching,
-            logLevel,
-            enableIDResolution
+            enableIDResolution,
+            ...options,
         },
         smartAPIPath,
         predicatesPath,
@@ -27,11 +26,10 @@ module.exports = async (job) => {
         job.id,
         job.data.queryGraph,
         job.data.teamName,
-        job.data.caching,
         job.data.enableIDResolution,
         job.data.workflow,
         job.data.callback_url,
+        job.data.options,
         job.data.url,
-        job.data.logLevel,
     );
 };

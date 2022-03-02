@@ -19,8 +19,7 @@ class V1RouteAsyncQuery {
                 queryGraph: req.body.message.query_graph,
                 workflow: req.body.workflow,
                 callback_url: req.body.callback_url || req.body['callback'],
-                caching: req.query.caching,
-                logLevel: req.body.log_level,
+                options: { logLevel: req.body.log_level, ...req.query }
             }
             await asyncquery(req, res, next, queueData, queryQueue)
         });

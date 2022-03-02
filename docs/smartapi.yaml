@@ -15,7 +15,7 @@ info:
       - lookup
   x-translator:
     infores: "infores:biothings-explorer"
-    biolink-version: 2.2.8
+    biolink-version: 2.2.13
     component: ARA
     team:
       - Exploring Agent
@@ -112,6 +112,12 @@ paths:
           required: false
           schema:
             type: boolean
+        - description: dryrun a query (logs the queries BTE will make)
+          in: query
+          name: dryrun
+          required: false
+          schema:
+            type: boolean
       requestBody:
         description: Query information to be submitted
         required: true
@@ -169,6 +175,12 @@ paths:
         - description: option to choose whether or not to enable caching
           in: query
           name: caching
+          required: false
+          schema:
+            type: boolean
+        - description: dryrun a query (logs the queries BTE will make)
+          in: query
+          name: dryrun
           required: false
           schema:
             type: boolean
@@ -236,6 +248,12 @@ paths:
         - description: option to choose whether or not to enable caching
           in: query
           name: caching
+          required: false
+          schema:
+            type: boolean
+        - description: dryrun a query (logs the queries BTE will make)
+          in: query
+          name: dryrun
           required: false
           schema:
             type: boolean
@@ -357,6 +375,12 @@ paths:
           required: false
           schema:
             type: boolean
+        - description: dryrun a query (logs the queries BTE will make)
+          in: query
+          name: dryrun
+          required: false
+          schema:
+            type: boolean
       requestBody:
         description: Query information to be submitted
         required: true
@@ -425,6 +449,12 @@ paths:
         - description: option to choose whether or not to enable caching
           in: query
           name: caching
+          required: false
+          schema:
+            type: boolean
+        - description: dryrun a query (logs the queries BTE will make)
+          in: query
+          name: dryrun
           required: false
           schema:
             type: boolean
@@ -501,6 +531,12 @@ paths:
         - description: option to choose whether or not to enable caching
           in: query
           name: caching
+          required: false
+          schema:
+            type: boolean
+        - description: dryrun a query (logs the queries BTE will make)
+          in: query
+          name: dryrun
           required: false
           schema:
             type: boolean
