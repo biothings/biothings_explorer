@@ -213,20 +213,15 @@ exports.API_LIST = [
     // - COHD for COVID-19 should work but BTE gets a 500 when retrieving meta_knowledge_graph...
     //   smartapi ID fc8245e92c970298449294fc04211869
     {
-        id: '0864c0912390d0876c3c34a00acb5c3b',
-        name: 'ICEES Asthma Instance API'
+        id: 'bb806f5c81e86fe12660fa307d4b0a97',
+        name: 'ICEES Asthma Instance API - production'
     },
     {
-        id: '9dd890397a7b8d98fbe247d56cac2b8f',
-        name: 'ICEES DILI Instance API'
+        id: '749c8f527fa07964de692e0969b71a4e',
+        name: 'ICEES DILI Instance API - production'
     },
-    // notes on ICEES:
-    // - don't ingest the COVID APIs (they may be broken / not actively developed)
     {
         id: '855adaa128ce5aa58a091d99e520d396',
         name: 'Connections Hypothesis Provider API'
     },
-    // notes on ICEES:
-    // - don't ingest the COVID APIs (they may be broken / not actively developed)
-
 ];
