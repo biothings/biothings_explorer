@@ -22,7 +22,7 @@ const timeoutFunc = (func, timeoutms=0) => {
       return new Promise(async (resolve, reject) => {
         const timeout = timeoutms
           ? timeoutms
-          : parseInt(process.env.REDIS_TIMEOUT || 30000);
+          : parseInt(process.env.REDIS_TIMEOUT || 60000);
         let done = false;
         setTimeout(() => {
           if (!done) {
