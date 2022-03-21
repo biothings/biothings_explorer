@@ -1,6 +1,11 @@
-const { tasks } = require("../../routes/index");
 const { workerData, isMainThread, parentPort, Worker, threadId } = require("worker_threads");
 const debug = require("debug")(`bte:biothings-explorer-trapi:worker${threadId}`);
+
+if (!isMainThread) { // Log thread start before BioLink model loads
+    debug(`Worker thread ${threadId} beginning task.`);
+}
+
+const { tasks } = require("../../routes/index");
 
 const runTask = async (req, route) => {
     if (!isMainThread) {
@@ -12,7 +17,6 @@ const runTask = async (req, route) => {
 }
 
 if (!isMainThread) {
-    debug(`Worker thread ${threadId} beginning task.`);
     runTask(workerData.req, workerData.route);
 }
 
