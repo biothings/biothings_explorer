@@ -1,6 +1,6 @@
 const Queue = require("bull");
 const axios = require("axios");
-const redisClient = require("../../utils/cache/redis-client");
+const redisClient = require('@biothings-explorer/query_graph_handler').redisClient;
 
 exports.getQueryQueue = name => {
     let queryQueue = null;
