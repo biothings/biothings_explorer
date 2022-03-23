@@ -4,7 +4,7 @@ const redisClient = require('@biothings-explorer/query_graph_handler').redisClie
 
 exports.getQueryQueue = name => {
     let queryQueue = null;
-    if (Object.keys(redisClient).length !== 0) {
+    if (Object.keys(redisClient).length !== 0 && !process.env.INTERNAL_DISABLE_REDIS) {
         let details = { port: process.env.REDIS_PORT, host: process.env.REDIS_HOST };
         if (process.env.REDIS_PASSWORD) {
             details.password = process.env.REDIS_PASSWORD;
