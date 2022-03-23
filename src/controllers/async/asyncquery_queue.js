@@ -1,10 +1,10 @@
 const Queue = require("bull");
 const axios = require("axios");
-const redisClient = require("../../utils/cache/redis-client");
+const redisClient = require('@biothings-explorer/query_graph_handler').redisClient;
 
 exports.getQueryQueue = name => {
     let queryQueue = null;
-    if (Object.keys(redisClient).length !== 0) {
+    if (Object.keys(redisClient).length !== 0 && !process.env.INTERNAL_DISABLE_REDIS) {
         let details = { port: process.env.REDIS_PORT, host: process.env.REDIS_HOST };
         if (process.env.REDIS_PASSWORD) {
             details.password = process.env.REDIS_PASSWORD;

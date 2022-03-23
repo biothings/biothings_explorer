@@ -1,5 +1,5 @@
 const path = require("path");
-const redisClient = require('../../utils/cache/redis-client');
+const redisClient = require('@biothings-explorer/query_graph_handler').redisClient;
 const { getQueryQueue } = require('../../controllers/async/asyncquery_queue');
 const { getQueryResponse } = require('../../controllers/async/asyncquery');
 const lz4 = require('lz4');

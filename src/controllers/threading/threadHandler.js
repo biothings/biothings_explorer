@@ -19,7 +19,7 @@ const createNewWorker = async (req, route) => {
                 cacheInProgress += 1;
             } else if (args[0].addCacheKey) { // hashed edge id cache in progress
                 cacheKeys[args[0].cacheKey] = false;
-            } else if (args[0].completeCacheKey) { // hased edge id cache complete
+            } else if (args[0].completeCacheKey) { // hashed edge id cache complete
                 cacheKeys[args[0].cacheKey] = true;
             } else if (typeof args[0].cacheDone !== 'undefined') {
                 cacheInProgress = args[0].cacheDone
@@ -50,7 +50,11 @@ const createNewWorker = async (req, route) => {
                 // clean up any incompletely cached hashes to avoid issues pulling from cache
                 const activeKeys = Object.entries(cacheKeys).filter(([key, complete]) => !complete);
                 if (activeKeys.len) {
-                    redisClient.delAsync(activeKeys);
+                    try {
+                        redisClient.delAsync(activeKeys);
+                    } catch (error) {
+                        null;
+                    }
                 }
                 worker.terminate();
                 reject(new Error(`Request timed out (exceeded time limit of ${timeout / 1000}s)`));
