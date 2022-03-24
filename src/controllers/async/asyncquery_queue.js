@@ -9,6 +9,9 @@ exports.getQueryQueue = name => {
         if (process.env.REDIS_PASSWORD) {
             details.password = process.env.REDIS_PASSWORD;
         }
+        if (process.env.REDIS_TLS_ENABLED) {
+            details.tls = { checkServerIdentity: () => undefined }
+        }
         queryQueue = new Queue(name, process.env.REDIS_HOST ? { redis: details } : "redis://127.0.0.1:6379", {
             defaultJobOptions: {
                 timeout: process.env.JOB_TIMEOUT,
