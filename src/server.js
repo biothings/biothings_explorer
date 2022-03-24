@@ -16,7 +16,7 @@ async function testRedisConnection() {
   if (Object.keys(redisClient).length) { // redis enabled
     debug('Checking connection to redis...');
     try {
-      await redisClient.lolwutAsync();
+      await redisClient.pingAsync();
       debug('Redis connection successful.');
     } catch (error) {
       debug(`Redis connection failed due to error ${error}`);
