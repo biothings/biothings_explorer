@@ -77,9 +77,21 @@ To enable debug mode, which outputs logging statements to the terminal in real t
 
 `$ DEBUG=biothings-explorer-trapi:*,smartapi-kg:*,call-apis:*,biomedical-id-resolver:* npm start` (also outputs debug statements from dependencies)
 
-By default, the `/v1/query` endpoint only supports 3 queries per min, you could modify this behavior by setting MAX_QUERIES_PER_MIN environment variable when starting the service
+By default, the `/v1/query` endpoint only supports 15 queries per min, you could modify this behavior by setting MAX_QUERIES_PER_MIN environment variable when starting the service.
 
 `$ MAX_QUERIES_PER_MIN=5 npm start`
+
+### Running the project with redis
+
+If you have a native installation of redis, or a Docker image of the latest redis (`docker pull redis:latest`), the workspace provides a means of automatically starting the server alongside redis with default host/port configurations:
+
+`npm start redis`
+
+This will automatically start redis (preferring a Docker container, and falling back to native installation), and then start the server ready to connect to redis.
+
+### Stopping the server
+
+Should the server need to be stopped in the middle of an asynchronous request, or is otherwise misbehaving, use `npm stop`, which will ensure the server and its subprocesses are killed.
 
 ### Simple build for production
 
@@ -112,7 +124,7 @@ docker run -it --rm -p 3000:3000 --name bte-trapi -e DEBUG="biomedical-id-resolv
 The container may also be run with a redis-server running at a given host, which enables caching and use of the async endpoints:
 
 ```bash
-docker run -it --rm -p 3000:3000 --name bte-trapi  -e REDIS_HOST=host.docker.internal -e REDIS_PORT=6379 -e DEBUG="biomedical-id-resolver,bte*" biothings/
+docker run -it --rm -p 3000:3000 --name bte-t∞rapi  -e REDIS_HOST=host.docker.internal -e REDIS_PORT=6379 -e DEBUG="biomedical-id-resolver,bte*" biothings/
 ```
 
 Log into the container:
@@ -300,10 +312,21 @@ The returned response looks like this:
 Several environment variables are supported for various purposes, listed below:
 
 - `NODE_ENV` When set as `NODE_ENV=production`, the package runs in production mode, including synchronizing the latest SmartAPI specifications on a schedule.
+- `PORT` Sets the port the server will listen on. Defaults to `3000`.
 - `SMARTAPI_SYNC=true|false` May be set to override all SmartAPI syncing behavior.
 - `API_OVERRIDE=true|false` May be set to set overrides for specific APIs (see [Using `API_OVERRIDE=true`](#using-api_overridetrue))
 - `RESULT_CACHING=true|false` May be set to enable or disable the use of caching for query result edges. Requires `REDIS_HOST` and `REDIS_PORT` to be enabled.
 - `REDIS_HOST` The hostname of the Redis server to be used for caching.
 - `REDIS_PORT` The port of the Redis server to be used for caching.
 - `REDIS_PASSWORD` The password for the Redis server, if applicable.
+- `REDIS_TLS_ENABLED` Enables TLS mode for the Redis client.
+- `REDIS_KEY_EXPIRE_TIME` Sets the time to keep cached results in seconds. Defaults to 10 minutes.
+- `JOB_TIMEOUT` Sets a timeout on asynchronous jobs in ms. No default.
+- `ASYNC_COMPLETED_EXPIRE_TIME` Sets the amount of time to keep an asynchronous job result, after which the results expire and are deleted to make space for new job results. Expressed in seconds. Defaults to 7 days.
 - `DEBUG` May be set to capture different package debug logs by match to comma-separated strings.
+- `SETIMMEDIATE_TIME` Override the timing used on several calls to `setImmediatePromise()` used for performance reasons. Shouldn't be overridden except for performance testing purposes. Expressed in ms.
+- `MAX_QUERIES_PER_MIN` Sets the maximum number of queries allowable from a client in a 1-minute window. Defaults to 15.
+- `STATIC_PATH` Overrides the path to the folder containing `./data/smartapi_specs.json` and `./data/predicates.json`.
+- `REQUEST_TIMEOUT` Sets a timeout for non-synchronous threaded requests in seconds. No default, however the monorepo pm2 configuration defaults to 20 minutes.
+- `USE_THREADING` Disables threading (threaded requests fall back to non-threaded execution) when set to `false`. Threading is enabled by default.
+- `BIOLINK_FILE` Overrides path to biolink file.
