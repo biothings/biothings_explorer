@@ -96,6 +96,10 @@ exports.API_LIST = [
         id: '02af7d098ab304e80d6f4806c3527027',
         name: 'Multiomics Wellness KP API'
     },
+    {
+        id: 'adf20dd6ff23dfe18e8e012bde686e31',
+        name: 'Multiomics BigGIM-DrugResponse KP API'
+    },
     // Text Mining Provider collab, annotated with x-bte
     // - removed Text Mining Co-occurrence API since there were issues using it with BTE (too many answers)
     {
