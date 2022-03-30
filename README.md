@@ -69,29 +69,45 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 
 ### Running the project
 
-    $ npm start
+*Note: these instructions have been updated to reflect usage in the [workspace](https://github.com/biothings/bte-trapi-workspace), which is highly recommended.*
 
-To enable debug mode, which outputs logging statements to the terminal in real time:
+To start the server with debug logging, which outputs logging statements to the terminal in real time:
 
-`$ DEBUG=biothings-explorer-trapi:* npm start`
+```
+npm start
+```
 
-`$ DEBUG=biothings-explorer-trapi:*,smartapi-kg:*,call-apis:*,biomedical-id-resolver:* npm start` (also outputs debug statements from dependencies)
+To run the server without debug logging:
 
-By default, the `/v1/query` endpoint only supports 15 queries per min, you could modify this behavior by setting MAX_QUERIES_PER_MIN environment variable when starting the service.
+```
+npm start --workspace='@biothings-explorer/bte-trapi'
+```
 
-`$ MAX_QUERIES_PER_MIN=5 npm start`
+By default, the `/v1/query` endpoint allows 15 queries per min, you could modify this behavior by setting MAX_QUERIES_PER_MIN environment variable when starting the service.
+
+```
+$ MAX_QUERIES_PER_MIN=5 npm start`
+```
 
 ### Running the project with redis
 
 If you have a native installation of redis, or a Docker image of the latest redis (`docker pull redis:latest`), the workspace provides a means of automatically starting the server alongside redis with default host/port configurations:
 
-`npm start redis`
+```
+npm start redis
+```
 
 This will automatically start redis (preferring a Docker container, and falling back to native installation), and then start the server ready to connect to redis.
 
 ### Stopping the server
 
-Should the server need to be stopped in the middle of an asynchronous request, or is otherwise misbehaving, use `npm stop`, which will ensure the server and its subprocesses are killed.
+Should the server need to be stopped in the middle of an asynchronous request, or is otherwise misbehaving:
+
+```
+npm stop
+```
+
+This will ensure the server and its subprocesses are killed.
 
 ### Simple build for production
 
