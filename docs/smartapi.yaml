@@ -316,9 +316,8 @@ paths:
           in: path
           name: id
           required: true
-          ## Cache refreshing means this will be changing pretty often; example may become invalid
+          ## Cache refreshing means this will be changing pretty often, so not including an example
           schema:
-            example: BT_hpCKD8JGYv
             type: string
         - description: option to override original query log level
           in: query
