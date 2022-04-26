@@ -37,8 +37,9 @@ tags:
 - name: translator
 - name: trapi
 - name: biothings
-## Note: BTE has custom behavior so DO NOT blindly copy-pate the TRAPI specs / schemas below
+## Note: BTE has custom behavior so DO NOT blindly copy-paste the TRAPI specs / schemas below
 ##       instead go through it and copy-paste in sections as-needed
+## examples are using MyVariant-specific query
 paths:
   /meta_knowledge_graph:
     get:
@@ -61,12 +62,12 @@ paths:
       description: Returns a TRAPI-compliant meta knowledge graph representation of an individual SmartAPI KP API (that has x-bte annotation)
       parameters:
         - description: SmartAPI ID of an API, you can get it from https://smart-api.info/registry
-          example: 8f08d1446e0bb9c2b323713ce83e2bd3
           in: path
           name: smartapi_id
           required: true
           schema:
             type: string
+            example: 09c8782d9f4027712e65b95424adba79  ## MyVariant
       responses:
         '200':
           description: Successful Response
@@ -82,12 +83,12 @@ paths:
       description: Returns a TRAPI-compliant meta knowledge graph representation of one team's set of SmartAPI KP APIs (that have x-bte annotation)
       parameters:
         - description: Translator Team Name, e.g. Service Provider, Multiomics Provider
-          example: Multiomics Provider
           in: path
           name: team_name
           required: true
           schema:
             type: string
+            example: "Service Provider"
             enum:
               - Multiomics Provider
               - Text Mining Provider
@@ -123,6 +124,7 @@ paths:
         required: true
         content:
           application/json:
+            ## example is going to be in components/schema/Query!!!
             schema:
               $ref: '#/components/schemas/Query'
       responses:
@@ -166,11 +168,11 @@ paths:
       operationId: querySmartAPI
       parameters:
         - description: SmartAPI ID of an API, you can get it from https://smart-api.info/registry
-          example: 8f08d1446e0bb9c2b323713ce83e2bd3
           in: path
           name: smartapi_id
           required: true
           schema:
+            example: 09c8782d9f4027712e65b95424adba79  ## MyVariant
             type: string
         - description: option to choose whether or not to enable caching
           in: query
@@ -189,6 +191,7 @@ paths:
         required: true
         content:
           application/json:
+            ## example is going to be in components/schema/Query!!!
             schema:
               $ref: '#/components/schemas/Query'
       responses:
@@ -235,12 +238,12 @@ paths:
       operationId: queryTeam
       parameters:
         - description: Translator Team Name, e.g. Service Provider, Multiomics Provider
-          example: Text Mining Provider
           in: path
           name: team_name
           required: true
           schema:
             type: string
+            example: "Service Provider"
             enum:
               - Multiomics Provider
               - Text Mining Provider
@@ -262,6 +265,7 @@ paths:
         required: true
         content:
           application/json:
+            ## example is going to be in components/schema/Query!!!
             schema:
               $ref: '#/components/schemas/Query'
       responses:
@@ -309,11 +313,12 @@ paths:
       description: ''
       parameters:
         - description: job-id
-          ## could add example like hY2BrhJfcN (successfully completed) or ovllMzFfCe (failed)
           in: path
           name: id
           required: true
+          ## Cache refreshing means this will be changing pretty often; example may become invalid
           schema:
+            example: BT_hpCKD8JGYv
             type: string
         - description: option to override original query log level
           in: query
@@ -386,6 +391,7 @@ paths:
         required: true
         content:
           application/json:
+            ## example is going to be in components/schema/AsyncQuery!!!
             schema:
               $ref: '#/components/schemas/AsyncQuery'
       responses:
@@ -440,12 +446,12 @@ paths:
         the Response using the /v1/check_query_status/{id} endpoint.
       parameters:
         - description: SmartAPI ID of an API, you can get it from https://smart-api.info/registry
-          example: 8f08d1446e0bb9c2b323713ce83e2bd3
           in: path
           name: smartapi_id
           required: true
           schema:
             type: string
+            example: 09c8782d9f4027712e65b95424adba79  ## MyVariant
         - description: option to choose whether or not to enable caching
           in: query
           name: caching
@@ -463,6 +469,7 @@ paths:
         required: true
         content:
           application/json:
+            ## example is going to be in components/schema/AsyncQuery!!!
             schema:
               $ref: '#/components/schemas/AsyncQuery'
       responses:
@@ -518,12 +525,12 @@ paths:
       description: ''
       parameters:
         - description: Translator Team Name, e.g. Service Provider, Multiomics Provider
-          example: Text Mining Provider
           in: path
           name: team_name
           required: true
           schema:
             type: string
+            example: "Service Provider"
             enum:
               - Multiomics Provider
               - Text Mining Provider
@@ -545,6 +552,7 @@ paths:
         required: true
         content:
           application/json:
+            ## example is going to be in components/schema/AsyncQuery!!!
             schema:
               $ref: '#/components/schemas/AsyncQuery'
       responses:
@@ -586,6 +594,23 @@ paths:
 components:
   schemas:
     Query:
+      ## should use MyVariant to answer this
+      example:
+        message:
+          query_graph:
+            nodes:
+              n0:
+                ids:
+                - "DBSNP:rs121913521"
+                categories:
+                - "biolink:SequenceVariant"
+              n1:
+                categories:
+                - "biolink:Disease"
+            edges:
+              e1:
+                subject: "n0"
+                object: "n1"
       description: >-
         The Query class is used to package a user request for information. A
         Query object consists of a required Message object with optional
@@ -619,6 +644,23 @@ components:
       required:
         - message
     AsyncQuery:
+      ## should use MyVariant to answer this
+      example:
+        message:
+          query_graph:
+            nodes:
+              n0:
+                ids:
+                - "DBSNP:rs121913521"
+                categories:
+                - "biolink:SequenceVariant"
+              n1:
+                categories:
+                - "biolink:Disease"
+            edges:
+              e1:
+                subject: "n0"
+                object: "n1"
       description: >-
         The AsyncQuery class is effectively the same as the Query class but
         it requires a callback property.
