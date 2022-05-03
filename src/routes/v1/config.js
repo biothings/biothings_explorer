@@ -9,10 +9,6 @@ exports.API_LIST = [
         name: 'EBI Proteins API'
     },
     {
-        id: '9ee398a738916a98b612068cc022454f',
-        name: 'LINCS Data Portal API'
-    },
-    {
         id: 'dca415f2d792976af9d642b7e73f7a41',
         name: 'LitVar API'
     },
@@ -220,4 +216,17 @@ exports.API_LIST = [
         id: '855adaa128ce5aa58a091d99e520d396',
         name: 'Connections Hypothesis Provider API'
     },
+    // ICEES APIs
+    // {
+    //     id: '749c8f527fa07964de692e0969b71a4e',
+    //     name: 'ICEES DILI Instance API - production'
+    // },
+    // {
+    //     id: 'bb806f5c81e86fe12660fa307d4b0a97',
+    //     name: 'ICEES Asthma Instance API - production'
+    // },
+    // {
+    //     id: '4153c947a32e2e2a55a320d0bee22077',
+    //     name: 'ICEES PCD Instance API - production'
+    // },
 ];
