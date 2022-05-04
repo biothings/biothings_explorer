@@ -65,9 +65,9 @@ paths:
           in: path
           name: smartapi_id
           required: true
+          example: 09c8782d9f4027712e65b95424adba79  ## MyVariant
           schema:
             type: string
-            example: 09c8782d9f4027712e65b95424adba79  ## MyVariant
       responses:
         '200':
           description: Successful Response
@@ -86,9 +86,9 @@ paths:
           in: path
           name: team_name
           required: true
+          example: "Service Provider"
           schema:
             type: string
-            example: "Service Provider"
             enum:
               - Multiomics Provider
               - Text Mining Provider
@@ -124,7 +124,23 @@ paths:
         required: true
         content:
           application/json:
-            ## example is going to be in components/schema/Query!!!
+            ## should use MyVariant to answer this
+            example:
+              message:
+                query_graph:
+                  nodes:
+                    n0:
+                      ids:
+                      - "DBSNP:rs121913521"
+                      categories:
+                      - "biolink:SequenceVariant"
+                    n1:
+                      categories:
+                      - "biolink:Disease"
+                  edges:
+                    e1:
+                      subject: "n0"
+                      object: "n1"
             schema:
               $ref: '#/components/schemas/Query'
       responses:
@@ -171,8 +187,8 @@ paths:
           in: path
           name: smartapi_id
           required: true
+          example: 09c8782d9f4027712e65b95424adba79  ## MyVariant
           schema:
-            example: 09c8782d9f4027712e65b95424adba79  ## MyVariant
             type: string
         - description: option to choose whether or not to enable caching
           in: query
@@ -191,7 +207,23 @@ paths:
         required: true
         content:
           application/json:
-            ## example is going to be in components/schema/Query!!!
+            ## should use MyVariant to answer this
+            example:
+              message:
+                query_graph:
+                  nodes:
+                    n0:
+                      ids:
+                      - "DBSNP:rs121913521"
+                      categories:
+                      - "biolink:SequenceVariant"
+                    n1:
+                      categories:
+                      - "biolink:Disease"
+                  edges:
+                    e1:
+                      subject: "n0"
+                      object: "n1"
             schema:
               $ref: '#/components/schemas/Query'
       responses:
@@ -241,9 +273,9 @@ paths:
           in: path
           name: team_name
           required: true
+          example: "Service Provider"
           schema:
             type: string
-            example: "Service Provider"
             enum:
               - Multiomics Provider
               - Text Mining Provider
@@ -265,7 +297,23 @@ paths:
         required: true
         content:
           application/json:
-            ## example is going to be in components/schema/Query!!!
+            ## should use MyVariant to answer this
+            example:
+              message:
+                query_graph:
+                  nodes:
+                    n0:
+                      ids:
+                      - "DBSNP:rs121913521"
+                      categories:
+                      - "biolink:SequenceVariant"
+                    n1:
+                      categories:
+                      - "biolink:Disease"
+                  edges:
+                    e1:
+                      subject: "n0"
+                      object: "n1"
             schema:
               $ref: '#/components/schemas/Query'
       responses:
@@ -390,7 +438,23 @@ paths:
         required: true
         content:
           application/json:
-            ## example is going to be in components/schema/AsyncQuery!!!
+            ## should use MyVariant to answer this
+            example:
+              message:
+                query_graph:
+                  nodes:
+                    n0:
+                      ids:
+                      - "DBSNP:rs121913521"
+                      categories:
+                      - "biolink:SequenceVariant"
+                    n1:
+                      categories:
+                      - "biolink:Disease"
+                  edges:
+                    e1:
+                      subject: "n0"
+                      object: "n1"
             schema:
               $ref: '#/components/schemas/AsyncQuery'
       responses:
@@ -448,9 +512,9 @@ paths:
           in: path
           name: smartapi_id
           required: true
+          example: 09c8782d9f4027712e65b95424adba79  ## MyVariant
           schema:
             type: string
-            example: 09c8782d9f4027712e65b95424adba79  ## MyVariant
         - description: option to choose whether or not to enable caching
           in: query
           name: caching
@@ -468,7 +532,23 @@ paths:
         required: true
         content:
           application/json:
-            ## example is going to be in components/schema/AsyncQuery!!!
+            ## should use MyVariant to answer this
+            example:
+              message:
+                query_graph:
+                  nodes:
+                    n0:
+                      ids:
+                      - "DBSNP:rs121913521"
+                      categories:
+                      - "biolink:SequenceVariant"
+                    n1:
+                      categories:
+                      - "biolink:Disease"
+                  edges:
+                    e1:
+                      subject: "n0"
+                      object: "n1"
             schema:
               $ref: '#/components/schemas/AsyncQuery'
       responses:
@@ -527,9 +607,9 @@ paths:
           in: path
           name: team_name
           required: true
+          example: "Service Provider"
           schema:
             type: string
-            example: "Service Provider"
             enum:
               - Multiomics Provider
               - Text Mining Provider
@@ -551,7 +631,23 @@ paths:
         required: true
         content:
           application/json:
-            ## example is going to be in components/schema/AsyncQuery!!!
+            ## should use MyVariant to answer this
+            example:
+              message:
+                query_graph:
+                  nodes:
+                    n0:
+                      ids:
+                      - "DBSNP:rs121913521"
+                      categories:
+                      - "biolink:SequenceVariant"
+                    n1:
+                      categories:
+                      - "biolink:Disease"
+                  edges:
+                    e1:
+                      subject: "n0"
+                      object: "n1"
             schema:
               $ref: '#/components/schemas/AsyncQuery'
       responses:
@@ -593,23 +689,6 @@ paths:
 components:
   schemas:
     Query:
-      ## should use MyVariant to answer this
-      example:
-        message:
-          query_graph:
-            nodes:
-              n0:
-                ids:
-                - "DBSNP:rs121913521"
-                categories:
-                - "biolink:SequenceVariant"
-              n1:
-                categories:
-                - "biolink:Disease"
-            edges:
-              e1:
-                subject: "n0"
-                object: "n1"
       description: >-
         The Query class is used to package a user request for information. A
         Query object consists of a required Message object with optional
@@ -643,23 +722,6 @@ components:
       required:
         - message
     AsyncQuery:
-      ## should use MyVariant to answer this
-      example:
-        message:
-          query_graph:
-            nodes:
-              n0:
-                ids:
-                - "DBSNP:rs121913521"
-                categories:
-                - "biolink:SequenceVariant"
-              n1:
-                categories:
-                - "biolink:Disease"
-            edges:
-              e1:
-                subject: "n0"
-                object: "n1"
       description: >-
         The AsyncQuery class is effectively the same as the Query class but
         it requires a callback property.
