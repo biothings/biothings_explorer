@@ -35,6 +35,10 @@ exports.API_LIST = [
         name: 'BioThings iDISK API'
     },
     {
+        id: '03283cc2b21c077be6794e1704b1d230',
+        name: 'BioThings Rhea API'
+    },
+    {
         id: 'a7f784626a426d054885a5f33f17d3f8',
         name: 'DISEASES API'
     },
