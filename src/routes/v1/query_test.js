@@ -10,6 +10,14 @@ class RouteQueryTest {
             try {
                 const response = await runTask(req, this.task, path.parse(__filename).name);
                 res.setHeader("Content-Type", "application/json");
+                res.setHeader("Deprecation", "Fri, 13 May 2022 16:00:00 GMT");
+                res.setHeader("Warning", '299 - "Endpoint Deprecated, removal Fri, 13 May 2022 16:00:00 GMT"');
+                response.logs.unshift({
+                    timestamp: new Date().toISOString(),
+                    level: 'WARNING',
+                    message: "This endpoint is deprecated and will be removed as of Fri, 13 May 2022 16:00:00 GMT",
+                    code: null,
+                });
                 res.end(JSON.stringify(response));
             } catch (error) {
                 next(error);
