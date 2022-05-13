@@ -1,8 +1,13 @@
+// APIs in this list are accessible by the main endpoints v1/query and v1/asyncquery
 exports.API_LIST = [
-    // external APIs annotated with SmartAPI x-bte
+    // external (not Su / Wu Lab), non-TRAPI APIs 
+    // annotated with SmartAPI x-bte
+    // also accessible by v1/team/Service Provider/ endpoints and by api-specific endpoints
     {
         id: 'd22b657426375a5295e7da8a303b9893',
         name: 'BioLink API'
+        // also known as Monarch: https://monarchinitiative.org/
+        // NOT the same as the Biolink-model
     },
     {
         id: '43af91b3d7cae43591083bff9d75c6dd',
@@ -20,23 +25,24 @@ exports.API_LIST = [
         id: '1c056ffc7ed0dd1229e71c4752239465',
         name: 'Ontology Lookup Service API'
     },
-    // "pending" BioThings APIs, annotated by x-bte
-      // SEMMED BioThings APIs, annotated with x-bte
-    {
-        id: '1d288b3a3caf75d541ffaae3aab386c8',
-        name: 'BioThings SEMMEDDB API'
-    },
+    // internal (Su / Wu Lab), non-TRAPI: "pending" BioThings APIs
+    // annotated with SmartAPI x-bte
+    // also accessible by v1/team/Service Provider/ endpoints and by api-specific endpoints
     {
         id: 'e3edd325c76f2992a111b43a907a4870',
         name: 'BioThings DGIdb API'
     },
     {
-        id: '32f36164fabed5d3abe6c2fd899c9418',
-        name: 'BioThings iDISK API'
-    },
-    {
         id: '03283cc2b21c077be6794e1704b1d230',
         name: 'BioThings Rhea API'
+    },
+    {
+        id: '1d288b3a3caf75d541ffaae3aab386c8',
+        name: 'BioThings SEMMEDDB API'
+    },
+    {
+        id: '32f36164fabed5d3abe6c2fd899c9418',
+        name: 'BioThings iDISK API'
     },
     {
         id: 'a7f784626a426d054885a5f33f17d3f8',
@@ -70,7 +76,9 @@ exports.API_LIST = [
         id: 'ec6d76016ef40f284359d17fbf78df20',
         name: 'UBERON Ontology API'
     },
-    // Core BioThings APIs, annotated with x-bte
+    // internal (Su / Wu Lab), non-TRAPI: Core BioThings APIs
+    // annotated with SmartAPI x-bte
+    // also accessible by v1/team/Service Provider/ endpoints and by api-specific endpoints
     {
         id: '8f08d1446e0bb9c2b323713ce83e2bd3',
         name: 'MyChem.info API'
@@ -87,28 +95,37 @@ exports.API_LIST = [
         id: '09c8782d9f4027712e65b95424adba79',
         name: 'MyVariant.info API'
     },
-    // Multiomics Provider collab, annotated with x-bte
+    // non-TRAPI: pending BioThings APIs made in collab with Multiomics Provider
+    // annotated with SmartAPI x-bte
+    // also accessible by v1/team/Service Provider/ and v1/team/Multiomics Provider endpoints, and by api-specific endpoints
     {
         id: 'd86a24f6027ffe778f84ba10a7a1861a',
         name: 'Clinical Risk KP API'
     },
     {
-        id: '02af7d098ab304e80d6f4806c3527027',
-        name: 'Multiomics Wellness KP API'
-    },
-    {
         id: 'adf20dd6ff23dfe18e8e012bde686e31',
         name: 'Multiomics BigGIM-DrugResponse KP API'
     },
-    // Text Mining Provider collab, annotated with x-bte
-    // - removed Text Mining Co-occurrence API since there were issues using it with BTE (too many answers)
+    {
+        id: '02af7d098ab304e80d6f4806c3527027',
+        name: 'Multiomics Wellness KP API'
+    },
+    // non-TRAPI: pending BioThings APIs made in collab with Text Mining Provider
+    // annotated with SmartAPI x-bte
+    // also accessible by v1/team/Service Provider/ and v1/team/Text Mining Provider endpoints, and by api-specific endpoints
     {
         id: '978fe380a147a8641caf72320862697b',
         name: 'Text Mining Targeted Association API'
     },
-    // Automat APIs, ingested through TRAPI
+    // TRAPI (Translator standard) APIs: Automat 
+    // not accessible by team or api-specific endpoints
+    // Notes: We don't ingest the following:
+    // - Automat Chemical normalization (only has outdated ChemicalSubstance semantic type in meta_knowledge_graph endpoint)
+    // - Automat Covidkop KG: seems to repeat a lot of data that is in the other APIs
+    // - Automat Robokop KG: seems to repeat a lot of data that is in the other APIs
+    // - Automat molepro-fda: doesn't have edges / associations
     {
-    // this API overlaps with our Biolink API registration, but we have bugs with our ingest...
+    // this API overlaps with our Biolink API registration, but we have bugs with our api-response-transform
     //   this may have been updated more recently / transformed data into TRAPI format
         id: '6a3c22bbb4d533c15013a3f9000a8709',
         name: 'Automat Biolink (trapi v-1.2.0)'
@@ -118,21 +135,10 @@ exports.API_LIST = [
             id: '8956303f273baaa76202ff3195bd6a64',
             name: 'Automat CTD (trapi v-1.2.0)'
     },
-    // // this API is outdated and only uses ChemicalSubstance right
-    // {
-    //     id: '90996aee88fce45a834976e7b3539db1',
-    //     name: 'Automat Chemical normalization (trapi v-1.2.0)'
-    // },
     {
         id: '2c3c45487f65330b058946cd46dbbfa1',
         name: 'Automat Cord19 (trapi v-1.2.0)'
     },
-    // // seems to repeat a lot of data that is in the other APIs
-    // {
-    //     id: '040cddc8d77b1518979da6686f11e89e',
-    //     name: 'Automat Covidkop KG (trapi v-1.2.0)'
-    // },
-
     {
         id: '03c1982f2e3ba3710da20aa9c01a00f6',
         name: 'Automat DrugCentral (trapi v-1.2.0)'
@@ -187,11 +193,6 @@ exports.API_LIST = [
         id: '0de0fcb872ddd6daddb9eee27e95996f',
         name: 'Automat Pharos (trapi v-1.2.0)'
     },
-    // seems to repeat a lot of data that is in the other APIs
-    // {
-    //     id: '882388ba314a61484ba79268bcc93675',
-    //     name: 'Automat Robokop KG (trapi v-1.2.0)'
-    // },
     {
     // not sure if this API overlaps with Text Mining Targeted Association API or
     //   Text Mining Co-occurrrence API...
@@ -206,21 +207,26 @@ exports.API_LIST = [
         id: 'fe351cf879d06616e655d46ee915c2e4',
         name: 'Automat Viral Proteome (trapi v-1.2.0)'
     },
-    // Clinical-data-based APIs from other Translator teams, ingested through TRAPI
-    {
-        id: '51c178099fa2dc99b5d8fff8bf9f1a0d',
-        name: 'COHD TRAPI 1.2'
-    },
+    // TRAPI (Translator standard) APIs: COHD 
+    // not accessible by team or api-specific endpoints
     // notes on COHD:
     // - DON'T INGEST 'Columbia Open Health Data (COHD)'/70117385218edc9bc01633829011dfcf
     //   IT IS NOT TRAPI (and may be outdated?)
     // - COHD for COVID-19 should work but BTE gets a 500 when retrieving meta_knowledge_graph...
     //   smartapi ID fc8245e92c970298449294fc04211869
     {
+        id: '51c178099fa2dc99b5d8fff8bf9f1a0d',
+        name: 'COHD TRAPI 1.2'
+    },
+    // TRAPI (Translator standard) APIs: CHP 
+    // not accessible by team or api-specific endpoints
+    {
         id: '855adaa128ce5aa58a091d99e520d396',
         name: 'Connections Hypothesis Provider API'
     },
-    // ICEES APIs
+    // TRAPI (Translator standard) APIs: ICEES 
+    // not accessible by team or api-specific endpoints
+    // currently commented out because of issues
     // {
     //     id: '749c8f527fa07964de692e0969b71a4e',
     //     name: 'ICEES DILI Instance API - production'
