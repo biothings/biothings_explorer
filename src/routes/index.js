@@ -3,7 +3,6 @@ const routesFrontPage = require("./frontpage");
 const routesPerformance = require("./performance");
 const routesV1QueryByAPI = require("./v1/query_v1_by_api");
 const routesV1QueryByTeam = require("./v1/query_v1_by_team");
-const routesQueryTest = require("./v1/query_test");
 const routesV1Query = require("./v1/query_v1");
 const routesV1AsyncQuery = require('./v1/asyncquery_v1');
 const routesV1AsyncQueryByAPI = require("./v1/asyncquery_v1_by_api");
@@ -31,7 +30,6 @@ class Routes {
         routesV1QueryByTeam.setRoutes(app);
         LoggingHandler.setRoutes(app);
         routesV1Query.setRoutes(app);
-        routesQueryTest.setRoutes(app);
         ErrorHandler.setRoutes(app);
     }
 
@@ -43,7 +41,6 @@ module.exports = {
         query_v1: routesV1Query.task,
         query_v1_by_api: routesV1QueryByAPI.task,
         query_v1_by_team: routesV1QueryByTeam.task,
-        query_test: routesQueryTest.task,
         check_query_status: routesV1CheckQueryStatus.task,
         // Not threaded due to being lightweight/speed being higher priority
         asyncquery_v1: routesV1AsyncQuery.task,
