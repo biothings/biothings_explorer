@@ -9,7 +9,7 @@ const { asyncqueryResponse } = require("../asyncquery");
 async function jobToBeDone(jobID, queryGraph, workflow, callback_url, options, jobURL = null) {
     utils.validateWorkflow(workflow);
     const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
-        { apiList: config.API_LIST, ...options },
+        { ...options },
         smartAPIPath,
         predicatesPath,
     );

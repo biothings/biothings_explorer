@@ -1,6 +1,6 @@
 // APIs in this list are accessible by the main endpoints v1/query and v1/asyncquery
 exports.API_LIST = [
-    // external (not Su / Wu Lab), non-TRAPI APIs 
+    // external (not Su / Wu Lab), non-TRAPI APIs
     // annotated with SmartAPI x-bte
     // also accessible by v1/team/Service Provider/ endpoints and by api-specific endpoints
     {
@@ -117,7 +117,7 @@ exports.API_LIST = [
         id: '978fe380a147a8641caf72320862697b',
         name: 'Text Mining Targeted Association API'
     },
-    // TRAPI (Translator standard) APIs: Automat 
+    // TRAPI (Translator standard) APIs: Automat
     // not accessible by team or api-specific endpoints
     // Notes: We don't ingest the following:
     // - Automat Chemical normalization (only has outdated ChemicalSubstance semantic type in meta_knowledge_graph endpoint)
@@ -207,7 +207,7 @@ exports.API_LIST = [
         id: 'fe351cf879d06616e655d46ee915c2e4',
         name: 'Automat Viral Proteome (trapi v-1.2.0)'
     },
-    // TRAPI (Translator standard) APIs: COHD 
+    // TRAPI (Translator standard) APIs: COHD
     // not accessible by team or api-specific endpoints
     // notes on COHD:
     // - DON'T INGEST 'Columbia Open Health Data (COHD)'/70117385218edc9bc01633829011dfcf
@@ -218,13 +218,13 @@ exports.API_LIST = [
         id: '51c178099fa2dc99b5d8fff8bf9f1a0d',
         name: 'COHD TRAPI 1.2'
     },
-    // TRAPI (Translator standard) APIs: CHP 
+    // TRAPI (Translator standard) APIs: CHP
     // not accessible by team or api-specific endpoints
     {
         id: '855adaa128ce5aa58a091d99e520d396',
         name: 'Connections Hypothesis Provider API'
     },
-    // TRAPI (Translator standard) APIs: ICEES 
+    // TRAPI (Translator standard) APIs: ICEES
     // not accessible by team or api-specific endpoints
     // currently commented out because of issues
     // {
