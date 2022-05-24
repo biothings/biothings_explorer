@@ -174,24 +174,27 @@ You may additionally manually trigger a one-time sync by using `npm run smartapi
 
 You may configure a set of API IDs to override from local files or URLs.
 
-If the environment variable `API_OVERRIDE=true` is set (e.g. `SMARTAPI_SYNC=true API_OVERRIDE=true npm run debug --workspace=@biothings-explorer/bte-trapi`), then `/config/smartapi_overrides.json` is checked at server start and overrides are applied, as well as during subsequent `smartapi_specs.json` updates. Note that syncing must be enabled (`SMARTAPI_SYNC=true`) in order for `API_OVERRIDE` to take effect.
+If the environment variable `API_OVERRIDE=true` is set (e.g. `SMARTAPI_SYNC=true API_OVERRIDE=true npm run debug --workspace=@biothings-explorer/bte-trapi`), then `src/config/smartapi_overrides.js` is checked at server start and overrides are applied, as well as during subsequent `smartapi_specs.json` updates. Note that syncing must be enabled (`SMARTAPI_SYNC=true`) in order for `API_OVERRIDE` to take effect.
 
-Alternatively, you may choose to only get `smartapi_specs.json` and apply overrides once by running `API_OVERRIDE=true npm run smartapi_sync --workspace='@biothings-explorer/bte-trapi'`, removing the requirement of enabling `SMARTAPI_SYNC` while running the server.
+Alternatively, you may choose to only get `smartapi_specs.js` and apply overrides once by running `API_OVERRIDE=true npm run smartapi_sync --workspace='@biothings-explorer/bte-trapi'`, removing the requirement of enabling `SMARTAPI_SYNC` while running the server.
 
 Override files may be specified as a URL which returns the expected yaml file or a `file:///` URI or arbitrary filepath, either of which must contain the absolute path to your override file. Regardless, override files are expected to be in yaml format. If overrides are specified with IDs not in the current SmartAPI spec, they will be appended as new API hits with a log warning.
 
 You may also set `only_overrides` to `true` in the config to remove all other APIs and keep only the specified overrides.
 
+Note that overrides will be automatically added to the API list used by BTE to filter enabled APIs (`src/config/apis.js`), and if `only_overrides` is `true` *only* those APIs will be available to BTE. This behavior can be disabled by setting `override_API_LIST` to `false` in the config.
+
 Example:
 
 Replace the latest MyGene.info API with a specific revision, and the MyChem.info API with a local test version:
 
-```JSON
+```Javascript
 {
-  "conf": {
-    "only_overrides": false
+  config: {
+    override_API_LIST: true,
+    only_overrides: false
   },
-  "apis": {
+  apis: {
     "59dce17363dce279d389100834e43648": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/8b36f46d59c82d19b5cba40421a6ca9c2ed62e6b/mygene.info/openapi_full.yml",
     "8f08d1446e0bb9c2b323713ce83e2bd3": "file:///absolute/path/to/file/mychem_test.yaml"
   }
@@ -346,3 +349,4 @@ Several environment variables are supported for various purposes, listed below:
 - `REQUEST_TIMEOUT` Sets a timeout for non-synchronous threaded requests in seconds. No default, however the monorepo pm2 configuration defaults to 20 minutes.
 - `USE_THREADING` Disables threading (threaded requests fall back to non-threaded execution) when set to `false`. Threading is enabled by default.
 - `BIOLINK_FILE` Overrides path to biolink file.
+- `IGNORE_API_LIST` Ignore the enabled API list, allowing the use of any APIs.
