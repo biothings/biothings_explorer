@@ -9,6 +9,7 @@ const yaml = require("js-yaml");
 var url = require('url')
 const validUrl = require('valid-url')
 const config = require("../../config/smartapi_exclusions");
+const overrides = require('../../config/smartapi_overrides.js').overrides;
 
 const userAgent = `BTE/${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'} Node/${process.version} ${process.platform}`;
 
@@ -174,20 +175,7 @@ const updateSmartAPISpecs = async () => {
 }
 
 const getAPIOverrides = async (data) => {
-    const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
-    let overrides;
-    try {
-        overrides = JSON.parse((await readFile(overridesPath)));
-    } catch (error) {
-        debug(`ERROR getting API Overrides file because ${error}`);
-        return;
-    }
-    // if only_overrides is enabled, only overridden apis are used
-    if (overrides.conf.only_overrides) {
-        debug("Override specifies removal of undeclared APIs")
-        data.hits = [];
-    }
-    await Promise.all(Object.keys(overrides.apis).map(async (id) => {
+    const overrideHits = await Promise.all(Object.keys(overrides.apis).map(async (id) => {
         let override;
         try {
             const filepath = path.resolve(url.fileURLToPath(overrides.apis[id]));
@@ -223,15 +211,30 @@ const getAPIOverrides = async (data) => {
             url: overrides.apis[id],
             username: undefined,
         };
-        const index = overrides.conf.only_overrides ? -1 : data.hits.findIndex(hit => hit._id === id);
+        return override
+    }));
+
+    const overrideIDs = [];
+
+    // add overrides to hits
+    overrideHits.forEach((override) => {
+        const index = overrides.config.only_overrides ? -1 : data.hits.findIndex(hit => hit._id === id);
         if (index === -1) {
-            debug(`[warning] Overridden API ID ${id} not recognized, appending as new API hit.`);
+            debug(`[warning] Overridden API ID ${override._id} not recognized, appending as new API hit.`);
             data.hits.push(override);
         } else {
             data.hits[index] = override;
         }
-        return;
-    }));
+        overrideIDs.push(override._id);
+    })
+
+    // if only_overrides is enabled, only overridden apis are used
+    if (overrides.config.only_overrides) {
+        debug("Override specifies removal of undeclared APIs")
+        data.hits = data.hits.filter((hit) => {
+            return overrideIDs.includes(hit._id);
+        });
+    }
 };
 
 
@@ -280,14 +283,6 @@ module.exports = () => {
         });
 
         if (api_override) {
-            const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
-            let overrides
-            try {
-                overrides = JSON.parse(fs.readFileSync(overridesPath));
-            } catch (error) {
-                debug(`ERROR getting API Overrides file because ${error}`);
-                return;
-            }
             if (Object.keys(overrides.apis).length > 0) {
                 debug(`API Override(s) set. Updating local SmartAPI specs with overrides now at ${new Date().toUTCString()}!`);
                 try {

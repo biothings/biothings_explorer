@@ -1,5 +1,5 @@
 const path = require("path");
-const config = require("../../../routes/v1/config");
+const config = require("../../../config/apis.js");
 const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
 const smartAPIPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${process.env.STATIC_PATH}/data/smartapi_specs.json` : '../../../../data/smartapi_specs.json');
 const predicatesPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${process.env.STATIC_PATH}/data/predicates.json` : '../../../../data/predicates.json');

@@ -1,5 +1,5 @@
 const path = require("path");
-const config = require("./config");
+const config = require("../../config/apis.js");
 const swaggerValidation = require("../../middlewares/validate");
 const { asyncquery } = require('../../controllers/async/asyncquery')
 const { getQueryQueue } = require('../../controllers/async/asyncquery_queue')

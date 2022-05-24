@@ -1,5 +1,7 @@
+const overrides = require('./smartapi_overrides.js').overrides;
+
 // APIs in this list are accessible by the main endpoints v1/query and v1/asyncquery
-exports.API_LIST = [
+let API_LIST = [
     // external (not Su / Wu Lab), non-TRAPI APIs
     // annotated with SmartAPI x-bte
     // also accessible by v1/team/Service Provider/ endpoints and by api-specific endpoints
@@ -240,3 +242,16 @@ exports.API_LIST = [
     //     name: 'ICEES PCD Instance API - production'
     // },
 ];
+
+if (overrides.config.override_API_LIST) {
+    if (overrides.config.only_overrides) {
+        API_LIST = [];
+    }
+
+    Object.entries(overrides.apis).forEach(([id, source]) => {
+        API_LIST.push({ id, name: source });
+    });
+}
+
+
+exports.API_LIST = API_LIST;
