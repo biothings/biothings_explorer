@@ -1,4 +1,5 @@
 const path = require("path");
+const config = require("./config");
 const swaggerValidation = require("../../middlewares/validate");
 const { asyncquery } = require('../../controllers/async/asyncquery');
 const { getQueryQueue } = require('../../controllers/async/asyncquery_queue');
@@ -20,7 +21,11 @@ class V1RouteAsyncQueryByAPI {
                 smartAPIID: req.params.smartapi_id,
                 workflow: req.body.workflow,
                 callback_url: req.body.callback_url || req.body['callback'],
-                options: { logLevel: req.body.log_level, ...req.query },
+                options: {
+                    apiList: process.env.IGNORE_API_LIST === 'true' ? undefined : config.API_LIST,
+                    logLevel: req.body.log_level,
+                    ...req.query
+                },
                 // enableIDResolution
             }
             await asyncquery(req, res, next, queueData, queryQueue)
