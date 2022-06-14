@@ -46,8 +46,8 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
 };
 
 async function storeQueryResponse(jobID, response, logLevel = null) {
-  const lock = await redisClient.client.lock(`asyncQueryResult:lock:${jobID}`);
-  try {
+  // const lock = await redisClient.client.lock();
+  return await redisClient.client.usingLock([`asyncQueryResult:lock:${jobID}`], 600000, async (signal) => {
     const defaultExpirySeconds = String(7 * 24 * 60 * 60); // one 7-day week
     const entries = [];
     if (typeof response === "undefined") {
@@ -95,14 +95,12 @@ async function storeQueryResponse(jobID, response, logLevel = null) {
       `asyncQueryResult:logLevel:${jobID}`,
       process.env.ASYNC_COMPLETED_EXPIRE_TIME || defaultExpirySeconds,
     );
-  } finally {
-    await lock.release();
-  }
+
+  });
 }
 
 exports.getQueryResponse = async (jobID, logLevel = null) => {
-  const lock = await redisClient.client.lock(`asyncQueryResult:lock${jobID}`);
-  try {
+  return await redisClient.client.usingLock([`asyncQueryResult:lock:${jobID}`], 600000, async (signal) => {
     const entries = await redisClient.client.getTimeout(`asyncQueryResult:entries:${jobID}`);
     if (!entries) {
       return null;
@@ -130,9 +128,7 @@ exports.getQueryResponse = async (jobID, logLevel = null) => {
       utils.filterForLogLevel(response, originalLogLevel);
     }
     return response ? response : undefined;
-  } finally {
-    await lock.release();
-  }
+  });
 };
 
 exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL = null, queryGraph = null) => {
