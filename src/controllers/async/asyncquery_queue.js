@@ -1,10 +1,12 @@
 const Queue = require("bull");
 const axios = require("axios");
 const { redisClient } = require("@biothings-explorer/query_graph_handler");
+const debug = require('debug')('bte:biothings-explorer-trapi:asyncquery_queue');
 const Redis = require("ioredis");
 
 exports.getQueryQueue = name => {
   let queryQueue = null;
+  debug(`Getting queue ${name} using redis in ${process.env.REDIS_CLUSTER === "true" ? "cluster" : "non-cluster"} mode`);
   if (redisClient.clientEnabled && !process.env.INTERNAL_DISABLE_REDIS) {
     let details = {
       createClient: () => {
