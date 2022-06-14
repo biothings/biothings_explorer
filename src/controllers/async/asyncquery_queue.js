@@ -9,6 +9,17 @@ exports.getQueryQueue = name => {
     let details = {
       createClient: () => {
         if (process.env.REDIS_CLUSTER === "true") {
+          const details = {
+            enableReadyCheck: false,
+            maxRetriesPerRequest: null,
+            redisOptions: {},
+          }
+          if (process.env.REDIS_PASSWORD) {
+            details.redisOptions.password = process.env.REDIS_PASSWORD;
+          }
+          if (process.env.REDIS_TLS_ENABLED) {
+            details.redisOptions.tls = { checkServerIdentity: () => undefined };
+          }
           return new Redis.Cluster(
             [
               {
@@ -16,12 +27,19 @@ exports.getQueryQueue = name => {
                 port: process.env.REDIS_PORT,
               },
             ],
-            {
-              enableReadyCheck: false,
-              maxRetriesPerRequest: null,
-            },
+            details,
           );
         } else {
+          const details = {
+            enableReadyCheck: false,
+            maxRetriesPerRequest: null,
+          }
+          if (process.env.REDIS_PASSWORD) {
+            details.password = process.env.REDIS_PASSWORD;
+          }
+          if (process.env.REDIS_TLS_ENABLED) {
+            details.tls = { checkServerIdentity: () => undefined };
+          }
           return new Redis({
             host: process.env.REDIS_HOST,
             port: process.env.REDIS_PORT,
@@ -34,12 +52,6 @@ exports.getQueryQueue = name => {
       // }),
       prefix: `{BTE:bull:${name}}`,
     };
-    if (process.env.REDIS_PASSWORD) {
-      details.password = process.env.REDIS_PASSWORD;
-    }
-    if (process.env.REDIS_TLS_ENABLED) {
-      details.tls = { checkServerIdentity: () => undefined };
-    }
     queryQueue = new Queue(name, process.env.REDIS_HOST ? details : "redis://127.0.0.1:6379", {
       defaultJobOptions: {
         timeout: process.env.JOB_TIMEOUT,
