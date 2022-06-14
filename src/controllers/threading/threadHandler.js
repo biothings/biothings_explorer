@@ -51,7 +51,7 @@ const createNewWorker = async (req, route) => {
                 const activeKeys = Object.entries(cacheKeys).filter(([key, complete]) => !complete);
                 if (activeKeys.len) {
                     try {
-                        redisClient.delAsync(activeKeys);
+                        redisClient.client.delTimeout(activeKeys);
                     } catch (error) {
                         null;
                     }
