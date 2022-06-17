@@ -13,7 +13,7 @@ async function main() {
 async function testRedisConnection() {
   const { redisClient } = require("@biothings-explorer/query_graph_handler");
 
-  if (Object.keys(redisClient).length) { // redis enabled
+  if (redisClient.clientEnabled) { // redis enabled
     debug('Checking connection to redis...');
     try {
       await redisClient.client.pingTimeout();
