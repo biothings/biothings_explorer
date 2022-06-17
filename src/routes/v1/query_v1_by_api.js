@@ -5,6 +5,8 @@ const smartAPIPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${proces
 const predicatesPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${process.env.STATIC_PATH}/data/predicates.json` : '../../../data/predicates.json');
 const utils = require("../../utils/common");
 const { runTask, taskResponse, taskError } = require("../../controllers/threading/threadHandler");
+const { API_LIST: apiList } = require("../../config/apis");
+
 
 class RouteQueryV1ByAPI {
     setRoutes(app) {
@@ -27,6 +29,7 @@ class RouteQueryV1ByAPI {
             // const enableIDResolution = (['5be0f321a829792e934545998b9c6afe', '978fe380a147a8641caf72320862697b'].includes(req.params.smartapi_id)) ? false : true;
             const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
                 {
+                    apiList,
                     smartAPIID: req.params.smartapi_id,
                     ...req.query,
                     // enableIDResolution

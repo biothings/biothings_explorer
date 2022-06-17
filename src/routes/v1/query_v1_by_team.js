@@ -5,6 +5,7 @@ const smartAPIPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${proces
 const predicatesPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${process.env.STATIC_PATH}/data/predicates.json` : '../../../data/predicates.json');
 const utils = require("../../utils/common");
 const { runTask, taskResponse, taskError } = require("../../controllers/threading/threadHandler");
+const { API_LIST: apiList } = require("../../config/apis");
 
 class RouteQueryV1ByTeam {
     setRoutes(app) {
@@ -26,6 +27,7 @@ class RouteQueryV1ByTeam {
             // const enableIDResolution = (req.params.team_name === "Text Mining Provider") ? false : true;
             const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
                 {
+                    apiList,
                     teamName: req.params.team_name,
                     ...req.query,
                     enableIDResolution: true
