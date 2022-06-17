@@ -5,11 +5,13 @@ const smartAPIPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${proces
 const predicatesPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${process.env.STATIC_PATH}/data/predicates.json` : '../../../../data/predicates.json');
 const utils = require("../../../utils/common");
 const { asyncqueryResponse } = require("../asyncquery");
+const { API_LIST: apiList } = require("../../../config/apis");
+
 
 async function jobToBeDone(jobID, queryGraph, workflow, callback_url, options, jobURL = null) {
     utils.validateWorkflow(workflow);
     const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
-        { apiList: config.API_LIST, ...options },
+        { apiList, ...options },
         smartAPIPath,
         predicatesPath,
     );
