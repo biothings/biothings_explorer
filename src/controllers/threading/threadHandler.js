@@ -57,7 +57,7 @@ const createNewWorker = async (req, route) => {
                     }
                 }
                 worker.terminate();
-                reject(new Error(`Request timed out (exceeded time limit of ${timeout / 1000}s)`));
+                reject(new Error(`Request timed out (exceeded time limit of ${timeout / 1000}s). Please use the asynchronous endpoint (/v1/asyncquery) for long-running queries.`));
             }, timeout);
         }
     });
