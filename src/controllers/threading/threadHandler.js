@@ -49,7 +49,7 @@ const createNewWorker = async (req, route) => {
             setTimeout(() => {
                 // clean up any incompletely cached hashes to avoid issues pulling from cache
                 const activeKeys = Object.entries(cacheKeys).filter(([key, complete]) => !complete);
-                if (activeKeys.len) {
+                if (activeKeys.length) {
                     try {
                         redisClient.client.delTimeout(activeKeys);
                     } catch (error) {
