@@ -20,15 +20,21 @@ info:
     team:
       - Exploring Agent
 servers:
-- url: https://api.bte.ncats.io/v1
-  description: Production server
+- url: https://bte.transltr.io/v1
+  description: ITRB Production server
   x-maturity: production
+- url: https://api.bte.ncats.io/v1
+  description: Non-ITRB dev (main)
+  x-maturity: development
 - url: https://dev.api.bte.ncats.io/v1
-  description: Dev server
+  description: Non-ITRB dev (side)
   x-maturity: development
 - url: https://bte.ci.transltr.io/v1
-  description: CI deployment server
+  description: ITRB CI server
   x-maturity: staging
+- url: https://bte.test.transltr.io/v1
+  description: ITRB Test server
+  x-maturity: testing
 tags:
 - name: 1.2.0
 - name: meta_knowledge_graph
