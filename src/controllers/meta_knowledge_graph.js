@@ -7,27 +7,28 @@ const PredicatesLoadingError = require("../utils/errors/predicates_error");
 const ids = require("./ids");
 const readFile = util.promisify(fs.readFile);
 const debug = require("debug")("bte:biothings-explorer-trapi:metakg");
+const { API_LIST: apiList } = require("../config/apis");
 
 module.exports = class MetaKnowledgeGraphHandler {
-    constructor(smartapiID = undefined, team = undefined) {
-        this.smartapiID = smartapiID;
-        this.team = team;
+    constructor(smartAPIID = undefined, teamName = undefined) {
+        this.smartAPIID = smartAPIID;
+        this.teamName = teamName;
     }
 
-    async _loadMetaKG(smartapiID = undefined, team = undefined) {
+    async _loadMetaKG(smartAPIID = undefined, teamName = undefined) {
         const smartapi_specs = path.resolve(__dirname, '../../data/smartapi_specs.json');
         const predicates = path.resolve(__dirname, '../../data/predicates.json');
         const kg = new meta_kg.default(smartapi_specs, predicates);
         try {
-            if (smartapiID !== undefined) {
-                debug(`Constructing with SmartAPI ID ${smartapiID}`)
-                kg.constructMetaKGSync(false, { smartAPIID: smartapiID })
-            } else if (team !== undefined) {
-                debug(`Constructing with team ${team}`)
-                kg.constructMetaKGSync(false, { teamName: team })
+            if (smartAPIID !== undefined) {
+                debug(`Constructing with SmartAPI ID ${smartAPIID}`)
+                kg.constructMetaKGSync(false, { apiList, smartAPIID: smartAPIID })
+            } else if (teamName !== undefined) {
+                debug(`Constructing with team ${teamName}`)
+                kg.constructMetaKGSync(false, { apiList, teamName: teamName })
             } else {
                 debug(`Constructing with default`)
-                kg.constructMetaKGSync(true, {})
+                kg.constructMetaKGSync(true, { apiList, })
             }
             if (kg.ops.length === 0) {
                 debug(`Found 0 operations`)
@@ -35,7 +36,7 @@ module.exports = class MetaKnowledgeGraphHandler {
             }
             return kg;
         } catch (error) {
-            debug(`ERROR getting graph with ID:${smartapiID} team:${team} because ${error}`)
+            debug(`ERROR getting graph with ID:${smartAPIID} team:${teamName} because ${error}`)
             throw new PredicatesLoadingError(`Failed to Load MetaKG: ${error}`);
         }
 
@@ -57,8 +58,8 @@ module.exports = class MetaKnowledgeGraphHandler {
         }
     }
 
-    async getKG(smartapiID = this.smartapiID, team = this.team) {
-        const kg = await this._loadMetaKG(smartapiID, team);
+    async getKG(smartAPIID = this.smartAPIID, teamName = this.teamName) {
+        const kg = await this._loadMetaKG(smartAPIID, teamName);
         let knowledge_graph = {
             nodes: {},
             edges: []
