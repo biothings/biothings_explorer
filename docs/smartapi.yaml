@@ -13,6 +13,8 @@ info:
     asyncquery: true
     operations:
       - lookup
+    ## look at https://standards.ncats.io/operation.json for details
+    ## perhaps advertise "lookup_and_score"?
   x-translator:
     infores: "infores:biothings-explorer"
     biolink-version: 2.2.13
@@ -24,10 +26,10 @@ servers:
   description: ITRB Production server
   x-maturity: production
 - url: https://api.bte.ncats.io/v1
-  description: Non-ITRB dev (main)
+  description: Non-ITRB dev (primary internal use)
   x-maturity: development
 - url: https://dev.api.bte.ncats.io/v1
-  description: Non-ITRB dev (side)
+  description: Non-ITRB dev (secondary internal use)
   x-maturity: development
 - url: https://bte.ci.transltr.io/v1
   description: ITRB CI server
