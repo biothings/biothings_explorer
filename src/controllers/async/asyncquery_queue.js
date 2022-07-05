@@ -6,8 +6,8 @@ const Redis = require("ioredis");
 
 exports.getQueryQueue = name => {
   let queryQueue = null;
-  debug(`Getting queue ${name} using redis in ${process.env.REDIS_CLUSTER === "true" ? "cluster" : "non-cluster"} mode`);
   if (redisClient.clientEnabled && !process.env.INTERNAL_DISABLE_REDIS) {
+    debug(`Getting queue ${name} using redis in ${process.env.REDIS_CLUSTER === "true" ? "cluster" : "non-cluster"} mode`);
     let details = {
       createClient: () => {
         if (process.env.REDIS_CLUSTER === "true") {
