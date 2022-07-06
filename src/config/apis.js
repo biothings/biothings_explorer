@@ -46,6 +46,10 @@ exports.API_LIST = {
             name: 'BioThings iDISK API'
         },
         {
+            id: 'edeb26858bd27d0322af93e7a9e08761',
+            name: 'BioThings pfocr API'
+        },
+        {
             id: 'a7f784626a426d054885a5f33f17d3f8',
             name: 'DISEASES API'
         },
