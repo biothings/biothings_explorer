@@ -99,19 +99,21 @@ module.exports = class MetaKnowledgeGraphHandler {
         });
       });
     });
-    (await supportedLookups()).forEach(edge => {
-      if (Object.keys(edges).includes(edge)) {
-        edges[edge].knowledge_types.push('inferred');
-      } else {
-        let [subject, predicate, object] = edge.split('-');
-        knowledge_graph.edges.push({
-          subject,
-          predicate,
-          object,
-          knowledge_types: ["inferred"]
-        })
-      }
-    });
+    if (!smartAPIID && !teamName) {
+      (await supportedLookups()).forEach(edge => {
+        if (Object.keys(edges).includes(edge)) {
+          edges[edge].knowledge_types.push('inferred');
+        } else {
+          let [subject, predicate, object] = edge.split('-');
+          knowledge_graph.edges.push({
+            subject,
+            predicate,
+            object,
+            knowledge_types: ["inferred"]
+          })
+        }
+      });
+    }
     return knowledge_graph;
   }
 };
