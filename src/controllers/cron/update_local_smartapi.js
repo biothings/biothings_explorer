@@ -92,6 +92,11 @@ const getPredicatesFromGraphData = (predicate_endpoint, data) => {
     const predicates = {}
 
     const addNewPredicates= (edge) => {
+        if (edge.knowledge_types && Array.isArray(edge.knowledge_types)) {
+            if (!edge.knowledge_types.includes('lookup')) {
+                return;
+            }
+        }
         if (!Object.prototype.hasOwnProperty.call(predicates, edge.object)) {
             predicates[edge.object] = {}
         }
