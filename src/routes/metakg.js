@@ -14,7 +14,7 @@ class RouteMetaKG {
                 if (req.query.provided_by !== undefined) {
                     source = utils.removeQuotesFromQuery(req.query.provided_by);
                 }
-                let assocs = await assoc(req.query.subject, req.query.object, req.query.predicate, api, source);
+                let assocs = await assoc(req.query.subject, req.query.object, req.query.predicate, req.query.component, api, source);
                 res.end(JSON.stringify({ associations: assocs }));
             } catch (error) {
                 next(
