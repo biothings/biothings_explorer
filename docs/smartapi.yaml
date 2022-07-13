@@ -25,18 +25,15 @@ servers:
 - url: https://bte.transltr.io/v1
   description: ITRB Production server
   x-maturity: production
-- url: https://api.bte.ncats.io/v1
-  description: Non-ITRB dev (primary internal use)
-  x-maturity: development
-- url: https://dev.api.bte.ncats.io/v1
-  description: Non-ITRB dev (secondary internal use)
-  x-maturity: development
-- url: https://bte.ci.transltr.io/v1
-  description: ITRB CI server
-  x-maturity: staging
 - url: https://bte.test.transltr.io/v1
   description: ITRB Test server
   x-maturity: testing
+- url: https://bte.ci.transltr.io/v1
+  description: ITRB CI server
+  x-maturity: staging
+- url: https://api.bte.ncats.io/v1
+  description: Non-ITRB dev (primary internal use)
+  x-maturity: development
 tags:
 - name: 1.2.0
 - name: meta_knowledge_graph
