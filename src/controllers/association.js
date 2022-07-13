@@ -5,7 +5,7 @@ const util = require('util');
 const readFile = util.promisify(fs.readFile);
 const debug = require("debug")("bte:biothings-explorer-trapi:metakg");
 
-module.exports = async (sub = undefined, obj = undefined, pred = undefined, api = undefined, source = undefined) => {
+module.exports = async (sub = undefined, obj = undefined, pred = undefined, component = undefined, api = undefined, source = undefined) => {
     const smartapi_specs = path.resolve(__dirname, '../../data/smartapi_specs.json');
     debug(`smartapi specs loaded: ${smartapi_specs}`)
     const predicates = path.resolve(__dirname, '../../data/predicates.json');
@@ -20,7 +20,8 @@ module.exports = async (sub = undefined, obj = undefined, pred = undefined, api 
         output_type: obj,
         predicate: pred,
         api_name: api,
-        source: source
+        source: source,
+        component: component
     })
     filtered_res.map(op => {
         associations.push({
