@@ -15,7 +15,7 @@ const userAgent = `BTE/${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}
 const getServerFromSpec = (spec) => {
   const productionLevel = process.env.INSTANCE_ENV ?? '';
 
-  const getLevel = (maturity: string) => {
+  const getLevel = (maturity) => {
     switch (productionLevel) {
       case 'test':
         if (maturity == 'testing') return 0;
