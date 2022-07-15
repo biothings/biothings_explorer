@@ -148,6 +148,8 @@ In BioThings APIs that have an association structure (each record has a subject 
 
 However, in BioThings APIs with a bioentity-based structure (each record represents a specific bioentity ID and all the info associated with it), this is more complicated. For example, in MyDisease.info, each record represents 1 Disease. This means you cannot get the relationship info (previous step) when querying in the reverse direction. For example if you tried to query from Gene -> Disease with MyDisease.info, you would not get the info specific to that Gene-Disease pair (you'd instead get all the info on that Disease). We often call these "reverse" operations that will lack information compared to the "forward" operations...
 
+<br>
+
 # Writing the `x-bte-kgs-operations` section
 
 In `components`, there are two x-bte sections: `x-bte-kgs-operations` and `x-bte-response-mapping`. These are what we refer to when we say "x-bte annotation". 
@@ -173,7 +175,7 @@ There'll be 1 operation per combo and direction (forward / reverse). For an oper
     * the `scopes` field is where the name of the API field that has subject-IDs goes (in dot-notation)
     * we like leaving comments on whether the subject-ID in the API data has a prefix or not
     * `{{ queryInputs }}` means BTE will put an array of IDs there (it often strips off the prefix, but not always...)
-    * more complicated stuff ("templating") can be done to process the IDs (remove or adding a prefix / suffix) and specify values for other fields (to retrieve specific relationships). See the yaml examples, [notes](https://github.com/biothings/call-apis.js/pull/31) [from](https://github.com/biothings/call-apis.js/pull/30) the PRs for this functionality, [internal](https://suwulab.slack.com/archives/CC218TEKC/p1631736378030300?thread_ts=1631051543.343300&cid=CC218TEKC) [Slack](https://suwulab.slack.com/archives/CC218TEKC/p1632532158233300?thread_ts=1632351568.187000&cid=CC218TEKC) links, and [nunjucks](https://mozilla.github.io/nunjucks/templating.html). 
+    * more complicated stuff ("templating") can be done to process the IDs (remove or adding a prefix / suffix) and specify values for other fields (to retrieve specific relationships). See the yaml examples, [notes](https://github.com/biothings/call-apis.js/pull/31) [from](https://github.com/biothings/call-apis.js/pull/30) the PRs for this functionality, [internal](https://suwulab.slack.com/archives/CC218TEKC/p1631736378030300?thread_ts=1631051543.343300&cid=CC218TEKC) [Slack](https://suwulab.slack.com/archives/CC218TEKC/p1632532158233300?thread_ts=1632351568.187000&cid=CC218TEKC) links, and [nunjucks](https://mozilla.github.io/nunjucks/templating.html). Note that the top-level property `requestBodyType: object` is used when you set requestBody.body to a multi-line string (>-) that represents an object/dictionary (notice the text is enclosed in {})
 * `outputs`: it's the same input as the `inputs`
     * id: put the retrieved / object ID-prefix
     * semantic: put the retrieved / object biolink-model semantic-type
@@ -186,6 +188,8 @@ There'll be 1 operation per combo and direction (forward / reverse). For an oper
 * `testExamples`: notice this section is commented out. This is because we aren't using this section yet (it's in development + hiatus)...But it can be useful to give an example subject-ID input and an object-ID you'd expect in the response. Particularly when testing that the yaml is written correctly (see last section below). 
 
 Remember to put the key / names of each operation into the x-bte-kgs-operations list in the endpoint section! 
+
+<br>
 
 # Writing the `x-bte-response-mapping` section
 
