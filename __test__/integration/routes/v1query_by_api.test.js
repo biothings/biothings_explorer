@@ -12,7 +12,7 @@ describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
             message1: 1
         };
         await request(app)
-            .post("/v1/smartapi/5be0f321a829792e934545998b9c6afe/query/")
+            .post("/v1/smartapi/8f08d1446e0bb9c2b323713ce83e2bd3/query/")
             .send(InvalidInputQueryGraph)
             .set('Accept', 'application/json')
             .expect(400)
@@ -25,7 +25,7 @@ describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
     test("Input query graph missing nodes definition should return 400", async () => {
         const query_with_nodes_undefined = JSON.parse(fs.readFileSync(path.join(invalid_example_folder, "query_graph_with_nodes_not_specified.json")));
         await request(app)
-            .post("/v1/smartapi/5be0f321a829792e934545998b9c6afe/query/")
+            .post("/v1/smartapi/8f08d1446e0bb9c2b323713ce83e2bd3/query/")
             .send(query_with_nodes_undefined)
             .set('Accept', 'application/json')
             .expect(400)
@@ -38,7 +38,7 @@ describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
     test("Input query graph missing edges definition should return 400 error", async () => {
         const query_with_edges_undefined = JSON.parse(fs.readFileSync(path.join(invalid_example_folder, "query_graph_with_edges_not_specified.json")));
         await request(app)
-            .post("/v1/smartapi/5be0f321a829792e934545998b9c6afe/query/")
+            .post("/v1/smartapi/8f08d1446e0bb9c2b323713ce83e2bd3/query/")
             .send(query_with_edges_undefined)
             .set('Accept', 'application/json')
             .expect(400)
@@ -51,7 +51,7 @@ describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
     test("Input query graph with nodes and edges mismatch should return 400 error", async () => {
         const query_with_nodes_and_edges_not_match = JSON.parse(fs.readFileSync(path.join(invalid_example_folder, "query_graph_with_nodes_and_edges_not_match.json")));
         await request(app)
-            .post("/v1/smartapi/5be0f321a829792e934545998b9c6afe/query/")
+            .post("/v1/smartapi/8f08d1446e0bb9c2b323713ce83e2bd3/query/")
             .send(query_with_nodes_and_edges_not_match)
             .set('Accept', 'application/json')
             .expect(400)
