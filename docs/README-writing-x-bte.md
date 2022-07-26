@@ -576,7 +576,8 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
             subject.DISEASE_NAME,
             relation.GENE_SYMBOL,relation.GENE_ID
           size: 1000
-        predicate: actively_involved_in
+        ## inverse of actively_involved_in
+        predicate: actively_involves
         source: "infores:bioplanet"
         response_mapping:
           "$ref": "#/components/x-bte-response-mapping/pathway"
