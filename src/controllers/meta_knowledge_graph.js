@@ -65,11 +65,6 @@ module.exports = class MetaKnowledgeGraphHandler {
         };
         let predicates = {};
         let node_sets = {};
-        // Object.keys(ids).map(semanticType => {
-        //     knowledge_graph.nodes[this._modifyCategory(semanticType)] = {
-        //         id_prefixes: ids[semanticType].id_ranks
-        //     }
-        // })
         kg.ops.map(op => {
             let input = this._modifyCategory(op.association.input_type);
             let inputID = op.association.input_id;
