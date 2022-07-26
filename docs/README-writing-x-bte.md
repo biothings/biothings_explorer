@@ -465,6 +465,7 @@ Tips:
 * you have to use biolink-model predicates that exist in the version of biolink-model BTE is using
 * CTRL-F using your words for the relationship to see if the biolink-model has suggestions / mappings
 * the spelling for biolink-model predicates is actually snake_case (all lower-case, "_" between words)
+* use predicates that have inverses!
 * we try to use more-specific terms that still match almost all of the data for the combo. We don't use mixins (the entry in the yaml will have `mixin: true`)
   * this means sometimes using a more-general predicate, when we can't set a relationship field to specific values to get different relationships
 * for regulation, we tend to use "entity_regulates_entity" (aka this existing-thing regulates this other existing-thing) rather than the process-one (this process affects this other process, and not many biolink-model semantic-types are "processes")
