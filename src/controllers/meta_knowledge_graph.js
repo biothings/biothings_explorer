@@ -106,7 +106,7 @@ module.exports = class MetaKnowledgeGraphHandler {
             })
         })
         Object.keys(node_sets).map(node => {
-          knowledge_graph.nodes[node] = Array.from(node_sets[node])
+          knowledge_graph.nodes[node] = {id_prefixes: Array.from(node_sets[node])}
         })
         return knowledge_graph;
     }
