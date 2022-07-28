@@ -67,9 +67,9 @@ module.exports = class MetaKnowledgeGraphHandler {
         let node_sets = {};
         kg.ops.map(op => {
             let input = this._modifyCategory(op.association.input_type);
-            let inputID = op.association.input_id;
+            let inputIDs = Array.isArray(op.association.input_id) ? op.association.input_id : [op.association.input_id];
             let output = this._modifyCategory(op.association.output_type);
-            let outputID = op.association.output_id;
+            let outputIDs = Array.isArray(op.association.output_id) ? op.association.output_id : [op.association.output_id];
             let pred = this._modifyPredicate(op.association.predicate);
 
             //edges
@@ -87,12 +87,12 @@ module.exports = class MetaKnowledgeGraphHandler {
             if (!(input in node_sets)) {
               node_sets[input] = new Set();
             }
-            node_sets[input].add(inputID)
+            inputIDs.forEach(id => id && node_sets[input].add(id))
 
             if (!(output in node_sets)) {
               node_sets[output] = new Set();
             }
-            node_sets[output].add(outputID)
+            outputIDs.forEach(id => id && node_sets[output].add(id))
         })
         Object.keys(predicates).map(input => {
             Object.keys(predicates[input]).map(output => {
