@@ -117,7 +117,7 @@ const getOpsFromEndpoint = async (metadata) => {
         .then((res) => {
             if (res.status === 200) {
                 debug(`Successfully got ${metadata.predicates_path} for ${metadata.query_operation.server}`)
-                return { ...metadata, ...{ predicates: getPredicatesFromGraphData(metadata.predicates_path, res.data) } };
+                return { ...metadata, ...{ predicates: getPredicatesFromGraphData(metadata.predicates_path, res.data) }, nodes: res.data.nodes };
             }
             debug(
                 `[error]: API "${metadata.association.api_name}" Unable to get ${metadata.predicates_path}` +
