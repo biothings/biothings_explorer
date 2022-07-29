@@ -28,5 +28,5 @@ jobs:
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        base-path: packages/@biothings-explorer/bte-trapi
+        base-path: ./packages/@biothings-explorer/bte-trapi
         path-to-lcov: ./packages/@biothings-explorer/bte-trapi/coverage/lcov.info
