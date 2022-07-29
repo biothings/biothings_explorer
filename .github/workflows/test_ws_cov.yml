@@ -25,7 +25,7 @@ jobs:
         npm run test-cov --workspace=@biothings-explorer/bte-trapi
 
     - name: Send coverage report to coveralls for visualization
-      uses: coverallsapp/github-action@v1.1.0
+      uses: coverallsapp/github-action@v1.1.1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         base-path: ./packages/@biothings-explorer/bte-trapi
