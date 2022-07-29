@@ -1,0 +1,32 @@
+on: ["push", "pull_request"]
+
+name: Test Coveralls with orkspace
+
+jobs:
+
+  test-coverage:
+    name: Generate coverage report
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v3
+      with:
+        repository: biothings/bte-trapi-workspace
+
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
+
+    - name: npm install, generate coverage report
+      run: |
+        npm run clone
+        npm i || true && npm i
+        npm run test-cov --workspace=@biothings-explorer/bte-trapi
+
+    - name: Send coverage report to coveralls for visualization
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        base-path: packages/@biothings-explorer/query_graph_handler
+        # path-to-lcov: ./packages/@biothings-explorer/query_graph_handler/coverage/lcov.info
