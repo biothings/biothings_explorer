@@ -1,6 +1,6 @@
 on: ["push", "pull_request"]
 
-name: Test Coveralls with orkspace
+name: Test Coveralls with workspace
 
 jobs:
 
@@ -29,4 +29,4 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         base-path: packages/@biothings-explorer/query_graph_handler
-        # path-to-lcov: ./packages/@biothings-explorer/query_graph_handler/coverage/lcov.info
+        path-to-lcov: ./packages/@biothings-explorer/query_graph_handler/coverage/lcov.info
