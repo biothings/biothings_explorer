@@ -229,7 +229,7 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
 * EDIT:
   * any `summary` for a path
   * the `example`/`examples`
-  * the `x-bte-kgs-operations` section. This should be on the same level as the `parameters`, `requestBody`, `responses`, and `tags` properties.
+  * the `x-bte-kgs-operations` section. This should be on the same level as the `parameters`, `requestBody`, `responses`, and `tags` properties. Check that this section is in the endpoint you want BTE to use when querying the API.
   * Notice that `x-bte-kgs-operations` is a list of "references" to other parts of the SmartAPI yaml. This should list the keys / names of the stuff in the `components.x-bte-kgs-operations` section. Read [this](https://json-schema.org/understanding-json-schema/structuring.html#ref) for more info on how references work.  
 
 Optional: Some commented-out sections of the document are about "schemas". These can be useful for describing the endpoint responses. However, we currently aren't really using them.
