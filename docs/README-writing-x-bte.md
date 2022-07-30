@@ -14,7 +14,7 @@ In most cases, we'll want the file in a folder in this [repo](https://github.com
 
 ### Start by copying and editing SmartAPI sections
 
-Start with an empty file, then copy sections from an existing BioThings API's yaml. Use a simple yaml like [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml#L439) or pick a yaml from the examples listed below that best matches the endpoints your API has and the operations you plan to write.
+Start with an empty file, then copy sections from an existing BioThings API's yaml. Use a simple yaml like [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml) or pick a yaml from the examples listed below that best matches the endpoints your API has and the operations you plan to write.
 
 Examples that use the latest format ("templated" querying):
 
@@ -28,13 +28,13 @@ Examples that use the latest format ("templated" querying):
 * more complicated
   * [Multiomics Provider Drug response kp api](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/drug_response_kp/smartapi.yaml)
   * [Text-Mining Provider targeted association kp api](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/text_mining/smartapi.yaml)
-  * SEMMEDDB, see [operations](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/semmeddb/generated_operations.yaml), [operations list](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/semmeddb/generated_list.yaml), vs rest of the yaml that has the [x-bte response mapping](https://github.com/NCATS-Tangerine/translator-api-registry/blob/050a5e9e9bc6b3991d72d1f63ddfd2447c8aaa28/semmeddb/version_without_operations.yaml#L484)
+  * SEMMEDDB, see [operations](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/semmeddb/generated_operations.yaml), [operations list](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/semmeddb/generated_list.yaml), vs rest of the yaml that has the [x-bte response mapping](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/semmeddb/version_without_operations.yaml)
 
 ### Basic info
 
 Basic info in the beginning of the file includes the top-level properties `openapi`, `info`, and `servers`.
 
-Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml):
+Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
 ```yaml
 openapi: 3.0.3
@@ -72,14 +72,14 @@ Often, you will edit:
 * `info.title`: this is the API's name. We tend to call them "BioThings X API"...
 * `info.version`: this is the API's version
 * `info.x-translator`
-  * `infores` uses terms that are in this [catalog](https://docs.google.com/spreadsheets/d/1Ak1hRqlTLr1qa-7O0s5bqeTHukj9gSLQML1-lg6xIHM/edit#gid=293462374), or we create terms and then add them to the catalog (and then let the Translator members that control the catalog know). You can use CTRL-F to see if a term that matches your API already exists. Note that this property's string value [has to start with `infores:`](https://github.com/NCATSTranslator/translator_extensions/blob/8980a59d045ec98f2ef93f295f647404c9a34e7c/x-translator/smartapi_x-translator_schema.json#L19)
-  * `team` may need to be adjusted. If other teams are involved in the creation of this API, add them to the list. The accepted values are [here](https://github.com/NCATSTranslator/translator_extensions/blob/8980a59d045ec98f2ef93f295f647404c9a34e7c/x-translator/smartapi_x-translator_schema.json#L36)
+  * `infores` uses terms that are in this [catalog](https://docs.google.com/spreadsheets/d/1Ak1hRqlTLr1qa-7O0s5bqeTHukj9gSLQML1-lg6xIHM/edit#gid=293462374), or we create terms and then add them to the catalog (and then let the Translator members that control the catalog know). You can use CTRL-F to see if a term that matches your API already exists. Note that this property's string value [has to start with `infores:`](https://github.com/NCATSTranslator/translator_extensions/blob/main/x-translator/smartapi_x-translator_schema.json)
+  * `team` may need to be adjusted. If other teams are involved in the creation of this API, add them to the list. The accepted values are [here](https://github.com/NCATSTranslator/translator_extensions/blob/main/x-translator/smartapi_x-translator_schema.json)
   * `biolink-version` should be set to the version of the biolink-model that BTE is currently on
 * `servers`: edit the urls
 
 ### tags
 
-Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml):
+Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
 ```yaml
 tags:
@@ -115,7 +115,7 @@ To check that the path metadata (including examples) work as intended, one can r
   * the `example`/`examples`
   * the `tags`. Use a keyword that matches the path (like `association`) as the tag for these endpoints
 
-Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml):
+Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
 ```yaml
 paths:
@@ -192,7 +192,7 @@ paths:
 
 GET endpoints. Often need no edits
 
-Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml):
+Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
 ```yaml
   "/metadata":
@@ -234,7 +234,7 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
 
 Optional: Some commented-out sections of the document are about "schemas". These can be useful for describing the endpoint responses. However, we currently aren't really using them.
 
-Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml):
+Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
 ```yaml
   "/query":
@@ -396,7 +396,7 @@ Look at the `/metadata/fields` response and example responses from the API endpo
 * What kind of IDs (ID namespaces) are used to specify the bioentities (and do they have prefixes or non-numeric characters? IDs with prefixes are also called [curies](https://cthoyt.com/2021/09/14/curies.html))?
 * What fields contain those IDs?
 
-Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml):
+Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
 ```text
 * 3 potential types:
@@ -408,7 +408,7 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
 
 ### Biolink-model categories and ID-prefix spellings
 
-Look at the [biolink-model semantic-types / categories](https://github.com/biolink/biolink-model/blob/394c3c10595ecaf3d7a24516be764c097af3d335/biolink-model.yaml#L7172) and [ID-prefix spellings](https://github.com/biolink/biolink-model/blob/master/context.jsonld). The [tree visualization](https://tree-viz-biolink.herokuapp.com/categories/2.2.13) can be helpful. To the list you made above, add the biolink-model semantic-types and prefix spellings you'll need.
+Look at the [biolink-model](https://github.com/biolink/biolink-model/blob/master/biolink-model.yaml) semantic-types / categories (pick the tag/version that BTE is on and look for the `## THINGS` comment heading) and [ID-prefix spellings](https://github.com/biolink/biolink-model/blob/master/context.jsonld). The [tree visualization](https://tree-viz-biolink.herokuapp.com/categories/2.2.13) can be helpful and its url can be modified for the tag/version of biolink-model. To the list you made above, add the biolink-model semantic-types and prefix spellings you'll need.
 
 Tips:
 
@@ -422,13 +422,13 @@ Tips:
 * If it's not clear what ID-prefix spelling to use (maybe it doesn't exist in the biolink-model yet), discuss with more-experienced team members. In general, the ID should be in the form that it is in the original vocab. Then the prefix is usually in all-caps, period-delimited, and says what vocab this is from. It's okay if the ID-namespace / prefix used isn't in the biolink-model yet.
 * If it's not clear what semantic types the IDs fit, sometimes it is helpful to input a few IDs into Translator's [Node Normalizer tool](https://nodenormalization-sri.renci.org/docs) and see what semantic type the tool says they are.
 
-Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml):
+Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
 ```text
 * 3 potential types:
   * Disease (biolink): OMIM IDs without prefixes, in field subject.PHENO_TYPE
-  * Gene (biolink): NCBIGene~/Entrez~ IDs without prefixes, in field relation.GENE_ID
-  * Pathway (biolink): BIOPLANET IDs (new ID-namespace for biolink-model), without prefixes but ID
+  * Gene (biolink): NCBIGene IDs without prefixes, in field relation.GENE_ID
+  * Pathway (biolink): bioplanet IDs (later versions of biolink-model spell it as `ncats.bioplanet`), without prefixes but ID
     itself seems to have text (bioplanet_90), in field object.PATHWAY_ID
 ```
 
@@ -443,11 +443,15 @@ Figure out what combinations/combos of things there are, and make a list of them
   * kind of relationship
   * object-category
   * object-ID-prefix
+* If there are multiple ID-prefixes for a "subject-category" or "object-category", you should consider:
+  * Can you retrieve different records/documents by querying with or retrieving different ID-prefixes? If so, then writing multiple operations makes sense. If not, then just pick one.
+  * Pick a set of ID-prefixes that will cover most of the API's data. This can be easily checked with BioThings APIs by doing queries with `_exists_` ([example](https://pending.biothings.io/bindingdb/query?q=_exists_:object.pubchem_cid))
+  * If you have several ID-prefixes that are "equally good", use the biolink-model's id-prefixes list order for the category (they're in order from most-preferred to least-preferred).
 * Yes, this means some combos will be redundant (for example, if an API has a bunch of different ID-namespaces/prefixes but they're all Pathways). Right now, we have to write a different operation for each one
 * And if you can set relationship field to specific values to get different relationships, then there can be separate combos / operations based on how that field is set.
 * If the API data has only a few records matching a particular combo, you could write this down as a comment in the yaml and decide not to write an operation for that combo
 
-Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml):
+Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
 ```text
 * Gene is an "intermediate" / explanation for Disease <-> Pathway associations so 
@@ -458,7 +462,7 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
 
 ### Biolink-model predicates
 
-Decide what biolink-model predicates to use for each combo; write that down in the list of combos. The [biolink-model yaml section](https://github.com/biolink/biolink-model/blob/394c3c10595ecaf3d7a24516be764c097af3d335/biolink-model.yaml#L1357) and the [visualization](https://tree-viz-biolink.herokuapp.com/predicates/2.2.13) can be helpful.
+Decide what biolink-model predicates to use for each combo; write that down in the list of combos. Look at the [biolink-model](https://github.com/biolink/biolink-model/blob/master/biolink-model.yaml) predicates (pick the tag/version that BTE is on and look for the `## PREDICATES/RELATIONS` comment heading). The [tree visualization](https://tree-viz-biolink.herokuapp.com/predicates/2.2.13) can be helpful and its url can be modified for the tag/version of biolink-model.
 
 Tips:
 
@@ -470,9 +474,9 @@ Tips:
   * this means sometimes using a more-general predicate, when we can't set a relationship field to specific values to get different relationships
 * for regulation, we tend to use "entity_regulates_entity" (aka this existing-thing regulates this other existing-thing) rather than the process-one (this process affects this other process, and not many biolink-model semantic-types are "processes")
 
-Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml):
+Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
-* decided to use Pathway "actively_involved_in" Disease because that's the same predicate used by a similar operation written for [biolink (monarch) api](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/biolink/openapi.yml#L1154)
+* decided to use Pathway "actively_involved_in" Disease because that's the same predicate used by a similar operation written for [biolink (monarch) api](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/biolink/openapi.yml)
 * for the other direction ("inverse"), it's Disease "actively_involves" Pathway
 
 ### Other info
@@ -481,7 +485,7 @@ Decide what information on the relationship you want to include. Publication IDs
 
 One would only include subject or object-specific fields if there is a concern that the info would be missing if it wasn't retrieved here (so sometimes human-readable names, "original" names and IDs, "types of diseases or chemicals"...).
 
-Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml):
+Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
 ```text
 * this API didn't have any publications or websites in its fields
@@ -501,7 +505,7 @@ In BioThings APIs that have an association structure (each record has a subject 
 
 However, in BioThings APIs with a bioentity-based structure (each record represents a specific bioentity ID and all the info associated with it), this is more complicated. For example, in MyDisease.info, each record represents 1 Disease. This means you cannot get the relationship info (previous step) when querying in the reverse direction. If you tried to query from Gene -> Disease with MyDisease.info, you would not get the info specific to that Gene-Disease pair (you'd instead get all the info on that Disease). We often call these special "reverse" operations since they will lack information compared to the "forward" operations...
 
-Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml):
+Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
 ```text
 * This API has an association-structure (each record represents 1 association between a subject-object).
@@ -520,16 +524,20 @@ General notes:
 * the subject/ input can check multiple fields for the starting ID
 * but the object / output can only map to 1 field, so if there's >=1 that you need to use, those will have to be separate operations and response-mappings
 
-Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml):
+Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
 ```yaml
   x-bte-kgs-operations:
+  ## 3 potential types: Disease, Gene, Pathway (BioPlanet IDs)
+  ## - API pathway IDs don't have a bioplanet prefix on them (but they are in the format bioplanet_276)
+  ## - Gene is an "intermediate" / explanation for Disease <-> Pathway associations
+  ##   so I'm currently only doing Disease <-> Pathway
     pathway-disease:
     ## 44,084 documents in the API 
       - supportBatch: true
         useTemplating: true ## flag to say templating is being used below
         inputs:
-          - id: BIOPLANET
+          - id: "ncats.bioplanet"
             semantic: Pathway
         requestBody:
           body:
@@ -553,8 +561,8 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
         response_mapping:
           "$ref": "#/components/x-bte-response-mapping/disease"
         # testExamples:
-        #   - qInput: "BIOPLANET:bioplanet_276"     ## Alpha-hemoglobin stabilizing enzyme (AHSP) pathway
-        #     oneOutput: "OMIM:300751"              ## Anemia, sideroblastic, X-linked, 300751 (3)
+        #   - qInput: "ncats.bioplanet:bioplanet_276"     ## Alpha-hemoglobin stabilizing enzyme (AHSP) pathway
+        #     oneOutput: "OMIM:300751"                    ## Anemia, sideroblastic, X-linked, 300751 (3)
     disease-pathway:
       - supportBatch: true
         useTemplating: true ## flag to say templating is being used below
@@ -568,7 +576,7 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
             q: "{{ queryInputs }}"
             scopes: subject.PHENO_TYPE
         outputs:
-          - id: BIOPLANET
+          - id: "ncats.bioplanet"
             semantic: Pathway
         parameters:
           fields: >-
@@ -583,8 +591,8 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
         response_mapping:
           "$ref": "#/components/x-bte-response-mapping/pathway"
         # testExamples:
-        #   - qInput: "OMIM:603909"                  ## Autoimmune lymphoproliferative syndrome, type II, 603909 (3) 
-        #     oneOutput: "BIOPLANET:bioplanet_26"    ## D4-GDI signaling pathway
+        #   - qInput: "OMIM:603909"                        ## Autoimmune lymphoproliferative syndrome, type II, 603909 (3) 
+        #     oneOutput: "ncats.bioplanet:bioplanet_26"    ## D4-GDI signaling pathway
 ```
 
 There'll be 1 operation per combo,  direction (forward / reverse), and object field. For an operation, there'll be the following sections:
@@ -599,7 +607,7 @@ There'll be 1 operation per combo,  direction (forward / reverse), and object fi
   * the `scopes` field is where the name of the API field that has subject-IDs goes (in dot-notation)
   * we like leaving comments on whether the subject-ID in the API data has a prefix or not
   * `{{ queryInputs }}` means BTE will put an array of IDs there (it often strips off the prefix, but not always...)
-  * more complicated stuff ("templating") can be done to process the IDs (remove or adding a prefix / suffix) and specify values for other fields (to retrieve specific relationships). See [BioThings dgidb API](https://github.com/NCATS-Tangerine/translator-api-registry/blob/050a5e9e9bc6b3991d72d1f63ddfd2447c8aaa28/dgidb/openapi.yml#L476) and other "complicated" examples in the list above, [notes](https://github.com/biothings/call-apis.js/pull/31) [from](https://github.com/biothings/call-apis.js/pull/30) the PRs for this functionality, [internal](https://suwulab.slack.com/archives/CC218TEKC/p1631736378030300?thread_ts=1631051543.343300&cid=CC218TEKC) [Slack](https://suwulab.slack.com/archives/CC218TEKC/p1632532158233300?thread_ts=1632351568.187000&cid=CC218TEKC) links, and [nunjucks](https://mozilla.github.io/nunjucks/templating.html). Note that the top-level property `requestBodyType: object` is used when you set `requestBody.body` to a multi-line string (>-) that represents an object/dictionary (notice the text is enclosed in {})
+  * more complicated stuff ("templating") can be done to process the IDs (remove or adding a prefix / suffix) and specify values for other fields (to retrieve specific relationships). See [BioThings dgidb API](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/dgidb/openapi.yml) and other "complicated" examples in the list above, [notes](https://github.com/biothings/call-apis.js/pull/31) [from](https://github.com/biothings/call-apis.js/pull/30) the PRs for this functionality, [internal](https://suwulab.slack.com/archives/CC218TEKC/p1631736378030300?thread_ts=1631051543.343300&cid=CC218TEKC) [Slack](https://suwulab.slack.com/archives/CC218TEKC/p1632532158233300?thread_ts=1632351568.187000&cid=CC218TEKC) links, and [nunjucks](https://mozilla.github.io/nunjucks/templating.html). Note that the top-level property `requestBodyType: object` is used when you set `requestBody.body` to a multi-line string (>-) that represents an object/dictionary (notice the text is enclosed in {})
 * `outputs`: it's the same input as the `inputs`
   * id: put the retrieved / object ID-prefix
   * semantic: put the retrieved / object biolink-model semantic-type
@@ -623,7 +631,7 @@ Each response-mapping has a key/name (used in the operation references). This ca
 
 The fields are specified using dot-notation.
 
-Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/6af7db52deaeb5bebcf63fcccbffac9a38ae1df8/bioplanet/bioplanet-pathway-disease.yaml):
+Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
 ```yaml
   x-bte-response-mapping:
@@ -635,7 +643,7 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
       related_genes_symbol: relation.GENE_SYMBOL
       related_genes_ncbigene: relation.GENE_ID
     pathway:
-      BIOPLANET: object.PATHWAY_ID
+      "ncats.bioplanet": object.PATHWAY_ID   ## no prefix
       pathway_name: object.PATHWAY_NAME
       pathway_categories: object.PATHWAY_CATEGORIES
       disease_name: subject.DISEASE_NAME
@@ -647,14 +655,14 @@ Sections:
 
 * 1 key is the object-ID-prefix, and the value is the dot-notation for the field that has the object-IDs. We tend to leave a comment saying whether those IDs are prefixed or not
 * pubmed: this is a special key, and the value is the dot-notation for the field holding the PMIDs of publications. BTE will specially handle these. The PMIDs can be plain IDs or prefixed.
-* other fields: when we can, we try to use a [biolink-model association-slot term](https://github.com/biolink/biolink-model/blob/394c3c10595ecaf3d7a24516be764c097af3d335/biolink-model.yaml#L6579). When we use it, we add the biolink prefix like this: "biolink:original_subject". Otherwise, we write our own descriptive key (without spaces).
+* other fields: when we can, we try to use a [biolink-model](https://github.com/biolink/biolink-model/blob/master/biolink-model.yaml) association-slot term (pick the tag/version that BTE is on and look for the `## ASSOCIATION SLOTS` comment heading). When we use it, we add the biolink prefix like this: "biolink:original_subject". Otherwise, we write our own descriptive key (without spaces).
 * in a special case, other Translator teams ask us to make BioThings APIs and provide their TRAPI edge-attributes in a special section of the records (usually association.edge-attributes). In this case, we want the key to be `edge-attributes`. During testing, we'll want to check if BTE automatically ingested this properly or not (1 mega-attribute with all the stuff from that field in it would be incorrect).
 
 ## For non-BioThings (other) APIs
 
 Examples:
 
-* Biolink (Monarch) api (not BioThings or TRAPI): has annotation on each endpoint described, look [here](https://github.com/NCATS-Tangerine/translator-api-registry/blob/050a5e9e9bc6b3991d72d1f63ddfd2447c8aaa28/biolink/openapi.yml#L787) for x-bte annotation
+* Biolink (Monarch) api (not BioThings or TRAPI): has annotation on each endpoint described, look [here](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/biolink/openapi.yml)
 * [EBI Proteins API](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/ebi_proteins/openapi.yml)
 
 (WIP to write the guide for writing these)
