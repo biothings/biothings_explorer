@@ -133,8 +133,9 @@ exports.API_LIST = {
         // TRAPI (Translator standard) APIs: Automat
         // not accessible by team or api-specific endpoints
         // Notes: We don't ingest the following:
-        // - Automat Chemical normalization (only has outdated ChemicalSubstance semantic type in meta_knowledge_graph endpoint)
+        // - Automat Chemical normalization: only has outdated ChemicalSubstance semantic type in meta_knowledge_graph response
         // - Automat Covidkop KG: seems to repeat a lot of data that is in the other APIs
+        // - Automat Foodb: has outdated ChemicalSubstance and odd FDBN IDs in meta_knowledge_graph response
         // - Automat Robokop KG: seems to repeat a lot of data that is in the other APIs
         // - Automat molepro-fda: doesn't have edges / associations
         {
@@ -155,10 +156,6 @@ exports.API_LIST = {
         {
             id: '03c1982f2e3ba3710da20aa9c01a00f6',
             name: 'Automat DrugCentral (trapi v-1.2.0)'
-        },
-        {
-            id: '7ba4ef33f17ab1fd4f106f105b19a1bc',
-            name: 'Automat Foodb (trapi v-1.2.0)'
         },
         {
             id: '0f4e5f1293de2074ccebe01b14567574',
