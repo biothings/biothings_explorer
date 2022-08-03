@@ -152,7 +152,7 @@ const getOpsFromPredicatesEndpoints = async (specs) => {
 }
 
 const updateSmartAPISpecs = async () => {
-    const SMARTAPI_URL = 'https://smart-api.info/api/query?q=tags.name:translator&size=200&sort=_seq_no&raw=1&fields=paths,servers,tags,components.x-bte*,info,_meta';
+    const SMARTAPI_URL = 'https://smart-api.info/api/query?q=tags.name:translator&size=1000&sort=_seq_no&raw=1&fields=paths,servers,tags,components.x-bte*,info,_meta';
     const res = await axios.get(SMARTAPI_URL, { headers: { 'User-Agent': userAgent } });
     const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
     const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
