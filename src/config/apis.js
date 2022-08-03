@@ -113,7 +113,7 @@ exports.API_LIST = {
         // also accessible by v1/team/Service Provider/ and v1/team/Multiomics Provider endpoints, and by api-specific endpoints
         {
             id: 'd86a24f6027ffe778f84ba10a7a1861a',
-            name: 'Clinical Risk KP API'
+            name: 'Multiomics EHR Risk KP API'
         },
         {
             id: 'adf20dd6ff23dfe18e8e012bde686e31',
