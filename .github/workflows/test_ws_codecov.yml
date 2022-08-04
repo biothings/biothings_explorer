@@ -1,6 +1,6 @@
 on: ["push", "pull_request"]
 
-name: Test with workspace
+name: Test Codecov with Workspace
 
 jobs:
 
@@ -23,3 +23,10 @@ jobs:
         npm run clone
         npm i || true && npm i
         npm run test-cov --workspace=@biothings-explorer/bte-trapi
+
+    - name: Send coverage report to codecov for visualization
+      uses: codecov/codecov-action@v3
+      with:
+        working-directory: ./packages/@biothings-explorer/bte-trapi
+        files: ./coverage/lcov.info
+        verbose: true
