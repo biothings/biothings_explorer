@@ -38,7 +38,18 @@ class RedisLogger {
       }
       this.client = new Redis(details);
     }
-    this.clientEnabled = true;
+
+    //operation so that KEY_1 can be updated with max length of KEY_2 (array)
+    this.client.defineCommand("arrayLenUpdate", {
+      numberOfKeys: 2,
+      lua: `
+      local len = #(redis.call('SMEMBERS', KEYS[2]) or {})
+      local val = redis.call('GET', KEYS[1]) or 0
+      if tonumber(val) < len then redis.call('SET', KEYS[1], len)
+      end
+      `,
+    });
+    
   }
 
   async logUserFailiure() {
@@ -65,18 +76,37 @@ class RedisLogger {
     if (this.clientEnabled) return await this.client.get(this.prefix+"successes")
   }
 
+  async startRequest(requestNum) {
+    if (this.clientEnabled) {
+      await this.client.sadd(this.prefix+"requests", requestNum)
+      await this.client.arrayLenUpdate(this.prefix+"high_requests", this.prefix+"requests")
+    }
+  }
+
+  async endRequest(requestNum) {
+    if (this.clientEnabled) {
+      await this.client.srem(this.prefix+"requests", requestNum)
+    }
+  }
+
+  async getConcurrentHighMark() {
+    return await this.client.get(this.prefix+"high_requests")
+  }
+
   async getLogs() {
     if (this.clientEnabled) {
-      const [user_failiures, server_failiures, successes] = await Promise.all([
+      const [user_failiures, server_failiures, successes, concurrent_high_mark] = await Promise.all([
         this.getUserFailiures(),
         this.getServerFailiures(),
-        this.getSuccesses()
+        this.getSuccesses(),
+        this.getConcurrentHighMark()
       ])
 
       return {
         user_failiures,
         server_failiures,
-        successes
+        successes,
+        concurrent_high_mark
       }
     }
     return {};
