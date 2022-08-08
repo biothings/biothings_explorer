@@ -11,11 +11,14 @@ const routesV1CheckQueryStatus = require('./v1/check_query_status');
 const routesV1MetaKG = require("./v1/meta_knowledge_graph_v1")
 const routesV1MetaKGByAPI = require("./v1/meta_knowledge_graph_v1_by_api");
 const routesV1MetaKGByTeam = require("./v1/meta_knowledge_graph_v1_by_team");
+const routesLogging = require("./logging_data");
 const ErrorHandler = require("../middlewares/error");
 const LoggingHandler = require("../middlewares/logging");
+const RedisLoggerMiddleware = require("../middlewares/redis_logging");
 
 class Routes {
     setRoutes(app) {
+        RedisLoggerMiddleware.setRoutes(app);
         routesMetaKG.setRoutes(app);
         routesV1MetaKG.setRoutes(app);
         routesV1AsyncQuery.setRoutes(app);
@@ -30,6 +33,7 @@ class Routes {
         routesV1QueryByTeam.setRoutes(app);
         LoggingHandler.setRoutes(app);
         routesV1Query.setRoutes(app);
+        routesLogging.setRoutes(app);
         ErrorHandler.setRoutes(app);
     }
 
