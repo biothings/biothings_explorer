@@ -1,41 +1,11 @@
-// const { redisClient } = require("@biothings-explorer/query_graph_handler");
 const Redis = require("ioredis");
 
 class RedisLogger {
-  prefix = "bte:logging:"
-  logs = ["test", "successes", "server_failiures", "user_failiures"]
+  constructor(prefix) {
+    this.prefix = prefix;
+    this.clientEnabled = process.env.REDIS_HOST !== undefined && process.env.REDIS_PORT !== undefined;
 
-  async logTest(value) {
-    if (this.clientEnabled) await this.client.set(this.prefix+"test", value)
-  }
-
-  async logUserFailiure() {
-    if (this.clientEnabled) await this.client.incr(this.prefix+"user_failiures")
-  }
-  
-  async logServerFailiure() {
-    if (this.clientEnabled) await this.client.incr(this.prefix+"server_failiures")
-  }
-
-  async logSuccess() {
-    if (this.clientEnabled) await this.client.incr(this.prefix+"successes")
-  }
-
-  async getLogs() {
-    const log_results = {}
-    if (this.clientEnabled) {
-      await Promise.all(this.logs.map((log) => {
-        return (async () => {
-          log_results[log] = await this.client.get(this.prefix+log)
-        })()
-      }))
-    }
-    return log_results
-  }
-
-  constructor() {
-    if (process.env.REDIS_HOST === undefined || process.env.REDIS_PORT === undefined) {
-      this.clientEnabled = false;
+    if (!this.clientEnabled) {
       return;
     }
 
@@ -70,6 +40,47 @@ class RedisLogger {
     }
     this.clientEnabled = true;
   }
+
+  async logUserFailiure() {
+    if (this.clientEnabled) await this.client.incr(this.prefix+"user_failiures")
+  }
+
+  async getUserFailiures() {
+    if (this.clientEnabled) return await this.client.get(this.prefix+"user_failiures")
+  }
+  
+  async logServerFailiure() {
+    if (this.clientEnabled) await this.client.incr(this.prefix+"server_failiures")
+  }
+
+  async getServerFailiures() {
+    if (this.clientEnabled) return await this.client.get(this.prefix+"server_failiures")
+  }
+
+  async logSuccess() {
+    if (this.clientEnabled) await this.client.incr(this.prefix+"successes")
+  }
+
+  async getSuccesses() {
+    if (this.clientEnabled) return await this.client.get(this.prefix+"successes")
+  }
+
+  async getLogs() {
+    if (this.clientEnabled) {
+      const [user_failiures, server_failiures, successes] = await Promise.all([
+        this.getUserFailiures(),
+        this.getServerFailiures(),
+        this.getSuccesses()
+      ])
+
+      return {
+        user_failiures,
+        server_failiures,
+        successes
+      }
+    }
+    return {};
+  }
 }
 
-module.exports = new RedisLogger()
+module.exports = new RedisLogger("bte:logging:")
