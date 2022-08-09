@@ -6,10 +6,11 @@ const predicatesPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${proc
 const utils = require("../../utils/common");
 const { runTask, taskResponse, taskError } = require("../../controllers/threading/threadHandler");
 const { API_LIST: apiList } = require("../../config/apis");
+const redisSyncLogging = require("../../middlewares/redis_sync_logging");
 
 class RouteQueryV1ByTeam {
     setRoutes(app) {
-        app.post('/v1/team/:team_name/query', swaggerValidation.validate, async (req, res, next) => {
+        app.post('/v1/team/:team_name/query', redisSyncLogging.getMiddleware(), swaggerValidation.validate, async (req, res, next) => {
             try {
                 const response = await runTask(req, this.task, path.parse(__filename).name);
                 res.setHeader("Content-Type", "application/json");

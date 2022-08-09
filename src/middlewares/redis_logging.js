@@ -1,14 +1,8 @@
 const redisLogger = require("../controllers/redis_logger")
 
 class RedisLoggingMiddleware {
-  cur_req_id = 0
-
   setRoutes(app) {
     app.use((req, res, next) => {
-      this.cur_req_id++
-      const req_id = this.cur_req_id
-      redisLogger.startRequest(req_id)
-
       //when a response has been fully sent
       res.on("finish", () => {
         console.log(`Exiting with ${res.statusCode}`)
@@ -21,11 +15,7 @@ class RedisLoggingMiddleware {
         }
       });
 
-      //when a response has been fully sent OR connection closed prematurely
-      res.on("close", () => {
-        redisLogger.endRequest(req_id)
-      });
-      setTimeout(next,2000)
+      next()
     })
   }
 }

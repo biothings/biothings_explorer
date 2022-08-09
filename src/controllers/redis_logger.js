@@ -39,10 +39,11 @@ class RedisLogger {
       this.client = new Redis(details);
     }
 
-    //operation so that KEY_1 can be updated with max length of KEY_2 (array)
-    this.client.defineCommand("arrayLenUpdate", {
+    //operation so that KEY_1 can be updated with max length of KEY_2 (array), after ARGV_1 is added to the array
+    this.client.defineCommand("updateConcurrentSet", {
       numberOfKeys: 2,
       lua: `
+      redis.call('SADD', KEYS[2], ARGV[1])
       local len = #(redis.call('SMEMBERS', KEYS[2]) or {})
       local val = redis.call('GET', KEYS[1]) or 0
       if tonumber(val) < len then redis.call('SET', KEYS[1], len)
@@ -76,37 +77,36 @@ class RedisLogger {
     if (this.clientEnabled) return await this.client.get(this.prefix+"successes")
   }
 
-  async startRequest(requestNum) {
+  async startSyncRequest(requestNum) {
     if (this.clientEnabled) {
-      await this.client.sadd(this.prefix+"requests", requestNum)
-      await this.client.arrayLenUpdate(this.prefix+"high_requests", this.prefix+"requests")
+      await this.client.updateConcurrentSet(this.prefix+"high_requests_sync", this.prefix+"requests_sync", requestNum)
     }
   }
 
-  async endRequest(requestNum) {
+  async endSyncRequest(requestNum) {
     if (this.clientEnabled) {
-      await this.client.srem(this.prefix+"requests", requestNum)
+      await this.client.srem(this.prefix+"requests_sync", requestNum)
     }
   }
 
-  async getConcurrentHighMark() {
-    return await this.client.get(this.prefix+"high_requests")
+  async getSyncConcurrentHighMark() {
+    return await this.client.get(this.prefix+"high_requests_sync")
   }
 
   async getLogs() {
     if (this.clientEnabled) {
-      const [user_failiures, server_failiures, successes, concurrent_high_mark] = await Promise.all([
+      const [user_failiures, server_failiures, successes, sync_concurrent_high_mark] = await Promise.all([
         this.getUserFailiures(),
         this.getServerFailiures(),
         this.getSuccesses(),
-        this.getConcurrentHighMark()
+        this.getSyncConcurrentHighMark()
       ])
 
       return {
         user_failiures,
         server_failiures,
         successes,
-        concurrent_high_mark
+        sync_concurrent_high_mark
       }
     }
     return {};
