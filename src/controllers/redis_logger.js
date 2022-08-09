@@ -51,6 +51,17 @@ class RedisLogger {
       `,
     });
     
+    //operation so that KEY_1 can be updated with max time elapsed, using score from set KEY_2 - element ARGV_1, and current time ARGV_2
+    this.client.defineCommand("updateMaxTime", {
+      numberOfKeys: 2,
+      lua: `
+      local start = redis.call('ZSCORE', KEYS[2], ARGV[1]) or 0
+      local timeElapsed = ARGV[2] - tonumber(start)
+      local cur_value = redis.call('GET', KEYS[1]) or 0
+      if timeElapsed > tonumber(cur_value) then redis.call('SET', KEYS[1], timeElapsed)
+      end
+      `
+    })
   }
 
   async logUserFailiure() {
@@ -88,7 +99,10 @@ class RedisLogger {
 
   async endSyncRequest(requestNum) {
     if (this.clientEnabled) {
-      await this.client.srem(this.prefix+"requests_sync", requestNum)
+      await Promise.all([
+        this.client.srem(this.prefix+"requests_sync", requestNum),
+        this.client.updateMaxTime(this.prefix+"max_time_sync", this.prefix+"all_requests_sync", requestNum, Date.now())
+      ]);
     }
   }
 
@@ -103,7 +117,10 @@ class RedisLogger {
 
   async endAsyncRequest(requestId) {
     if (this.clientEnabled) {
-      await this.client.srem(this.prefix+"requests_async", requestId)
+      await Promise.all([
+        this.client.srem(this.prefix+"requests_async", requestId),
+        this.client.updateMaxTime(this.prefix+"max_time_async", this.prefix+"all_requests_async", requestId, Date.now())
+      ]);
     }
   }
 
@@ -114,11 +131,11 @@ class RedisLogger {
   }
 
   async getSyncConcurrentHighMark() {
-    return await this.client.get(this.prefix+"high_requests_sync")
+    if (this.clientEnabled) return await this.client.get(this.prefix+"high_requests_sync")
   }
 
   async getAsyncConcurrentHighMark() {
-    return await this.client.get(this.prefix+"high_requests_async")
+    if (this.clientEnabled) return await this.client.get(this.prefix+"high_requests_async")
   }
 
   async getSyncRequestsInLast(hours) {
@@ -133,6 +150,14 @@ class RedisLogger {
     return (await this.client.zrangebyscore(this.prefix+"all_requests_async", minMs, maxMs))?.length
   }
 
+  async getSyncMaxTimeMS() {
+    if (this.clientEnabled) return await this.client.get(this.prefix+"max_time_sync");
+  }
+
+  async getAsyncMaxTimeMS() {
+    if (this.clientEnabled) return await this.client.get(this.prefix+"max_time_async");
+  }
+
   async getLogs() {
     if (this.clientEnabled) {
       const [
@@ -144,7 +169,9 @@ class RedisLogger {
         sync_avg_hour,
         async_avg_hour,
         sync_avg_day,
-        async_avg_day
+        async_avg_day,
+        sync_max_timeMS,
+        async_max_timeMS
       ] = await Promise.all([
         this.getUserFailiures(),
         this.getServerFailiures(),
@@ -154,7 +181,9 @@ class RedisLogger {
         this.getSyncRequestsInLast(1),
         this.getAsyncRequestsInLast(1),
         this.getSyncRequestsInLast(24),
-        this.getSyncRequestsInLast(24)
+        this.getSyncRequestsInLast(24),
+        this.getSyncMaxTimeMS(),
+        this.getAsyncMaxTimeMS()
       ])
 
       return {
@@ -166,7 +195,9 @@ class RedisLogger {
         sync_avg_hour,
         async_avg_hour,
         sync_avg_day,
-        async_avg_day
+        async_avg_day,
+        sync_max_timeMS,
+        async_max_timeMS
       }
     }
     return {};
