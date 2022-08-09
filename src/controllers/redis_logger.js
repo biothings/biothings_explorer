@@ -79,7 +79,10 @@ class RedisLogger {
 
   async startSyncRequest(requestNum) {
     if (this.clientEnabled) {
-      await this.client.updateConcurrentSet(this.prefix+"high_requests_sync", this.prefix+"requests_sync", requestNum)
+      await Promise.all([
+        this.client.updateConcurrentSet(this.prefix+"high_requests_sync", this.prefix+"requests_sync", requestNum),
+        this.client.zadd(this.prefix+"all_requests_sync", Date.now(), requestNum)
+      ]);
     }
   }
 
@@ -89,24 +92,81 @@ class RedisLogger {
     }
   }
 
+  async startAsyncRequest(requestId) {
+    if (this.clientEnabled) {
+      await Promise.all([
+        this.client.updateConcurrentSet(this.prefix+"high_requests_async", this.prefix+"requests_async", requestId),
+        this.client.zadd(this.prefix+"all_requests_async", Date.now(), requestId)
+      ]);
+    }
+  }
+
+  async endAsyncRequest(requestId) {
+    if (this.clientEnabled) {
+      await this.client.srem(this.prefix+"requests_async", requestId)
+    }
+  }
+
+  async clearAsyncRequests() {
+    if (this.clientEnabled) {
+      await this.client.del(this.prefix+"requests_async")
+    }
+  }
+
   async getSyncConcurrentHighMark() {
     return await this.client.get(this.prefix+"high_requests_sync")
   }
 
+  async getAsyncConcurrentHighMark() {
+    return await this.client.get(this.prefix+"high_requests_async")
+  }
+
+  async getSyncRequestsInLast(hours) {
+    const ms = hours * 60 * 60 * 1000;
+    const [minMs, maxMs] = [Date.now() - ms, Date.now()];
+    return (await this.client.zrangebyscore(this.prefix+"all_requests_sync", minMs, maxMs))?.length
+  }
+
+  async getAsyncRequestsInLast(hours) {
+    const ms = hours * 60 * 60 * 1000;
+    const [minMs, maxMs] = [Date.now() - ms, Date.now()];
+    return (await this.client.zrangebyscore(this.prefix+"all_requests_async", minMs, maxMs))?.length
+  }
+
   async getLogs() {
     if (this.clientEnabled) {
-      const [user_failiures, server_failiures, successes, sync_concurrent_high_mark] = await Promise.all([
+      const [
+        user_failiures, 
+        server_failiures, 
+        successes, 
+        sync_concurrent_high_mark, 
+        async_concurrent_high_mark,
+        sync_avg_hour,
+        async_avg_hour,
+        sync_avg_day,
+        async_avg_day
+      ] = await Promise.all([
         this.getUserFailiures(),
         this.getServerFailiures(),
         this.getSuccesses(),
-        this.getSyncConcurrentHighMark()
+        this.getSyncConcurrentHighMark(),
+        this.getAsyncConcurrentHighMark(),
+        this.getSyncRequestsInLast(1),
+        this.getAsyncRequestsInLast(1),
+        this.getSyncRequestsInLast(24),
+        this.getSyncRequestsInLast(24)
       ])
 
       return {
         user_failiures,
         server_failiures,
         successes,
-        sync_concurrent_high_mark
+        sync_concurrent_high_mark,
+        async_concurrent_high_mark,
+        sync_avg_hour,
+        async_avg_hour,
+        sync_avg_day,
+        async_avg_day
       }
     }
     return {};

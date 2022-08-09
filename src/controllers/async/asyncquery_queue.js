@@ -3,6 +3,7 @@ const axios = require("axios");
 const { redisClient } = require("@biothings-explorer/query_graph_handler");
 const debug = require('debug')('bte:biothings-explorer-trapi:asyncquery_queue');
 const Redis = require("ioredis");
+const redisLogger = require("../../controllers/redis_logger")
 
 exports.getQueryQueue = name => {
   let queryQueue = null;
@@ -65,12 +66,22 @@ exports.getQueryQueue = name => {
         lockDuration: 3600000, // 60min
       },
     })
+      .on("active", function (job, jobPromise) {
+        // console.log("Job started", job.id)
+        redisLogger.startAsyncRequest(job.id);
+      })
+      .on("completed", function (job) {
+        // console.log("Job ended", job.id)
+        redisLogger.endAsyncRequest(job.id);
+      })
       .on("error", function (error) {
         console.log("err", error);
+        redisLogger.clearAsyncRequests();
       })
       .on("failed", async function (job, error) {
         console.log(`Async job ${job.id} failed with error ${error.message}`);
         console.trace(error);
+        redisLogger.endAsyncRequest(job.id);
         if (job.data.callback_url) {
           try {
             await axios({

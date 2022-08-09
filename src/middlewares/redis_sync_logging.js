@@ -15,7 +15,7 @@ class RedisSyncLoggingMiddleware {
         console.log(`Ending ${req_id}`)
         redisLogger.endSyncRequest(req_id)
       });
-      // setTimeout(next,2000)
+      
       next()
     }
   }
