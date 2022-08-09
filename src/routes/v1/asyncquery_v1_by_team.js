@@ -4,7 +4,7 @@ const { asyncquery } = require("../../controllers/async/asyncquery");
 const { getQueryQueue } = require("../../controllers/async/asyncquery_queue");
 const utils = require("../../utils/common");
 
-queryQueue = getQueryQueue("bte_query_queue_by_team");
+const queryQueue = getQueryQueue("bte_query_queue_by_team");
 
 if (queryQueue) {
   queryQueue.process(path.resolve(__dirname, "../../controllers/async/processors/async_v1_by_team.js"));
@@ -15,7 +15,7 @@ class V1RouteAsyncQueryByTeam {
     app
       .route("/v1/team/:team_name/asyncquery")
       .post(swaggerValidation.validate, async (req, res, next) => {
-        queryQueue = getQueryQueue("bte_query_queue_by_team");
+        // queryQueue = getQueryQueue("bte_query_queue_by_team");
         const queryGraph = req.body.message.query_graph;
         // const enableIDResolution = (req.params.team_name === "Text Mining Provider") ? false : true;
         let queueData = {
@@ -24,7 +24,7 @@ class V1RouteAsyncQueryByTeam {
           logLevel: req.body.log_level,
           workflow: req.body.workflow,
           callback_url: req.body.callback_url || req.body["callback"],
-          options: { logLevel: req.body.log_level, ...req.query },
+          options: { logLevel: req.body.log_level, submitter: req.body.submitter, ...req.query },
           enableIDResolution: true,
         };
         await asyncquery(req, res, next, queueData, queryQueue);

@@ -38,6 +38,7 @@ class RouteQueryV1ByTeam {
         {
           apiList,
           teamName: req.params.team_name,
+          submitter: req.body.submitter,
           ...req.query,
           enableIDResolution: true,
         },

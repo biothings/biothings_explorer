@@ -39,6 +39,7 @@ class RouteQueryV1ByAPI {
         {
           apiList,
           smartAPIID: req.params.smartapi_id,
+          submitter: req.body.submitter,
           ...req.query,
           // enableIDResolution
         },
