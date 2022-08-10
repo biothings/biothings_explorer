@@ -837,7 +837,6 @@ components:
   ## - AsyncQuery: callback property not required (commented it out of the 'required' field),
   ##               comment out workflow.allOf section
   ## - Response: comment out workflow.allOf section
-  ## - QNode: set additionalProperties to false (see comments below for details)
   ## - QEdge: set additionalProperties to false (see comments below for details)
   ## - Attribute: comment out properties.attributes.items since the self-$ref breaks execution of 
   ##          BTE's api-schema-builder/openapi-validator-middleware
@@ -1262,10 +1261,7 @@ components:
           items:
             $ref: '#/components/schemas/AttributeConstraint'
           default: []
-      ## changing from true to false, so BTE will reject queries that have these additional properties
-      ## BTE doesn't use these and this is the easiest way to recognize when they are there and respond to that
-      ## Related to Implementation rules https://github.com/NCATSTranslator/ReasonerAPI/blob/1.3/ImplementationRules.md#qnodexxxxx
-      additionalProperties: false
+      additionalProperties: true
     QEdge:
       type: object
       description: >-
