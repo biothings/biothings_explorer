@@ -51,9 +51,9 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
                 if ("/meta_knowledge_graph" in spec.paths) {
                     if (
                         (Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
-                        spec.info["x-trapi"].version.includes("1.1")) ||
+                        spec.info["x-trapi"].version.includes("1.2")) ||
                         (Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
-                        spec.info["x-trapi"].version.includes("1.2"))
+                        spec.info["x-trapi"].version.includes("1.3"))
                     ) {
                         api['predicates_path'] = "/meta_knowledge_graph";
                         trapi.push(api);
