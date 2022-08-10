@@ -241,14 +241,12 @@ module.exports = () => {
     let sync_and_exit = process.env.SYNC_AND_EXIT === 'true';
     if (sync_and_exit) {
         console.log("Syncing SmartAPI specs with subsequent exit...");
-        try {
-            updateSmartAPISpecs().then(() => {
-                console.log("SmartAPI sync successful.");
-                process.exit(0);
-            });
-        } catch (err) {
+        updateSmartAPISpecs().then(() => {
+            console.log("SmartAPI sync successful.");
+            process.exit(0);
+        }).catch(err => {
             debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
-        }
+        });
         return;
     }
 
