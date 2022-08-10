@@ -241,10 +241,14 @@ module.exports = () => {
     let sync_and_exit = process.env.SYNC_AND_EXIT === 'true';
     if (sync_and_exit) {
         console.log("Syncing SmartAPI specs with subsequent exit...");
-        updateSmartAPISpecs().then(() => {
-            console.log("SmartAPI sync successful.");
-            process.exit(0);
-        });
+        try {
+            updateSmartAPISpecs().then(() => {
+                console.log("SmartAPI sync successful.");
+                process.exit(0);
+            });
+        } catch (err) {
+            debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
+        }
         return;
     }
 
@@ -269,25 +273,28 @@ module.exports = () => {
     }
 
     if (!disable_smartapi_sync) {
-        cron.schedule('*/10 * * * *', async () => {
-            debug(`Updating local copy of SmartAPI specs now at ${new Date().toUTCString()}!`);
-            try {
-                await updateSmartAPISpecs();
-                debug("Successfully updated the local copy of SmartAPI specs.")
-            } catch (err) {
-                debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
-            }
-        });
+        const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
+        let overrides
+        try {
+            overrides = JSON.parse(fs.readFileSync(overridesPath));
+        } catch (error) {
+            debug(`ERROR getting API Overrides file because ${error}`);
+            return;
+        }
+
+        if(!(api_override && overrides.conf.only_overrides)) {
+            cron.schedule('*/10 * * * *', async () => {
+                debug(`Updating local copy of SmartAPI specs now at ${new Date().toUTCString()}!`);
+                try {
+                    await updateSmartAPISpecs();
+                    debug("Successfully updated the local copy of SmartAPI specs.")
+                } catch (err) {
+                    debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
+                }
+            });
+        }
 
         if (api_override) {
-            const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
-            let overrides
-            try {
-                overrides = JSON.parse(fs.readFileSync(overridesPath));
-            } catch (error) {
-                debug(`ERROR getting API Overrides file because ${error}`);
-                return;
-            }
             if (Object.keys(overrides.apis).length > 0) {
                 debug(`API Override(s) set. Updating local SmartAPI specs with overrides now at ${new Date().toUTCString()}!`);
                 try {
