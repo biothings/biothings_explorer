@@ -12,9 +12,8 @@ info:
     version: 1.3.0
     asyncquery: true
     operations:
-    ## look at https://standards.ncats.io/operation.json for details
-    ## perhaps advertise "lookup_and_score"?
-      - lookup
+    ## look at https://standards.ncats.io/operation.json for details. was previously lookup
+      - lookup_and_score
     ## no batch_size_limit (BTE manages IDs for QNodes and sub-queries internally)
     rate_limit: 15
     ## /query endpoints have a limit of 15 requests/client/min
@@ -27,20 +26,22 @@ info:
     team:
       - Exploring Agent
 servers:
+## ITRB Production and Test are deployed manually, based on the staging instance
+## ITRB CI / staging is basically deployed manually, from main branches
+## - automatic for updates in bte-trapi-workspace main branch, but those rarely happen
+## - we could technically control what branches are used (but right now we don't do this)
+## non-ITRB dev: total manual control on updates (what branches of modules are used for updates)
 - url: https://bte.transltr.io/v1
   description: ITRB Production server
   x-maturity: production
 - url: https://bte.test.transltr.io/v1
   description: ITRB Test server
-  ## ITRB prod and test are updated manually (using staging stuff?)
   x-maturity: testing
 - url: https://bte.ci.transltr.io/v1
   description: ITRB CI server
-  ## automatically updates from main branch of github repos
   x-maturity: staging
 - url: https://api.bte.ncats.io/v1
   description: Non-ITRB dev (primary internal use)
-  ## we can control what branches of github repos are used
   x-maturity: development
 tags:
 - name: 1.3.0
@@ -98,7 +99,7 @@ paths:
     get:
       tags:
         - meta_knowledge_graph
-      summary: TRAPI-compliant meta-knowledge-graph representation for one KP/ARA team's SmartAPI KP APIs (that have x-bte annotation)
+      summary: TRAPI-compliant meta-knowledge-graph representation for one KP team's SmartAPI KP APIs (that have x-bte annotation)
       parameters:
         - description: >-
             Translator Team Name. Current options: Service Provider, Multiomics Provider, Text Mining Provider.
@@ -119,7 +120,7 @@ paths:
       responses:
         '200':
           description: >-
-            Returns a TRAPI-compliant meta-knowledge-graph representation for one KP/ARA team's SmartAPI KP APIs (that have x-bte annotation)
+            Returns a TRAPI-compliant meta-knowledge-graph representation for one KP team's SmartAPI KP APIs (that have x-bte annotation)
           content:
             application/json:
               schema:
@@ -130,10 +131,8 @@ paths:
       tags:
         - query
       summary: Initiate a TRAPI-format query to BTE (operating as an ARA) and wait to receive a Response
-      operationId: query  ## not sure if this is still needed
       parameters:
         - description: option to choose whether or not to enable caching
-          ## not sure if this parameter still exists / works
           in: query
           name: caching
           required: false
@@ -217,14 +216,12 @@ paths:
             application/json:
               schema:
                 type: string
-      x-swagger-router-controller: swagger_server.controllers.query_controller    ## not sure if this is still needed
   ## copied from /query above and modified: BTE-specific endpoint
   /smartapi/{smartapi_id}/query:
     post:
       tags:
         - query
       summary: Query individual SmartAPI KP API (that has x-bte annotation) as a TRAPI KP API
-      operationId: querySmartAPI    ## not sure if this is still needed
       parameters:
         - description: >-
             SmartAPI ID of an API with x-bte annotation. The easiest way to find these is to read the list of APIs BTE uses
@@ -236,7 +233,6 @@ paths:
           schema:
             type: string
         - description: option to choose whether or not to enable caching
-          ## not sure if this parameter still exists / works
           in: query
           name: caching
           required: false
@@ -320,7 +316,6 @@ paths:
             application/json:
               schema:
                 type: string
-      x-swagger-router-controller: swagger_server.controllers.query_controller    ## not sure if this is still needed
   ## copied from /query above and modified: BTE-specific endpoint
   /team/{team_name}/query:
     post:
@@ -329,7 +324,6 @@ paths:
       summary: >-
         Query an individual Translator team's SMARTAPI KP APIs (that have x-bte annotation) as an individual TRAPI
         service by specifying the team name
-      operationId: queryTeam    ## not sure if this is still needed
       parameters:
         - description: >-
             Translator Team Name. Current options: Service Provider, Multiomics Provider, Text Mining Provider.
@@ -348,7 +342,6 @@ paths:
               - Text Mining Provider
               - Service Provider
         - description: option to choose whether or not to enable caching
-          ## not sure if this parameter still exists / works
           in: query
           name: caching
           required: false
@@ -432,9 +425,17 @@ paths:
             application/json:
               schema:
                 type: string
-      x-swagger-router-controller: swagger_server.controllers.query_controller    ## not sure if this is still needed
   ## not TRAPI spec: BTE-specific endpoint related to asyncquery
   /check_query_status/{id}:
+  ## moved because smartapi-editor gave alert that a non-existent post endpoint wouldn't know what {id} is
+    parameters:
+      - description: job-id
+        in: path
+        name: id
+        required: true
+        ## Cache refreshing means this will be changing pretty often, so not including an example
+        schema:
+          type: string
     get:
       tags:
         - asyncquery
@@ -444,13 +445,6 @@ paths:
         provided a job id. The job id can be used here to check the status or retrieve
         the Response.
       parameters:
-        - description: job-id
-          in: path
-          name: id
-          required: true
-          ## Cache refreshing means this will be changing pretty often, so not including an example
-          schema:
-            type: string
         - description: option to override original query log level
           in: query
           name: log_level
@@ -507,7 +501,6 @@ paths:
         the Response using BTE's /v1/check_query_status/{id} endpoint.
       parameters:
         - description: option to choose whether or not to enable caching
-          ## not sure if this parameter still exists / works
           in: query
           name: caching
           required: false
@@ -621,7 +614,6 @@ paths:
           schema:
             type: string
         - description: option to choose whether or not to enable caching
-          ## not sure if this parameter still exists / works
           in: query
           name: caching
           required: false
@@ -742,7 +734,6 @@ paths:
               - Text Mining Provider
               - Service Provider
         - description: option to choose whether or not to enable caching
-          ## not sure if this parameter still exists / works
           in: query
           name: caching
           required: false
