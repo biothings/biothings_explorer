@@ -2,6 +2,7 @@ const path = require("path");
 const swaggerValidation = require("../../middlewares/validate");
 const { asyncquery } = require('../../controllers/async/asyncquery');
 const { getQueryQueue } = require('../../controllers/async/asyncquery_queue');
+const redisLogger = require("../../controllers/redis_logger");
 
 queryQueue = getQueryQueue('bte_query_queue_by_api')
 
@@ -11,7 +12,7 @@ if (queryQueue) {
 
 class V1RouteAsyncQueryByAPI {
     setRoutes(app) {
-        app.post('/v1/smartapi/:smartapi_id/asyncquery', swaggerValidation.validate, async (req, res, next) => {
+        app.post('/v1/smartapi/:smartapi_id/asyncquery', redisLogger.createMiddleware(redisLogger.logSpecificEndpointAsync), swaggerValidation.validate, async (req, res, next) => {
             queryQueue = getQueryQueue('bte_query_queue_by_api')
             // Disabled the disabling of text-mining / multiomics provider APIs -- we're not sure why they were disabled in the first place...
             // const enableIDResolution = (['5be0f321a829792e934545998b9c6afe', '978fe380a147a8641caf72320862697b'].includes(req.params.smartapi_id)) ? false : true;

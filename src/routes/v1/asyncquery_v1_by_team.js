@@ -2,6 +2,7 @@ const path = require("path");
 const swaggerValidation = require("../../middlewares/validate");
 const { asyncquery } = require('../../controllers/async/asyncquery');
 const { getQueryQueue } = require('../../controllers/async/asyncquery_queue');
+const redisLogger = require("../../controllers/redis_logger");
 
 queryQueue = getQueryQueue('bte_query_queue_by_team')
 
@@ -11,7 +12,7 @@ if (queryQueue) {
 
 class V1RouteAsyncQueryByTeam {
     setRoutes(app) {
-        app.post('/v1/team/:team_name/asyncquery', swaggerValidation.validate, async (req, res, next) => {
+        app.post('/v1/team/:team_name/asyncquery', redisLogger.createMiddleware(redisLogger.logSpecificEndpointAsync), swaggerValidation.validate, async (req, res, next) => {
             queryQueue = getQueryQueue('bte_query_queue_by_team')
             const queryGraph = req.body.message.query_graph;
             // const enableIDResolution = (req.params.team_name === "Text Mining Provider") ? false : true;

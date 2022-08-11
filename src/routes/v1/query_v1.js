@@ -7,10 +7,11 @@ const predicatesPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${proc
 const utils = require("../../utils/common");
 const { runTask, taskResponse, taskError } = require("../../controllers/threading/threadHandler");
 const redisSyncLogging = require("../../middlewares/redis_sync_logging");
+const redisLogger = require("../../controllers/redis_logger");
 
 class V1RouteQuery {
     setRoutes(app) {
-        app.post('/v1/query', redisSyncLogging.getMiddleware(), swaggerValidation.validate, async (req, res, next) => {
+        app.post('/v1/query', redisSyncLogging.getMiddleware(), redisLogger.createMiddleware(redisLogger.logGeneralEndpointSync), swaggerValidation.validate, async (req, res, next) => {
             try {
                 const response = await runTask(req, this.task, path.parse(__filename).name);
                 res.setHeader("Content-Type", "application/json");

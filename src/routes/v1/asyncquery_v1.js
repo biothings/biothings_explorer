@@ -2,6 +2,7 @@ const path = require("path");
 const swaggerValidation = require("../../middlewares/validate");
 const { asyncquery } = require('../../controllers/async/asyncquery')
 const { getQueryQueue } = require('../../controllers/async/asyncquery_queue')
+const redisLogger = require("../../controllers/redis_logger")
 
 queryQueue = getQueryQueue('bte_query_queue')
 
@@ -11,7 +12,7 @@ if (queryQueue) {
 
 class V1RouteAsyncQuery {
     setRoutes(app) {
-        app.post('/v1/asyncquery', swaggerValidation.validate, async (req, res, next) => {
+        app.post('/v1/asyncquery', redisLogger.createMiddleware(redisLogger.logGeneralEndpointAsync), swaggerValidation.validate, async (req, res, next) => {
             // if I don't reinitialize this then the wrong queue will be used, not sure why this happens
             queryQueue = getQueryQueue('bte_query_queue')
 
