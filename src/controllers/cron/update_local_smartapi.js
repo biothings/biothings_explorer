@@ -57,8 +57,6 @@ const getTRAPIWithPredicatesEndpoint = specs => {
         if ("/meta_knowledge_graph" in spec.paths) {
           if (
             (Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
-              spec.info["x-trapi"].version.includes("1.1")) ||
-            (Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
               spec.info["x-trapi"].version.includes("1.2")) ||
             (Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
               spec.info["x-trapi"].version.includes("1.3"))
@@ -158,7 +156,7 @@ const getOpsFromPredicatesEndpoints = async specs => {
 
 const updateSmartAPISpecs = async () => {
   const SMARTAPI_URL =
-    "https://smart-api.info/api/query?q=tags.name:translator&size=200&sort=_seq_no&raw=1&fields=paths,servers,tags,components.x-bte*,info,_meta";
+    "https://smart-api.info/api/query?q=tags.name:translator&size=1000&sort=_seq_no&raw=1&fields=paths,servers,tags,components.x-bte*,info,_meta";
   const res = await axios.get(SMARTAPI_URL, { headers: { "User-Agent": userAgent } });
   const localFilePath = path.resolve(__dirname, "../../../data/smartapi_specs.json");
   const predicatesFilePath = path.resolve(__dirname, "../../../data/predicates.json");
@@ -263,7 +261,7 @@ module.exports = () => {
   let manual_sync =
     process.env.SMARTAPI_SYNC === "true" ? true : process.env.SMARTAPI_SYNC === "false" ? false : undefined;
   let api_override = process.env.API_OVERRIDE === "true";
-  disable_smartapi_sync = !(manual_sync || (schedule_sync && typeof manual_sync === "undefined"));
+  let disable_smartapi_sync = !(manual_sync || (schedule_sync && typeof manual_sync === "undefined"));
   if (disable_smartapi_sync) {
     debug(`SmartAPI sync disabled, server process ${process.pid} disabling smartapi updates.`);
   } else {
@@ -302,7 +300,7 @@ module.exports = () => {
         try {
           updateSmartAPISpecs();
         } catch (error) {
-          debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`);
+          debug(`Updating local copy of SmartAPI specs failed! The error message is ${error.toString()}`);
         }
       }
     }
