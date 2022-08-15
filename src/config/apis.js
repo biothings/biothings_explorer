@@ -158,10 +158,6 @@ exports.API_LIST = {
             name: 'Automat DrugCentral (trapi v-1.3.0)'
         },
         {
-            id: '8d9b6e3878ae4a57be19e87b5235a1ea',
-            name: 'Automat Foodb (trapi v-1.3.0)'
-        },
-        {
             id: '6d027b3dd2347f0b9aeb2785ec4e22ef',
             name: 'Automat GTEx (trapi v-1.3.0)'
         },
