@@ -116,12 +116,12 @@ exports.API_LIST = {
         // annotated with SmartAPI x-bte
         // also accessible by v1/team/Service Provider/ and v1/team/Multiomics Provider endpoints, and by api-specific endpoints
         {
-            id: 'd86a24f6027ffe778f84ba10a7a1861a',
-            name: 'Multiomics EHR Risk KP API'
-        },
-        {
             id: 'adf20dd6ff23dfe18e8e012bde686e31',
             name: 'Multiomics BigGIM-DrugResponse KP API'
+        },
+        {
+            id: 'd86a24f6027ffe778f84ba10a7a1861a',
+            name: 'Multiomics EHR Risk KP API'
         },
         {
             id: '02af7d098ab304e80d6f4806c3527027',
@@ -229,7 +229,7 @@ exports.API_LIST = {
         // - COHD for COVID-19 should work but BTE gets a 500 when retrieving meta_knowledge_graph...
         //   smartapi ID fc8245e92c970298449294fc04211869
         {
-            id: '51c178099fa2dc99b5d8fff8bf9f1a0d',
+            id: '7c834dd93070f529579884b56d4b4620',
             name: 'COHD TRAPI 1.2'
         },
         // TRAPI (Translator standard) APIs: CHP
