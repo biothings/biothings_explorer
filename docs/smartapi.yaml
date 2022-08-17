@@ -6,7 +6,7 @@ info:
     url: https://github.com/andrewsu
   description: A TRAPI/Reasoner Standard API for BioThings Explorer (BTE)
   termsOfService: https://biothings.io/about
-  title: BioThings Explorer (BTE) TRAPI
+  title: BioThings Explorer (BTE) TRAPI (v1.3)
   version: 2.8.1
   x-trapi:
     version: 1.3.0
@@ -31,15 +31,6 @@ servers:
 ## - automatic for updates in bte-trapi-workspace main branch, but those rarely happen
 ## - we could technically control what branches are used (but right now we don't do this)
 ## non-ITRB dev: total manual control on updates (what branches of modules are used for updates)
-- url: https://bte.transltr.io/v1
-  description: ITRB Production server
-  x-maturity: production
-- url: https://bte.test.transltr.io/v1
-  description: ITRB Test server
-  x-maturity: testing
-- url: https://bte.ci.transltr.io/v1
-  description: ITRB CI server
-  x-maturity: staging
 - url: https://api.bte.ncats.io/v1
   description: Non-ITRB dev (primary internal use)
   x-maturity: development
@@ -105,8 +96,8 @@ paths:
             Translator Team Name. Current options: Service Provider, Multiomics Provider, Text Mining Provider.
             The easiest way to find what KP APIs would be included under these teams is to read the list of APIs BTE uses
             https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js.
-            Note that Service Provider endpoints are also advertised separately as a KP
-            http://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0
+            Note that Service Provider endpoints are also advertised separately as a KP 
+            http://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0 
           in: path
           name: team_name
           required: true
@@ -329,8 +320,8 @@ paths:
             Translator Team Name. Current options: Service Provider, Multiomics Provider, Text Mining Provider.
             The easiest way to find what KP APIs would be included under these teams is to read the list of APIs BTE uses
             https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js.
-            Note that Service Provider endpoints are also advertised separately as a KP
-            http://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0
+            Note that Service Provider endpoints are also advertised separately as a KP 
+            http://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0 
           in: path
           name: team_name
           required: true
@@ -452,7 +443,7 @@ paths:
           schema:
             type: string
             description: >-
-              Logging level. The order of priority is ERROR, WARNING, INFO, DEBUG. BTE will return all logs at the
+              Logging level. The order of priority is ERROR, WARNING, INFO, DEBUG. BTE will return all logs at the 
               specified level and those at higher priority levels
             enum:
               - ERROR
@@ -594,7 +585,7 @@ paths:
       tags:
         - asyncquery
       summary: >-
-        This endpoint is for asynchronously querying an individual SmartAPI KP API (that has x-bte annotation)
+        This endpoint is for asynchronously querying an individual SmartAPI KP API (that has x-bte annotation) 
         as a TRAPI KP API.
 
         Initiate a query that will be handled in an asynchronous manner (there is a
@@ -707,7 +698,7 @@ paths:
       tags:
         - asyncquery
       summary: >-
-        This endpoint is for asynchronously querying an individual Translator team's SMARTAPI KP APIs (that have x-bte annotation)
+        This endpoint is for asynchronously querying an individual Translator team's SMARTAPI KP APIs (that have x-bte annotation) 
         as an individual TRAPI service by specifying the team name.
 
         Initiate a query that will be handled in an asynchronous manner (there is a
@@ -721,8 +712,8 @@ paths:
             Translator Team Name. Current options: Service Provider, Multiomics Provider, Text Mining Provider.
             The easiest way to find what KP APIs would be included under these teams is to read the list of APIs BTE uses
             https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js.
-            Note that Service Provider endpoints are also advertised separately as a KP
-            http://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0
+            Note that Service Provider endpoints are also advertised separately as a KP 
+            http://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0 
           in: path
           name: team_name
           required: true
@@ -823,13 +814,13 @@ paths:
                 type: string
 components:
   ## look for comments to see parts that have been modified for BTE
-  ## - Query: comment out workflow.allOf section since the $ref breaks execution of
+  ## - Query: comment out workflow.allOf section since the $ref breaks execution of 
   ##          BTE's api-schema-builder/openapi-validator-middleware
   ## - AsyncQuery: callback property not required (commented it out of the 'required' field),
   ##               comment out workflow.allOf section
   ## - Response: comment out workflow.allOf section
   ## - QEdge: set additionalProperties to false (see comments below for details)
-  ## - Attribute: comment out properties.attributes.items since the self-$ref breaks execution of
+  ## - Attribute: comment out properties.attributes.items since the self-$ref breaks execution of 
   ##          BTE's api-schema-builder/openapi-validator-middleware
   schemas:
     Query:
