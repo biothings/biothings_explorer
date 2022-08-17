@@ -30,6 +30,10 @@ exports.API_LIST = {
         // annotated with SmartAPI x-bte
         // also accessible by v1/team/Service Provider/ endpoints and by api-specific endpoints
         {
+            id: '38e9e5169a72aee3659c9ddba956790d',
+            name: 'BioThings BindingDB API'
+        },
+        {
             id: '55a223c6c6e0291dbd05f2faf27d16f4',
             name: 'BioThings BioPlanet Pathway-Disease API'
         },
