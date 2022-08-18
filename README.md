@@ -28,8 +28,9 @@ participant QG as query_graph.js
 participant BEQ as batch_edge_query.js
 participant Q2A as qedge2apiedge.js
 participant R as query_results.js
-participant C as call-apis
+participant C as call-apis module
 
+note over I, R: query_graph_handler module
 
 I->>QG: processQueryGraph()
 QG->>QG: Process TRAPI Query Graph Object into <br/> internal qEdge and qXEdge representation
@@ -38,6 +39,7 @@ QG->>I: return qXEdges
 
 I->>I: Inferred Mode: create <br/> templated queries
 
+rect rgb(47, 71, 145)
 loop Executing with Edge Manager
 I->>I: while there are unexecuted qXEdges, <br/> get next qXEdge
 
@@ -45,6 +47,7 @@ I->>BEQ: BatchEdgeQueryHandler()
 BEQ->>BEQ: NodesUpdateHandler(): get equivalent IDs
 BEQ->>BEQ: cacheHandler(): fetch cached records
 
+rect rgb(127, 44, 171)
 alt if there are uncached qXEdges
 BEQ->>Q2A: QEdge2APIEdgeHandler()
 Q2A->>Q2A: convert qXEdges into API calls by using <br/> metaKG to get metaEdges for qXEdge
@@ -53,6 +56,7 @@ note right of BEQ: metaEdge - An edge in the metaKG <br/> metaXEdge - A metaEdge
 BEQ->>C: query()
 C->>C: make API calls in batches <br/> and merge results
 C->>BEQ: return records from APIs
+end
 end
 
 BEQ->>BEQ: cacheHandler(): cache result records
@@ -63,13 +67,13 @@ BEQ->>I: return records
 I->>I: Store records/update edge manager
 I->>I: Mark Edge as Executed
 end
+end
 
 I->>R: trapiResultsAssembler
 R->>R: assemble and convert records into <br/> final return results
 R->>I: put results in bteGraph
 note left of R: result - 1 item of the array in the <br/> TRAPI response (message.results)
 I->>I: bteGraph: prune not fully connected <br/> results from graph
-note right of BEQ: all files are part of query_graph_handler <br/> except for call-apis wich is a separate module
 ```
 
 
