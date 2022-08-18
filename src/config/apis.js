@@ -197,7 +197,7 @@ exports.API_LIST = {
         },
         {
             id: '85381b7215493691c4f08b579878c365',
-            name: 'Automat Ontological Hierarchy (ITRB PROD) (trapi v-1.2.0) '
+            name: 'Automat Ontological Hierarchy (ITRB PROD) (trapi v-1.2.0)'
         },
         {
             id: '8101932943fd82a4770974c138cce99e',
