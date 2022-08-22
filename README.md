@@ -39,7 +39,6 @@ QG->>I: return qXEdges
 
 I->>I: Inferred Mode: create <br/> templated queries
 
-rect rgb(47, 71, 145)
 loop Executing with Edge Manager
 I->>I: while there are unexecuted qXEdges, <br/> get next qXEdge
 
@@ -47,7 +46,6 @@ I->>BEQ: BatchEdgeQueryHandler()
 BEQ->>BEQ: NodesUpdateHandler(): get equivalent IDs
 BEQ->>BEQ: cacheHandler(): fetch cached records
 
-rect rgb(127, 44, 171)
 alt if there are uncached qXEdges
 BEQ->>Q2A: QEdge2APIEdgeHandler()
 Q2A->>Q2A: convert qXEdges into API calls by using <br/> metaKG to get metaEdges for qXEdge
@@ -57,7 +55,6 @@ BEQ->>C: query()
 C->>C: make API calls in batches <br/> and merge results
 C->>BEQ: return records from APIs
 end
-end
 
 BEQ->>BEQ: cacheHandler(): cache result records
 note right of BEQ: record - A single unit of transformed <br/> data from a sub-query response
@@ -66,7 +63,6 @@ BEQ->>I: return records
 
 I->>I: Store records/update edge manager
 I->>I: Mark Edge as Executed
-end
 end
 
 I->>R: trapiResultsAssembler
