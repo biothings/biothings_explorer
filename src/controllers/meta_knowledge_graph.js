@@ -4,7 +4,6 @@ const fs = require("fs");
 var path = require('path');
 const util = require('util');
 const PredicatesLoadingError = require("../utils/errors/predicates_error");
-const ids = require("./ids");
 const readFile = util.promisify(fs.readFile);
 const debug = require("debug")("bte:biothings-explorer-trapi:metakg");
 const { API_LIST: apiList } = require("../config/apis");
@@ -65,15 +64,15 @@ module.exports = class MetaKnowledgeGraphHandler {
             edges: []
         };
         let predicates = {};
-        Object.keys(ids).map(semanticType => {
-            knowledge_graph.nodes[this._modifyCategory(semanticType)] = {
-                id_prefixes: ids[semanticType].id_ranks
-            }
-        })
+        let node_sets = {};
         kg.ops.map(op => {
             let input = this._modifyCategory(op.association.input_type);
+            let inputIDs = Array.isArray(op.association.input_id) ? op.association.input_id : [op.association.input_id];
             let output = this._modifyCategory(op.association.output_type);
+            let outputIDs = Array.isArray(op.association.output_id) ? op.association.output_id : [op.association.output_id];
             let pred = this._modifyPredicate(op.association.predicate);
+
+            //edges
             if (!(input in predicates)) {
                 predicates[input] = {};
             }
@@ -83,6 +82,17 @@ module.exports = class MetaKnowledgeGraphHandler {
             if (!(predicates[input][output].includes(pred))) {
                 predicates[input][output].push(pred);
             }
+
+            //nodes
+            if (!(input in node_sets)) {
+              node_sets[input] = new Set();
+            }
+            inputIDs.forEach(id => id && node_sets[input].add(id))
+
+            if (!(output in node_sets)) {
+              node_sets[output] = new Set();
+            }
+            outputIDs.forEach(id => id && node_sets[output].add(id))
         })
         Object.keys(predicates).map(input => {
             Object.keys(predicates[input]).map(output => {
@@ -94,6 +104,9 @@ module.exports = class MetaKnowledgeGraphHandler {
                     })
                 })
             })
+        })
+        Object.keys(node_sets).map(node => {
+          knowledge_graph.nodes[node] = {id_prefixes: Array.from(node_sets[node])}
         })
         return knowledge_graph;
     }
