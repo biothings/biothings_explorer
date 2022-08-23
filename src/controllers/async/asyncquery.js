@@ -8,6 +8,7 @@ const { Readable } = require("stream");
 const chunker = require("stream-chunker");
 const { parser } = require("stream-json");
 const Assembler = require("stream-json/Assembler");
+const { redisLogger } = require("../redis_logger");
 
 exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
   try {
@@ -135,7 +136,8 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
   let response;
   let callback_response;
   try {
-    await handler.query();
+    const { queriedSourcesCount } = await handler.query() ?? { queriedSourcesCount: 0};
+    redisLogger.logResourceCnt(queriedSourcesCount);
     response = handler.getResponse();
     if (jobURL) {
       response.logs.unshift(new LogEntry("INFO", null, `job status available at: ${jobURL}`).getLog());

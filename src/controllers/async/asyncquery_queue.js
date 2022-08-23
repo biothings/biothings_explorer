@@ -3,7 +3,7 @@ const axios = require("axios");
 const { redisClient } = require("@biothings-explorer/query_graph_handler");
 const debug = require('debug')('bte:biothings-explorer-trapi:asyncquery_queue');
 const Redis = require("ioredis");
-const redisLogger = require("../../controllers/redis_logger")
+const { redisLogger } = require("../../controllers/redis_logger")
 
 exports.getQueryQueue = name => {
   let queryQueue = null;

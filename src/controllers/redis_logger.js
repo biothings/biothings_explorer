@@ -46,8 +46,7 @@ class RedisLogger {
       redis.call('SADD', KEYS[2], ARGV[1])
       local len = #(redis.call('SMEMBERS', KEYS[2]) or {})
       local val = redis.call('GET', KEYS[1]) or 0
-      if tonumber(val) < len then redis.call('SET', KEYS[1], len) 
-      end
+      if tonumber(val) < len then redis.call('SET', KEYS[1], len) end
       `,
     });
     
@@ -59,26 +58,27 @@ class RedisLogger {
       local timeElapsed = ARGV[2] - tonumber(start)
       local cur_max = redis.call('GET', KEYS[1]) or 0
       local cur_avg = redis.call('HVALS', KEYS[2])
-      if timeElapsed > tonumber(cur_max) then redis.call('SET', KEYS[1], timeElapsed)
+      if timeElapsed > tonumber(cur_max) then redis.call('SET', KEYS[1], timeElapsed) end
       if #cur_avg == 2 then
         redis.call('HSET', KEYS[2], 'total', cur_avg[1] + timeElapsed, 'cnt', cur_avg[2] + 1)
-      else
+      else 
         redis.call('HSET', KEYS[2], 'total', timeElapsed, 'cnt', 1)
-      end
       end
       `
     })
-    //operation so that KEY_1 can be updated with max time elapsed, using score from set KEY_2 - element ARGV_1, and current time ARGV_2
-    // this.client.defineCommand("updateMaxAvgTime", {
-    //   numberOfKeys: 2,
-    //   lua: `
-    //   local start = redis.call('ZSCORE', KEYS[3], ARGV[1]) or 0
-    //   local timeElapsed = ARGV[2] - tonumber(start)
-    //   local cur_value = redis.call('GET', KEYS[1]) or 0
-    //   if timeElapsed > tonumber(cur_value) then redis.call('SET', KEYS[1], timeElapsed)
-    //   end
-    //   `
-    // })
+
+    //updates the KEY_1 (hash) avg with ARGV_1
+    this.client.defineCommand("updateAvg" , {
+      numberOfKeys: 1,
+      lua: `
+      local cur_avg = redis.call('HVALS', KEYS[1])
+      if #cur_avg == 2 then
+        redis.call('HSET', KEYS[1], 'total', cur_avg[1] + ARGV[1], 'cnt', cur_avg[2] + 1)
+      else
+        redis.call('HSET', KEYS[1], 'total', ARGV[1], 'cnt', 1)
+      end
+      `
+    })
   }
 
   async logUserFailiure() {
@@ -224,9 +224,23 @@ class RedisLogger {
     }
   }
 
+  async logResourceCnt(cnt) {
+    console.log(`cnt of ${cnt} with ${this.clientEnabled}`)
+    if (this.clientEnabled) await this.client.updateAvg(this.prefix+"avg_resources", cnt);
+  }
+
+  async getAvgResources() {
+    if (this.clientEnabled) { 
+      const avg_data = await this.client.hvals(this.prefix+"avg_resources"); 
+      console.log(`The avg_data is ${avg_data}`)
+      if (!avg_data || avg_data.length == 0) return undefined;
+      else return avg_data[0]/avg_data[1];
+    }
+  }
+
   createMiddleware(func) {
     return (req, res, next) => {
-      func();
+      func.call(this);
       next();
     };
   }
@@ -250,7 +264,8 @@ class RedisLogger {
         specificEndpointAsyncCnt,
         generalEndpointAsyncCnt,
         sync_time_avgMS,
-        async_time_avgMS
+        async_time_avgMS,
+        avg_resources
       ] = await Promise.all([
         this.getUserFailiures(),
         this.getServerFailiures(),
@@ -268,7 +283,8 @@ class RedisLogger {
         this.getSpecificEndpointAsyncCnt(),
         this.getGeneralEndpointAsyncCnt(),
         this.getSyncAvgTime(),
-        this.getAsyncAvgTime()
+        this.getAsyncAvgTime(),
+        this.getAvgResources()
       ])
 
       return {
@@ -288,11 +304,12 @@ class RedisLogger {
         specificEndpointAsyncCnt,
         generalEndpointAsyncCnt,
         sync_time_avgMS,
-        async_time_avgMS
+        async_time_avgMS,
+        avg_resources
       }
     }
     return {};
   }
 }
 
-module.exports = new RedisLogger("bte:logging:")
+exports.redisLogger = new RedisLogger("bte:logging:")

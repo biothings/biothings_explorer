@@ -1,4 +1,4 @@
-const redisLogger = require("../controllers/redis_logger")
+const { redisLogger } = require("../controllers/redis_logger")
 
 class RedisSyncLoggingMiddleware {
   cur_req_id = 0

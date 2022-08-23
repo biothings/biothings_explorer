@@ -7,7 +7,7 @@ const predicatesPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${proc
 const utils = require("../../utils/common");
 const { runTask, taskResponse, taskError } = require("../../controllers/threading/threadHandler");
 const redisSyncLogging = require("../../middlewares/redis_sync_logging");
-const redisLogger = require("../../controllers/redis_logger");
+const { redisLogger } = require("../../controllers/redis_logger");
 
 class V1RouteQuery {
     setRoutes(app) {
@@ -32,8 +32,8 @@ class V1RouteQuery {
                 predicatesPath,
             );
             handler.setQueryGraph(queryGraph);
-            await handler.query();
-
+            const { queriedSourcesCount } = await handler.query()?? { queriedSourcesCount: 0};
+            redisLogger.logResourceCnt(queriedSourcesCount);
             const response = handler.getResponse();
             utils.filterForLogLevel(response, req.body.log_level);
             return taskResponse(response);

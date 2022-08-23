@@ -7,7 +7,7 @@ const utils = require("../../utils/common");
 const { runTask, taskResponse, taskError } = require("../../controllers/threading/threadHandler");
 const { API_LIST: apiList } = require("../../config/apis");
 const redisSyncLogging = require("../../middlewares/redis_sync_logging");
-const redisLogger = require("../../controllers/redis_logger");
+const { redisLogger } = require("../../controllers/redis_logger");
 
 class RouteQueryV1ByAPI {
     setRoutes(app) {
@@ -40,7 +40,8 @@ class RouteQueryV1ByAPI {
                 false
             );
             handler.setQueryGraph(queryGraph);
-            await handler.query();
+            const { queriedSourcesCount } = await handler.query() ?? { queriedSourcesCount: 0};
+            redisLogger.logResourceCnt(queriedSourcesCount);
             const response = handler.getResponse();
             utils.filterForLogLevel(response, req.body.log_level);
             return taskResponse(response);
