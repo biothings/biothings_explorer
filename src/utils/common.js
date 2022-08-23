@@ -15,7 +15,7 @@ exports.validateWorkflow = (workflow) => {
     if (workflow === undefined) {
         return;
     }
-    if (!Array.isArray(workflow) || workflow.length !== 1 || workflow[0].id !== 'lookup_and_score') {
+    if (!Array.isArray(workflow) || workflow.length !== 1 || workflow[0].id !== 'lookup') {
         throw new WorkflowError("BTE doesn't handle the operations specified in the workflow field.");
     }
 }
