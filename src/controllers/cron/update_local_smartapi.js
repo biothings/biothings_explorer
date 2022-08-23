@@ -105,23 +105,18 @@ const getPredicatesFromGraphData = (predicate_endpoint, data) => {
       predicates[edge.object][edge.subject] = [edge.predicate];
     }
   };
-
-  if (Object.prototype.hasOwnProperty.call(data, "edges")) {
-    data.edges.forEach(edge => addNewPredicates(edge));
-  } else {
-    //some apis still redirect to previous format
-    return data;
-  }
-  return predicates;
 };
-
 const getOpsFromEndpoint = async metadata => {
   return axios
     .get(constructQueryUrl(metadata.query_operation.server, metadata.predicates_path), { timeout: 5000 })
     .then(res => {
       if (res.status === 200) {
         debug(`Successfully got ${metadata.predicates_path} for ${metadata.query_operation.server}`);
-        return { ...metadata, ...{ predicates: getPredicatesFromGraphData(metadata.predicates_path, res.data) } };
+        return {
+          ...metadata,
+          ...{ predicates: getPredicatesFromGraphData(metadata.predicates_path, res.data) },
+          nodes: res.data.nodes,
+        };
       }
       debug(
         `[error]: API "${metadata.association.api_name}" Unable to get ${metadata.predicates_path}` +
