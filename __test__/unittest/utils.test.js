@@ -40,10 +40,10 @@ describe("Test utility functions", () => {
             expect(() => utils.validateWorkflow(workflow)).toThrow(WorkflowError);
         })
 
-        test("Workflow wrong length", () => {
+        test("Workflow wrong legnth", () => {
             let workflow = []; 
             expect(() => utils.validateWorkflow(workflow)).toThrow(WorkflowError);
-            workflow = [{id: 'lookup_and_score'}, {id: 'lookup_and_score'}]; 
+            workflow = [{id: 'lookup'}, {id: 'lookup'}]; 
             expect(() => utils.validateWorkflow(workflow)).toThrow(WorkflowError);
         })
 
@@ -54,8 +54,8 @@ describe("Test utility functions", () => {
             expect(() => utils.validateWorkflow(workflow)).toThrow(WorkflowError);
         })
 
-        test("No error when value is id:lookup_and_score", () => {
-            const workflow = [{id: 'lookup_and_score'}]; 
+        test("No error when value is id:lookup", () => {
+            const workflow = [{id: 'lookup'}]; 
             expect(utils.validateWorkflow(workflow)).toEqual(undefined);
         })
     })
