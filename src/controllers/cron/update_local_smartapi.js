@@ -51,9 +51,9 @@ const getTRAPIWithPredicatesEndpoint = (specs) => {
                 if ("/meta_knowledge_graph" in spec.paths) {
                     if (
                         (Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
-                        spec.info["x-trapi"].version.includes("1.1")) ||
+                        spec.info["x-trapi"].version.includes("1.2")) ||
                         (Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
-                        spec.info["x-trapi"].version.includes("1.2"))
+                        spec.info["x-trapi"].version.includes("1.3"))
                     ) {
                         api['predicates_path'] = "/meta_knowledge_graph";
                         trapi.push(api);
@@ -117,7 +117,7 @@ const getOpsFromEndpoint = async (metadata) => {
         .then((res) => {
             if (res.status === 200) {
                 debug(`Successfully got ${metadata.predicates_path} for ${metadata.query_operation.server}`)
-                return { ...metadata, ...{ predicates: getPredicatesFromGraphData(metadata.predicates_path, res.data) } };
+                return { ...metadata, ...{ predicates: getPredicatesFromGraphData(metadata.predicates_path, res.data) }, nodes: res.data.nodes };
             }
             debug(
                 `[error]: API "${metadata.association.api_name}" Unable to get ${metadata.predicates_path}` +
