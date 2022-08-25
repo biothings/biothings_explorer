@@ -153,7 +153,19 @@ const getOpsFromPredicatesEndpoints = async (specs) => {
 
 const updateSmartAPISpecs = async () => {
     const SMARTAPI_URL = 'https://smart-api.info/api/query?q=tags.name:translator&size=1000&sort=_seq_no&raw=1&fields=paths,servers,tags,components.x-bte*,info,_meta';
-    const res = await axios.get(SMARTAPI_URL, { headers: { 'User-Agent': userAgent } });
+    const overridesPath = path.resolve(__dirname, "../config/smartapi_overrides.json");
+    let overrides;
+    try {
+        overrides = JSON.parse((await readFile(overridesPath)));
+    } catch (error) {
+        debug(`ERROR getting API Overrides file because ${error}`);
+        return;
+    }
+    const res = await axios.get(SMARTAPI_URL, { headers: { 'User-Agent': userAgent } }).catch((err) => {
+        if(!(process.env.API_OVERRIDE === "true" && overrides)) {
+            debug(`Error with initial SmartAPI request. Error: ${err.message}`);
+        }
+    });
     const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
     const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
     const writeFunc = process.env.SYNC_AND_EXIT === "true" ? fs.writeFileSync : fs.writeFile;
