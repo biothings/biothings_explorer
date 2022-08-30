@@ -120,6 +120,10 @@ exports.API_LIST = {
             name: 'Multiomics BigGIM-DrugResponse KP API'
         },
         {
+            id: '08a5ddcde71b4bf838327ef469076acd',
+            name: 'Multiomics ClinicalTrials KP'
+        },
+        {
             id: 'd86a24f6027ffe778f84ba10a7a1861a',
             name: 'Multiomics EHR Risk KP API'
         },
