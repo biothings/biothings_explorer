@@ -671,7 +671,7 @@ Examples:
 
 It can be helpful to paste the yaml into the SmartAPI [editor](https://smart-api.info/editor) or a [yaml-viewer](https://jsonformatter.org/yaml-viewer) to check that the yaml has been written correctly. The SmartAPI editor is nice in that it'll also check that all references are used correctly.
 
-To test that the yaml can be used properly by BTE, you can install a local version of BTE (using [bte-trapi-workspace](https://github.com/biothings/bte-trapi-workspace)). Then you can:
+To test that the yaml can be used properly by BTE, you can install a local version of BTE (using [bte-trapi-workspace](https://github.com/biothings/bte-trapi-workspace)). If you have any issues installing BTE, contact a member of the BTE team. Then you can:
 
 * modify the `packages/@biothings-explorer/bte-trapi/src/config/smartapi_overrides.json` file. Set `only_overrides` to `true`, and put a key-value pair into the `apis` section. The key can be arbitrary, and the value can be a file path (starting with file:/// for absolute paths) or a link to a raw yaml file. See the instructions [here](https://github.com/biothings/BioThings_Explorer_TRAPI#using-api_overridetrue) for details on this.
 * run `API_OVERRIDE=true npm run smartapi_sync --workspace='@biothings-explorer/bte-trapi'` to set BTE to only use the API yaml you're testing
@@ -679,3 +679,43 @@ To test that the yaml can be used properly by BTE, you can install a local versi
 * put a TRAPI query into the `POST` request's request-body section. One can test each operation, or only a few. For testing an operation, you can set the example subject ID (from the testExamples notes) and semantic type and the object-semantic type (and sometimes the predicate). Then run the `POST` query, and look for the object-ID (from the testExamples notes) in BTE's response. You can also look at the corresponding edge to see if the edge-attributes match what you'd expect from the response-mapping (aka all info is there and is formatted correctly).
 
 If there are issues with testing, talk to a more experienced team-member. Sometimes the issue is with BTE, sometimes with the x-bte annotation written.
+
+## "Deploying": Checking, registering and refreshing registration, connecting to BTE
+
+### Checking
+
+When the SmartAPI yaml with x-bte annotation has been written, we suggest that you send links to the yaml file and corresponding API to Colleen Xu, a member of the BTE team that is the current expert on writing these yamls and x-bte annotation. They can check for things like: 
+
+* correct adherence to Translator standards (whenever possible)
+* structuring templated queries to BioThings APIs
+* correct use of keywords for TRAPI data-handling (like using `edge-attributes` in response-mapping so BTE can ingest already-TRAPI-formatted edge-attribute data)
+
+### Registering and refreshing the registration
+
+Once the SmartAPI yaml with x-bte annotation is ready, it needs to be registered in the SmartAPI registry [here](https://smart-api.info/add-api). You may need to make an account with the registry by linking your github account.
+
+Often you just need to paste a raw-github link of your SmartAPI yaml (make sure the repo name and branch are what you want them to be, because if you change them the registration will break and need to be deleted / re-registered). Then, press the submit button. 
+
+Afterwards, you should check your [dashboard](https://smart-api.info/dashboard) and validate your yaml, refresh your registration, and do an uptime-check. The validation is to make sure the yaml passes all requirements for a valid SmartAPI yaml. Refreshing your registration pulls the latest version of the SmartAPI file from the raw-github link (this is also good if edits have been made). Finally, the uptime-check will use the examples on the endpoints to check if the API is responsive / up - and then a badge showing the uptime-status will show up on the registration.  
+
+### Connecting to BTE
+
+In almost all cases, you will want your API to "automatically" be used by various ARA tools like BTE, Aragorn, etc. This means you will want to do the following to connect your registered API (with SmartAPI and x-bte annotation) to BTE (which also functions as a Service Provider tool). 
+
+You will want to make a PR to BTE's `include` list, which is in the exports.API_LIST object stored in this [github file](https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js). Inside the list, there are different sections (specified by comments) for the different KP tools that BTE automatically uses when it works as an ARA. In addition, all listed KPs that use x-bte annotation will also automatically be available to other ARA tools like Aragorn through the [BTE's separate Service Provider function](https://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0). 
+
+In your edit, you'll want to add an object for your API into the section that fits your API (is it made in collaboration with Multiomics or Text Mining Provider? is it owned by the Su / Wu Labs?). If no section fits your API, contact a member of BTE (Colleen Xu is the current point-person for this part of BTE) to ask for help.
+
+Each object has two key-value pairs, one for the SmartAPI Registration ID (`id`) and one for SmartAPI Registration's name (`name`, aka the API's name specified in info.title of the SmartAPI yaml). This is why we need the API to be registered in the SmartAPI registry (and passing validation) first. 
+
+Once the PR is ready, please contact a member of BTE (anyone should do) to ask about merging and deploying this change to BTE.
+
+If you do not do this, your API will only be accessible through specific URLs that you will have to tell other teams with ARA tools to use. 
+
+## Editing an existing SmartAPI yaml
+
+When editing a SmartAPI yaml with x-bte annotation that has already been registered in the SmartAPI Registry (for the first few times), we strongly suggest putting your edits in a side-branch and making a PR. That gives everyone a chance to do the checking and refreshing-registration process. 
+
+The checking process will be similar (hopefully less rigorous) to the process described above for new APIs. Then the edits would be merged. Because the yaml is already registered, you (if you own the registration) or a member of the Service Provider team can refresh the registration to pull the latest version of the SmartAPI file from the raw-github link. We then suggest doing an uptime-check.
+
+If the API is already connected to BTE (has an entry in the exports.API_LIST's `include` list), BTE should ingest your edited SmartAPI registration during its regular cron job (every 10 min). So after 10 min, if your API is used by BTE or served through BTE's Service Provider function, your latest edits should be deployed.
