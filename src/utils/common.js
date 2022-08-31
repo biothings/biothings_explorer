@@ -42,3 +42,5 @@ exports.filterForLogLevel = (response, logLevel) => {
         });
     }
 }
+
+exports.methodNotAllowed = (req, res, next) => res.status(405).send();
