@@ -154,7 +154,6 @@ const getOpsFromPredicatesEndpoints = async (specs) => {
 const updateSmartAPISpecs = async () => {
     const SMARTAPI_URL = 'https://smart-api.info/api/query?q=tags.name:translator&size=1000&sort=_seq_no&raw=1&fields=paths,servers,tags,components.x-bte*,info,_meta';
     const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
-    const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
     let overrides;
     try {
         overrides = JSON.parse((await readFile(overridesPath)));
@@ -162,59 +161,36 @@ const updateSmartAPISpecs = async () => {
         debug(`ERROR getting API Overrides file because ${error}`);
         return;
     }
-    debug(overrides)
-    const res = await axios.get(SMARTAPI_URL, { headers: { 'User-Agent': userAgent } }).catch((err) => {
+    let res = await axios.get(SMARTAPI_URL, { headers: { 'User-Agent': userAgent } }).catch((err) => {
         if(process.env.API_OVERRIDE === "true" && overrides.conf.only_overrides === true) {
             debug(`SmartAPI request failed, creating specs from overrides config.`);
-            let hits = []
-            Object.keys(overrides.apis).map(async (id) => {
-                let override; 
-                try {
-                    const filepath = path.resolve(overrides.apis[id]);
-                    override = yaml.load(await readFile(filepath));
-                } catch (filerror) {
-                    debug(`ERROR getting local file override for API ID ${id} because ${filerror}`);
-                    return;
-                }
-                override._id = id;
-                override._meta = {
-                    date_created: undefined,
-                    last_updated: undefined,
-                    url: overrides.apis[id],
-                    username: undefined,
-                };
-                hits.push(override)
-                fs.writeFile(localFilePath, JSON.stringify({ hits: hits }), (err) => {
-                    if (err) throw err;
-                })
-            });
-            debug('Updated local specs with overrides.');
+            return {data: []}
         } else {
-            debug(`SmartAPI request failed. Error message: ${err.message}`);
+            debug(`SmartAPI request failed.`);
+            throw err.message;
         }
     });
-    if(await res) {
-        const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
-        const writeFunc = process.env.SYNC_AND_EXIT === "true" ? fs.writeFileSync : fs.writeFile;
-        if (process.env.API_OVERRIDE === "true") {
-            // if(res)
-            // await getAPIOverrides(res.data).catch(err => {
-            //     debug('test')
-            // });
-            await getAPIOverrides(res.data)
-        }
-        debug(`Retrieved ${res.data.total} SmartAPI records`);
-        //clean _score fields
-        const hits = res.data.hits;
-        hits.forEach(function(obj){ delete obj._score });
-        writeFunc(localFilePath, JSON.stringify({ hits: hits }), (err) => {
-            if (err) throw err;
-        });
-        const predicatesInfo = await getOpsFromPredicatesEndpoints(res.data.hits);
-        writeFunc(predicatesFilePath, JSON.stringify(predicatesInfo), (err) => {
-            if (err) throw err;
-        });
+    const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
+    const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
+    const writeFunc = process.env.SYNC_AND_EXIT === "true" ? fs.writeFileSync : fs.writeFile;
+    if (process.env.API_OVERRIDE === "true") {
+        // if(res)
+        // await getAPIOverrides(res.data).catch(err => {
+        //     debug('test')
+        // });
+        await getAPIOverrides(res.data)
     }
+    debug(`Retrieved ${res.data.total} SmartAPI records`);
+    //clean _score fields
+    const hits = res.data.hits;
+    hits.forEach(function(obj){ delete obj._score });
+    writeFunc(localFilePath, JSON.stringify({ hits: hits }), (err) => {
+        if (err) throw err;
+    });
+    const predicatesInfo = await getOpsFromPredicatesEndpoints(res.data.hits);
+    writeFunc(predicatesFilePath, JSON.stringify(predicatesInfo), (err) => {
+        if (err) throw err;
+    });
 }
 
 const getAPIOverrides = async (data) => {
