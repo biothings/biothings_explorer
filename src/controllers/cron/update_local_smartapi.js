@@ -150,11 +150,26 @@ const getOpsFromPredicatesEndpoints = async specs => {
 };
 
 const updateSmartAPISpecs = async () => {
-  const SMARTAPI_URL =
-    "https://smart-api.info/api/query?q=tags.name:translator&size=1000&sort=_seq_no&raw=1&fields=paths,servers,tags,components.x-bte*,info,_meta";
-  const res = await axios.get(SMARTAPI_URL, { headers: { "User-Agent": userAgent } });
-  const localFilePath = path.resolve(__dirname, "../../../data/smartapi_specs.json");
-  const predicatesFilePath = path.resolve(__dirname, "../../../data/predicates.json");
+  const SMARTAPI_URL = 'https://smart-api.info/api/query?q=tags.name:translator&size=1000&sort=_seq_no&raw=1&fields=paths,servers,tags,components.x-bte*,info,_meta';
+  const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
+  let overrides;
+  try {
+    overrides = JSON.parse((await readFile(overridesPath)));
+  } catch (error) {
+    debug(`ERROR getting API Overrides file because ${error}`);
+    return;
+  }
+  let res = await axios.get(SMARTAPI_URL, { headers: { 'User-Agent': userAgent } }).catch((err) => {
+    if(process.env.API_OVERRIDE === "true" && overrides.conf.only_overrides === true) {
+      debug(`SmartAPI request failed, creating specs from overrides config.`);
+      return {data: []}
+    } else {
+      debug(`SmartAPI request failed.`);
+      throw err.message;
+    }
+  });
+  const localFilePath = path.resolve(__dirname, '../../../data/smartapi_specs.json');
+  const predicatesFilePath = path.resolve(__dirname, '../../../data/predicates.json');
   const writeFunc = process.env.SYNC_AND_EXIT === "true" ? fs.writeFileSync : fs.writeFile;
   if (process.env.API_OVERRIDE === "true") {
     await getAPIOverrides(res.data);
@@ -162,17 +177,15 @@ const updateSmartAPISpecs = async () => {
   debug(`Retrieved ${res.data.total} SmartAPI records`);
   //clean _score fields
   const hits = res.data.hits;
-  hits.forEach(function (obj) {
-    delete obj._score;
-  });
-  writeFunc(localFilePath, JSON.stringify({ hits: hits }), err => {
+  hits.forEach(function(obj){ delete obj._score });
+  writeFunc(localFilePath, JSON.stringify({ hits: hits }), (err) => {
     if (err) throw err;
   });
   const predicatesInfo = await getOpsFromPredicatesEndpoints(res.data.hits);
-  writeFunc(predicatesFilePath, JSON.stringify(predicatesInfo), err => {
+  writeFunc(predicatesFilePath, JSON.stringify(predicatesInfo), (err) => {
     if (err) throw err;
   });
-};
+}
 
 const getAPIOverrides = async data => {
   const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
@@ -240,17 +253,19 @@ const getAPIOverrides = async data => {
 };
 
 module.exports = () => {
-  // not meant to be used with server started
-  // rather, if just this function is imported and run (e.g. using workspace script)
-  let sync_and_exit = process.env.SYNC_AND_EXIT === "true";
-  if (sync_and_exit) {
-    console.log("Syncing SmartAPI specs with subsequent exit...");
-    updateSmartAPISpecs().then(() => {
-      console.log("SmartAPI sync successful.");
-      process.exit(0);
-    });
-    return;
-  }
+    // not meant to be used with server started
+    // rather, if just this function is imported and run (e.g. using workspace script)
+    let sync_and_exit = process.env.SYNC_AND_EXIT === 'true';
+    if (sync_and_exit) {
+      console.log("Syncing SmartAPI specs with subsequent exit...");
+      updateSmartAPISpecs().then(() => {
+        console.log("SmartAPI sync successful.");
+        process.exit(0);
+      }).catch(err => {
+        debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`)
+      });
+      return;
+    }
 
   let schedule_sync = process.env.NODE_ENV === "production";
   let manual_sync =
