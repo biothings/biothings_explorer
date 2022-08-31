@@ -146,6 +146,7 @@ exports.API_LIST = {
         // - Automat Foodb: has outdated ChemicalSubstance and odd FDBN IDs in meta_knowledge_graph response
         // - Automat Robokop KG: seems to repeat a lot of data that is in the other APIs
         // - Automat molepro-fda: doesn't have edges / associations
+        // - Automat Text Mining: Bill Baumgartner from Text Mining Provider advised us not to use this
         {
         // this API overlaps with our Biolink API registration, but we have bugs with our api-response-transform
         //   this may have been updated more recently / transformed data into TRAPI format
@@ -210,12 +211,6 @@ exports.API_LIST = {
         {
             id: '63a3de624b210fef57a78663e4374bff',
             name: 'Automat Pharos (trapi v-1.3.0)'
-        },
-        {
-        // not sure if this API overlaps with Text Mining Targeted Association API or
-        //   Text Mining Co-occurrrence API...
-            id: '9ea8ef12c4e11781967eb781482de2e0',
-            name: 'Automat Textmining KP (trapi v-1.3.0)'
         },
         {
             id: 'b50915b9880236ca183f6dbb6ae24dea',
