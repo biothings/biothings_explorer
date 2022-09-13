@@ -152,7 +152,7 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
         knowledge_graph: { nodes: {}, edges: {} },
         results: [],
       },
-      status: 500,
+      status: "InternalServerError",
       description: e.toString(),
       trace: process.env.NODE_ENV === "production" ? undefined : e.stack,
     };
