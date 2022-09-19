@@ -1,5 +1,5 @@
 # BioThings Explorer TRAPI API
-[![Test Codecov with Workspace](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/test_ws_codecov.yml/badge.svg)](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/test_ws_codecov.yml)
+[![Test with workspace](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/test_ws_codecov.yml/badge.svg)](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/test_ws_codecov.yml)
 [![codecov](https://codecov.io/gh/biothings/BioThings_Explorer_TRAPI/branch/main/graph/badge.svg?token=I4A29PQQJK)](https://codecov.io/gh/biothings/BioThings_Explorer_TRAPI)
 [![ci-cd](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/deploy.yml/badge.svg)](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/deploy.yml)
 
@@ -24,7 +24,7 @@ We maintain a live instance of this application at https://api.bte.ncats.io/ tha
 sequenceDiagram
 autonumber
 participant I as index.js - query()
-participant QG as query_graph.js 
+participant QG as query_graph.js
 participant BEQ as batch_edge_query.js
 participant Q2A as qedge2apiedge.js
 participant R as query_results.js

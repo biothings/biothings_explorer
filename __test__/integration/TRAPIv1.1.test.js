@@ -101,7 +101,7 @@ describe("Testing v1.1 endpoints", () => {
             .expect(200)
             .expect('Content-Type', /json/)
             .then((response) => {
-                expect(response.body).toHaveProperty("nodes.biolink:Protein");
+                expect(response.body).toHaveProperty("nodes.biolink:Disease");
                 expect(response.body.edges).toEqual(
                     expect.arrayContaining([
                       expect.objectContaining({
@@ -200,9 +200,8 @@ describe("Testing v1.1 endpoints", () => {
                 expect(response.body.message).toHaveProperty("knowledge_graph");
                 expect(response.body.message.knowledge_graph).toHaveProperty("nodes");
                 expect(response.body.message.knowledge_graph).toHaveProperty("edges");
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("MONDO:0016575");
-                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("NCBIGene:93");
-                expect(response.body.message.knowledge_graph.nodes["NCBIGene:93"]).toHaveProperty("categories", ["biolink:Gene"]);
+                expect(response.body.message.knowledge_graph.nodes).toHaveProperty("NCBIGene:5053");
+                expect(response.body.message.knowledge_graph.nodes["NCBIGene:5053"]).toHaveProperty("categories", ["biolink:Gene"]);
             })
     })
 
