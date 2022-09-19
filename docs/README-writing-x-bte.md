@@ -99,7 +99,7 @@ This section doesn't need much editing:
 
 ### paths (aka endpoints)
 
-Probably only minor edits are needed, because BioThings APIs tend to have a common set of endpoints. Note: the "hidden" `/spec` endpoint of BioThings API can be useful for understanding endpoints (like parameters or required fields). However, the `/spec` endpoints seem to be very similar between ["pending" APIs](https://pending.biothings.io/).
+Probably only minor edits are needed, because BioThings APIs tend to have a common set of endpoints. Note: the "hidden" `/spec` endpoint of BioThings API can be useful for understanding endpoints (like parameters or required fields). However, the `/spec` endpoints seem to be very similar between ["pending" APIs](https://biothings.ncats.io/).
 
 The example/examples sections of endpoints are important because they are used to check the API's uptime in the SmartAPI Registry. They should be quick and have small responses. Not all endpoints need an example, but ideally the endpoint that has x-bte annotation on it would have an example (so we can monitor uptime).
 
@@ -445,7 +445,7 @@ Figure out what combinations/combos of things there are, and make a list of them
   * object-ID-prefix
 * If there are multiple ID-prefixes for a "subject-category" or "object-category", you should consider:
   * Can you retrieve different records/documents by querying with or retrieving different ID-prefixes? If so, then writing multiple operations makes sense. If not, then just pick one.
-  * Pick a set of ID-prefixes that will cover most of the API's data. This can be easily checked with BioThings APIs by doing queries with `_exists_` ([example](https://pending.biothings.io/bindingdb/query?q=_exists_:object.pubchem_cid))
+  * Pick a set of ID-prefixes that will cover most of the API's data. This can be easily checked with BioThings APIs by doing queries with `_exists_` ([example](https://biothings.ncats.io/bindingdb/query?q=_exists_:object.pubchem_cid))
   * If you have several ID-prefixes that are "equally good", use the biolink-model's id-prefixes list order for the category (they're in order from most-preferred to least-preferred).
 * Yes, this means some combos will be redundant (for example, if an API has a bunch of different ID-namespaces/prefixes but they're all Pathways). Right now, we have to write a different operation for each one
 * And if you can set relationship field to specific values to get different relationships, then there can be separate combos / operations based on how that field is set.
