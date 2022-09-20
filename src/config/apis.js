@@ -150,75 +150,75 @@ exports.API_LIST = {
         {
         // this API overlaps with our Biolink API registration, but we have bugs with our api-response-transform
         //   this may have been updated more recently / transformed data into TRAPI format
-            id: '5f43575e77a57f2d1ac1a5906480b2dc',
-            name: 'Automat Biolink (trapi v-1.3.0)'
+            id: '17cad7b291604a6a44579edaefe1dad2',
+            name: 'Automat Biolink (ITRB PROD) (trapi v-1.3.0)'
         },
         {
             // this may overlap with info we have in MyDisease, MyChem, and other APIs...
-            id: 'b6cc337091b7d2af13d4b5ceaab1ef3e',
-            name: 'Automat CTD (trapi v-1.3.0)'
+            id: '300bf98bb5c0affd39f4f34f9239ed99',
+            name: 'Automat CTD (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: '97f4e876e7eed1a4c39bf6014628dd63',
-            name: 'Automat Cord19 (trapi v-1.3.0)'
+            id: 'fe50d106ab92959e218086634309e223',
+            name: 'Automat Cord19 (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: '3f3b57358409da5ffd064841dc53ec07',
-            name: 'Automat DrugCentral (trapi v-1.3.0)'
+            id: '816dc6a181e85586beec5bd23eb48f66',
+            name: 'Automat Drug Central (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: '6d027b3dd2347f0b9aeb2785ec4e22ef',
-            name: 'Automat GTEx (trapi v-1.3.0)'
+            id: '9f84bb8824f09592c72793289841fdd5',
+            name: 'Automat GTEx (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: '8927da76f5abe386eb3ede5ba300270e',
-            name: 'Automat GWAS Catalog (trapi v-1.3.0)'
+            id: 'c6bed5afdff655acca07d5b789bf5ad2',
+            name: 'Automat GWAS Catalog (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: '9cbab94a522dc4d6d23e26095be2b3b5',
-            name: 'Automat Gtopdb (trapi v-1.3.0)'
+            id: 'b06f8f412dbed3f610f5ec0644d63d40',
+            name: 'Automat Gtopdb (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: '44dd6f759e3f4cb4ad93ddc78a776986',
-            name: 'Automat HGNC (trapi v-1.3.0)'
+            id: '449f07aaed8e0acd7778c26956bd1778',
+            name: 'Automat HGNC (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: '83ded30027dd37e4bf977e11e0fbd6f1',
-            name: 'Automat HMDB (trapi v-1.3.0)'
+            id: '4397d600003c189521cab414507d65dc',
+            name: 'Automat hmdb (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: 'd913fdeb0a53a1720d2b1490dd2b513a',
-            name: 'Automat Hetio (trapi v-1.3.0)'
+            id: '82edc917ebbb1a2cfb3a68ad11595968',
+            name: 'Automat Hetio (ITRB PROD) (trapi v-1.3.0)'
         },
         {
         // this API overlaps with our BioThings GO APIs, but
         //   may have been updated more recently / transformed data into TRAPI format
-            id: '996db51eada509e150f45a2a7e3f38cf',
-            name: 'Automat Human GOA (trapi v-1.3.0)'
+            id: '92cf42a54feb94d58e80697dc1b5f5c6',
+            name: 'Automat Human GOA (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: 'bdd6b1dc663e2e74d43ee3d73b9e43f3',
-            name: 'Automat IntAct (trapi v-1.3.0)'
+            id: '1dc085701dab80ec49d0237fe5e6ab47',
+            name: 'Automat IntAct (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: 'bdd6b1dc663e2e74d43ee3d73b9e43f3',
-            name: 'Automat Ontological Hierarchy (trapi v-1.3.0)'
+            id: '12a39e0457c6cf1f6925ca8e8570dbca',
+            name: 'Automat Ontological Hierarchy (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: 'f8a1659273a4f0f65c887ee609e2515e',
-            name: 'Automat Panther (trapi v-1.3.0)'
+            id: 'd7cb3cacf399aa5d67996cd6dbd5ed50',
+            name: 'Automat Panther (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: '63a3de624b210fef57a78663e4374bff',
-            name: 'Automat Pharos (trapi v-1.3.0)'
+            id: '151f98a2c6a20a13a375ecb03d8e500e',
+            name: 'Automat Pharos (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: 'b50915b9880236ca183f6dbb6ae24dea',
-            name: 'Automat Uberongraph (trapi v-1.3.0)'
+            id: 'f9770b72fc56d039b2ae1d514d41914d',
+            name: 'Automat Uberongraph (ITRB PROD) (trapi v-1.3.0)'
         },
         {
-            id: '806ad0dc279877dd46dcf9fa381bfb6b',
-            name: 'Automat Viral Proteome (trapi v-1.3.0)'
+            id: 'c212d6dfd73de1bb169df771e6be8fd3',
+            name: 'Automat Viral Proteome (ITRB PROD) (trapi v-1.3.0)'
         },
         // TRAPI (Translator standard) APIs: COHD
         // not accessible by team or api-specific endpoints
