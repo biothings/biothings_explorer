@@ -3,6 +3,9 @@
 * install from bte-trapi-workspace 
 * name branches in different repos the same if they're part of the same feature update
 
+* [vocab](https://github.com/biothings/BioThings_Explorer_TRAPI/issues/379#issuecomment-1068057622) (expand the table in the linked comment) 
+* diagram of what happens during a query in the [README](https://github.com/biothings/BioThings_Explorer_TRAPI#trapi-api-implementation) of BTE's main repo
+
 ## BTE links
 
 * ITRB prod: https://bte.transltr.io/v1
