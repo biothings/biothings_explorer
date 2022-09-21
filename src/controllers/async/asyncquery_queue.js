@@ -82,7 +82,7 @@ exports.getQueryQueue = name => {
                   knowledge_graph: { nodes: {}, edges: {} },
                   results: [],
                 },
-                status: "InternalServerError",
+                status: "JobQueuingError",
                 description: error.toString(),
                 trace: process.env.NODE_ENV === "production" ? undefined : error.stack,
               },
