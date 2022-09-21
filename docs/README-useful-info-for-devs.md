@@ -1,3 +1,8 @@
+## BTE development guidelines
+
+* install from bte-trapi-workspace 
+* name branches in different repos the same if they're part of the same feature update
+
 ## BTE links
 
 * ITRB prod: https://bte.transltr.io/v1
