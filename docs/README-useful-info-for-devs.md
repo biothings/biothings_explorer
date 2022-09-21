@@ -1,10 +1,16 @@
 ## BTE development guidelines
 
-* install from bte-trapi-workspace 
-* name branches in different repos the same if they're part of the same feature update
-
+### Getting started
+* install from [bte-trapi-workspace](https://github.com/biothings/bte-trapi-workspace#bte-trapi-workspace). You may need to run `npm i` twice (first time will have an error). 
 * [vocab](https://github.com/biothings/BioThings_Explorer_TRAPI/issues/379#issuecomment-1068057622) (expand the table in the linked comment) 
 * diagram of what happens during a query in the [README](https://github.com/biothings/BioThings_Explorer_TRAPI#trapi-api-implementation) of BTE's main repo
+
+### Policies
+* name branches in different repos the same if they're part of the same feature update
+
+### Running BTE
+
+* To get console logs in close-to-real-time, you can use `USE_THREADING=false npm start` to run your local instance
 
 ## BTE links
 
