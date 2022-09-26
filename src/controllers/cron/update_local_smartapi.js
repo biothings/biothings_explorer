@@ -117,7 +117,7 @@ const getPredicatesFromGraphData = (predicate_endpoint, data) => {
 
 const getOpsFromEndpoint = async metadata => {
   return axios
-    .get(constructQueryUrl(metadata.query_operation.server, metadata.predicates_path), { timeout: 5000 })
+    .get(constructQueryUrl(metadata.query_operation.server, metadata.predicates_path), { timeout: 10000 })
     .then(res => {
       if (res.status === 200) {
         debug(`Successfully got ${metadata.predicates_path} for ${metadata.query_operation.server}`);
