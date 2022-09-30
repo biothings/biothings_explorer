@@ -254,6 +254,10 @@ exports.API_LIST = {
         // },
     ],
     exclude: [ // explicitely disabled for use even in by_api endpoint
-
+        // Temporary exclusion due to incompatible x-bte annotation
+        {
+            id: 'e9f69b81e755e163fdf6c41a2b5e07c0',
+            name: 'OpenPredict API',
+        },
     ]
 };
