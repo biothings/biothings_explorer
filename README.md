@@ -78,6 +78,9 @@ I->>I: bteGraph: prune not fully connected <br/> results from graph
 
 ## Local installations
 
+
+*Note: these instructions have been updated to reflect usage in the [workspace](https://github.com/biothings/bte-trapi-workspace), which is required.*
+
 ### Requirements
 
 For development, you will only need Node.js and a node global package, e.g. npm, installed in your environment. Your Node version must be higher than v12.
@@ -98,6 +101,10 @@ Also, be sure to have `git` available in your PATH, `npm` might need it (You can
 - #### Other Operating Systems
 
   You can find more information about the installation on the [official Node.js website](https://nodejs.org/) and the [official NPM website](https://npmjs.org/).
+  
+ 
+Note that BTE uses the npm workspace feature, which requires npm 7+. It's recommended to use node v15+, which comes with npm v7.
+You may consider using [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) to install a newer version of node.
 
 If the installation was successful, you should be able to run the following command.
 
@@ -105,7 +112,7 @@ If the installation was successful, you should be able to run the following comm
     v12.*.*
 
     $ npm --version
-    6.1.0
+    7.24.2
 
 If you need to update `npm`, you can make it using `npm`! Cool right? After running the following command, just open again the command line and be happy.
 
@@ -115,14 +122,15 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 
 ### Installation
 
-    $ git clone https://github.com/biothings/BioThings_Explorer_TRAPI
-    $ cd BioThings_Explorer_TRAPI
-    $ npm install
+    $ git clone https://github.com/biothings/bte-trapi-workspace.git
+    $ cd bte-trapi-workspace
+    $ npm run clone
+    $ npm install || true && npm install
+    
+Note that installation must be run twice to ensure workspace interdependecies are installed properly. The last line simply ensures this is done without reporting ignorable failures.
 
 
 ### Running the project
-
-*Note: these instructions have been updated to reflect usage in the [workspace](https://github.com/biothings/bte-trapi-workspace), which is highly recommended.*
 
 To start the server with debug logging, which outputs logging statements to the terminal in real time:
 
