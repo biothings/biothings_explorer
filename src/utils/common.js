@@ -1,5 +1,10 @@
 const WorkflowError = require("./errors/workflow_error");
 const URL = require("url").URL;
+const yaml2json = require('js-yaml');
+const fs = require('fs/promises');
+const path = require('path');
+
+exports.getSchema = async () => yaml2json.load(await fs.readFile(path.join(__dirname, '../../docs/smartapi.yaml'), { encoding: 'utf8' }));
 
 exports.removeQuotesFromQuery = (queryString) => {
     if (queryString.startsWith('"') && queryString.endsWith('"')) {

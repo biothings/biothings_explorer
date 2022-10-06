@@ -10,6 +10,7 @@ const { API_LIST: apiList } = require("../../../config/apis");
 async function jobToBeDone(jobID, queryGraph, workflow, callback_url, options, jobURL = null) {
     utils.validateWorkflow(workflow);
     const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
+        await utils.getSchema(),
         { apiList, ...options },
         smartAPIPath,
         predicatesPath,
