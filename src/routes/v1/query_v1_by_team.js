@@ -19,6 +19,7 @@ class RouteQueryV1ByTeam {
       .route("/v1/team/:team_name/query")
       .post(swaggerValidation.validate, async (req, res, next) => {
         try {
+          req.schema = await utils.getSchema();
           const response = await runTask(req, this.task, path.parse(__filename).name);
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify(response));
@@ -35,7 +36,7 @@ class RouteQueryV1ByTeam {
       const queryGraph = req.body.message.query_graph;
       // const enableIDResolution = (req.params.team_name === "Text Mining Provider") ? false : true;
       const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
-        await utils.getSchema(),
+        req.schema,
         {
           apiList,
           teamName: req.params.team_name,

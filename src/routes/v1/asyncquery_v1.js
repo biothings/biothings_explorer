@@ -17,12 +17,11 @@ class V1RouteAsyncQuery {
       .post(swaggerValidation.validate, async (req, res, next) => {
         // if I don't reinitialize this then the wrong queue will be used, not sure why this happens
         // queryQueue = getQueryQueue("bte_query_queue");
-
         let queueData = {
           queryGraph: req.body.message.query_graph,
           workflow: req.body.workflow,
           callback_url: req.body.callback_url || req.body["callback"],
-          options: { logLevel: req.body.log_level, submitter: req.body.submitter, ...req.query },
+          options: { logLevel: req.body.log_level, submitter: req.body.submitter, schema: await utils.getSchema(), ...req.query },
         };
         await asyncquery(req, res, next, queueData, queryQueue);
       })
