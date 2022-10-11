@@ -5,11 +5,9 @@ const fs = require('fs/promises');
 const path = require('path');
 
 const schema = [];
-console.log("the module is being run bruhv");
 
 exports.getSchema = async () => {
-  console.log(schema);
-  if (schema.length !== 0) {return schema[0];}
+  if (schema.length !== 0) return schema[0];
   schema.push(yaml2json.load(await fs.readFile(path.join(__dirname, '../../docs/smartapi.yaml'), { encoding: 'utf8' })));
   console.log(schema);
   return schema[0];
