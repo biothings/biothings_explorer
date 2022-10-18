@@ -204,7 +204,7 @@ exports.API_LIST = {
         },
         {
             id: '4c6f9117581531161849e60ea906f0be',
-            name: 'Automat-ontology-hierarchy (Trapi v1.3.0) '
+            name: 'Automat-ontology-hierarchy (Trapi v1.3.0)'
         },
         {
             id: '2a879882329b000c7e7f08c2d71ccffd',
