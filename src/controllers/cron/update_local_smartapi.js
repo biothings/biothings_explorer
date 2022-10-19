@@ -88,6 +88,10 @@ const getTRAPIWithPredicatesEndpoint = specs => {
               component: "KP",
               team: spec.info["x-translator"].team,
             },
+            "x-trapi": {
+              batch_size_limit: spec.info["x-trapi"].batch_size_limit,
+              rate_limit: spec.info["x-trapi"].rate_limit,
+            },
           },
           tags: spec.tags.map(item => item.name),
           query_operation: {
@@ -100,9 +104,9 @@ const getTRAPIWithPredicatesEndpoint = specs => {
         if ("/meta_knowledge_graph" in spec.paths) {
           if (
             (Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
-              spec.info["x-trapi"].version.includes("1.1")) ||
+              spec.info["x-trapi"].version.includes("1.2")) ||
             (Object.prototype.hasOwnProperty.call(spec.info["x-trapi"], "version") &&
-              spec.info["x-trapi"].version.includes("1.2"))
+              spec.info["x-trapi"].version.includes("1.3"))
           ) {
             api["predicates_path"] = "/meta_knowledge_graph";
             trapi.push(api);
@@ -134,6 +138,11 @@ const getPredicatesFromGraphData = (predicate_endpoint, data) => {
   const predicates = {};
 
   const addNewPredicates = edge => {
+    if (edge.knowledge_types && Array.isArray(edge.knowledge_types)) {
+      if (!edge.knowledge_types.includes("lookup")) {
+        return;
+      }
+    }
     if (!Object.prototype.hasOwnProperty.call(predicates, edge.object)) {
       predicates[edge.object] = {};
     }
@@ -155,11 +164,15 @@ const getPredicatesFromGraphData = (predicate_endpoint, data) => {
 
 const getOpsFromEndpoint = async metadata => {
   return axios
-    .get(constructQueryUrl(metadata.query_operation.server, metadata.predicates_path), { timeout: 5000 })
+    .get(constructQueryUrl(metadata.query_operation.server, metadata.predicates_path), { timeout: 10000 })
     .then(res => {
       if (res.status === 200) {
         debug(`Successfully got ${metadata.predicates_path} for ${metadata.query_operation.server}`);
-        return { ...metadata, ...{ predicates: getPredicatesFromGraphData(metadata.predicates_path, res.data) } };
+        return {
+          ...metadata,
+          ...{ predicates: getPredicatesFromGraphData(metadata.predicates_path, res.data) },
+          nodes: res.data.nodes,
+        };
       }
       debug(
         `[error]: API "${metadata.association.api_name}" Unable to get ${metadata.predicates_path}` +
@@ -194,8 +207,24 @@ const getOpsFromPredicatesEndpoints = async specs => {
 
 const updateSmartAPISpecs = async () => {
   const SMARTAPI_URL =
-    "https://smart-api.info/api/query?q=tags.name:translator&size=200&sort=_seq_no&raw=1&fields=paths,servers,tags,components.x-bte*,info,_meta";
-  const res = await axios.get(SMARTAPI_URL, { headers: { "User-Agent": userAgent } });
+    "https://smart-api.info/api/query?q=tags.name:translator&size=1000&sort=_seq_no&raw=1&fields=paths,servers,tags,components.x-bte*,info,_meta";
+  const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
+  let overrides;
+  try {
+    overrides = JSON.parse(await readFile(overridesPath));
+  } catch (error) {
+    debug(`ERROR getting API Overrides file because ${error}`);
+    return;
+  }
+  let res = await axios.get(SMARTAPI_URL, { headers: { "User-Agent": userAgent } }).catch(err => {
+    if (process.env.API_OVERRIDE === "true" && overrides.conf.only_overrides === true) {
+      debug(`SmartAPI request failed, creating specs from overrides config.`);
+      return { data: [] };
+    } else {
+      debug(`SmartAPI request failed.`);
+      throw err.message;
+    }
+  });
   const localFilePath = path.resolve(__dirname, "../../../data/smartapi_specs.json");
   const predicatesFilePath = path.resolve(__dirname, "../../../data/predicates.json");
   const writeFunc = process.env.SYNC_AND_EXIT === "true" ? fs.writeFileSync : fs.writeFile;
@@ -288,10 +317,14 @@ module.exports = () => {
   let sync_and_exit = process.env.SYNC_AND_EXIT === "true";
   if (sync_and_exit) {
     console.log("Syncing SmartAPI specs with subsequent exit...");
-    updateSmartAPISpecs().then(() => {
-      console.log("SmartAPI sync successful.");
-      process.exit(0);
-    });
+    updateSmartAPISpecs()
+      .then(() => {
+        console.log("SmartAPI sync successful.");
+        process.exit(0);
+      })
+      .catch(err => {
+        debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`);
+      });
     return;
   }
 
@@ -299,7 +332,7 @@ module.exports = () => {
   let manual_sync =
     process.env.SMARTAPI_SYNC === "true" ? true : process.env.SMARTAPI_SYNC === "false" ? false : undefined;
   let api_override = process.env.API_OVERRIDE === "true";
-  disable_smartapi_sync = !(manual_sync || (schedule_sync && typeof manual_sync === "undefined"));
+  let disable_smartapi_sync = !(manual_sync || (schedule_sync && typeof manual_sync === "undefined"));
   if (disable_smartapi_sync) {
     debug(`SmartAPI sync disabled, server process ${process.pid} disabling smartapi updates.`);
   } else {
@@ -338,7 +371,7 @@ module.exports = () => {
         try {
           updateSmartAPISpecs();
         } catch (error) {
-          debug(`Updating local copy of SmartAPI specs failed! The error message is ${err.toString()}`);
+          debug(`Updating local copy of SmartAPI specs failed! The error message is ${error.toString()}`);
         }
       }
     }

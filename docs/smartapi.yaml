@@ -4,24 +4,35 @@ info:
     email: asu@scripps.edu
     name: Andrew Su
     url: https://github.com/andrewsu
-  description: A ReasonerStdAPI for BioThings Explorer
+  description: A TRAPI/Reasoner Standard API for BioThings Explorer (BTE)
   termsOfService: https://biothings.io/about
-  title: BioThings Explorer ReasonerStdAPI
+  title: BioThings Explorer (BTE) TRAPI
   version: 2.8.1
   x-trapi:
-    version: 1.2.0
+    version: 1.3.0
     asyncquery: true
     operations:
+    ## look at https://standards.ncats.io/operation.json for details.
+    ## could use lookup_and_score in the future?
       - lookup
-    ## look at https://standards.ncats.io/operation.json for details
-    ## perhaps advertise "lookup_and_score"?
+    ## no batch_size_limit (BTE manages IDs for QNodes and sub-queries internally)
+    ## /query endpoints have a limit of 15 requests/client/min
+    ## /meta_knowledge_graph endpoints have a limit of 30 requests/client/min
+    ## other endpoints don't have rate limits
+    rate_limit: 15
+    ## test_data_location not included for now
   x-translator:
     infores: "infores:biothings-explorer"
-    biolink-version: 2.2.13
+    biolink-version: 2.4.8
     component: ARA
     team:
       - Exploring Agent
 servers:
+## ITRB Production and Test are deployed manually, based on the staging instance
+## ITRB CI / staging is basically deployed manually, from main branches
+## - automatic for updates in bte-trapi-workspace main branch, but those rarely happen
+## - we could technically control what branches are used (but right now we don't do this)
+## non-ITRB dev: total manual control on updates (what branches of modules are used for updates)
 - url: https://bte.transltr.io/v1
   description: ITRB Production server
   x-maturity: production
@@ -32,41 +43,45 @@ servers:
   description: ITRB CI server
   x-maturity: staging
 - url: https://api.bte.ncats.io/v1
-  description: Non-ITRB dev (primary internal use)
+  description: Non-ITRB dev (internal use)
   x-maturity: development
 tags:
-- name: 1.2.0
+- name: 1.3.0
 - name: meta_knowledge_graph
 - name: query
 - name: asyncquery
 - name: translator
 - name: trapi
 - name: biothings
-## Note: BTE has custom behavior so DO NOT blindly copy-paste the TRAPI specs / schemas below
+## Note: BTE has custom behavior so DO NOT blindly copy-paste the TRAPI specs / schemas into the document below
 ##       instead go through it and copy-paste in sections as-needed
 ## examples are using MyVariant-specific query
 paths:
+  ## copied directly from TRAPI spec
   /meta_knowledge_graph:
     get:
       tags:
         - meta_knowledge_graph
       summary: Meta knowledge graph representation of this TRAPI web service.
-      description: Returns meta knowledge graph representation of this TRAPI web service.
       responses:
         '200':
-          description: Successful Response
+          description: >-
+            Returns meta knowledge graph representation of this TRAPI web
+            service.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/MetaKnowledgeGraph'
+  ## copied from /meta_knowledge_graph above and modified: BTE-specific endpoint
   /smartapi/{smartapi_id}/meta_knowledge_graph:
     get:
       tags:
         - meta_knowledge_graph
-      summary: TRAPI-compliant Meta knowledge graph representation for an individual SmartAPI KP API (that has x-bte annotation)
-      description: Returns a TRAPI-compliant meta knowledge graph representation of an individual SmartAPI KP API (that has x-bte annotation)
+      summary: TRAPI-compliant meta-knowledge-graph representation for an individual SmartAPI KP API (that has x-bte annotation)
       parameters:
-        - description: SmartAPI ID of an API, you can get it from https://smart-api.info/registry
+        - description: >-
+            SmartAPI ID of an API with x-bte annotation. The easiest way to find these is to read the list of APIs BTE uses
+            https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js
           in: path
           name: smartapi_id
           required: true
@@ -75,19 +90,25 @@ paths:
             type: string
       responses:
         '200':
-          description: Successful Response
+          description: >-
+            Returns a TRAPI-compliant meta-knowledge-graph representation for an individual SmartAPI KP API (that has x-bte annotation)
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/MetaKnowledgeGraph'
+  ## copied from /meta_knowledge_graph above and modified: BTE-specific endpoint
   /team/{team_name}/meta_knowledge_graph:
     get:
       tags:
         - meta_knowledge_graph
-      summary: TRAPI-compliant Meta knowledge graph representation for one KP/ARA team's SmartAPI KP APIs (that have x-bte annotation)
-      description: Returns a TRAPI-compliant meta knowledge graph representation of one team's set of SmartAPI KP APIs (that have x-bte annotation)
+      summary: TRAPI-compliant meta-knowledge-graph representation for one KP team's SmartAPI KP APIs (that have x-bte annotation)
       parameters:
-        - description: Translator Team Name, e.g. Service Provider, Multiomics Provider
+        - description: >-
+            Translator Team Name. Current options: Service Provider, Multiomics Provider, Text Mining Provider.
+            The easiest way to find what KP APIs would be included under these teams is to read the list of APIs BTE uses
+            https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js.
+            Note that Service Provider endpoints are also advertised separately as a KP 
+            http://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0 
           in: path
           name: team_name
           required: true
@@ -100,17 +121,18 @@ paths:
               - Service Provider
       responses:
         '200':
-          description: Successful Response
+          description: >-
+            Returns a TRAPI-compliant meta-knowledge-graph representation for one KP team's SmartAPI KP APIs (that have x-bte annotation)
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/MetaKnowledgeGraph'
+  ## modified TRAPI spec: example and BTE-specific parameters, used by developers running local instances of BTE
   /query:
     post:
       tags:
         - query
-      summary: Query BioThings Explorer TRAPI API as ARA with a TRAPI query
-      operationId: query
+      summary: Initiate a TRAPI-format query to BTE (operating as an ARA) and wait to receive a Response
       parameters:
         - description: option to choose whether or not to enable caching
           in: query
@@ -129,6 +151,8 @@ paths:
         required: true
         content:
           application/json:
+            schema:
+              $ref: '#/components/schemas/Query'
             ## should use MyVariant to answer this
             example:
               message:
@@ -146,8 +170,6 @@ paths:
                     e1:
                       subject: "n0"
                       object: "n1"
-            schema:
-              $ref: '#/components/schemas/Query'
       responses:
         '200':
           description: >-
@@ -166,6 +188,22 @@ paths:
             application/json:
               schema:
                 type: string
+        '413':
+          description: >-
+            Payload too large. Indicates that batch size was over the limit
+            specified in x-trapi.
+          content:
+            application/json:
+              schema:
+                type: string
+        '429':
+          description: >-
+            Too many requests. Indicates that the client issued requests that
+            exceed the rate limit specified in x-trapi.
+          content:
+            application/json:
+              schema:
+                type: string
         '500':
           description: >-
             Internal server error.
@@ -180,15 +218,16 @@ paths:
             application/json:
               schema:
                 type: string
-      x-swagger-router-controller: swagger_server.controllers.query_controller
+  ## copied from /query above and modified: BTE-specific endpoint
   /smartapi/{smartapi_id}/query:
     post:
       tags:
         - query
-      summary: Query individual SmartAPI KP API (that has x-bte annotation) as a TRAPI API
-      operationId: querySmartAPI
+      summary: Query individual SmartAPI KP API (that has x-bte annotation) as a TRAPI KP API
       parameters:
-        - description: SmartAPI ID of an API, you can get it from https://smart-api.info/registry
+        - description: >-
+            SmartAPI ID of an API with x-bte annotation. The easiest way to find these is to read the list of APIs BTE uses
+            https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js
           in: path
           name: smartapi_id
           required: true
@@ -212,6 +251,8 @@ paths:
         required: true
         content:
           application/json:
+            schema:
+              $ref: '#/components/schemas/Query'
             ## should use MyVariant to answer this
             example:
               message:
@@ -229,8 +270,6 @@ paths:
                     e1:
                       subject: "n0"
                       object: "n1"
-            schema:
-              $ref: '#/components/schemas/Query'
       responses:
         '200':
           description: >-
@@ -249,6 +288,22 @@ paths:
             application/json:
               schema:
                 type: string
+        '413':
+          description: >-
+            Payload too large. Indicates that batch size was over the limit
+            specified in x-trapi.
+          content:
+            application/json:
+              schema:
+                type: string
+        '429':
+          description: >-
+            Too many requests. Indicates that the client issued requests that
+            exceed the rate limit specified in x-trapi.
+          content:
+            application/json:
+              schema:
+                type: string
         '500':
           description: >-
             Internal server error.
@@ -263,18 +318,21 @@ paths:
             application/json:
               schema:
                 type: string
-      x-swagger-router-controller: swagger_server.controllers.query_controller
+  ## copied from /query above and modified: BTE-specific endpoint
   /team/{team_name}/query:
     post:
       tags:
         - query
       summary: >-
         Query an individual Translator team's SMARTAPI KP APIs (that have x-bte annotation) as an individual TRAPI
-        service using team name
-      description: ''
-      operationId: queryTeam
+        service by specifying the team name
       parameters:
-        - description: Translator Team Name, e.g. Service Provider, Multiomics Provider
+        - description: >-
+            Translator Team Name. Current options: Service Provider, Multiomics Provider, Text Mining Provider.
+            The easiest way to find what KP APIs would be included under these teams is to read the list of APIs BTE uses
+            https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js.
+            Note that Service Provider endpoints are also advertised separately as a KP 
+            http://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0 
           in: path
           name: team_name
           required: true
@@ -302,6 +360,8 @@ paths:
         required: true
         content:
           application/json:
+            schema:
+              $ref: '#/components/schemas/Query'
             ## should use MyVariant to answer this
             example:
               message:
@@ -319,8 +379,6 @@ paths:
                     e1:
                       subject: "n0"
                       object: "n1"
-            schema:
-              $ref: '#/components/schemas/Query'
       responses:
         '200':
           description: >-
@@ -339,6 +397,22 @@ paths:
             application/json:
               schema:
                 type: string
+        '413':
+          description: >-
+            Payload too large. Indicates that batch size was over the limit
+            specified in x-trapi.
+          content:
+            application/json:
+              schema:
+                type: string
+        '429':
+          description: >-
+            Too many requests. Indicates that the client issued requests that
+            exceed the rate limit specified in x-trapi.
+          content:
+            application/json:
+              schema:
+                type: string
         '500':
           description: >-
             Internal server error.
@@ -353,8 +427,17 @@ paths:
             application/json:
               schema:
                 type: string
-      x-swagger-router-controller: swagger_server.controllers.query_controller
+  ## not TRAPI spec: BTE-specific endpoint related to asyncquery
   /check_query_status/{id}:
+  ## moved because smartapi-editor gave alert that a non-existent post endpoint wouldn't know what {id} is
+    parameters:
+      - description: job-id
+        in: path
+        name: id
+        required: true
+        ## Cache refreshing means this will be changing pretty often, so not including an example
+        schema:
+          type: string
     get:
       tags:
         - asyncquery
@@ -363,22 +446,16 @@ paths:
         endpoint without a callback property: BTE then handled it in a polling manner and
         provided a job id. The job id can be used here to check the status or retrieve
         the Response.
-      description: ''
       parameters:
-        - description: job-id
-          in: path
-          name: id
-          required: true
-          ## Cache refreshing means this will be changing pretty often, so not including an example
-          schema:
-            type: string
         - description: option to override original query log level
           in: query
           name: log_level
           required: false
           schema:
             type: string
-            description: Logging level
+            description: >-
+              Logging level. The order of priority is ERROR, WARNING, INFO, DEBUG. BTE will return all logs at the 
+              specified level and those at higher priority levels
             enum:
               - ERROR
               - WARNING
@@ -386,7 +463,7 @@ paths:
               - DEBUG
       responses:
         '200':
-          description: Returns status. If successfully completed, it will return a TRAPI Response object
+          description: Returns status. If successfully completed, it will return a TRAPI Response object under the field returnvalue
           content:
             application/json:
               schema:
@@ -412,7 +489,7 @@ paths:
                     properties:
                       response:
                         $ref: '#/components/schemas/Response'
-  ## note that the AsyncQuery schema is changed to make callback optional
+  ## modified TRAPI spec: summary sections tell users that AsyncQuery schema was changed to make callback optional
   /asyncquery:
     post:
       tags:
@@ -423,8 +500,7 @@ paths:
         For BTE, it is optional to have a callback property in the request-body. If
         the callback property is not included, BTE will handle the query in a polling
         manner: it will provide a job-id that can be used to check the status or retrieve
-        the Response using the /v1/check_query_status/{id} endpoint.
-      description: ''
+        the Response using BTE's /v1/check_query_status/{id} endpoint.
       parameters:
         - description: option to choose whether or not to enable caching
           in: query
@@ -443,6 +519,8 @@ paths:
         required: true
         content:
           application/json:
+            schema:
+              $ref: '#/components/schemas/AsyncQuery'
             ## should use MyVariant to answer this
             example:
               message:
@@ -460,8 +538,6 @@ paths:
                     e1:
                       subject: "n0"
                       object: "n1"
-            schema:
-              $ref: '#/components/schemas/AsyncQuery'
       responses:
         '200':
           description: >-
@@ -470,7 +546,7 @@ paths:
             the Response will be sent to the callback url when complete. If the callback
             property is not included, BTE will handle the query in a polling manner: it
             will provide a job-id that can be used to check the status or retrieve
-            the Response using the /v1/check_query_status/{id} endpoint.
+            the Response using BTE's /v1/check_query_status/{id} endpoint.
           content:
             application/json:
               schema:
@@ -480,6 +556,22 @@ paths:
             Bad request. The request is invalid according to this OpenAPI
             schema OR a specific identifier is believed to be invalid somehow
             (not just unrecognized).
+          content:
+            application/json:
+              schema:
+                type: string
+        '413':
+          description: >-
+            Payload too large. Indicates that batch size was over the limit
+            specified in x-trapi.
+          content:
+            application/json:
+              schema:
+                type: string
+        '429':
+          description: >-
+            Too many requests. Indicates that the client issued requests that
+            exceed the rate limit specified in x-trapi.
           content:
             application/json:
               schema:
@@ -498,22 +590,25 @@ paths:
             application/json:
               schema:
                 type: string
+  ## copied from /asyncquery above and modified: BTE-specific endpoint
   /smartapi/{smartapi_id}/asyncquery:
     post:
       tags:
         - asyncquery
       summary: >-
-        This endpoint is for individual SmartAPI KP APIs (that have x-bte annotation), to query
-        them through a TRAPI API interface (BTE).
+        This endpoint is for asynchronously querying an individual SmartAPI KP API (that has x-bte annotation) 
+        as a TRAPI KP API.
 
         Initiate a query that will be handled in an asynchronous manner (there is a
         queue and queries will be executed in the order that they enter the queue).
         For BTE, it is optional to have a callback property in the request-body. If
         the callback property is not included, BTE will handle the query in a polling
         manner: it will provide a job-id that can be used to check the status or retrieve
-        the Response using the /v1/check_query_status/{id} endpoint.
+        the Response using BTE's /v1/check_query_status/{id} endpoint.
       parameters:
-        - description: SmartAPI ID of an API, you can get it from https://smart-api.info/registry
+        - description: >-
+            SmartAPI ID of an API with x-bte annotation. The easiest way to find these is to read the list of APIs BTE uses
+            https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js
           in: path
           name: smartapi_id
           required: true
@@ -537,6 +632,8 @@ paths:
         required: true
         content:
           application/json:
+            schema:
+              $ref: '#/components/schemas/AsyncQuery'
             ## should use MyVariant to answer this
             example:
               message:
@@ -554,8 +651,6 @@ paths:
                     e1:
                       subject: "n0"
                       object: "n1"
-            schema:
-              $ref: '#/components/schemas/AsyncQuery'
       responses:
         '200':
           description: >-
@@ -564,7 +659,7 @@ paths:
             the Response will be sent to the callback url when complete. If the callback
             property is not included, BTE will handle the query in a polling manner: it
             will provide a job-id that can be used to check the status or retrieve
-            the Response using the /v1/check_query_status/{id} endpoint.
+            the Response using BTE's /v1/check_query_status/{id} endpoint.
           content:
             application/json:
               schema:
@@ -574,6 +669,22 @@ paths:
             Bad request. The request is invalid according to this OpenAPI
             schema OR a specific identifier is believed to be invalid somehow
             (not just unrecognized).
+          content:
+            application/json:
+              schema:
+                type: string
+        '413':
+          description: >-
+            Payload too large. Indicates that batch size was over the limit
+            specified in x-trapi.
+          content:
+            application/json:
+              schema:
+                type: string
+        '429':
+          description: >-
+            Too many requests. Indicates that the client issued requests that
+            exceed the rate limit specified in x-trapi.
           content:
             application/json:
               schema:
@@ -592,23 +703,28 @@ paths:
             application/json:
               schema:
                 type: string
+  ## copied from /asyncquery above and modified: BTE-specific endpoint
   /team/{team_name}/asyncquery:
     post:
       tags:
         - asyncquery
       summary: >-
-        This endpoint is for querying an individual Translator team's SMARTAPI KP APIs
-        (that have x-bte annotation) through a TRAPI API interface (BTE).
+        This endpoint is for asynchronously querying an individual Translator team's SMARTAPI KP APIs (that have x-bte annotation) 
+        as an individual TRAPI service by specifying the team name.
 
         Initiate a query that will be handled in an asynchronous manner (there is a
         queue and queries will be executed in the order that they enter the queue).
         For BTE, it is optional to have a callback property in the request-body. If
         the callback property is not included, BTE will handle the query in a polling
         manner: it will provide a job-id that can be used to check the status or retrieve
-        the Response using the /v1/check_query_status/{id} endpoint.
-      description: ''
+        the Response using BTE's /v1/check_query_status/{id} endpoint.
       parameters:
-        - description: Translator Team Name, e.g. Service Provider, Multiomics Provider
+        - description: >-
+            Translator Team Name. Current options: Service Provider, Multiomics Provider, Text Mining Provider.
+            The easiest way to find what KP APIs would be included under these teams is to read the list of APIs BTE uses
+            https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js.
+            Note that Service Provider endpoints are also advertised separately as a KP 
+            http://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0 
           in: path
           name: team_name
           required: true
@@ -636,6 +752,8 @@ paths:
         required: true
         content:
           application/json:
+            schema:
+              $ref: '#/components/schemas/AsyncQuery'
             ## should use MyVariant to answer this
             example:
               message:
@@ -653,8 +771,6 @@ paths:
                     e1:
                       subject: "n0"
                       object: "n1"
-            schema:
-              $ref: '#/components/schemas/AsyncQuery'
       responses:
         '200':
           description: >-
@@ -663,7 +779,7 @@ paths:
             the Response will be sent to the callback url when complete. If the callback
             property is not included, BTE will handle the query in a polling manner: it
             will provide a job-id that can be used to check the status or retrieve
-            the Response using the /v1/check_query_status/{id} endpoint.
+            the Response using BTE's /v1/check_query_status/{id} endpoint.
           content:
             application/json:
               schema:
@@ -673,6 +789,22 @@ paths:
             Bad request. The request is invalid according to this OpenAPI
             schema OR a specific identifier is believed to be invalid somehow
             (not just unrecognized).
+          content:
+            application/json:
+              schema:
+                type: string
+        '413':
+          description: >-
+            Payload too large. Indicates that batch size was over the limit
+            specified in x-trapi.
+          content:
+            application/json:
+              schema:
+                type: string
+        '429':
+          description: >-
+            Too many requests. Indicates that the client issued requests that
+            exceed the rate limit specified in x-trapi.
           content:
             application/json:
               schema:
@@ -692,6 +824,14 @@ paths:
               schema:
                 type: string
 components:
+  ## look for comments to see parts that have been modified for BTE
+  ## also, many sections have additionalProperties: true
+  ## - Query: comment out workflow.allOf section since the $ref breaks execution of BTE's api-schema-builder/openapi-validator-middleware
+  ## - AsyncQuery: callback property not required (commented it out of the 'required' field),
+  ##               comment out workflow.allOf section
+  ## - Response: comment out workflow.allOf section
+  ## - Attribute: comment out properties.attributes.items since the self-$ref breaks execution of 
+  ##              BTE's api-schema-builder/openapi-validator-middleware
   schemas:
     Query:
       description: >-
@@ -721,7 +861,14 @@ components:
         workflow:
           description: List of workflow steps to be executed.
           # allOf:
-          #   - $ref: http://standards.ncats.io/workflow/1.0.0/schema
+          #   - $ref: http://standards.ncats.io/workflow/1.3.2/schema
+          nullable: true
+        submitter:
+          type: string
+          description: >-
+            Any string for self-identifying the submitter of a query. The
+            purpose of this optional field is to aid in the tracking of
+            the source of queries for development and issue resolution.
           nullable: true
       additionalProperties: true
       required:
@@ -762,12 +909,19 @@ components:
         workflow:
           description: List of workflow steps to be executed.
           # allOf:
-          #   - $ref: http://standards.ncats.io/workflow/1.0.0/schema
+          #   - $ref: http://standards.ncats.io/workflow/1.3.2/schema
+          nullable: true
+        submitter:
+          type: string
+          description: >-
+            Any string for self-identifying the submitter of a query. The
+            purpose of this optional field is to aid in the tracking of
+            the source of queries for development and issue resolution.
           nullable: true
       additionalProperties: true
+      required:
       ## BTE does not require the callback property, see the asyncquery
       ##   endpoint summary and 200 response description
-      required:
         # - callback
         - message
     Response:
@@ -807,7 +961,7 @@ components:
         workflow:
           description: List of workflow steps that were executed.
           # allOf:
-          #   - $ref: http://standards.ncats.io/workflow/1.0.0/schema
+          #   - $ref: http://standards.ncats.io/workflow/1.3.2/schema
           nullable: true
       additionalProperties: true
       required:
@@ -940,15 +1094,41 @@ components:
         - edge_bindings
     NodeBinding:
       type: object
+      description: >-
+          An instance of NodeBinding is a single KnowledgeGraph Node mapping,
+          identified by the corresponding 'id' object key identifier of the
+          Node within the Knowledge Graph. Instances of NodeBinding may
+          include extra annotation in the form of additional properties.
+          (such annotation is not yet fully standardized).
       properties:
         id:
           $ref: '#/components/schemas/CURIE'
           description: >-
-            An instance of NodeBinding is a single KnowledgeGraph Node mapping,
-            identified by the corresponding 'id' object key identifier of the
-            Node within the Knowledge Graph. Instances of NodeBinding may
-            include extra annotation (such annotation is not yet fully
-            standardized).
+            The CURIE of a Node within the Knowledge Graph.
+        query_id:
+          allOf:
+            - $ref: '#/components/schemas/CURIE'
+          description: >-
+            An optional property to provide the CURIE in the QueryGraph to
+            which this binding applies. If the bound QNode does not have an
+            an 'id' property or if it is empty, then this query_id MUST be
+            null or absent. If the bound QNode has one or more CURIEs
+            as an 'id' and this NodeBinding's 'id' refers to a QNode 'id'
+            in a manner where the CURIEs are different (typically due to
+            the NodeBinding.id being a descendant of a QNode.id), then
+            this query_id MUST be provided. In other cases, there is no
+            ambiguity, and this query_id SHOULD NOT be provided.
+          nullable: true
+        attributes:
+          type: array
+          description: >-
+            A list of attributes providing further information about the
+            node binding. This is not intended for capturing node attributes
+            and should only be used for properties that vary from result to
+            result.
+          items:
+            $ref: '#/components/schemas/Attribute'
+          nullable: true
       additionalProperties: true
       required:
         - id
@@ -1043,8 +1223,7 @@ components:
           items:
             $ref: '#/components/schemas/CURIE'
           minItems: 1
-          ## commenting it out since smartapi editor doesn't handle this well
-          # example: [OMIM:603903]
+          example: [OMIM:603903]
           description: CURIE identifier for this node
           nullable: true
         categories:
@@ -1070,11 +1249,11 @@ components:
         constraints:
           type: array
           description: >-
-            A list of contraints applied to a query node.
+            A list of constraints applied to a query node.
             If there are multiple items, they must all be true (equivalent
             to AND)
           items:
-            $ref: '#/components/schemas/QueryConstraint'
+            $ref: '#/components/schemas/AttributeConstraint'
           default: []
       additionalProperties: true
     QEdge:
@@ -1088,6 +1267,20 @@ components:
         an exact match to the given QEdge predicate term,
         or to a term that is a descendant of the QEdge predicate term.
       properties:
+        knowledge_type:
+          description: >-
+            Indicates the type of knowledge that the client wants from the
+            server between the subject and object. If the value is
+            'lookup', then the client wants direct lookup information from
+            knowledge sources. If the value is 'inferred', then the client
+            wants the server to get creative and connect the subject and
+            object in more speculative and non-direct-lookup ways. If this
+            property is absent or null, it MUST be assumed to mean
+            'lookup'. This feature is currently experimental and may be
+            further extended in the future.
+          example: lookup
+          nullable: true
+          type: string
         predicates:
           type: array
           items:
@@ -1108,14 +1301,27 @@ components:
             Corresponds to the map key identifier of the
             object concept node anchoring the query filter
             pattern for the query relationship edge.
-        constraints:
+        attribute_constraints:
           type: array
           description: >-
-            A list of contraints applied to a query edge.
+            A list of attribute constraints applied to a query edge.
             If there are multiple items, they must all be true (equivalent
             to AND)
           items:
-            $ref: '#/components/schemas/QueryConstraint'
+            $ref: '#/components/schemas/AttributeConstraint'
+          default: []
+        qualifier_constraints:
+          type: array
+          description: >-
+            A list of QualifierConstraints that provide nuance to the QEdge.
+            If multiple QualifierConstraints are provided, there is an OR
+            relationship between them. If the QEdge has multiple
+            predicates or if the QNodes that correspond to the subject or
+            object of this QEdge have multiple categories or multiple
+            curies, then qualifier_constraints MUST NOT be specified
+            because these complex use cases are not supported at this time.
+          items:
+            $ref: '#/components/schemas/QualifierConstraint'
           default: []
       additionalProperties: true
       required:
@@ -1153,7 +1359,7 @@ components:
         can be used to describe the source of the statement made in a key-value
         pair of the attribute object, or describe the attribute's value itself
         including its semantic type, or a url providing additional information
-        about it. An attribute may be further qualified with a SubAttribute
+        about it. An attribute may be further qualified with sub-attributes
         (for example to provide confidence intervals on a value).
       properties:
         attribute_type_id:
@@ -1167,7 +1373,7 @@ components:
             '0.000153' represents a p-value supporting an edge, or that
             a value of 'ChEMBL' represents the original source of the knowledge
             expressed in the edge.
-          example: Biolink:has_p-value_evidence, Biolink:has_original_source
+          example: biolink:synonym
         original_attribute_name:
           type: string
           description: >-
@@ -1224,80 +1430,8 @@ components:
             A list of attributes providing further information about the
             parent attribute (for example to provide provenance
             information about the parent attribute).
-          items:
-            $ref: '#/components/schemas/SubAttribute'
-          nullable: true
-      required:
-        - attribute_type_id
-        - value
-      additionalProperties: false
-    SubAttribute:
-      type: object
-      description: >-
-        Second-level attribute that can be used to qualify information
-        contained in a primary Attribute attached to a Node or Edge.
-      properties:
-        attribute_type_id:
-          $ref: '#/components/schemas/CURIE'
-          description: >-
-            The 'key' of the attribute object, holding a CURIE of an ontology
-            property defining the attribute (preferably the CURIE of a
-            Biolink association slot). This property captures the relationship
-            asserted to hold between the value of the attribute, and the node
-            or edge from  which it hangs. For example, that a value of
-            '0.000153' represents a p-value supporting an edge, or that
-            a value of 'ChEMBL' represents the original source of the knowledge
-            expressed in the edge.
-          example: Biolink:has_p-value_evidence, Biolink:has_original_source
-        original_attribute_name:
-          type: string
-          description: >-
-            The term used by the original source of an attribute to describe
-            the meaning or significance of the value it captures. This may be
-            a column name in a source tsv file, or a key in a source json
-            document for the field in the data that held the attribute's
-            value. Capturing this information  where possible lets us preserve
-            what the original source said. Note that the data type is string'
-            but the contents of the field could also be a CURIE of a third
-            party ontology term.
-          example: p-value
-          nullable: true
-        value:
-          description: >-
-            Value of the attribute. May be any data type, including a list.
-          example: 0.000153
-        value_type_id:
-          allOf:
-            - $ref: '#/components/schemas/CURIE'
-          description: >-
-            CURIE describing the semantic type of an  attribute's value. Use
-            a Biolink class if possible, otherwise a term from an external
-            ontology. If a suitable CURIE/identifier does not exist, enter a
-            descriptive phrase here and submit the new type for consideration
-            by the appropriate authority.
-          example: EDAM:data_1187
-          nullable: true
-        attribute_source:
-          type: string
-          description: >-
-            The source of the core assertion made by the key-value pair of an
-            attribute object. Use a CURIE or namespace designator for this
-            resource where possible.
-          example: UniProtKB
-          nullable: true
-        value_url:
-          type: string
-          description: >-
-            Human-consumable URL linking to a web document that provides
-            additional information about an  attribute's value (not the node
-            or the edge fom which it hangs).
-          example: https://pubmed.ncbi.nlm.nih.gov/32529952
-          nullable: true
-        description:
-          type: string
-          description: >-
-            Human-readable description for the attribute and its value.
-          example: Assertion Authored By Dr. Trans L. Ator
+          # items:
+          #   $ref: '#/components/schemas/Attribute'
           nullable: true
       required:
         - attribute_type_id
@@ -1332,10 +1466,67 @@ components:
           items:
             $ref: '#/components/schemas/Attribute'
           nullable: true
+        qualifiers:
+          type: array
+          description: >-
+            A set of Qualifiers that act together to add nuance
+            or detail to the statement expressed in an Edge.
+          items:
+            $ref: '#/components/schemas/Qualifier'
+          nullable: true
       additionalProperties: false
       required:
         - subject
         - object
+    Qualifier:
+      additionalProperties: false
+      description: >-
+        An additional nuance attached to an assertion
+      type: object
+      properties:
+        qualifier_type_id:
+          type: string
+          description: >-
+            The category of the qualifier, drawn from a hierarchy of qualifier
+            slots in the Biolink model (e.g. subject_aspect, subject_direction,
+            object_aspect, object_direction, etc).
+          example: subject_aspect
+          nullable: false
+        qualifier_value:
+          type: string
+          description: >-
+            The value associated with the type of the qualifier, drawn from
+            a set of controlled values by the type as specified in
+            the Biolink model (e.g. 'expression' or 'abundance' for the
+            qualifier type 'subject_aspect', etc).
+          example: expression
+          nullable: false
+      required:
+        - qualifier_type_id
+        - qualifier_value
+    QualifierConstraint:
+      additionalProperties: false
+      description: >-
+        Defines a query constraint based on the
+        qualifier_types and qualifier_values of a set of
+        Qualifiers attached to an edge. For example, it can constrain a
+        "ChemicalX - affects - ?Gene" query to return only edges where
+        ChemicalX specifically affects the 'expression' of the Gene,
+        by constraining on the qualifier_type "object_aspect" with
+        a qualifier_value of "expression".
+      properties:
+        qualifier_set:
+          type: array
+          description: >-
+            A set of Qualifiers that serves to add nuance to a query,
+            by constraining allowed values held by Qualifiers
+            on queried Edges.
+          items:
+            $ref: '#/components/schemas/Qualifier'
+          nullable: false
+      required:
+        - qualifier_set
+      type: object
     BiolinkEntity:
       description: >-
         Compact URI (CURIE) for a Biolink class, biolink:NamedThing
@@ -1430,7 +1621,7 @@ components:
           $ref: '#/components/schemas/BiolinkEntity'
           description: >-
             Subject node category of this relationship edge.
-          example: biolink:ChemicalSubstance
+          example: biolink:ChemicalEntity
         predicate:
           $ref: '#/components/schemas/BiolinkPredicate'
           description: >-
@@ -1441,6 +1632,16 @@ components:
           description: >-
             Object node category of this relationship edge.
           example: biolink:Protein
+        knowledge_types:
+          description: >-
+            A list of knowledge_types that are supported by the service.
+            If the knowledge_types is null, this means that only 'lookup'
+            is supported. Currently allowed values are 'lookup' or 'inferred'.
+          items:
+            type: string
+          minItems: 1
+          nullable: true
+          type: array
         attributes:
           type: array
           description: >-
@@ -1491,7 +1692,7 @@ components:
           nullable: true
       required:
         - attribute_type_id
-    QueryConstraint:
+    AttributeConstraint:
       type: object
       description: >-
         Generic query constraint for a query node or query edge
@@ -1523,27 +1724,39 @@ components:
           description: >-
             Relationship between the database value and the constraint value
             for the specified id. The operators ==, >, and < mean
-            is exactly equal to, is greater than, and is less than,
+            is equal to, is greater than, and is less than,
             respectively. The 'matches' operator indicates that the value
             is a regular expression to be evaluated. If value is a list type,
             then at least one evaluation must be true (equivalent to OR).
             This means that the == operator with a list acts like a SQL 'IN'
-            clause. The 'not' property negates the operator such that not
+            clause. If the value of the compared attribute is a list, then
+            comparisons are performed between each of the constraint values
+            and each of the attribute values, and any one true evaluation
+            counts as an overall true (e.g., [1,2,3] == [6,7,2] is true).
+            The == operator is therefore a broad interpretation of inclusion.
+            The '===' operator requires that the constraint value and
+            the attribute value be the same data type, length,
+            content, and order (e.g. only [1,2,3] === [1,2,3]).
+            The 'not' property negates the operator such that not
             and == means 'not equal to' (or 'not in' for a list), and not >
-            means <=, and not < means >=, and not matches means does not
-            match. The '==' operator SHOULD NOT be used in a manner that
+            means <=, and not < means >=, not matches means does not
+            match, and not === means the match between the constraint
+            and attribute values are not exact.
+            The '==' operator SHOULD NOT be used in a manner that
             describes an "is a" subclass relationship for the parent QNode.
           enum:
             - ==
             - '>'
             - <
             - matches
+            - ===
         value:
           example: 57.0
           description: >-
             Value of the attribute. May be any data type, including a list.
             If the value is a list and there are multiple items, at least one
-            comparison must be true (equivalent to OR). If 'value' is of data
+            comparison must be true (equivalent to OR) unless the '==='
+            operator is used. If 'value' is of data
             type 'object', the keys of the object MAY be treated as a list.
             A 'list' data type paired with the '>' or '<' operators will
             encode extraneous comparisons, but this is permitted as it is in
