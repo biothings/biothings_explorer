@@ -253,7 +253,7 @@ exports.API_LIST = {
         //     name: 'ICEES PCD Instance API - production'
         // },
     ],
-    exclude: [ // explicitely disabled for use even in by_api endpoint
+    exclude: [ // explicitly disabled for use even in by_api endpoint. for TRAPI and APIs annotated with SmartAPI x-bte
         // Temporary exclusion due to incompatible x-bte annotation
         {
             id: 'e9f69b81e755e163fdf6c41a2b5e07c0',
