@@ -83,7 +83,7 @@ I->>I: bteGraph: prune not fully connected <br/> results from graph
 
 ### Requirements
 
-For development, you will only need Node.js and a node global package, e.g. npm, installed in your environment. Your Node version must be higher than v12.
+For development, you will need Node.js and a node global package, e.g. npm, installed in your environment. Your Node version must be higher than v12.
 
 
 - #### Node installation on Windows
@@ -117,6 +117,22 @@ If the installation was successful, you should be able to run the following comm
 If you need to update `npm`, you can make it using `npm`! Cool right? After running the following command, just open again the command line and be happy.
 
 `$ npm install npm -g`
+
+Additionally, some packages used by BTE require some additional packages:
+
+Ubuntu:
+
+    sudo apt install lz4 python3 make g++
+    
+MacOS will require the XCode Command Line Tools and [Homebrew](https://brew.sh/):
+
+    xcode-select --install
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    
+
+After installing brew, you can install the remaining dependencies:
+
+    brew install lz4 python3 make
 
 ---
 
