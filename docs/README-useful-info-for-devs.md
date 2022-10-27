@@ -48,6 +48,11 @@ Query by sending TRAPI Query to .io/ars/api/submit
 
 [Old Translator guidance](https://docs.google.com/document/d/1_a4gE_lY-2oZTrdFMtaZ_pxqNgd-x_1ZYI7hRGfFjng/edit) on how to query the ARS
 
+## Translator tools
+
+* [SRI Node Normalizer](https://smart-api.info/ui/400f7c11028ff36f460af4ea85dc72f5): used to find equivalent IDs / node-category for an ID
+* [Name Resolver](https://smart-api.info/ui/9995fed757acd034ef099dbb483c4c82): used to find IDs for a concept, or find the human-readable name for an ID
+
 ## SmartAPI registry
 
 How to link to a specific SmartAPI Registration ID like Service Provider TRAPI's: use _id. Example: https://smart-api.info/registry?q=_id:36f82f05705c317bac17ddae3a0ea2f0 
