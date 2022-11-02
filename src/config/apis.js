@@ -79,7 +79,7 @@ exports.API_LIST = {
         },
         {
             id: '34bad236d77bea0a0ee6c6cba5be54a6',
-            name: 'Gene Ontology Molecular Activity API'
+            name: 'Gene Ontology Molecular Function API'
         },
         {
             id: 'a5b0ec6bfde5008984d4b6cde402d61f',

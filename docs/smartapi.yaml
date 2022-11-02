@@ -23,7 +23,7 @@ info:
     ## test_data_location not included for now
   x-translator:
     infores: "infores:biothings-explorer"
-    biolink-version: 2.4.8
+    biolink-version: "3.0.3"
     component: ARA
     team:
       - Exploring Agent
