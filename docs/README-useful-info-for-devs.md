@@ -64,6 +64,10 @@ The standard is (stored in [yaml](https://github.com/NCATSTranslator/ReasonerAPI
 
 TRAPI also comes with [implementation rules](https://github.com/NCATSTranslator/ReasonerAPI/blob/master/ImplementationRules.md) to follow. 
 
+For TRAPI / biolink-model:
+
+* Categories (aka node semantic-types) are PascalCase
+* Predicates, attribute-keys (for nodes and edges) are snake_case
 
 ## How to do certain BTE dev tasks
 
