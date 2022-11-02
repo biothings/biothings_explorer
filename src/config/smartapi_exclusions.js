@@ -1,5 +1,5 @@
 exports.EXCLUDE_LIST = [
-    // List of TRAPI APIs to be excluded from cron job update
+    // List of TRAPI APIs to be excluded from cron job update. Used specifically so BTE doesn't retrieve itself
     {
         id: 'dc91716f44207d2e1287c727f281d339',
         name: 'BioThings Explorer (BTE) TRAPI'
