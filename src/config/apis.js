@@ -82,10 +82,6 @@ exports.API_LIST = {
             name: 'Gene Ontology Molecular Activity API'
         },
         {
-            id: 'a5b0ec6bfde5008984d4b6cde402d61f',
-            name: 'Human Phenotype Ontology API'
-        },
-        {
             id: '77ed27f111262d0289ed4f4071faa619',
             name: 'MGIgene2phenotype API'
         },
