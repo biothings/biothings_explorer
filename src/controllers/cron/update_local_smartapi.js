@@ -100,6 +100,13 @@ const getTRAPIWithPredicatesEndpoint = specs => {
             method: "post",
           },
         };
+
+        //check if JQ transfomer specified
+        if (spec?.["x-bte-transformer"]) {
+          api.query_operation.transformer = spec["x-bte-transformer"];
+          console.log(api.query_operation.transformer)
+        }
+
         // check TRAPI latest accepted version
         if ("/meta_knowledge_graph" in spec.paths) {
           if (
