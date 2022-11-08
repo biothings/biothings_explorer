@@ -14,6 +14,53 @@ const userAgent = `BTE/${process.env.NODE_ENV === "production" ? "prod" : "dev"}
   process.platform
 }`;
 
+const getServerFromSpec = spec => {
+  const productionLevel = process.env.INSTANCE_ENV ?? "";
+
+  const getLevel = maturity => {
+    switch (productionLevel) {
+      case "test":
+        if (maturity == "testing") return 0;
+        if (maturity == "production") return 1;
+        return 10000;
+      case "ci":
+        if (maturity == "staging") return 0;
+        if (maturity == "testing") return 1;
+        if (maturity == "production") return 2;
+        return 10000;
+      case "dev":
+        if (maturity == "development") return 0;
+        if (maturity == "staging") return 1;
+        if (maturity == "testing") return 2;
+        if (maturity == "production") return 3;
+        return 10000;
+      default:
+        if (maturity == "production") return 0;
+        return 10000;
+    }
+  };
+
+  const servers = spec.servers.map(server => ({
+    url: server.url,
+    level: getLevel(server["x-maturity"]),
+    maturity: server["x-maturity"],
+    https: server.url.includes("https"),
+  }));
+
+  const sorted_servers = servers.sort((a, b) => {
+    if (a.level != b.level) return a.level - b.level;
+    if (a.https != b.https) return a.https ? -1 : 1;
+    return 0;
+  });
+
+  if (sorted_servers[0].level == 10000) {
+    throw new Error(
+      `Server ${sorted_servers[0].url} skipped due to insufficient maturity level ${sorted_servers[0].maturity}`,
+    );
+  }
+  return sorted_servers[0].url;
+};
+
 const getTRAPIWithPredicatesEndpoint = specs => {
   const trapi = [];
   let excluded_list = config.EXCLUDE_LIST.map(api => api.id);
@@ -49,7 +96,7 @@ const getTRAPIWithPredicatesEndpoint = specs => {
           tags: spec.tags.map(item => item.name),
           query_operation: {
             path: "/query",
-            server: spec.servers[0].url,
+            server: getServerFromSpec(spec),
             method: "post",
           },
         };
