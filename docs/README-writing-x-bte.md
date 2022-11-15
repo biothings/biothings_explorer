@@ -434,7 +434,7 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
 
 ### Combinations
 
-Figure out what combinations/combos of things there are, and make a list of them. It can help to run practice queries where you start with a subject ID and try to retrieve relationship info and object IDs.
+Figure out what combinations/combos of things there are, and make a list of them. These will become the operations of the "x-bte operations". It can help to run practice queries where you start with a subject ID and try to retrieve relationship info and object IDs.
 
 * API data tends to have only specific types of associations / relationships
 * A "combo" includes:
@@ -719,3 +719,100 @@ When editing a SmartAPI yaml with x-bte annotation that has already been registe
 The checking process will be similar (hopefully less rigorous) to the process described above for new APIs. Then the edits would be merged. Because the yaml is already registered, you (if you own the registration) or a member of the Service Provider team can refresh the registration to pull the latest version of the SmartAPI file from the raw-github link. We then suggest doing an uptime-check.
 
 If the API is already connected to BTE (has an entry in the exports.API_LIST's `include` list), BTE should ingest your edited SmartAPI registration during its regular cron job (every 10 min). So after 10 min, if your API is used by BTE or served through BTE's Service Provider function, your latest edits should be deployed.
+
+### Editing x-bte annotation for biolink 3.0.3 qualifier-refactor
+
+Current for 2022-11-14.
+
+DO NOT directly edit the registered yaml; instead, make the edits for qualifiers/biolink-3.0.3 in a different github branch. Then contact Colleen or Jackson to ask about hooking your edited yaml up to BTE's dev instance. The BTE devs ask this because at the moment, Translator wants all qualifier stuff on dev instances of tools only. 
+
+BTE is planning to migrate to biolink-model v3.0.3. The biolink-model update from v2 to v3 involved refactoring predicates and adding qualifiers for chemical-gene and gene-gene relationships. 
+
+For biolink v3.0.3, the types of qualifiers and their possible enumerated values are listed [here](https://github.com/biothings/BioThings_Explorer_TRAPI/issues/512#issuecomment-1273814279). Currently, BTE's dev team is only planning support for qualifier values that are enumerated in the biolink-model. There may be bugs or missing features ("expanding" down an ontology) if ontology-terms or arbitrary strings are used as qualifier values in x-bte annotation. 
+
+To add qualifier-types and their values to an existing operation (in the `x-bte-kgs-operations` section):
+
+* add a field (same level as `predicate`) called `qualifiers`. Its value is an object
+  * the keys are the qualifier-type string (aka qualifier_type_id value in TRAPI)
+    * don't include a biolink-prefix; BTE will handle that
+  * the values are the qualifier's value (aka qualifier_value's value in TRAPI)
+    * don't include a biolink-prefix for a qualified_predicate
+    * currently, the enumerated-qualifier-values from biolink-model DO NOT need the biolink-prefix 
+* for reverse operations, subject- and object-specific qualifier-types from the forward operation will need to be adjusted (replace "subject" with "object" and vice versa)
+
+The DGIdb yaml on the biolink3 branch [here](https://github.com/NCATS-Tangerine/translator-api-registry/blob/biolink3/dgidb/openapi.yml#L476) is a good example of operations with qualifier information. Here is an example of two operations (forward and reverse) from DGIdb with `qualifiers` fields: 
+
+```yaml
+    activator:
+    ## https://biothings.ncats.io/dgidb/query?q=association.interaction_types:activator
+    ## 195 records
+      - supportBatch: true
+        useTemplating: true ## flag to say templating is being used below
+        inputs:
+          - id: "CHEMBL.COMPOUND"
+            semantic: SmallMolecule
+        requestBodyType: object
+        requestBody:
+          body: >-
+            {
+              "q": [ {{ queryInputs | wrap( '["' , '","activator"]') }} ],
+              "scopes": ["subject.CHEMBL_COMPOUND", "association.interaction_types"]
+            }
+        parameters:
+          fields: >-
+            object.NCBIGene,association.interaction_group_score,
+            association.interaction_claim_source,association.pmids,association.interaction_types
+          size: 1000
+        outputs:
+          - id: NCBIGene
+            semantic: Gene
+        ## biolink 2.4.8: used entity_positively_regulates_entity
+        predicate: affects
+        ## nesting allows this main key to stay the same even with future changes
+        qualifiers:
+        ## key is the "qualifier_type_id", value is the "qualifier_value" in the TRAPI Edge.qualifiers spec
+          qualified_predicate: causes
+          object_aspect_qualifier: activity
+          object_direction_qualifier: increased
+          causal_mechanism_qualifier: activation   ## extra since DGIdb labels these as "activator"
+        source: "infores:dgidb"
+        response_mapping:
+          "$ref": "#/components/x-bte-response-mapping/forward"
+        # testExamples:
+        #   - qInput: "CHEMBL.COMPOUND:CHEMBL266510"   ## FLINDOKALNER
+        #     oneOutput: "NCBIGene:9132"               ## KCNQ4
+    activator-rev:
+      - supportBatch: true
+        useTemplating: true ## flag to say templating is being used below
+        inputs:
+          - id: NCBIGene
+            semantic: Gene
+        requestBodyType: object
+        requestBody:
+          body: >-
+            {
+              "q": [ {{ queryInputs | wrap( '["' , '","activator"]') }} ],
+              "scopes": ["object.NCBIGene", "association.interaction_types"]
+            }
+        parameters:
+          fields: >-
+            subject.CHEMBL_COMPOUND,association.interaction_group_score,
+            association.interaction_claim_source,association.pmids,association.interaction_types
+          size: 1000
+        outputs:
+          - id: "CHEMBL.COMPOUND"
+            semantic: SmallMolecule
+        ## biolink 2.4.8: used entity_positively_regulated_by_entity
+        predicate: affected_by
+        qualifiers:
+          qualified_predicate: caused_by
+          subject_aspect_qualifier: activity
+          subject_direction_qualifier: increased
+          causal_mechanism_qualifier: activation   ## extra since DGIdb labels these as "activator"
+        source: "infores:dgidb"
+        response_mapping:
+          "$ref": "#/components/x-bte-response-mapping/reverse"
+        # testExamples:
+        #   - qInput: "NCBIGene:2983"                 ## GUCY1B1
+        #     oneOutput: "CHEMBL.COMPOUND:CHEMBL730   ## NITROGLYCERIN
+```
