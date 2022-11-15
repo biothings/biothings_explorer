@@ -4,20 +4,18 @@ const { asyncquery } = require("../../controllers/async/asyncquery");
 const { getQueryQueue } = require("../../controllers/async/asyncquery_queue");
 const utils = require("../../utils/common");
 
-const queryQueue = getQueryQueue("bte_query_queue_by_team");
-
-if (queryQueue) {
-  queryQueue.process(path.resolve(__dirname, "../../controllers/async/processors/async_v1_by_team.js"));
-}
-
 class V1RouteAsyncQueryByTeam {
   setRoutes(app) {
     app
       .route("/v1/team/:team_name/asyncquery")
       .post(swaggerValidation.validate, async (req, res, next) => {
-        // queryQueue = getQueryQueue("bte_query_queue_by_team");
+        if (!global.queryQueueByTeam) {
+          global.queryQueueByTeam = getQueryQueue("bte_query_queue_by_team");
+          global.queryQueueByTeam.process(
+            path.resolve(__dirname, "../../controllers/async/processors/async_v1_by_team.js"),
+          );
+        }
         const queryGraph = req.body.message.query_graph;
-        // const enableIDResolution = (req.params.team_name === "Text Mining Provider") ? false : true;
         let queueData = {
           queryGraph: queryGraph,
           teamName: req.params.team_name,
@@ -27,7 +25,7 @@ class V1RouteAsyncQueryByTeam {
           options: { logLevel: req.body.log_level, submitter: req.body.submitter, ...req.query },
           enableIDResolution: true,
         };
-        await asyncquery(req, res, next, queueData, queryQueue);
+        await asyncquery(req, res, next, queueData, global.queryQueueByTeam);
       })
       .all(utils.methodNotAllowed);
   }
