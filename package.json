@@ -68,6 +68,7 @@
     "node-cron": "^2.0.3",
     "npm": "^6.14.17",
     "openapi-validator-middleware": "^3.2.2",
+    "ps-node": "^0.1.6",
     "snake-case": "^3.0.4",
     "stream-chunker": "^1.2.8",
     "stream-json": "^1.7.3",
