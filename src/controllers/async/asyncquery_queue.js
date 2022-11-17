@@ -7,6 +7,7 @@ const ps = require("ps-node");
 
 // This shouldn't be necessary, as zombie bulls *should* self-destruct.
 // essentially, this is the last-resort (and kills the job, so it perma-fails)
+let zombieCleanupAttempts = 10;
 const killZombies = () => {
   ps.lookup(
     {
@@ -16,15 +17,17 @@ const killZombies = () => {
       let killed = 0;
       results.forEach(result => {
         if (result.ppid === "1") {
-          process.kill(result.pid, "SIGTERM");
+          process.kill(result.pid, "SIGKILL");
           killed += 1;
         }
       });
       if (killed > 0) debug(`Killed ${killed} zombie Bull processors`);
     },
   );
-  setTimeout(killZombies, 10000);
+  zombieCleanupAttempts -= 1;
+  if (zombieCleanupAttempts > 0) setTimeout(killZombies, 10000);
 };
+killZombies();
 
 global.queryQueue = {};
 
