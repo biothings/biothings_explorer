@@ -3,7 +3,7 @@ const checkIfZombified = () => {
     console.log("Bull processor zombified, exiting...");
     throw new Error("Bull processor zombified, exiting...");
   } else {
-    setTimeout(checkIfZombified, 100);
+    setTimeout(checkIfZombified, 1000);
   }
 }
 
