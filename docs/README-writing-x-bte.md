@@ -412,7 +412,7 @@ Look at the [biolink-model](https://github.com/biolink/biolink-model/blob/master
 
 Tips:
 
-* you have to use biolink-model semantic types that exist in the version of biolink-model BTE is using
+* you have to use biolink-model semantic types that exist in the version of biolink-model BTE is using. They cannot be labeled `abstract: true` or `mixin: true` (abstract and mixin terms are only for querying, not for annotating data). 
 * CTRL-F to see if the biolink-model contains suggestions for semantic-type / ID-spelling
 * the spelling for biolink-model categories is actually PascalCase (upper-case first-letters, no spaces)
 * we use more-specific terms (not top-level ones like NamedThing, ChemicalEntity, MolecularEntity, BiologicalEntity). We don't use mixins (the entry in the yaml will have `mixin: true`)
@@ -466,7 +466,8 @@ Decide what biolink-model predicates to use for each combo; write that down in t
 
 Tips:
 
-* you have to use biolink-model predicates that exist in the version of biolink-model BTE is using
+* you have to use biolink-model predicates that exist in the version of biolink-model BTE is using. Generally, they cannot be labeled `abstract: true` or `mixin: true` (abstract and mixin terms are only for querying, not for annotating data). 
+  * However, you may encounter a predicate you want to use that is labeled abstract or mixin, or your data's relationship term maps to a term that is labeled abstract or mixin. In this case, ask Data-Modeling team about this situation and ask what predicate to use. 
 * CTRL-F using your words for the relationship to see if the biolink-model has suggestions / mappings
 * the spelling for biolink-model predicates is actually snake_case (all lower-case, "_" between words)
 * use predicates that have inverses!
