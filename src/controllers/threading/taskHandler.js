@@ -10,7 +10,7 @@ const { tasks } = require("../../routes/index");
 const runTask = async (req, route) => {
 
     global.queryInformation = {
-        queryGraph: req.body.message.query_graph,
+        queryGraph: req?.body?.message?.query_graph,
     }
 
     if (!isMainThread) {
