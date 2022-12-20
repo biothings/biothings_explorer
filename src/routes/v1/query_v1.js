@@ -39,7 +39,7 @@ class V1RouteQuery {
         predicatesPath,
       );
       handler.setQueryGraph(queryGraph);
-      await handler.query();
+      await handler.query(true);
 
       const response = handler.getResponse();
       utils.filterForLogLevel(response, req.body.log_level);
