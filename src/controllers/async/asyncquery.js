@@ -131,11 +131,11 @@ exports.getQueryResponse = async (jobID, logLevel = null) => {
   });
 };
 
-exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL = null, queryGraph = null) => {
+exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL = null, queryGraph = null, shouldScore = false) => {
   let response;
   let callback_response;
   try {
-    await handler.query();
+    await handler.query(shouldScore);
     response = handler.getResponse();
     if (jobURL) {
       response.logs.unshift(new LogEntry("INFO", null, `job status available at: ${jobURL}`).getLog());
