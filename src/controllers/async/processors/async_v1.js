@@ -18,7 +18,7 @@ async function jobToBeDone(jobID, queryGraph, workflow, callback_url, options, j
         predicatesPath,
     );
     handler.setQueryGraph(queryGraph);
-    const result = await asyncqueryResponse(handler, callback_url, jobID, jobURL, queryGraph);
+    const result = await asyncqueryResponse(handler, callback_url, jobID, jobURL, queryGraph, true);
     return result;
 }
 
