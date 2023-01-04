@@ -5,12 +5,13 @@ const predicatesPath = path.resolve(__dirname, process.env.STATIC_PATH ? `${proc
 const { asyncqueryResponse } = require('../asyncquery');
 const utils = require("../../../utils/common");
 const { API_LIST: apiList } = require("../../../config/apis");
+const { checkIfZombified } = require("../../../utils/checkIfZombified");
 
 
 async function jobToBeDone(jobID, queryGraph, smartAPIID, enableIDResolution, workflow, callback_url, options, jobURL = null) {
+    checkIfZombified();
     utils.validateWorkflow(workflow);
     const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
-        options.schema,
         {
             apiList,
             smartAPIID,

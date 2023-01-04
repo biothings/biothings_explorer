@@ -35,8 +35,7 @@ class V1RouteQuery {
       utils.validateWorkflow(req.body.workflow);
       const queryGraph = req.body.message.query_graph;
       const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
-        req.schema,
-        { apiList, ...req.query, submitter: req.body.submitter },
+        { apiList, ...req.query, submitter: req.body.submitter, schema: req.schema },
         smartAPIPath,
         predicatesPath,
       );

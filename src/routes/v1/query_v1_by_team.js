@@ -36,13 +36,13 @@ class RouteQueryV1ByTeam {
       const queryGraph = req.body.message.query_graph;
       // const enableIDResolution = (req.params.team_name === "Text Mining Provider") ? false : true;
       const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
-        req.schema,
         {
           apiList,
           teamName: req.params.team_name,
           submitter: req.body.submitter,
           ...req.query,
           enableIDResolution: true,
+          schema: req.schema,
         },
         smartAPIPath,
         predicatesPath,
