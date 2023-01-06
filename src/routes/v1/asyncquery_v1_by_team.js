@@ -26,7 +26,7 @@ class V1RouteAsyncQueryByTeam {
           logLevel: req.body.log_level,
           workflow: req.body.workflow,
           callback_url: req.body.callback_url || req.body["callback"],
-          options: { logLevel: req.body.log_level, submitter: req.body.submitter, ...req.query },
+          options: { logLevel: req.body.log_level, submitter: req.body.submitter, schema: await utils.getSchema(), ...req.query },
           enableIDResolution: true,
         };
         await asyncquery(req, res, next, queueData, global.queryQueue["bte_query_queue_by_team"]);

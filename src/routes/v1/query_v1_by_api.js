@@ -19,6 +19,7 @@ class RouteQueryV1ByAPI {
       .route("/v1/smartapi/:smartapi_id/query")
       .post(swaggerValidation.validate, async (req, res, next) => {
         try {
+          req.schema = await utils.getSchema();
           const response = await runTask(req, this.task, path.parse(__filename).name);
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify(response));
@@ -41,6 +42,7 @@ class RouteQueryV1ByAPI {
           smartAPIID: req.params.smartapi_id,
           submitter: req.body.submitter,
           ...req.query,
+          schema: req.schema
           // enableIDResolution
         },
         smartAPIPath,

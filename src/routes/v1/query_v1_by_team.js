@@ -19,6 +19,7 @@ class RouteQueryV1ByTeam {
       .route("/v1/team/:team_name/query")
       .post(swaggerValidation.validate, async (req, res, next) => {
         try {
+          req.schema = await utils.getSchema();
           const response = await runTask(req, this.task, path.parse(__filename).name);
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify(response));
@@ -41,6 +42,7 @@ class RouteQueryV1ByTeam {
           submitter: req.body.submitter,
           ...req.query,
           enableIDResolution: true,
+          schema: req.schema,
         },
         smartAPIPath,
         predicatesPath,
