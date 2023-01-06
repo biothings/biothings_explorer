@@ -58,6 +58,10 @@ exports.API_LIST = {
             name: 'BioThings SEMMEDDB API'
         },
         {
+            id: '00fb85fc776279163199e6c50f6ddfc6',
+            name: 'BioThings DDInter API'
+        },
+        {
             id: '32f36164fabed5d3abe6c2fd899c9418',
             name: 'BioThings iDISK API'
         },
