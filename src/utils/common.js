@@ -9,7 +9,7 @@ const schema = [];
 exports.getSchema = async () => {
   if (schema.length !== 0) return schema[0];
   schema.push(yaml2json.load(await fs.readFile(path.join(__dirname, '../../docs/smartapi.yaml'), { encoding: 'utf8' })));
-  console.log(schema);
+//   console.log(schema);
   return schema[0];
 };
 
