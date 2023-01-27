@@ -8,6 +8,11 @@ var path = require('path');
 const myChemAPI = "8f08d1446e0bb9c2b323713ce83e2bd3"
 const textMiningAPI = "978fe380a147a8641caf72320862697b"
 
+// if needed
+const og_axios = jest.requireActual("axios")
+
+jest.mock('axios')
+
 describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
     const invalid_example_folder = path.resolve(__dirname, "../../../examples/v1.1/invalid");
     const example_folder = path.resolve(__dirname, '../../../examples/v1.1');
@@ -82,6 +87,15 @@ describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
     })
 
     test("Query to non-Text Mining KPs should have id resolution turned on", async () => {
+        const sri_path = path.resolve(__dirname, '../../data/api_results/chembl_sri.json');
+        axios.default.post.mockResolvedValue({ data: JSON.parse(fs.readFileSync(sri_path)) })
+        const mychem_path = path.resolve(__dirname, '../../data/api_results/mychem_query.json');
+        axios.default.mockResolvedValue({ data: JSON.parse(fs.readFileSync(mychem_path)) })
+        // axios.default.post.mockImplementation(async (...q) => {
+        //   const res = await og_axios.default.post(...q)
+        //   console.log(JSON.stringify(res.data))
+        //   return res
+        // })
         const query = JSON.parse(fs.readFileSync(path.join(example_folder, "serviceprovider/mychem.json")));
         await request(app)
             .post(`/v1/smartapi/${myChemAPI}/query`)
