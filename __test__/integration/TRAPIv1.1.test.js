@@ -8,10 +8,10 @@ const og_axios = jest.requireActual('axios')
 jest.mock('axios')
 
 const arrEquals = (arr1, arr2) => {
-  if (!Array.isArray(arr1) || !Array.isArray(arr2)) return false
+  if (!Array.isArray(arr1) || !Array.isArray(arr2)) return arr1 === arr2
   if (arr1.length !== arr2.length) return false
   for (var i = 0; i<arr1.length; i++) {
-    if (arr1[i] !== arr2[i]) return false
+    if (!arrEquals(arr1[i], arr2[i])) return false
   }
   return true
 }
@@ -25,7 +25,7 @@ const mychem_query_8_input = JSON.parse(fs.readFileSync(path.resolve(__dirname, 
 const mychem_query_9_input = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/mychem_query_9_input.json")))
 
 axios.default.mockImplementation(async (qData) => {
-  var res = undefined
+  let res = undefined
   if (qData.url === 'https://mychem.info/v1/query' && qData.data === 'q=A0A024RB10,A0A024RB77,B4DDL9,E7ESI2,G3V5T9,P24941&scopes=drugcentral.bioactivity.uniprot.uniprot_id') {
     res = [{"query":"A0A024RB10","notfound":true},{"query":"A0A024RB77","notfound":true},{"query":"B4DDL9","notfound":true},{"query":"E7ESI2","notfound":true},{"query":"G3V5T9","notfound":true},{"query":"P24941","_id":"XZXHXSATPCNXJR-ZIADKAODSA-N","_score":9.885763,"drugcentral":{"_license":"http://bit.ly/2SeEhUy","xrefs":{"chembl_id":["CHEMBL502835","CHEMBL3039504"]}}},{"query":"P24941","_id":"BCFGMOOMADDAQU-UHFFFAOYSA-N","_score":9.098851,"drugcentral":{"_license":"http://bit.ly/2SeEhUy","xrefs":{"chembl_id":["CHEMBL1201179","CHEMBL554"]}}},{"query":"P24941","_id":"MLDQJTXFUGDVEO-UHFFFAOYSA-N","_score":9.098851,"drugcentral":{"_license":"http://bit.ly/2SeEhUy","xrefs":{"chembl_id":["CHEMBL1336","CHEMBL1200485"]}}},{"query":"P24941","_id":"REFJWTPEDVJJIY-UHFFFAOYSA-N","_score":8.601126,"drugcentral":{"_license":"http://bit.ly/2SeEhUy","xrefs":{"chembl_id":"CHEMBL50"}}},{"query":"P24941","_id":"AHJRHEGDXFFMBM-UHFFFAOYSA-N","_score":8.601126,"drugcentral":{"_license":"http://bit.ly/2SeEhUy","xrefs":{"chembl_id":["CHEMBL189963","CHEMBL2364621"]}}},{"query":"P24941","_id":"VERWOWGGCGHDQE-UHFFFAOYSA-N","_score":8.601126,"drugcentral":{"_license":"http://bit.ly/2SeEhUy","xrefs":{"chembl_id":"CHEMBL2403108"}}}];
   }
@@ -171,19 +171,53 @@ axios.default.mockImplementation(async (qData) => {
 
   if (res === undefined) {
     res = (await og_axios.default(qData)).data
-    console.log("NEW RES", JSON.stringify(qData), "BRUH", JSON.stringify(res))
   }
 
   return {data: res}
 })
 
+const big_sri_input = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/big_sri_input.json")))
+const big_sri_input_2 = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/big_sri_input_2.json")))
+const big_sri_input_3 = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/big_sri_input_3.json")))
+const ngd_input = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/ngd_input.json")))
+const ngd_input_2 = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/ngd_input_2.json")))
+
 axios.default.post.mockImplementation(async (...q) => {
-  const res = await og_axios.default.post(...q)
-  // console.log("OMG NEW POST SHEESH")
-  // console.log(q[0])
-  // console.log("OMG NEW POST #2")
-  // console.log(JSON.stringify(res.data))
-  return res
+  const url = q[0]
+  const qData = q[1]
+  let res = undefined
+  if (arrEquals(qData?.curies, ["NCBIGene:1017"])) {
+    res = {"NCBIGene:1017":{"id":{"identifier":"NCBIGene:1017","label":"CDK2"},"equivalent_identifiers":[{"identifier":"NCBIGene:1017","label":"CDK2"},{"identifier":"ENSEMBL:ENSG00000123374"},{"identifier":"HGNC:1771","label":"CDK2"},{"identifier":"OMIM:116953"},{"identifier":"UMLS:C1332733","label":"CDK2 gene"},{"identifier":"UniProtKB:A0A024RB10","label":"A0A024RB10_HUMAN Cyclin-dependent kinase 2, isoform CRA_a (trembl)"},{"identifier":"UniProtKB:A0A024RB77","label":"A0A024RB77_HUMAN Cyclin-dependent kinase 2, isoform CRA_b (trembl)"},{"identifier":"UniProtKB:B4DDL9","label":"B4DDL9_HUMAN cDNA FLJ54979, highly similar to Homo sapiens cyclin-dependent kinase 2 (CDK2), transcript variant 2, mRNA (trembl)"},{"identifier":"UniProtKB:E7ESI2","label":"E7ESI2_HUMAN Cyclin-dependent kinase 2 (trembl)"},{"identifier":"ENSEMBL:ENSP00000393605"},{"identifier":"UniProtKB:G3V5T9","label":"G3V5T9_HUMAN Cyclin-dependent kinase 2 (trembl)"},{"identifier":"ENSEMBL:ENSP00000452514"},{"identifier":"UniProtKB:P24941","label":"CDK2_HUMAN Cyclin-dependent kinase 2 (sprot)"},{"identifier":"PR:P24941","label":"cyclin-dependent kinase 2 (human)"},{"identifier":"UMLS:C0108855","label":"CDK2 protein, human"}],"type":["biolink:Gene","biolink:GeneOrGeneProduct","biolink:GenomicEntity","biolink:ChemicalEntityOrGeneOrGeneProduct","biolink:PhysicalEssence","biolink:OntologyClass","biolink:BiologicalEntity","biolink:NamedThing","biolink:Entity","biolink:PhysicalEssenceOrOccurrent","biolink:ThingWithTaxon","biolink:MacromolecularMachineMixin","biolink:Protein","biolink:GeneProductMixin","biolink:Polypeptide","biolink:ChemicalEntityOrProteinOrPolypeptide"],"information_content":100}}
+  }
+  if (arrEquals(qData?.curies, ["MONDO:0005737"])) {
+    res = {"MONDO:0005737":{"id":{"identifier":"MONDO:0005737","label":"Ebola hemorrhagic fever"},"equivalent_identifiers":[{"identifier":"MONDO:0005737","label":"Ebola hemorrhagic fever"},{"identifier":"DOID:4325","label":"Ebola hemorrhagic fever"},{"identifier":"ORPHANET:319218"},{"identifier":"UMLS:C0282687","label":"Hemorrhagic Fever, Ebola"},{"identifier":"MESH:D019142","label":"Hemorrhagic Fever, Ebola"},{"identifier":"MEDDRA:10014071"},{"identifier":"MEDDRA:10014072"},{"identifier":"MEDDRA:10014074"},{"identifier":"MEDDRA:10055245"},{"identifier":"NCIT:C36171","label":"Ebola Hemorrhagic Fever"},{"identifier":"SNOMEDCT:37109004"},{"identifier":"ICD10:A98.4"}],"type":["biolink:Disease","biolink:DiseaseOrPhenotypicFeature","biolink:ThingWithTaxon","biolink:BiologicalEntity","biolink:NamedThing","biolink:Entity"],"information_content":100}}
+  }
+  if (arrEquals(qData?.curies, ["UMLS:C0751434"])) {
+    res = {"UMLS:C0751434":{"id":{"identifier":"MONDO:0019259","label":"classic phenylketonuria"},"equivalent_identifiers":[{"identifier":"MONDO:0019259","label":"classic phenylketonuria"},{"identifier":"ORPHANET:79254"},{"identifier":"UMLS:C0751434","label":"Classical phenylketonuria"},{"identifier":"UMLS:C4025094","label":"Reduced phenylalanine hydroxylase activity"},{"identifier":"MEDDRA:10034875"},{"identifier":"NCIT:C117117","label":"Classical Phenylketonuria"},{"identifier":"HP:0005982","label":"Reduced phenylalanine hydroxylase level"}],"type":["biolink:Disease","biolink:DiseaseOrPhenotypicFeature","biolink:ThingWithTaxon","biolink:BiologicalEntity","biolink:NamedThing","biolink:Entity"],"information_content":100}}
+  }
+  if (arrEquals(qData?.curies, ["UMLS:C0751434","HGNC:8582","UMLS:C1418251"])) {
+    res = {"UMLS:C0751434":{"id":{"identifier":"MONDO:0019259","label":"classic phenylketonuria"},"equivalent_identifiers":[{"identifier":"MONDO:0019259","label":"classic phenylketonuria"},{"identifier":"ORPHANET:79254"},{"identifier":"UMLS:C0751434","label":"Classical phenylketonuria"},{"identifier":"UMLS:C4025094","label":"Reduced phenylalanine hydroxylase activity"},{"identifier":"MEDDRA:10034875"},{"identifier":"NCIT:C117117","label":"Classical Phenylketonuria"},{"identifier":"HP:0005982","label":"Reduced phenylalanine hydroxylase level"}],"type":["biolink:Disease","biolink:DiseaseOrPhenotypicFeature","biolink:ThingWithTaxon","biolink:BiologicalEntity","biolink:NamedThing","biolink:Entity"],"information_content":100},"HGNC:8582":{"id":{"identifier":"NCBIGene:5053","label":"PAH"},"equivalent_identifiers":[{"identifier":"NCBIGene:5053","label":"PAH"},{"identifier":"ENSEMBL:ENSG00000171759"},{"identifier":"HGNC:8582","label":"PAH"},{"identifier":"OMIM:612349"},{"identifier":"UMLS:C1418251","label":"PAH gene"},{"identifier":"UniProtKB:A0A024RBG4","label":"A0A024RBG4_HUMAN Phe-4-monooxygenase (trembl)"},{"identifier":"UniProtKB:P00439","label":"PH4H_HUMAN Phenylalanine-4-hydroxylase (sprot)"},{"identifier":"PR:P00439","label":"phenylalanine-4-hydroxylase (human)"},{"identifier":"ENSEMBL:ENSP00000448059"}],"type":["biolink:Gene","biolink:GeneOrGeneProduct","biolink:GenomicEntity","biolink:ChemicalEntityOrGeneOrGeneProduct","biolink:PhysicalEssence","biolink:OntologyClass","biolink:BiologicalEntity","biolink:NamedThing","biolink:Entity","biolink:PhysicalEssenceOrOccurrent","biolink:ThingWithTaxon","biolink:MacromolecularMachineMixin","biolink:Protein","biolink:GeneProductMixin","biolink:Polypeptide","biolink:ChemicalEntityOrProteinOrPolypeptide"],"information_content":100},"UMLS:C1418251":{"id":{"identifier":"NCBIGene:5053","label":"PAH"},"equivalent_identifiers":[{"identifier":"NCBIGene:5053","label":"PAH"},{"identifier":"ENSEMBL:ENSG00000171759"},{"identifier":"HGNC:8582","label":"PAH"},{"identifier":"OMIM:612349"},{"identifier":"UMLS:C1418251","label":"PAH gene"},{"identifier":"UniProtKB:A0A024RBG4","label":"A0A024RBG4_HUMAN Phe-4-monooxygenase (trembl)"},{"identifier":"UniProtKB:P00439","label":"PH4H_HUMAN Phenylalanine-4-hydroxylase (sprot)"},{"identifier":"PR:P00439","label":"phenylalanine-4-hydroxylase (human)"},{"identifier":"ENSEMBL:ENSP00000448059"}],"type":["biolink:Gene","biolink:GeneOrGeneProduct","biolink:GenomicEntity","biolink:ChemicalEntityOrGeneOrGeneProduct","biolink:PhysicalEssence","biolink:OntologyClass","biolink:BiologicalEntity","biolink:NamedThing","biolink:Entity","biolink:PhysicalEssenceOrOccurrent","biolink:ThingWithTaxon","biolink:MacromolecularMachineMixin","biolink:Protein","biolink:GeneProductMixin","biolink:Polypeptide","biolink:ChemicalEntityOrProteinOrPolypeptide"],"information_content":100}}
+  }
+  if (arrEquals(qData?.curies, big_sri_input)) {
+    res = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/big_sri_query.json")))
+  }
+  if (arrEquals(qData?.curies, big_sri_input_2)) {
+    res = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/big_sri_query_2.json")))
+  }
+  if (arrEquals(qData?.curies, big_sri_input_3)) {
+    res = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/big_sri_query_3.json")))
+  }
+  if (arrEquals(qData?.umls, ngd_input)) {
+    res = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/ngd_query.json")))
+  }
+  if (arrEquals(qData?.umls, ngd_input_2)) {
+    res = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/ngd_query_2.json")))
+  }
+
+  if (res === undefined) {
+    res = (await og_axios.default.post(...q)).data
+  }
+  return {data: res}
 })
 
 
