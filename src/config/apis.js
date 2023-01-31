@@ -42,12 +42,52 @@ exports.API_LIST = {
             name: 'BioThings BioPlanet Pathway-Gene API'
         },
         {
+            id: '00fb85fc776279163199e6c50f6ddfc6',
+            name: 'BioThings DDInter API'
+        },
+        {
             id: 'e3edd325c76f2992a111b43a907a4870',
             name: 'BioThings DGIdb API'
         },
         {
+            id: 'a7f784626a426d054885a5f33f17d3f8',
+            name: 'BioThings DISEASES API'
+        },
+        {
+            id: '1f47552dabd67351d4c625adb0a10d00',
+            name: 'BioThings EBIgene2phenotype API'
+        },
+        {
+            id: 'cc857d5b7c8b7609b5bbb38ff990bfff',
+            name: 'BioThings GO Biological Process API'
+        },
+        {
+            id: 'f339b28426e7bf72028f60feefcd7465',
+            name: 'BioThings GO Cellular Component API'
+        },
+        {
+            id: '34bad236d77bea0a0ee6c6cba5be54a6',
+            name: 'BioThings GO Molecular Function API'
+        },
+        {
             id: '316eab811fd9ef1097df98bcaa9f7361',
             name: 'BioThings GTRx API'
+        },
+        {
+            id: 'a5b0ec6bfde5008984d4b6cde402d61f',
+            name: 'BioThings HPO API'
+        },
+        {
+            id: '32f36164fabed5d3abe6c2fd899c9418',
+            name: 'BioThings IDISK API'
+        },
+        {
+            id: '77ed27f111262d0289ed4f4071faa619',
+            name: 'BioThings MGIgene2phenotype API'
+        },
+        {
+            id: 'edeb26858bd27d0322af93e7a9e08761',
+            name: 'BioThings PFOCR API'
         },
         {
             id: '03283cc2b21c077be6794e1704b1d230',
@@ -58,48 +98,8 @@ exports.API_LIST = {
             name: 'BioThings SEMMEDDB API'
         },
         {
-            id: '00fb85fc776279163199e6c50f6ddfc6',
-            name: 'BioThings DDInter API'
-        },
-        {
-            id: '32f36164fabed5d3abe6c2fd899c9418',
-            name: 'BioThings iDISK API'
-        },
-        {
-            id: 'edeb26858bd27d0322af93e7a9e08761',
-            name: 'BioThings pfocr API'
-        },
-        {
-            id: 'a7f784626a426d054885a5f33f17d3f8',
-            name: 'DISEASES API'
-        },
-        {
-            id: '1f47552dabd67351d4c625adb0a10d00',
-            name: 'EBIgene2phenotype API'
-        },
-        {
-            id: 'cc857d5b7c8b7609b5bbb38ff990bfff',
-            name: 'Gene Ontology Biological Process API'
-        },
-        {
-            id: 'f339b28426e7bf72028f60feefcd7465',
-            name: 'Gene Ontology Cellular Component API'
-        },
-        {
-            id: '34bad236d77bea0a0ee6c6cba5be54a6',
-            name: 'Gene Ontology Molecular Function API'
-        },
-        {
-            id: 'a5b0ec6bfde5008984d4b6cde402d61f',
-            name: 'Human Phenotype Ontology API'
-        },
-        {
-            id: '77ed27f111262d0289ed4f4071faa619',
-            name: 'MGIgene2phenotype API'
-        },
-        {
             id: 'ec6d76016ef40f284359d17fbf78df20',
-            name: 'UBERON Ontology API'
+            name: 'BioThings UBERON API'
         },
         // internal (Su / Wu Lab), non-TRAPI: Core BioThings APIs
         // annotated with SmartAPI x-bte
