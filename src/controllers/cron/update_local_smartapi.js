@@ -87,6 +87,7 @@ const getTRAPIWithPredicatesEndpoint = specs => {
             "x-translator": {
               component: "KP",
               team: spec.info["x-translator"].team,
+              infores: spec.info["x-translator"].infores
             },
             "x-trapi": {
               batch_size_limit: spec.info["x-trapi"].batch_size_limit,
