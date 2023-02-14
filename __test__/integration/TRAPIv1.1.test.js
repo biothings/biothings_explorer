@@ -30,8 +30,8 @@ describe("Testing v1.1 endpoints", () => {
     const expand_node = JSON.parse(fs.readFileSync(path.join(example_folder, 'query_with_node_to_be_expanded.json')))
 
     test("GET /v1/meta_knowledge_graph", async () => {
-      console.log("TEST 1")
-        await request(app)
+
+      await request(app)
             .get("/v1/meta_knowledge_graph")
             .expect(200)
             .expect('Content-Type', /json/)
@@ -54,7 +54,6 @@ describe("Testing v1.1 endpoints", () => {
     })
 
     test("GET /v1/team/{team_name}/meta_knowledge_graph", async () => {
-      console.log("TEST 2")
 
         await request(app)
             .get("/v1/team/Service Provider/meta_knowledge_graph")
@@ -79,7 +78,6 @@ describe("Testing v1.1 endpoints", () => {
     })
 
     test("Query to Text Mining team Should return 200 with valid response", async () => {
-      console.log("TEST 3")
 
         await request(app)
             .get("/v1/team/Text Mining Provider/meta_knowledge_graph")
@@ -100,7 +98,6 @@ describe("Testing v1.1 endpoints", () => {
     })
 
     test("Query to Invalid team Should return 200 with empty response", async () => {
-      console.log("TEST 4")
 
         await request(app)
             .get("/v1/team/wrong team/meta_knowledge_graph")
@@ -115,7 +112,6 @@ describe("Testing v1.1 endpoints", () => {
     })
 
     test("GET /v1/smartapi/{smartapi_id}/meta_knowledge_graph", async () => {
-      console.log("TEST 5")
 
         await request(app)
             // testing with "Text Mining Targeted Association API"
@@ -137,7 +133,6 @@ describe("Testing v1.1 endpoints", () => {
     })
 
     test("Query to Invalid API Should return 404 with error message included", async () => {
-      console.log("TEST 6")
 
         await request(app)
             .get("/v1/smartapi/78fe380a147a8641caf72320862697b/meta_knowledge_graph")
@@ -150,7 +145,6 @@ describe("Testing v1.1 endpoints", () => {
     })
 
     test("POST /v1/query with gene2chemical query", async () => {
-      console.log("TEST 7")
 
       const mychem_query_3_input = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/mychem_query_3_input.json")))
       const mychem_query_4_input = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/mychem_query_4_input.json")))
@@ -256,7 +250,6 @@ describe("Testing v1.1 endpoints", () => {
     })
 
     test("POST /v1/query with query graph defined in old trapi standard", async () => {
-      console.log("TEST 8")
 
         await request(app)
             .post("/v1/query")
@@ -270,7 +263,6 @@ describe("Testing v1.1 endpoints", () => {
     })
 
     test("POST /v1/query with disease2gene query", async () => {
-      console.log("TEST 9")
 
       const big_sri_input_3 = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/big_sri_input_3.json")))
       const ngd_input_2 = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/ngd_input_2.json")))
@@ -394,7 +386,6 @@ describe("Testing v1.1 endpoints", () => {
     })
 
     test("POST /v1/query with query that doesn't provide input category", async () => {
-      console.log("TEST 10")
       axios.default.mockImplementation(async qData => {
         let res = undefined
         if (qData.url === 'https://api.monarchinitiative.org/api/bioentity/disease/MONDO:0019259/genes') {
