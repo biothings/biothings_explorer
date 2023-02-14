@@ -17,7 +17,6 @@ describe.skip("Testing v1 endpoints", () => {
     const expand_node = JSON.parse(fs.readFileSync(path.join(example_folder, 'query_with_node_to_be_expanded.json')))
 
     test("GET /v1/predicates", async () => {
-      console.log("test 1")
         await request(app)
             .get("/v1/predicates")
             .expect(200)
@@ -30,8 +29,6 @@ describe.skip("Testing v1 endpoints", () => {
     })
 
     test("GET /v1/smartapi/{smartapi_id}/predicates", async () => {
-      console.log("test 2")
-
         await request(app)
             .get("/v1/smartapi/978fe380a147a8641caf72320862697b/predicates")
             .expect(200)
@@ -43,8 +40,6 @@ describe.skip("Testing v1 endpoints", () => {
     })
 
     test("POST /v1/query with gene2chemical query", async () => {
-      console.log("test 3")
-
         await request(app)
             .post("/v1/query")
             .send(gene2chemical_query)
@@ -61,9 +56,6 @@ describe.skip("Testing v1 endpoints", () => {
     })
 
     test("POST /v1/query with clinical risk kp query", async () => {
-      console.log("test 4")
-
-
         await request(app)
             .post("/v1/query")
             .send(drug2disease_query)
@@ -80,8 +72,6 @@ describe.skip("Testing v1 endpoints", () => {
     })
 
     test("POST /v1/query with query graph defined in old trapi standard", async () => {
-      console.log("test 5")
-
         await request(app)
             .post("/v1/query")
             .send(query_using_earlier_trapi_spec)
@@ -94,9 +84,6 @@ describe.skip("Testing v1 endpoints", () => {
     })
 
     test("POST /v1/query with disease2gene query", async () => {
-
-      console.log("test 6")
-
         await request(app)
             .post("/v1/query")
             .send(disease2gene_query)
@@ -114,9 +101,6 @@ describe.skip("Testing v1 endpoints", () => {
     })
 
     test("POST /v1/query with query that doesn't provide input category", async () => {
-      console.log("test 7")
-
-
         await request(app)
             .post("/v1/query")
             .send(query_without_category)

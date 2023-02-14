@@ -240,7 +240,6 @@ describe("Testing v1.1 endpoints", () => {
             .expect(200)
             .expect('Content-Type', /json/)
             .then(response => {
-                console.log(request.body)
                 expect(response.body.message).toHaveProperty("query_graph");
                 expect(response.body.message).toHaveProperty("knowledge_graph");
                 expect(response.body.message.knowledge_graph).toHaveProperty("nodes");
