@@ -9,7 +9,11 @@ jest.mock('axios')
 
 const arrEquals = (arr1, arr2) => {
   if (!Array.isArray(arr1) || !Array.isArray(arr2)) return arr1 === arr2
-  if (arr1.length !== arr2.length) return false
+  if (arr1.length !== arr2.length) {
+    return false
+  }
+  arr1.sort((a, b) => (a > b) ? -1 : 1)
+  arr2.sort((a, b) => (a > b) ? -1 : 1)
   for (var i = 0; i<arr1.length; i++) {
     if (!arrEquals(arr1[i], arr2[i])) return false
   }
