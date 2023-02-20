@@ -217,6 +217,9 @@ describe("Testing v1.1 endpoints", () => {
         if (arrEquals(qData?.umls, ngd_input)) {
           res = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/ngd_query.json")))
         }
+        if (res === undefined) {
+          res = (await og_axios.post(...q)).data
+        }
         return { data: res }
       })
 
@@ -368,6 +371,9 @@ describe("Testing v1.1 endpoints", () => {
         }
         if (arrEquals(qData?.umls, ngd_input_2)) {
           res = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/ngd_query_2.json")))
+        }
+        if (res === undefined) {
+          res = (await og_axios.post(...q)).data
         }
         return {data: res}
       })
