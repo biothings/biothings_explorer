@@ -202,7 +202,7 @@ describe("Testing v1.1 endpoints", () => {
         return { data: res }
       })
 
-      axios.default.post.mockImplementation((...q) => {
+      axios.default.post.mockImplementation(async (...q) => {
         const [url, qData] = q;
         let res = undefined
         if (arrEquals(qData?.curies, ["NCBIGene:1017"])) {
@@ -360,7 +360,7 @@ describe("Testing v1.1 endpoints", () => {
         return { data: res }
       })
 
-      axios.default.post.mockImplementation((...q) => {
+      axios.default.post.mockImplementation(async (...q) => {
         const [url, qData] = q
         let res = undefined
         if (arrEquals(qData?.curies, ["MONDO:0005737"])) {
