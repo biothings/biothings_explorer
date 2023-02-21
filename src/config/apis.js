@@ -16,7 +16,8 @@ exports.API_LIST = {
         },
         {
             id: 'dca415f2d792976af9d642b7e73f7a41',
-            name: 'LitVar API'
+            name: 'LitVar API',
+            primarySource: true
         },
         {
             id: '1f277e1563fcfd124bfae2cc3c4bcdec',
@@ -133,11 +134,13 @@ exports.API_LIST = {
         },
         {
             id: 'd86a24f6027ffe778f84ba10a7a1861a',
-            name: 'Multiomics EHR Risk KP API'
+            name: 'Multiomics EHR Risk KP API',
+            primarySource: true
         },
         {
             id: '02af7d098ab304e80d6f4806c3527027',
-            name: 'Multiomics Wellness KP API'
+            name: 'Multiomics Wellness KP API',
+            primarySource: true
         },
         // non-TRAPI: pending BioThings APIs made in collab with Text Mining Provider
         // annotated with SmartAPI x-bte
