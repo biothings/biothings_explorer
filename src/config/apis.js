@@ -16,8 +16,7 @@ exports.API_LIST = {
         },
         {
             id: 'dca415f2d792976af9d642b7e73f7a41',
-            name: 'LitVar API',
-            primarySource: true
+            name: 'LitVar API'
         },
         {
             id: '1f277e1563fcfd124bfae2cc3c4bcdec',
