@@ -76,6 +76,7 @@ module.exports = {
                   path: req.path,
                   query: req.query,
                   rateLimit: req.rateLimit,
+                  schema: req.schema
                 };
                 if (!(process.env.USE_THREADING === 'false')) {
                     const response = await createNewWorker(req, route);

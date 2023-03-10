@@ -41,4 +41,4 @@ module.exports = async (sub = undefined, obj = undefined, pred = undefined, comp
         });
     })
     return associations;
-}
+} // test comment please ignore

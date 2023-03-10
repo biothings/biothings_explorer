@@ -39,7 +39,7 @@ describe("Test association module", () => {
     })
 
     test("If api specified, should only return associations related to the api", async () => {
-        const res = await assoc(undefined, undefined, undefined, "MyGene.info API");
+        const res = await assoc(undefined, undefined, undefined, undefined, "MyGene.info API");
         const apis = new Set(res.map(item => item.api.name));
         const inputTypes = new Set(res.map(item => item.subject));
         expect(inputTypes.size).toBeGreaterThan(1);
@@ -48,7 +48,7 @@ describe("Test association module", () => {
     })
 
     test("If source specified, should only return associations related to the source", async () => {
-        const res = await assoc(undefined, undefined, undefined, undefined, "infores:disgenet");
+        const res = await assoc(undefined, undefined, undefined, undefined, undefined, "infores:disgenet");
         const sources = new Set(res.map(item => item.provided_by));
         const inputTypes = new Set(res.map(item => item.subject));
         expect(inputTypes.size).toBeGreaterThan(1);

@@ -51,7 +51,7 @@ The Su / Wu Labs create many APIs using the [BioThings SDK](https://docs.biothin
 
 The [core BioThings APIs](https://biothings.io/) serve many users besides the Translator consortium. The parsers used to make these APIs are [publically available on Github](https://github.com/biothings).
 
-There are also [APIs that are made specifically for the Translator consortium or as "stand-alone" services that may later be incorporated into the core BioThings APIs](https://pending.biothings.io/). Some of these APIs are made by the Wu Lab (aka the Service Provider group in Translator) in collaboration with other teams in the Translator consortium; these APIs therefore have data elements related to Translator's standards (semantic terms from the [biolink-model](https://github.com/biolink/biolink-model), TRAPI edge-attributes, etc). These APIs have parsers that may be in the [pending biothings github repo](https://github.com/biothings/pending.api/tree/master/plugins) or in a collaborator's github repo.
+There are also [APIs that are made specifically for the Translator consortium or as "stand-alone" services that may later be incorporated into the core BioThings APIs](https://biothings.ncats.io/). Some of these APIs are made by the Wu Lab (aka the Service Provider group in Translator) in collaboration with other teams in the Translator consortium; these APIs therefore have data elements related to Translator's standards (semantic terms from the [biolink-model](https://github.com/biolink/biolink-model), TRAPI edge-attributes, etc). These APIs have parsers that may be in the [pending biothings github repo](https://github.com/biothings/pending.api/tree/master/plugins) or in a collaborator's github repo.
 
 Notes for BioThings APIs:
 

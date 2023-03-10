@@ -1,6 +1,6 @@
 # BioThings Explorer TRAPI API
-[![Test Coveralls](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/test.yml/badge.svg)](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/test.yml)
-[![Coverage Status](https://coveralls.io/repos/github/biothings/BioThings_Explorer_TRAPI/badge.svg)](https://coveralls.io/github/biothings/BioThings_Explorer_TRAPI)
+[![Test with workspace](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/test_ws_codecov.yml/badge.svg)](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/test_ws_codecov.yml)
+[![codecov](https://codecov.io/gh/biothings/BioThings_Explorer_TRAPI/branch/main/graph/badge.svg?token=I4A29PQQJK)](https://codecov.io/gh/biothings/BioThings_Explorer_TRAPI)
 [![ci-cd](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/deploy.yml/badge.svg)](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/deploy.yml)
 
 ## Introduction
@@ -19,15 +19,71 @@ TRAPI stands for [Translator Reasoner API](https://github.com/NCATSTranslator/Re
 
 We maintain a live instance of this application at https://api.bte.ncats.io/ that can be used for testing.  Query Examples can be found [here](/examples).
 
+### Trapi API Implementation
+```mermaid
+sequenceDiagram
+autonumber
+participant I as index.js - query()
+participant QG as query_graph.js
+participant BEQ as batch_edge_query.js
+participant Q2A as qedge2apiedge.js
+participant R as query_results.js
+participant C as call-apis module
+
+note over I, R: query_graph_handler module
+
+I->>QG: processQueryGraph()
+QG->>QG: Process TRAPI Query Graph Object into <br/> internal qEdge and qXEdge representation
+note right of QG: qEdge - Edge in TRAPI query graph <br/> qXEdge - Internal UpdatedExeEdge representation <br/> of a qEdge to be executed
+QG->>I: return qXEdges
+
+I->>I: Inferred Mode: create <br/> templated queries
+
+loop Executing with Edge Manager
+I->>I: while there are unexecuted qXEdges, <br/> get next qXEdge
+
+I->>BEQ: BatchEdgeQueryHandler()
+BEQ->>BEQ: NodesUpdateHandler(): get equivalent IDs
+BEQ->>BEQ: cacheHandler(): fetch cached records
+
+alt if there are uncached qXEdges
+BEQ->>Q2A: QEdge2APIEdgeHandler()
+Q2A->>Q2A: convert qXEdges into API calls by using <br/> metaKG to get metaEdges for qXEdge
+Q2A->>BEQ: return metaXEdges
+note right of BEQ: metaEdge - An edge in the metaKG <br/> metaXEdge - A metaEdge pair with a qXEdge
+BEQ->>C: query()
+C->>C: make API calls in batches <br/> and merge results
+C->>BEQ: return records from APIs
+end
+
+BEQ->>BEQ: cacheHandler(): cache result records
+note right of BEQ: record - A single unit of transformed <br/> data from a sub-query response
+
+BEQ->>I: return records
+
+I->>I: Store records/update edge manager
+I->>I: Mark Edge as Executed
+end
+
+I->>R: trapiResultsAssembler
+R->>R: assemble and convert records into <br/> final return results
+R->>I: put results in bteGraph
+note left of R: result - 1 item of the array in the <br/> TRAPI response (message.results)
+I->>I: bteGraph: prune not fully connected <br/> results from graph
+```
+
 
 ---
 
 
 ## Local installations
 
+
+*Note: these instructions have been updated to reflect usage in the [workspace](https://github.com/biothings/bte-trapi-workspace), which is required.*
+
 ### Requirements
 
-For development, you will only need Node.js and a node global package, e.g. npm, installed in your environment. Your Node version must be higher than v12.
+For development, you will need Node.js and a node global package, e.g. npm, installed in your environment. Your Node version must be higher than v12.
 
 
 - #### Node installation on Windows
@@ -45,6 +101,10 @@ Also, be sure to have `git` available in your PATH, `npm` might need it (You can
 - #### Other Operating Systems
 
   You can find more information about the installation on the [official Node.js website](https://nodejs.org/) and the [official NPM website](https://npmjs.org/).
+  
+ 
+Note that BTE uses the npm workspace feature, which requires npm 7+. It's recommended to use node v15+, which comes with npm v7.
+You may consider using [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) to install a newer version of node.
 
 If the installation was successful, you should be able to run the following command.
 
@@ -52,24 +112,41 @@ If the installation was successful, you should be able to run the following comm
     v12.*.*
 
     $ npm --version
-    6.1.0
+    7.24.2
 
 If you need to update `npm`, you can make it using `npm`! Cool right? After running the following command, just open again the command line and be happy.
 
 `$ npm install npm -g`
 
+Additionally, some packages used by BTE require some additional packages:
+
+Ubuntu:
+
+    sudo apt install lz4 python3 make g++
+    
+MacOS will require the XCode Command Line Tools and [Homebrew](https://brew.sh/):
+
+    xcode-select --install
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    
+
+After installing brew, you can install the remaining dependencies:
+
+    brew install lz4 python3 make
+
 ---
 
 ### Installation
 
-    $ git clone https://github.com/biothings/BioThings_Explorer_TRAPI
-    $ cd BioThings_Explorer_TRAPI
-    $ npm install
+    $ git clone https://github.com/biothings/bte-trapi-workspace.git
+    $ cd bte-trapi-workspace
+    $ npm run clone
+    $ npm install || true && npm install
+    
+Note that installation must be run twice to ensure workspace interdependecies are installed properly. The last line simply ensures this is done without reporting ignorable failures.
 
 
 ### Running the project
-
-*Note: these instructions have been updated to reflect usage in the [workspace](https://github.com/biothings/bte-trapi-workspace), which is highly recommended.*
 
 To start the server with debug logging, which outputs logging statements to the terminal in real time:
 

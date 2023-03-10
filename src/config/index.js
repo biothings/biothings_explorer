@@ -62,16 +62,23 @@ module.exports = class Config {
     }
 
     setLimiter() {
-        const limiter = rateLimit({
+        const slowLimiter = rateLimit({
             windowMs: 1 * 60 * 1000, //1min
             max: process.env.MAX_QUERIES_PER_MIN || 15
         });
-        this.app.use("/v1/query", limiter);
-        this.app.use("/v1/team/:team_name/query", limiter);
-        this.app.use("/v1/team/:team_name/query", limiter);
-        this.app.use("/test/query", limiter);
-        this.app.use("/v1/meta_knowledge_graph", limiter);
-        this.app.use("/v1/team/:teamName/meta_knowledge_graph", limiter);
-        this.app.use("/v1/smartapi/:smartapiID/meta_knowledge_graph", limiter);
+        const medLimiter = rateLimit({
+            windowMs: 1 * 60 * 1000, //1min
+            max: process.env.MAX_QUERIES_PER_MIN || 30
+        });
+        const fastLimiter = rateLimit({
+            windowMs: 1 * 60 * 1000, //1min
+            max: process.env.MAX_QUERIES_PER_MIN || 60
+        });
+        this.app.use("/v1/query", slowLimiter);
+        this.app.use("/v1/team/:team_name/query", slowLimiter);
+        this.app.use("/v1/team/:team_name/query", slowLimiter);
+        this.app.use("/v1/meta_knowledge_graph", medLimiter);
+        this.app.use("/v1/team/:teamName/meta_knowledge_graph", medLimiter);
+        this.app.use("/v1/smartapi/:smartapiID/meta_knowledge_graph", medLimiter);
     }
 }
