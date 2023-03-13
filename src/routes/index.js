@@ -42,10 +42,11 @@ module.exports = {
         query_v1_by_api: routesV1QueryByAPI.task,
         query_v1_by_team: routesV1QueryByTeam.task,
         check_query_status: routesV1CheckQueryStatus.task,
-        // Not threaded due to being lightweight/speed being higher priority
+        // async processor uses thread
         asyncquery_v1: routesV1AsyncQuery.task,
         asyncquery_v1_by_api: routesV1AsyncQueryByAPI.task,
         asyncquery_v1_by_team: routesV1AsyncQueryByTeam.task,
+        // Not threaded due to being lightweight/speed being higher priority
         performance: routesPerformance.task,
         metakg: routesMetaKG.task,
         meta_knowledge_graph_v1: routesV1MetaKG.task,

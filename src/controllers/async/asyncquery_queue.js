@@ -70,8 +70,12 @@ exports.getQueryQueue = name => {
           console.log("err", error);
         })
         .on("failed", async function (job, error) {
-          console.log(`Async job ${job.id} failed with error ${error.message}`);
-          console.trace(error);
+          const workerID = job.data.worker.threadId;
+          debug(`Async job ${job.id} failed with error ${error.message}`);
+          debug(error.stack);
+          job.data.worker
+            .terminate()
+            .then(debug(`Async worker thread ${workerID} timed out, terminated successfully.`));
           if (job.data.callback_url) {
             try {
               await axios({
@@ -89,7 +93,7 @@ exports.getQueryQueue = name => {
                 },
               });
             } catch (error) {
-              console.log(`Callback failed with error ${error.message}`);
+              debug(`Callback failed with error ${error.message}`);
             }
           }
         });

@@ -31,6 +31,7 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
         {
           jobId: jobId,
           url: url,
+          timeout: parseInt(process.env.JOB_TIMEOUT ?? (1000 * 60 * 60 * 2).toString())
         },
       );
       res.setHeader("Content-Type", "application/json");
@@ -160,10 +161,11 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
       await storeQueryResponse(jobID, response);
     }
   }
+  
   if (callback_url) {
     if (!utils.stringIsAValidUrl(callback_url)) {
       return {
-        response: true,
+        response: "TRAPI Execution complete",
         status: 200,
         callback: "The callback url must be a valid url",
       };
@@ -183,20 +185,20 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
       //console.log(res)
     } catch (e) {
       return {
-        response: true,
+        response: "TRAPI Execution complete",
         status: e.response?.status,
         callback: `Request failed, received code ${e.response?.status}`,
       };
     }
   } else {
     return {
-      response: true,
+      response: "TRAPI Execution complete",
       status: 200,
       callback: "Callback url was not provided",
     };
   }
   return {
-    response: true,
+    response: "TRAPI Execution complete",
     status: callback_response?.status,
     callback: "Data sent to callback_url",
   };
