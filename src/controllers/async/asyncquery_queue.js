@@ -86,8 +86,13 @@ exports.getQueryQueue = name => {
     if (!global.queryQueue[name]) {
       global.queryQueue[name] = new Queue(name, process.env.REDIS_HOST ? details : "redis://127.0.0.1:6379", {
         defaultJobOptions: {
-          timeout: process.env.JOB_TIMEOUT,
-          removeOnFail: true,
+          timeout: parseInt(process.env.JOB_TIMEOUT),
+          removeOnFail: {
+            age: 24 * 60 * 60 // keep failed jobs for a day (in case user needs to review fail reason)
+          },
+          removeOnComplete: {
+            age: 90 * 24 * 60 * 60 // keep completed jobs for 90 days
+          }
         },
         settings: {
           maxStalledCount: 1,
