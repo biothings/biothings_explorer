@@ -1,6 +1,6 @@
 const Queue = require("bull");
 const axios = require("axios");
-const { redisClient } = require("@biothings-explorer/query_graph_handler");
+const { redisClient, getNewRedisClient } = require("@biothings-explorer/query_graph_handler");
 const debug = require("debug")("bte:biothings-explorer-trapi:asyncquery_queue");
 const Redis = require("ioredis");
 const ps = require("ps-node");
@@ -37,53 +37,19 @@ exports.getQueryQueue = name => {
     debug(
       `Getting queue ${name} using redis in ${process.env.REDIS_CLUSTER === "true" ? "cluster" : "non-cluster"} mode`,
     );
-    let details = {
-      createClient: () => {
-        if (process.env.REDIS_CLUSTER === "true") {
-          const details = {
-            enableReadyCheck: false,
-            maxRetriesPerRequest: null,
-            redisOptions: {},
-          };
-          if (process.env.REDIS_PASSWORD) {
-            details.redisOptions.password = process.env.REDIS_PASSWORD;
-          }
-          if (process.env.REDIS_TLS_ENABLED) {
-            details.redisOptions.tls = { checkServerIdentity: () => undefined };
-          }
-          return new Redis.Cluster(
-            [
-              {
-                host: process.env.REDIS_HOST,
-                port: process.env.REDIS_PORT,
-              },
-            ],
-            details,
-          );
-        } else {
-          const details = {
-            enableReadyCheck: false,
-            maxRetriesPerRequest: null,
-          };
-          if (process.env.REDIS_PASSWORD) {
-            details.password = process.env.REDIS_PASSWORD;
-          }
-          if (process.env.REDIS_TLS_ENABLED) {
-            details.tls = { checkServerIdentity: () => undefined };
-          }
-          return new Redis({
-            host: process.env.REDIS_HOST,
-            port: process.env.REDIS_PORT,
-            enableReadyCheck: false,
-            maxRetriesPerRequest: null,
-          });
-        }
-      },
-      // createClient: () => redis.createCluster({
-      // }),
-      prefix: `{BTE:bull:${name}}`,
-    };
     if (!global.queryQueue[name]) {
+      debug(`Initializing queue ${name} for first time...`);
+      let details = {
+        createClient: () => {
+          const client = getNewRedisClient();
+          client.internalClient.options.enableReadyCheck = false;
+          client.internalClient.options.maxRetriesPerRequest = null;
+          return client.internalClient;
+        },
+        // createClient: () => redis.createCluster({
+        // }),
+        prefix: `{BTE:bull}`,
+      };
       global.queryQueue[name] = new Queue(name, process.env.REDIS_HOST ? details : "redis://127.0.0.1:6379", {
         defaultJobOptions: {
           timeout: parseInt(process.env.JOB_TIMEOUT),
