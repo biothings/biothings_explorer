@@ -13,6 +13,7 @@ const routesV1MetaKGByAPI = require("./v1/meta_knowledge_graph_v1_by_api");
 const routesV1MetaKGByTeam = require("./v1/meta_knowledge_graph_v1_by_team");
 const ErrorHandler = require("../middlewares/error");
 const LoggingHandler = require("../middlewares/logging");
+const routesBullBoardPage = require("./bullboard");
 
 class Routes {
     setRoutes(app) {
@@ -25,6 +26,7 @@ class Routes {
         routesV1MetaKGByTeam.setRoutes(app);
         routesV1CheckQueryStatus.setRoutes(app);
         routesFrontPage.setRoutes(app);
+        routesBullBoardPage.setRoutes(app);
         routesPerformance.setRoutes(app);
         routesV1QueryByAPI.setRoutes(app);
         routesV1QueryByTeam.setRoutes(app);
