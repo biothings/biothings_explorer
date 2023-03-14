@@ -11,6 +11,10 @@ exports.API_LIST = {
             // NOT the same as the Biolink-model
         },
         {
+            id: '0212611d1c670f9107baf00b77f0889a',
+            name: 'CTD API'
+        },
+        {
             id: '43af91b3d7cae43591083bff9d75c6dd',
             name: 'EBI Proteins API'
         },
