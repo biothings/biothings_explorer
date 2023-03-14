@@ -31,6 +31,15 @@ killZombies();
 
 global.queryQueue = {};
 
+const retryStrategy = (times) => {
+  // times doesn't reset
+  var count = times % 21;
+  if (count == 20) {
+    return null;
+  }
+  return 500 * count;
+}
+
 exports.getQueryQueue = name => {
   let queryQueue = null;
   if (redisClient.clientEnabled && !process.env.INTERNAL_DISABLE_REDIS) {
@@ -43,7 +52,11 @@ exports.getQueryQueue = name => {
           const details = {
             enableReadyCheck: false,
             maxRetriesPerRequest: null,
-            redisOptions: {},
+            redisOptions: {
+              retryStrategy: retryStrategy,
+              connectTimeout: 50000
+            },
+            clusterRetryStrategy: retryStrategy
           };
           if (process.env.REDIS_PASSWORD) {
             details.redisOptions.password = process.env.REDIS_PASSWORD;
@@ -76,6 +89,8 @@ exports.getQueryQueue = name => {
             port: process.env.REDIS_PORT,
             enableReadyCheck: false,
             maxRetriesPerRequest: null,
+            connectTimeout: 50000,
+            retryStrategy
           });
         }
       },
