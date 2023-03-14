@@ -42,8 +42,8 @@ const getServerFromSpec = spec => {
 
   const servers = spec.servers.map(server => ({
     url: server.url,
-    level: getLevel(server["x-maturity"]),
-    maturity: server["x-maturity"],
+    level: getLevel(server["x-maturity"] ?? "production"),
+    maturity: server["x-maturity"] ?? "production",
     https: server.url.includes("https"),
   }));
 
@@ -75,7 +75,8 @@ const getTRAPIWithPredicatesEndpoint = specs => {
         "x-trapi" in spec.info &&
         spec.servers.length &&
         "/meta_knowledge_graph" in spec.paths &&
-        !excluded_list.includes(spec._id)
+        !excluded_list.includes(spec._id) &&
+        getServerFromSpec(spec)
       ) {
         let api = {
           association: {

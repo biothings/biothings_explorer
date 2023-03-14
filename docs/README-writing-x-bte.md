@@ -637,17 +637,17 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
 ```yaml
   x-bte-response-mapping:
     disease:
-      OMIM: subject.PHENO_TYPE   ## no prefix
-      pathway_name: object.PATHWAY_NAME
+      OMIM: subject.PHENO_TYPE                         ## no prefix
+      input_name: object.PATHWAY_NAME                  ## BTE will use this for node name (node normalizer doesn't provide)
       pathway_categories: object.PATHWAY_CATEGORIES
-      disease_name: subject.DISEASE_NAME
+      output_name: subject.DISEASE_NAME                ## BTE will use this for node name if node normalizer didn't provide
       related_genes_symbol: relation.GENE_SYMBOL
       related_genes_ncbigene: relation.GENE_ID
     pathway:
-      "ncats.bioplanet": object.PATHWAY_ID   ## no prefix
-      pathway_name: object.PATHWAY_NAME
+      "ncats.bioplanet": object.PATHWAY_ID              ## no prefix
+      output_name: object.PATHWAY_NAME                  ## BTE will use this for node name (node normalizer doesn't provide)
       pathway_categories: object.PATHWAY_CATEGORIES
-      disease_name: subject.DISEASE_NAME
+      input_name: subject.DISEASE_NAME                  ## BTE will use this for node name if node normalizer didn't provide
       related_genes_symbol: relation.GENE_SYMBOL
       related_genes_ncbigene: relation.GENE_ID
 ```
