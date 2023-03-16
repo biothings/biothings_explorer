@@ -73,15 +73,15 @@ module.exports = class NGDFilter {
         let ngd_inputs = new Set();
         let id_dict = {};
         if (Array.isArray(this.queryResult) && this.queryResult.length > 0) {
-            this.queryResult.map((rec, i) => {
-                if ("$association" in rec) {
-                    let input_type = rec["$association"]["input_type"];
-                    let output_type = rec["$association"]["output_type"];
-                    let input_resolved_ids = rec["$input_resolved_identifiers"][rec["$original_input"][rec["$input"]]];
-                    if (!("resolved" in rec["$output_id_mapping"])) {
+            this.queryResult.map((record, i) => {
+                if ("$association" in record) {
+                    let input_type = record["$association"]["input_type"];
+                    let output_type = record["$association"]["output_type"];
+                    let input_resolved_ids = record["$input_resolved_identifiers"][record["$original_input"][record["$input"]]];
+                    if (!("resolved" in record["$output_id_mapping"])) {
                         return;
                     }
-                    let output_resolved_ids = rec["$output_id_mapping"]["resolved"];
+                    let output_resolved_ids = record["$output_id_mapping"]["resolved"];
                     let input_id = this.extractInputID(input_resolved_ids, input_type);
                     let output_id = this.extractInputID(output_resolved_ids, output_type);
                     if (input_id !== undefined && output_id !== undefined) {

@@ -59,11 +59,11 @@ class VCheckQueryStatus {
               try {
                 // This will always be using the variable from process.env instead of the value that actually timed out during runtime
                 // To display the true timed out value extract it from "reason"
-                return {
+                taskResponse({
                   id,
                   state,
                   reason: `This job was stopped after running over ${parseInt(process.env.JOB_TIMEOUT) / 1000}s`,
-                };
+                });
               } catch (e) {
                 taskResponse({ id, state, reason });
               }

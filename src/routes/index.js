@@ -13,6 +13,7 @@ const routesV1MetaKGByAPI = require("./v1/meta_knowledge_graph_v1_by_api");
 const routesV1MetaKGByTeam = require("./v1/meta_knowledge_graph_v1_by_team");
 const ErrorHandler = require("../middlewares/error");
 const LoggingHandler = require("../middlewares/logging");
+const routesBullBoardPage = require("./bullboard");
 
 class Routes {
     setRoutes(app) {
@@ -25,6 +26,7 @@ class Routes {
         routesV1MetaKGByTeam.setRoutes(app);
         routesV1CheckQueryStatus.setRoutes(app);
         routesFrontPage.setRoutes(app);
+        routesBullBoardPage.setRoutes(app);
         routesPerformance.setRoutes(app);
         routesV1QueryByAPI.setRoutes(app);
         routesV1QueryByTeam.setRoutes(app);
@@ -42,10 +44,11 @@ module.exports = {
         query_v1_by_api: routesV1QueryByAPI.task,
         query_v1_by_team: routesV1QueryByTeam.task,
         check_query_status: routesV1CheckQueryStatus.task,
-        // Not threaded due to being lightweight/speed being higher priority
+        // async processor uses thread
         asyncquery_v1: routesV1AsyncQuery.task,
         asyncquery_v1_by_api: routesV1AsyncQueryByAPI.task,
         asyncquery_v1_by_team: routesV1AsyncQueryByTeam.task,
+        // Not threaded due to being lightweight/speed being higher priority
         performance: routesPerformance.task,
         metakg: routesMetaKG.task,
         meta_knowledge_graph_v1: routesV1MetaKG.task,
