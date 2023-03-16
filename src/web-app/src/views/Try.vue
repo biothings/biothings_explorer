@@ -12,7 +12,7 @@
 
 <template>
     <div class="min-h-screen container m-auto">
-        <div class="w-full px-5 py-7 text-white ">
+        <div class="w-full px-5 py-7 text-white">
             <RouterLink to="/">Back</RouterLink>
         </div>
         <div class="w-3/4 m-auto my-7">
@@ -21,16 +21,22 @@
                 BioThings Explorer allows users to query a vast amount of biological and chemical databases in a central place to answer and predict complex biological questions.
             </p>
         </div>
-        <h2 class="text-stone-400 text-left my-4 text-lg">1. Select a query</h2>
-        <div class="flex flex-wrap justify-center gap-4">
-            <template v-for="q in store.queries" :key="q.name">
-                <QueryBox class="flex-basis-[400px]" :query="q"></QueryBox>
-            </template>
-        </div>
-        <h2 class="text-stone-400 text-left my-4 text-lg">2. Inspect/Edit/Execute your query</h2>
-        <p class="text-orange-400 text-left">BTE queries work asynchronously, you will get a <b class="text-green-400">job ID</b>. <span class="text-gray-500">While BTE works on this you can go grab some coffee or go pet your cat!</span></p>
-        <div class="w-full">
-            <CodeEditor class="min-h-[20vh] flex-basis-1/2 my-3" :query="store?.selectedQuery?.query"></CodeEditor>
+        <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-2">
+            <div>
+                <h2 class="text-stone-400 text-left my-4 text-lg">1. Select a query</h2>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <template v-for="q in store.queries" :key="q.name">
+                        <QueryBox class="flex-basis-[400px]" :query="q"></QueryBox>
+                    </template>
+                </div>
+            </div>
+            <div>
+                <h2 class="text-stone-400 text-left my-4 text-lg">2. Inspect/Edit/Execute your query</h2>
+                <p class="text-orange-400 text-left">BTE queries work asynchronously, you will get a <b class="text-green-400">job ID</b>. <span class="text-gray-500">While BTE works on this you can go grab some coffee or go pet your cat!</span></p>
+                <div class="w-[100%]">
+                    <CodeEditor class="min-h-[20vh] flex-basis-1/2 my-3" :query="store?.selectedQuery?.query"></CodeEditor>
+                </div>
+            </div>
         </div>
         <h2 class="text-stone-400 text-left mt-4 text-lg">3. Check your results. <span class="text-orange-400">Pick a <b class="text-green-400">job ID</b> and see if BTE is done with your request.</span></h2>
         <p class="text-gray-500">Note: BioThings Explorer keeps your job history for up to a week.</p>
@@ -40,7 +46,7 @@
                 <select v-model="JobURL" name="jobs" id="job-select" class="px-7 py-1 rounded-full bg-orange-500 text-white mr-3">
                     <option value="">Choose one</option>
                     <template v-for="job in store.jobs" :key="job.id">
-                        <option :value="job.url">{{ job.id }} - {{ job.date }}</option>
+                        <option :value="job.url">{{ job.id }} {{ job?.description }} - {{ job.date }}</option>
                     </template>
                 </select>
             </div>

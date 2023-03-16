@@ -18,18 +18,30 @@ nodes: [
     { data: { id: 'jackson', name: 'Jackson Callaghan \n Research Programmer', color: 'violet' } },
     { data: { id: 'ayushi', name: 'Ayushi Agrawal \n Bioinformatician II', color: 'lightpink' } },
     { data: { id: 'yao', name: 'Yao Yao \n Staff Scientist', color: 'lightblue' } },
+    { data: { id: 'madhumita', name: 'Madhumita Narayan \n Research Programmer', color: 'yellow' } },
+    { data: { id: 'kristina', name: 'Kristina Hanspers \n Senior Research Associate', color: 'magenta' } },
+    { data: { id: 'rohan', name: 'Rohan Juneja \n Intern', color: 'lightyellow' } },
+    { data: { id: 'alex', name: 'Alex Pico \n Researcher', color: 'limegreen' } },
+    { data: { id: 'yao', name: 'Yao Yao \n Staff Scientist', color: 'lightblue' } },
     { data: { id: 'ian', name: 'Ian Newman \n Molecular Biologist', color: 'salmon' } }
 ],
 edges: [
     { data: { source: 'andrew', target: 'chunlei' } },
     { data: { source: 'andrew', target: 'marco' } },
+    { data: { source: 'andrew', target: 'alex' } },
     { data: { source: 'chunlei', target: 'ginger' } },
     { data: { source: 'chunlei', target: 'jackson' } },
+    { data: { source: 'chunlei', target: 'kristina' } },
     { data: { source: 'jackson', target: 'yao' } },
+    { data: { source: 'jackson', target: 'rohan' } },
     { data: { source: 'jackson', target: 'ian' } },
+    { data: { source: 'rohan', target: 'ian' } },
+    { data: { source: 'alex', target: 'ian' } },
     { data: { source: 'ginger', target: 'marco' } },
+    { data: { source: 'ginger', target: 'madhumita' } },
     { data: { source: 'jackson', target: 'ayushi' } },
     { data: { source: 'ayushi', target: 'chunlei' } },
+    { data: { source: 'ayushi', target: 'madhumita' } },
     { data: { source: 'chunlei', target: 'colleen' } },
     { data: { source: 'ian', target: 'andrew' } },
     { data: { source: 'colleen', target: 'ginger' } },
@@ -109,6 +121,22 @@ function drawGraph() {
                     .css({
                         'background-image': 'https://i.postimg.cc/wy1zxbZ7/ayushi.jpg'
                     })
+                .selector('#alex')
+                    .css({
+                        'background-image': 'https://i.postimg.cc/CxSJBQQ9/alex.png'
+                    })
+                .selector('#rohan')
+                    .css({
+                        'background-image': 'https://i.postimg.cc/T3sLMygQ/biothings-explorer-md.png'
+                    })
+                .selector('#madhumita')
+                    .css({
+                        'background-image': 'https://i.postimg.cc/T3sLMygQ/biothings-explorer-md.png'
+                    })
+                .selector('#kristina')
+                    .css({
+                        'background-image': 'https://i.postimg.cc/T3sLMygQ/biothings-explorer-md.png'
+                    })
                 .selector('#ian')
                     .css({
                         'background-image': 'https://i.postimg.cc/3yS7THLs/ian.jpg'
@@ -122,77 +150,6 @@ function drawGraph() {
         cy.on('mouseout', 'edge', function(evt){
             evt.target.deselect()
         });
-
-        
-        // function makePopper(ele) {
-        //     let ref = ele.popperRef();
-        //     ele.tippy = tippy(document.createElement('div'), {
-        //     getReferenceClientRect: ref.getBoundingClientRect,
-        //     hideOnClick: false,
-        //     placement:'top-start',
-        //     trigger: 'manual', // mandatory
-        //     arrow: true,
-        //     interactive: true,
-        //     allowHTML: true,
-        //     theme:'light',
-        //     animation: false,
-        //     appendTo: document.body, // or append dummyDomEle to document.body
-        //     onShow: function(instance){
-        //         instance.setContent('<div class="purple white-text p-1 center-align"><h4 class="m-1">'+ele.id()+'</h4></div>')
-        //     }
-        //     });
-        // }
-
-        // function makePopperEdge(ele) {
-        //     let ref = ele.popperRef();
-        //     ele.tippy = tippy(document.createElement('div'), {
-        //     getReferenceClientRect: ref.getBoundingClientRect,
-        //     hideOnClick: false,
-        //     trigger: 'manual', // mandatory
-        //     placement:'top-start',
-        //     arrow: true,
-        //     animation: false,
-        //     allowHTML: true,
-        //     interactive: true,
-        //     theme:'light',
-        //     appendTo: document.body, // or append dummyDomEle to document.body
-        //     onShow: function(instance){
-        //         instance.setContent(`<div class="p-1 text-center">`+ele.data('name')+`</div>`)
-        //     }
-        //     });
-        // }
-
-        // cy.ready(function () {
-        //     cy.elements().forEach(function (ele) {           
-        //     if(!ele.isNode()){
-        //         makePopperEdge(ele);
-        //     }else{
-        //         makePopper(ele);
-        //         ele.data('weight', ele.connectedEdges().length ?  (ele.connectedEdges().length+150) : 150) ;
-        //     }
-        //     });
-        // });
-
-        // cy.elements().unbind('mouseover');
-        // cy.elements().bind('mouseover', (event) => event.target.tippy.show());
-
-        // cy.elements().unbind('mouseout');
-        // cy.elements().bind('mouseout', (event) => event.target.tippy.hide());
-
-        // cy.elements().bind('click', (event) => {
-        //     event.target.select()
-        //     cy.fit(event.target, 75)
-        // });
-
-        // cy.elements().unbind('drag');
-        // cy.elements().bind('drag', (event) => event.target.tippy.popperInstance.update());
-
-        // cy.layout({
-        //     name: "concentric",
-        //     avoidOverlap: true,
-        //     avoidOverlapPadding: 200,
-        //     minNodeSpacing: 200,
-        // }).run();
 
         cy.maxZoom(2);
         cy.minZoom(.4)
@@ -214,8 +171,8 @@ onMounted(()=>{
             <Logo class="w-64 mb-4"></Logo>
             <h1 class="text-orange-600 text-3xl mb-5">About BioThings Explorer</h1>
             <p class="text-white">
-                BioThings Explorer is the "Google Maps" for biologists. It utilizes SmartAPI Specifications to build a network of APIs. And by traversing through the network, BioThings Explorer could help user identify potential paths connecting two biological entities through multiple API calls.
-                <a class="text-blue-400" href="https://biothings.io/" target="_blank" rel="nonopenner">Learn more about BioThings <LinkOut></LinkOut></a>.
+                BioThings Explorer is an application that creates a federated knowledge graph that is composed of a network of biomedical web services. 
+                BioThings Explorer leverages semantically precise annotations of inputs and outputs for each resource, and automates the chaining of web service calls to execute multi-step graph queries. Because there is no large, centralized knowledge graph to maintain, BioThing Explorer is distributed as a lightweight application that dynamically retrieves information at query time.  <a class="text-blue-400" href="https://biothings.io/" target="_blank" rel="nonopenner">Learn more about BioThings <LinkOut></LinkOut></a>.
             </p>
             <div class="bg-network-2">
                 <h1 class="text-orange-600 text-3xl mt-8">Our Team</h1>
@@ -223,6 +180,14 @@ onMounted(()=>{
                     <img :src="scripps" alt="Scripps Research" width="300">
                 </div>
                 <div id="about-cy"></div>
+                <div class="text-white">
+                    <h5 class="text-orange-500">Past Contributors:</h5>
+                    <ul>
+                        <li>Jiwen Xin</li>
+                        <li>Anders Riutta</li>
+                        <li>Eric Zhou</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

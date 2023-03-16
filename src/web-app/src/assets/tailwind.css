@@ -47,10 +47,8 @@
 
 /* CodeMirror */
 .cm-editor {
-    width: 100%;
+    @apply sm:h-[500px] md:h-[550px] w-[100%];
     background-color: rgba(0, 0, 0, 0.2);
     overflow: scroll;
-    height: 300px;
-    max-height: 400px;
     overflow-y: scroll;
 }

@@ -186,7 +186,7 @@ export const useExamplesStore = defineStore({
         }
       })
     },
-    async sendRequest(query) {
+    async sendRequest(query, description) {
       let self = this;
       let store = useMainStore();
       store.loading = true;
@@ -196,7 +196,8 @@ export const useExamplesStore = defineStore({
         self.jobs.unshift({
           'id': res.data.id,
           'date': this.getDateRightNow(),
-          'url': res.data.url
+          'url': res.data.url,
+          'description': description
         });
         self.message = `A new job ID has been created: ${res.data.id} `
         self.updateJobs();

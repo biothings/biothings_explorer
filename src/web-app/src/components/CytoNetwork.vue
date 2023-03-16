@@ -1,10 +1,6 @@
 <script setup>
     import cytoscape from 'cytoscape'
-    // import popper from 'cytoscape-popper';
-    // import tippy from 'tippy.js';
     import { onMounted } from 'vue'
-
-    // cytoscape.use(popper);
 
     const props = defineProps(['query'])
 
@@ -57,78 +53,8 @@
                 evt.target.deselect()
             });
 
-            
-            // function makePopper(ele) {
-            //     let ref = ele.popperRef();
-            //     ele.tippy = tippy(document.createElement('div'), {
-            //     getReferenceClientRect: ref.getBoundingClientRect,
-            //     hideOnClick: false,
-            //     placement:'top-start',
-            //     trigger: 'manual', // mandatory
-            //     arrow: true,
-            //     interactive: true,
-            //     allowHTML: true,
-            //     theme:'light',
-            //     animation: false,
-            //     appendTo: document.body, // or append dummyDomEle to document.body
-            //     onShow: function(instance){
-            //         instance.setContent('<div class="purple white-text p-1 center-align"><h4 class="m-1">'+ele.id()+'</h4></div>')
-            //     }
-            //     });
-            // }
-
-            // function makePopperEdge(ele) {
-            //     let ref = ele.popperRef();
-            //     ele.tippy = tippy(document.createElement('div'), {
-            //     getReferenceClientRect: ref.getBoundingClientRect,
-            //     hideOnClick: false,
-            //     trigger: 'manual', // mandatory
-            //     placement:'top-start',
-            //     arrow: true,
-            //     animation: false,
-            //     allowHTML: true,
-            //     interactive: true,
-            //     theme:'light',
-            //     appendTo: document.body, // or append dummyDomEle to document.body
-            //     onShow: function(instance){
-            //         instance.setContent(`<div class="p-1 text-center">`+ele.data('name')+`</div>`)
-            //     }
-            //     });
-            // }
-
-            // cy.ready(function () {
-            //     cy.elements().forEach(function (ele) {           
-            //     if(!ele.isNode()){
-            //         makePopperEdge(ele);
-            //     }else{
-            //         makePopper(ele);
-            //         ele.data('weight', ele.connectedEdges().length ?  (ele.connectedEdges().length+150) : 150) ;
-            //     }
-            //     });
-            // });
-
-            // cy.elements().unbind('mouseover');
-            // cy.elements().bind('mouseover', (event) => event.target.tippy.show());
-
-            // cy.elements().unbind('mouseout');
-            // cy.elements().bind('mouseout', (event) => event.target.tippy.hide());
-
-            // cy.elements().bind('click', (event) => {
-            //     event.target.select()
-            //     cy.fit(event.target, 75)
-            // });
-
-            // cy.elements().unbind('drag');
-            // cy.elements().bind('drag', (event) => event.target.tippy.popperInstance.update());
-
-            // cy.layout({
-            //     name: "concentric",
-            //     avoidOverlap: true,
-            //     avoidOverlapPadding: 200,
-            //     minNodeSpacing: 200,
-            // }).run();
-
             cy.maxZoom(2);
+            cy.minZoom(1);
             cy.fit();
     }
 
