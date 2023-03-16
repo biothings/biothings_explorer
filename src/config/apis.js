@@ -11,6 +11,10 @@ exports.API_LIST = {
             // NOT the same as the Biolink-model
         },
         {
+            id: '0212611d1c670f9107baf00b77f0889a',
+            name: 'CTD API'
+        },
+        {
             id: '43af91b3d7cae43591083bff9d75c6dd',
             name: 'EBI Proteins API'
         },
@@ -133,11 +137,13 @@ exports.API_LIST = {
         },
         {
             id: 'd86a24f6027ffe778f84ba10a7a1861a',
-            name: 'Multiomics EHR Risk KP API'
+            name: 'Multiomics EHR Risk KP API',
+            primarySource: true
         },
         {
             id: '02af7d098ab304e80d6f4806c3527027',
-            name: 'Multiomics Wellness KP API'
+            name: 'Multiomics Wellness KP API',
+            primarySource: true
         },
         // non-TRAPI: pending BioThings APIs made in collab with Text Mining Provider
         // annotated with SmartAPI x-bte
