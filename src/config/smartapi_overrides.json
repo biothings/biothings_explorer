@@ -3,20 +3,5 @@
     "only_overrides": false
   },
   "apis": {
-    "e3edd325c76f2992a111b43a907a4870": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/dgidb/openapi.yml",
-    "cc857d5b7c8b7609b5bbb38ff990bfff": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/go_bp/smartapi.yaml",
-    "1d288b3a3caf75d541ffaae3aab386c8": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/semmeddb/smartapi.yaml",
-    "978fe380a147a8641caf72320862697b": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3-textMining/text_mining/smartapi.yaml",
-    "38e9e5169a72aee3659c9ddba956790d": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/bindingdb/smartapi.yaml",
-    "d22b657426375a5295e7da8a303b9893": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/biolink/openapi.yml",
-    "a7f784626a426d054885a5f33f17d3f8": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/DISEASES/smartapi.yaml",
-    "1f47552dabd67351d4c625adb0a10d00": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/EBIgene2phenotype/smartapi.yaml",
-    "32f36164fabed5d3abe6c2fd899c9418": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/idisk/smartapi.yaml",
-    "8f08d1446e0bb9c2b323713ce83e2bd3": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/mychem.info/openapi_full.yml",
-    "671b45c0301c8624abbd26ae78449ca2": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/mydisease.info/smartapi.yaml",
-    "59dce17363dce279d389100834e43648": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/mygene.info/openapi_full.yml",
-    "09c8782d9f4027712e65b95424adba79": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/myvariant.info/openapi_full.yml",
-    "edeb26858bd27d0322af93e7a9e08761": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/pfocr/smartapi.yaml",
-    "1f277e1563fcfd124bfae2cc3c4bcdec": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/biolink3/quickgo/smartapi.yaml"
   }
 }
