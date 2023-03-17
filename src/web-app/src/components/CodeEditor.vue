@@ -3,7 +3,7 @@
         <div id="CM2" class="bg-white"></div>
         <input type="text" v-model="desc"
         placeholder="Add a short description to remember this query (optional)" 
-        class="sm: w-1/2 md:w-full rounded my-2 text-blue-700">
+        class="sm:w-1/2 md:w-full rounded-full my-2 bg-orange-600 text-white placeholder:text-orange-300">
         <div class="flex justify-center items-center p-5"> 
             <button class="main-btn-outline" @click="grabLatestEdit()">
                 <Logo class="w-8 m-auto inline mr-2"></Logo> GO
