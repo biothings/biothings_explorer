@@ -12,7 +12,8 @@ exports.API_LIST = {
         },
         {
             id: '0212611d1c670f9107baf00b77f0889a',
-            name: 'CTD API'
+            name: 'CTD API',
+            primarySource: true
         },
         {
             id: '43af91b3d7cae43591083bff9d75c6dd',
