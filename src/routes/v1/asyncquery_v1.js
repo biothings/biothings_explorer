@@ -6,7 +6,7 @@ const utils = require("../../utils/common");
 const { isMainThread } = require("worker_threads");
 const { TRAPIQueryHandler } = require("@biothings-explorer/query_graph_handler");
 const { API_LIST: apiList } = require("../../config/apis");
-const { taskResponse, runAsyncTask } = require("../../controllers/threading/threadHandler");
+const { taskResponse, runBullTask } = require("../../controllers/threading/threadHandler");
 const smartAPIPath = path.resolve(
   __dirname,
   process.env.STATIC_PATH ? `${process.env.STATIC_PATH}/data/smartapi_specs.json` : "../../../data/smartapi_specs.json",
@@ -16,11 +16,11 @@ const predicatesPath = path.resolve(
   process.env.STATIC_PATH ? `${process.env.STATIC_PATH}/data/predicates.json` : "../../../data/predicates.json",
 );
 
-if (!global.queryQueue["bte_query_queue"] && isMainThread) {
+if (!global.queryQueue.bte_query_queue && isMainThread) {
   getQueryQueue("bte_query_queue");
-  if (global.queryQueue["bte_query_queue"]) {
-    global.queryQueue["bte_query_queue"].process(async job => {
-      return await runAsyncTask(job, path.parse(__filename).name);
+  if (global.queryQueue.bte_query_queue) {
+    global.queryQueue.bte_query_queue.process(async job => {
+      return await runBullTask(job, path.parse(__filename).name);
     });
     // path.resolve(__dirname, "../../controllers/async/processors/async_v1.js"),
   }
