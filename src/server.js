@@ -6,7 +6,10 @@ async function main() {
   const cron = require("./controllers/cron/index");
   const PORT = Number.parseInt(process.env.PORT) || 3000;
   cron();
-  app.listen(PORT, () => console.log(`App listening at http://localhost:${PORT}`));
+  app.listen(PORT, () => {
+    console.log(`App listening at http://localhost:${PORT}`);
+    console.log(`⭐⭐⭐ BioThings Explorer is ready! ⭐ Try it now @ http://localhost:${PORT} ✨`)
+  });
   process.env.DEBUG_COLORS = 'true';
 }
 
