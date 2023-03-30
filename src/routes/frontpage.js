@@ -10,7 +10,6 @@ class RouteFrontPage {
     app.use(
       history({
         disableDotRule: true,
-        verbose: true,
       }),
     ).all(utils.methodNotAllowed);
     app.use(staticFileMiddleware).all(utils.methodNotAllowed);
