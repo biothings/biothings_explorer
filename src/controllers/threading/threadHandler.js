@@ -26,7 +26,7 @@ if (!global.threadpool && !isWorkerThread && !(process.env.USE_THREADING === "fa
     sync: new Piscina({
       filename: path.resolve(__dirname, "./taskHandler.js"),
       minThreads: 2,
-      maxThreads: Math.ceil(os.cpus().length / 4),
+      // maxThreads: Math.ceil(os.cpus().length / 4),
       maxQueue: 600,
       idleTimeout: 10 * 60 * 1000, // 10 minutes
       env,
@@ -261,7 +261,7 @@ function taskError(error) {
 if (!global.queryQueue.bte_sync_query_queue && !isWorkerThread) {
   getQueryQueue("bte_sync_query_queue");
   if (global.queryQueue.bte_sync_query_queue) {
-    global.queryQueue.bte_sync_query_queue.process(Math.ceil(os.cpus().length / 4), async job => {
+    global.queryQueue.bte_sync_query_queue.process(os.cpus().length, async job => {
       return await runBullTask(job, job.data.route, false);
     });
   }
