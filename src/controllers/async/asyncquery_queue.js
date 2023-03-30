@@ -34,9 +34,11 @@ exports.getQueryQueue = name => {
     defaultJobOptions: {
       removeOnFail: {
         age: 24 * 60 * 60, // keep failed jobs for a day (in case user needs to review fail reason)
+        count: 3000 // enough to keep about 33/day for 90 days worth
       },
       removeOnComplete: {
         age: 90 * 24 * 60 * 60, // keep completed jobs for 90 days
+        count: 3000 // enough to keep about 33/day for 90 days worth
       },
     },
     settings: {
