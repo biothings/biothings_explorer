@@ -1,0 +1,15 @@
+{
+  "packages": [
+    "./packages/biolink-model",
+    "./packages/biomedical_id_resolver",
+    "./packages/@biothings-explorer/api-response-transform",
+    "./packages/@biothings-explorer/call-apis",
+    "./packages/@biothings-explorer/query_graph_handler",
+    "./packages/@biothings-explorer/smartapi-kg",
+    ".",
+    "./packages/@biothings-explorer/node-expansion"
+  ],
+  "npmClient": "npm",
+  "version": "independent",
+  "useWorkspaces": true
+}

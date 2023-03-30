@@ -1,0 +1,590 @@
+# Switch to local, dev or prod environment
+# local: localhost:3000
+# dev: dev.api.bte.ncats.io
+# prod: api.bte.ncats.io
+
+###
+GET {{base_url}}/metakg
+###
+
+GET {{base_url}}/v1/predicates
+
+####
+
+GET {{base_url}}/v1/meta_knowledge_graph
+
+####
+
+GET {{base_url}}/v1/team/Textmining%20Provider/meta_knowledge_graph
+###
+
+GET {{base_url}}/v1/smartapi/<smartapi_id>/meta_knowledge_graph
+
+
+# note: CX uses the dev ARS instance, since it seems the most reliable. Queries can be submitted to https://ars-dev.transltr.io/ars/api/submit
+# there is also a CI ARS instance.
+#registered BTE API endpoint in ARS
+https://ars.ci.transltr.io/ara-bte/api/
+
+###
+# all registered Actors in ARS
+https://ars.ci.transltr.io/ars/api/actors
+
+
+###
+# Explain with two-intermediate nodes
+# One of the "results" (a complete path) should have these nodes:
+#   - n0 (started with the ID): SmallMolecule is CHEBI:41423 (aka celecoxib aka PUBCHEM.COMPOUND:2662)
+#   - n1: Disease is MONDO:0002974 (aka cervical cancer)
+#   - n2: Pathway is REACT:R-HSA-109704 (aka PI3K Cascade)
+#   - n3 (started with the ID): Gene is NCBIGene:117145 (aka THEM4 aka HGNC:17947)
+
+POST  {{base_url}}/v1/query
+Content-Type: application/json
+
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "ids":["PUBCHEM.COMPOUND:2662"],
+                    "categories":["biolink:SmallMolecule"]
+                },
+                "n1": {
+                    "categories":["biolink:Disease"]
+               },
+               "n2": {
+                    "categories":["biolink:Pathway"]
+               },
+                "n3": {
+                    "categories":["biolink:Gene"],
+                       "ids":["HGNC:17947"]
+               }
+            },
+            "edges": {
+                "e0": {
+                    "subject": "n0",
+                    "object": "n1"
+                },
+                "e1": {
+                    "subject": "n1",
+                    "object": "n2"
+                },
+                "e2": {
+                    "subject": "n2",
+                    "object": "n3"
+                }
+            }
+        }
+    }
+}
+
+###
+# Predict one-hop with predicate filtering
+# One of the "results" (a complete path) should have these nodes:
+#   - n00 (started with the ID): SmallMolecule is CHEBI:8863 (aka RILUZOLE aka CHEMBL.COMPOUND:CHEMBL744)
+#   - n01: Gene is NCBIGene:5670 (aka PSG2)
+
+POST  {{base_url}}/v1/query
+Content-Type: application/json
+
+{
+    "message": {
+        "query_graph": {
+            "edges": {
+                "e00": {
+                    "object": "n01",
+                    "subject": "n00",
+                    "predicates": ["biolink:physically_interacts_with"]
+                }
+            },
+            "nodes": {
+                "n00": {
+                    "categories": ["biolink:SmallMolecule"],
+                    "ids": ["CHEMBL.COMPOUND:CHEMBL744"]
+                },
+                "n01": {
+                    "categories": ["biolink:Gene"]
+                }
+            }
+        }
+    }
+}
+
+###
+# Predict one-hop with node semantic type expansion
+# This query takes > 20 seconds to run...
+# One of the "results" (a complete path) should have these nodes:
+#   - n0 (started with the ID): Disease is MONDO:0005015 (aka diabetes mellitus (disease))
+#   - n3: Disease is MONDO:0009874 (aka Rabson-Mendenhall syndrome)
+
+POST  {{base_url}}/v1/query
+Content-Type: application/json
+
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "categories": ["biolink:DiseaseOrPhenotypicFeature"],
+                    "ids": ["MONDO:0005015"]
+                },
+                "n3": {
+                    "categories": ["biolink:DiseaseOrPhenotypicFeature"]
+                }
+            },
+            "edges": {
+                "e03": {
+                    "subject": "n0",
+                    "object": "n3"
+                }
+            }
+        }
+    }
+}
+
+####
+# Predict one-hop BUT NO semantic category for the ID AND predicate filtering
+# BTE should correctly figure out that the ID corresponds to the Gene semantic type
+# note that "name" field on query nodes should be ignored
+# DEFUNCT: this used to return answers, but it now doesn't - this is related to Automat and Biolink v2.1
+#   1. the data was under ChemicalSubstance but BTE has moved to Biolink v2.1 (no more ChemicalSubstance).
+#      Now it's not clear if using SmallMolecule will retrieve the same data.
+#   2. Automat is only retrieving data when queried in specific directions (related to "canonical predicate directions")
+
+POST  {{base_url}}/v1/query
+Content-Type: application/json
+
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "categories": ["biolink:SmallMolecule"],
+                    "name": "some chemical"
+                },
+                "n1": {
+                    "name": "EGFR",
+                    "ids": ["NCBIGene:1956"]
+                }
+            },
+            "edges": {
+                "e0": {
+                    "subject": "n0",
+                    "object": "n1",
+                    "predicates": [
+                        "biolink:decreases_abundance_of",
+                        "biolink:decreases_activity_of",
+                        "biolink:decreases_expression_of",
+                        "biolink:decreases_synthesis_of",
+                        "biolink:increases_degradation_of",
+                        "biolink:disrupts",
+                        "biolink:entity_negatively_regulates_entity"
+                    ]
+                }
+            }
+        }
+    }
+}
+
+####
+# Explain with no intermediate nodes
+# DEFUNCT: This query returns empty knowledge_graph, results. This is expected because
+#   1. querying Disease OMIM:606703 -> Gene only gets a different gene (NCBIGene:111)
+#   2. querying Gene NCBIGene:1956 -> Disease gets a bunch of Disease IDs, but "OMIM:606703" isn't in the response json
+
+POST  {{base_url}}/v1/query
+Content-Type: application/json
+
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "ids": ["OMIM:606703"],
+                    "categories": ["biolink:Disease"]
+                },
+                "n1": {
+                    "categories": ["biolink:Gene"],
+                    "ids": ["NCBIGene:1956"]
+                }
+            },
+            "edges": {
+                "e01": {
+                    "subject": "n0",
+                    "object": "n1"
+                }
+            }
+        }
+    }
+}
+
+
+####
+###
+# Predict one-hop
+# One of the "results" (a complete path) should have these nodes connected with an edge with the predicate "homologous_to"
+#   - n0 (started with the ID): Gene is NCBIGene:1017 (aka CDK2)
+#   - n1: Gene is MGI:104772
+
+POST  {{base_url}}/v1/query
+Content-Type: application/json
+
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "ids": ["NCBIGene:1017"],
+                    "categories": ["biolink:Gene"]
+                },
+                "n1": {
+                    "categories": ["biolink:Gene"]
+                }
+            },
+            "edges": {
+                "e0": {
+                    "subject": "n0",
+                    "object": "n1",
+                    "predicates": [
+                        "biolink:homologous_to",
+                        "biolink:orthologous_to"
+                    ]
+                }
+            }
+        }
+    }
+}
+
+
+
+####
+# Predict one-hop (depends on Automat APIs)
+# One of the "results" (a complete path) should have these nodes:
+#   - n0 (started with the ID): Gene is NCBIGene:6658 (aka SOX3)
+#   - n1: GeneFamily is HGNC.FAMILY:757
+
+POST  {{base_url}}/v1/query
+Content-Type: application/json
+
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "ids": ["NCBIGene:6658"],
+                    "categories": ["biolink:Gene"]
+                },
+                "n1": {
+		             "categories":["biolink:GeneFamily"]
+                }
+            },
+            "edges": {
+                "e0": {
+                    "subject": "n0",
+                    "object": "n1"
+                }
+            }
+        }
+    }
+}
+
+###
+# https://github.com/NCATSTranslator/minihackathons/issues/160
+####
+# Predict one-hop BUT NO semantic category for the ID AND predicate filtering
+# BTE should correctly figure out that the ID corresponds to the Protein semantic category
+# note that "name" field on query nodes should be ignored
+# this query should use the "Text Mining Targeted Association API" since it currently has PR IDs (Protein semantic type)
+# One of the "results" (a complete path) should have these nodes:
+#   - n0 (started with the ID): Protein is PR:000006933 (no ID resolution, so no name or equivalent IDs in node attributes)
+#   - n1: SmallMolecule is CHEBI:28748 (aka DOXORUBICIN)
+
+
+POST  {{base_url}}/v1/query
+Content-Type: application/json
+
+{
+    "message": {
+    "query_graph": {
+      "edges": {
+        "e0": {
+          "object": "n1",
+          "predicates": [
+            "biolink:negatively_regulates_entity_to_entity",
+            "biolink:entity_negatively_regulates_entity"
+          ],
+          "subject": "n0"
+        }
+      },
+      "nodes": {
+        "n0": {
+          "categories": ["biolink:SmallMolecule"],
+          "name": "some chemical"
+        },
+        "n1": {
+          "ids": ["PR:000006933"],
+          "name": "EGFR"
+        }
+      }
+    }
+    }
+}
+
+
+###
+# https://github.com/NCATSTranslator/minihackathons/issues/157
+# DON'T USE THIS QUERY for most tests, since it will take a long time to run AND BTE has some bugs related to this:
+# Predict one-hop BUT have multiple starting nodes/IDs, with predicate filtering, node semantic type expansion
+# Designed to retrieve information from "clinical KPs"
+# The issues / bugs:
+#   - querying with MONDO:0005359 AND/OR MESH:D056487 AND/OR NCIT:C26991 in n0 leads to an empty knowledge_graph/results.
+#     This is because there are no associations/edges with those predicates
+#   - querying with only SNOMEDCT:197358007 in n0 leads to some associations/edges from Columbia Open Health Data (COHD).
+#     However, BTE incorrectly identifies the node with SNOMEDCT:197358007 as a Drug.
+#     it's actually a Disease; the ID has the label "Toxic liver disease with acute hepatitis"
+
+POST  {{base_url}}/v1/query
+Content-Type: application/json
+
+{
+"message": {
+    "query_graph": {
+  "edges": {
+    "e1": {
+      "object": "n1",
+      "predicates": [
+        "biolink:has_normalized_google_distance_with",
+        "biolink:correlated_with"
+      ],
+      "subject": "n0"
+    }
+  },
+  "nodes": {
+    "n0": {
+      "ids": [
+        "MONDO:0005359",
+        "SNOMEDCT:197358007",
+        "MESH:D056487",
+        "NCIT:C26991"
+      ]
+    },
+    "n1": {
+      "categories": ["biolink:DiseaseOrPhenotypicFeature"]
+    }
+  }
+    }
+  }
+}
+
+
+###
+# https://github.com/NCATSTranslator/testing/issues/91
+# Predict one-hop with node semantic expansion (the same node has the ID...)
+# One of the "results" (a complete path) should have these nodes:
+#   - n0 (started with the ID): Disease is UMLS:C0042963 (aka HP:0002013 aka Vomiting)
+#   - n1: SmallMolecule is CHEBI:94848 (aka DIMENHYDRINATE)
+#   - e0: the edge should have the predicate treated_by and be from MyChem.info
+
+POST  {{base_url}}/v1/query
+Content-Type: application/json
+
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "ids": [
+                        "HP:0002013"
+                    ],
+                    "categories": [
+                        "biolink:DiseaseOrPhenotypicFeature"
+                    ]
+                },
+                "n1": {
+		             "categories":[
+                         "biolink:SmallMolecule"
+                        ]
+                }
+            },
+            "edges": {
+                "e0": {
+                    "subject": "n0",
+                    "object": "n1",
+                    "predicates":["biolink:related_to"]
+
+                }
+            }
+        }
+    }
+}
+
+###
+# Predict one-hop
+# DEFUNCT: This query is not working because of how this API's x-bte operations are set up (clinical risk kp api)
+#   - There is a lack of clarity around how the data is represented (and therefore how to query it)
+#   - this has to do with the predicate directionality, and what counts as the SUBJECT and OBJECT
+#   - see https://ncatstranslator.slack.com/archives/C022EL8D3AB/p1624480395075900 for the thread on this issue
+
+# Ryan: https://ncatstranslator.slack.com/archives/C022EL8D3AB/p1627338809084200
+POST  {{base_url}}/v1/smartapi/d86a24f6027ffe778f84ba10a7a1861a/query
+Content-Type: application/json
+
+{
+    "message": {
+        "query_graph": {
+            "edges": {
+                "e00": {
+                    "subject": "n00",
+                    "object": "n01",
+                    "predicates": ["biolink:related_to"]
+                }
+            },
+            "nodes": {
+                "n00": {
+                    "categories": ["biolink:SmallMolecule"]
+                },
+                "n01": {
+                    "categories": ["biolink:Disease"],
+                    "ids": ["MONDO:0005301"]
+                }
+            }
+        }
+    }
+}
+
+
+###
+# Predict one-hop
+# DEFUNCT: This query is not working because the less-constrained node n1 has no ID or category.
+
+# https://github.com/NCATSTranslator/minihackathons/issues/139
+# POST  {{base_url}}/v1/query
+POST https://ars.transltr.io/ars/api/submit
+Content-Type: application/json
+
+{
+    "message": {
+        "query_graph": {
+            "edges": {
+                "e01": {
+                "object": "n0",
+                "predicates": [
+                    "biolink:entity_negatively_regulates_entity",
+                    "biolink:negatively_regulates_entity_to_entity"
+                ],
+                "subject": "n1"
+                }
+            },
+            "nodes": {
+                "n0": {
+                "categories": ["biolink:Gene"],
+                "ids": ["NCBIGene:23221"]
+                },
+                "n1": {}
+            }
+        }
+    }
+}
+
+
+###
+# Predict one-hop
+# DEFUNCT: This query is not working because the less-constrained node n1 has no ID or category.
+
+# https://github.com/NCATSTranslator/minihackathons/issues/142
+POST  {{base_url}}/v1/query
+Content-Type: application/json
+
+{
+    "message": {
+        "query_graph": {
+            "edges": {
+                "e01": {
+                "object": "n0",
+                "subject": "n1"
+                }
+            },
+            "nodes": {
+                "n0": {
+                "categories": ["biolink:Gene"],
+                "ids": ["NCBIGene:23221"]
+                },
+                "n1": {}
+            }
+        }
+    }
+}
+
+
+###
+# https://github.com/NCATSTranslator/minihackathons/issues/142
+####
+# Predict one-hop BUT NO semantic category for the ID AND predicate filtering AND node semantic expansion
+# DEFUNCT: this query has never returned answers with BTE
+#   - it's designed to use the Clinical Risk KP API (which BTE does query),
+#     but that KP API doesn't have records with this MONDO ID
+
+POST  {{base_url}}/v1/query
+Content-Type: application/json
+
+{
+    "message": {
+        "query_graph": {
+            "edges": {
+                "e0": {
+                    "object": "n1",
+                    "predicates": [
+                        "biolink:correlated_with"
+                    ],
+                    "subject": "n0"
+                }
+            },
+            "nodes": {
+                "n0": {
+                    "ids": ["MONDO:0005359"],
+                    "name": "drug-induced liver injury"
+                },
+                "n1": {
+                    "categories": ["biolink:DiseaseOrPhenotypicFeature"],
+                    "name": "Disease Or Phenotypic Feature"
+                }
+            }
+        }
+    }
+}
+
+
+###
+POST  {{base_url}}/v1/query
+Content-Type: application/json
+
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "ids": ["WIKIPATHWAYS:WP195"],
+                    "categories": ["biolink:Pathway"]
+                },
+                "n1": {
+                    "ids": ["NCBIGene:3556"],
+                    "categories": ["biolink:Gene"]
+                },
+                "n2": {
+                    "categories": ["biolink:SmallMolecule"]
+                }
+            },
+            "edges": {
+                "e01": {
+                    "subject": "n0",
+                    "object": "n1"
+                },
+                "e02": {
+                    "subject": "n1",
+                    "object": "n2"
+                }
+            }
+        }
+    }
+}

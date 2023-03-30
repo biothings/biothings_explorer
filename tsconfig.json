@@ -1,1 +1,26 @@
-../../../scripts/tsconfig.json_bte-trapi
+{
+  "extends": "./tsconfig.opts.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "built"
+  },
+  "include": [
+    "./src/**/*",
+    "./data/smartapi_specs.json",
+    "./data/predicates.json"
+  ],
+  "exclude": [
+    "node_modules",
+    "__test__/",
+    "packages",
+    "./src/web-app/dist/*"
+  ],
+  "references": [
+    {
+      "path": "./packages/@biothings-explorer/smartapi-kg"
+    },
+    {
+      "path": "./packages/@biothings-explorer/query_graph_handler"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: {{ include "bte.fullname" . }}-scripts
+  labels:
+    {{- include "bte.labels" . | nindent 4 }}
+data:
+  {{- (.Files.Glob "scripts/*.sh").AsConfig | nindent 2 }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: {{ include "bte.fullname" . }}-configs
+  labels:
+    {{- include "bte.labels" . | nindent 4 }}
+data:
+  {{- (.Files.Glob "configs/*.json").AsConfig | nindent 2 }}

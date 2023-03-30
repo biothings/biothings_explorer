@@ -1,0 +1,25 @@
+{
+  "extends": "../../../tsconfig.opts.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "built"
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "__test__/"
+  ],
+  "references": [
+    {
+      "path": "../api-response-transform"
+    },
+    {
+      "path": "../../biomedical_id_resolver"
+    },
+    {
+      "path": "../smartapi-kg"
+    }
+  ]
+}
