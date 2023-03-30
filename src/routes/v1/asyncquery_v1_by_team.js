@@ -19,7 +19,7 @@ const predicatesPath = path.resolve(
 if (!global.queryQueue.bte_query_queue_by_team && isMainThread) {
   getQueryQueue("bte_query_queue_by_team");
   if (global.queryQueue.bte_query_queue_by_team) {
-    global.queryQueue.bte_query_queue_by_team.process(async job => {
+    global.queryQueue.bte_query_queue_by_team.process(2, async job => {
       return await runBullTask(job, path.parse(__filename).name);
     });
   }

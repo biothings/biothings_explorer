@@ -19,7 +19,7 @@ const predicatesPath = path.resolve(
 if (!global.queryQueue.bte_query_queue && isMainThread) {
   getQueryQueue("bte_query_queue");
   if (global.queryQueue.bte_query_queue) {
-    global.queryQueue.bte_query_queue.process(async job => {
+    global.queryQueue.bte_query_queue.process(2, async job => {
       return await runBullTask(job, path.parse(__filename).name);
     });
     // path.resolve(__dirname, "../../controllers/async/processors/async_v1.js"),

@@ -26,7 +26,7 @@ if (!global.threadpool && !isWorkerThread && !(process.env.USE_THREADING === "fa
     sync: new Piscina({
       filename: path.resolve(__dirname, "./taskHandler.js"),
       minThreads: 2,
-      // maxThreads: Math.ceil(os.cpus().length / 4),
+      maxThreads: Math.ceil(os.cpus().length * 0.75), // on 8 cores, 24 given 4 instances
       maxQueue: 600,
       idleTimeout: 10 * 60 * 1000, // 10 minutes
       env,
@@ -37,7 +37,7 @@ if (!global.threadpool && !isWorkerThread && !(process.env.USE_THREADING === "fa
      */
     async: new Piscina({
       filename: path.resolve(__dirname, "./taskHandler.js"),
-      maxThreads: 3, // only 3 job queues allowing only 1 execution at a time each
+      maxThreads: 6, // 3 job queues allowing concurrency of 2
       minThreads: 1,
       idleTimeout: 60 * 60 * 1000, // 1 hour
       env,
@@ -261,7 +261,7 @@ function taskError(error) {
 if (!global.queryQueue.bte_sync_query_queue && !isWorkerThread) {
   getQueryQueue("bte_sync_query_queue");
   if (global.queryQueue.bte_sync_query_queue) {
-    global.queryQueue.bte_sync_query_queue.process(os.cpus().length, async job => {
+    global.queryQueue.bte_sync_query_queue.process(Math.ceil(os.cpus().length * 0.75), async job => {
       return await runBullTask(job, job.data.route, false);
     });
   }
