@@ -1,7 +1,7 @@
 version: '3'
 services:
-  api:
-    container_name: api
+  bte:
+    container_name: bte
     restart: always
     build: .
     ports:
@@ -9,9 +9,10 @@ services:
     environment:
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      LOG: ./log
-    volumes:
-      - /var/log/bte:/home/node/app/log
+      DEBUG: biomedical-id-resolver,bte*
+      DEBUG_COLORS: true
+    # volumes:
+    #   - /log/bte:/home/node/app/log
   redis:
     container_name: bte_redis
     restart: always
