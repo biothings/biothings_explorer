@@ -1,10 +1,67 @@
 # Installation
 
-The following are instructions on how to set up a local instance of Biothings Explorer, either [bare, for developmennt](#install), or [as a Docker container](#deploy).
+BTE can be used locally using Docker, or by installing the workspace for further tinkering and development.
 
-_Note: these instructions have been updated to reflect usage in the [workspace](https://github.com/biothings/bte-trapi-workspace), which is required._
+## Using Docker
 
-## Requirements
+Docker is a program that handles standardized virtual software environments. Put simply, it solves the problem of "Well, it works on my system!" by letting us hand you a bare-bones virtual system on which our code _does work_ so that you don't have to worry about requirements, compatibilities, etc.
+
+### Requirements
+
+#### Installing Docker
+
+Docker Desktop is relatively easy to install, [you can find the instructions here.](https://docs.docker.com/get-docker/)
+
+On Windows, Docker will require Windows Subsystem For Linux version 2 as a backend. In order to install this properly, there are a few steps:
+
+- Ensure that you've enabled virtualization in your machine's UEFI/BIOS
+- Follow [Microsoft's instructions for installing WSL2.](https://learn.microsoft.com/en-us/windows/wsl/setup/environment) You can stop after the 'Update and upgrade packages' section.
+- From here, follow the [Docker instructions to install Docker Desktop on Windows.](https://docs.docker.com/desktop/install/windows-install/#install-docker-desktop-on-windows)
+
+#### Docker Compose
+
+If you're building your own image from the repository, you might want Docker Compose to make use of our easy compose file. If you've installed Docker Desktop, Docker Compose should already be on your system. Otherwise, you'll want to see [Docker's instructions on installing Docker Compose.](https://docs.docker.com/compose/install/)
+
+### Using Docker Compose
+
+BTE provides a [docker-compose.yml](../docker-compose.yml) file, which will automatically handle building and running your own BTE image:
+
+```bash
+docker-compose up --build
+```
+
+This will build an image of BTE, pull an image of Redis, and then start the two in concert as if BTE were running on a production server. After the first time running, you can omit the `--build` option to avoid rebuilding the image every time.
+
+### Manually building an image
+
+If you'd prefer to build an image on your own terms, you can use our Dockerfile directly:
+
+```bash
+docker build --rm --force-rm --compress -t biothings/bte-trapi .
+```
+
+### Running
+
+After building a BTE image, you can run standalone it any time:
+
+```bash
+docker run -it --rm -p 3000:3000 --name bte-trapi biothings/bte-trapi
+```
+
+Note that this will run BTE standalone, without Redis, which will disable BTE's asynchronous endpoints and caching features. To start a Redis container and start a BTE container connected to it:
+
+```bash
+docker run --name test-redis -p 6379:6379 -d --hostname=redis:latest redis bte-redis
+docker run -it --rm -p 3000:3000 --name bte-trapi -e REDIS_HOST=host.docker.internal -e REDIS_PORT=6379 biothings/bte-trapi
+```
+
+You may wish to add `-e DEBUG="biomedical-id-resolver,bte*"` to enable BTE's debug logging.
+
+## NodeJS Workspace Installation
+
+If you'd prefer to get BTE working outside of a container, for development or any other reason, the installation has a few more requirements but is still a relatively simple afair.
+
+### Requirements
 
 For development, you will need Node.js and a node global package, e.g. npm, installed in your environment. Your Node version must be higher than v12.
 
@@ -64,7 +121,7 @@ For development, you will need Node.js and a node global package, e.g. npm, inst
   brew install lz4 python3 make
   ```
 
-## Install
+### Install
 
 The following commands will get
 
@@ -77,7 +134,7 @@ $ npm install || true && npm install
 
 Note that installation must be run twice to ensure workspace interdependecies are installed properly. The last line simply ensures this is done without reporting ignorable failures.
 
-## Running the project
+### Running the project
 
 To start the server with debug logging, which outputs logging statements to the terminal in real time:
 
@@ -116,56 +173,6 @@ npm stop
 ```
 
 This will ensure the server and its subprocesses are killed.
-
-### Simple build for production
-
-```
-$ npm build
-```
-
-## Deploy
-
-A Dockerfile is included in the base directory of the [workspace](https://github.com/biothings/bte-trapi-workspace) and may be used to build and run the server in a container that simulates the production environment.
-
-To build:
-
-```bash
-docker build --rm --force-rm --compress --squash -t biothings/bte-trapi .
-```
-
-_note: --squash requires experimental features to be enabled, however it may be omitted_
-
-To run:
-
-```bash
-docker run -it --rm -p 3000:3000 --name bte-trapi biothings/bte-trapi
-```
-
-Run with debug logs enabled:
-
-```bash
-docker run -it --rm -p 3000:3000 --name bte-trapi -e DEBUG="biomedical-id-resolver,bte*" biothings/bte-trapi
-```
-
-The container may also be run with a redis-server running at a given host, which enables caching and use of the async endpoints:
-
-```bash
-docker run -it --rm -p 3000:3000 --name bte-t∞rapi  -e REDIS_HOST=host.docker.internal -e REDIS_PORT=6379 -e DEBUG="biomedical-id-resolver,bte*" biothings/
-```
-
-Log into the container:
-
-```bash
-docker exec -ti bte-trapi sh
-```
-
-The container can be built and started using docker-compose
-
-```bash
-docker-compose up
-```
-
-Public Docker image located at [here](https://hub.docker.com/repository/docker/biothings/bte_reasoner_api)
 
 ## Usage
 
