@@ -6,13 +6,13 @@ const path = require("path");
 class RouteFrontPage {
   setRoutes(app) {
     const staticFileMiddleware = express.static(path.resolve(__dirname, "../web-app/dist"));
-    app.use(staticFileMiddleware).all(utils.methodNotAllowed);
+    app.use(staticFileMiddleware);
     app.use(
       history({
         disableDotRule: true,
       }),
-    ).all(utils.methodNotAllowed);
-    app.use(staticFileMiddleware).all(utils.methodNotAllowed);
+    );
+    app.use(staticFileMiddleware);
   }
 }
 
