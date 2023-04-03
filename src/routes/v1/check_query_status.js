@@ -17,7 +17,7 @@ class VCheckQueryStatus {
       .route("/v1/check_query_status/:id")
       .get(swaggerValidation.validate, async (req, res, next) => {
         try {
-          const response = await runTask(req, this.task, path.parse(__filename).name, res);
+          const response = await runTask(req, this.task, path.parse(__filename).name, res, false);
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify(response));
         } catch (err) {
@@ -31,7 +31,7 @@ class VCheckQueryStatus {
     //logger.info("query /query endpoint")
     try {
       debug(`checking query status of job ${req.params.id}`);
-      let by = req.query.by;
+      let by = req.data.options.by;
       let id = req.params.id;
       let queryQueue;
       if (redisClient.clientEnabled) {
@@ -62,7 +62,7 @@ class VCheckQueryStatus {
                 taskResponse({
                   id,
                   state,
-                  reason: `This job was stopped after running over ${parseInt(process.env.JOB_TIMEOUT) / 1000}s`,
+                  reason: `Job was stopped after exceeding time limit of ${parseInt(process.env.JOB_TIMEOUT) / 1000}s`,
                 });
               } catch (e) {
                 taskResponse({ id, state, reason });
@@ -72,7 +72,7 @@ class VCheckQueryStatus {
           }
           let returnvalue = job.returnvalue;
           if (returnvalue?.response && !returnvalue?.response?.error) {
-            const storedResponse = await getQueryResponse(id, req.query.log_level);
+            const storedResponse = await getQueryResponse(id, req.data.options.logLevel);
             if (storedResponse) {
               returnvalue.response = storedResponse;
             } else {

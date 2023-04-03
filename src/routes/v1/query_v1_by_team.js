@@ -30,19 +30,17 @@ class RouteQueryV1ByTeam {
       .all(utils.methodNotAllowed);
   }
 
-  async task(req) {
+  async task(job) {
+    const queryGraph = job.data.queryGraph,
+      workflow = job.data.workflow,
+      options = { ...job.data.options, schema: await utils.getSchema() };
     try {
-      utils.validateWorkflow(req.body.workflow);
-      const queryGraph = req.body.message.query_graph;
+      utils.validateWorkflow(workflow);
       // const enableIDResolution = (req.params.team_name === "Text Mining Provider") ? false : true;
       const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
         {
-          apiList,
-          teamName: req.params.team_name,
-          submitter: req.body.submitter,
-          ...req.query,
+          ...options,
           enableIDResolution: true,
-          schema: req.schema,
         },
         smartAPIPath,
         predicatesPath,
@@ -51,7 +49,7 @@ class RouteQueryV1ByTeam {
       handler.setQueryGraph(queryGraph);
       await handler.query();
       const response = handler.getResponse();
-      utils.filterForLogLevel(response, req.body.log_level);
+      utils.filterForLogLevel(response, options.logLevel);
       return taskResponse(response);
     } catch (error) {
       return taskError(error);

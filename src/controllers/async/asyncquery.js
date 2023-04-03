@@ -161,7 +161,7 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
       await storeQueryResponse(jobID, response);
     }
   }
-  
+
   if (callback_url) {
     if (!utils.stringIsAValidUrl(callback_url)) {
       return {
