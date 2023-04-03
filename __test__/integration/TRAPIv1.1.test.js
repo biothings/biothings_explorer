@@ -308,7 +308,7 @@ describe("Testing v1.1 endpoints", () => {
         }
         if (qData.url === 'https://biothings.ncats.io/DISEASES/query' && qData.data === 'q=DOID:4325&scopes=DISEASES.doid') {
           res = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../data/api_results/biothings_disease_query.json")))
-        } 
+        }
         if (qData.url === 'https://biothings.ncats.io/text_mining_targeted_association/query') {
           res = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../data/api_results/textmining_query.json")))
         }
@@ -429,7 +429,7 @@ describe("Testing v1.1 endpoints", () => {
             // .expect(200)
             // .expect('Content-Type', /json/)
             .then(response => {
-                console.log(response);
+                // console.log(response);
                 expect(response.body).toHaveProperty("message");
                 expect(response.body.message).toHaveProperty("query_graph");
                 expect(response.body.message).toHaveProperty("knowledge_graph");
