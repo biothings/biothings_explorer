@@ -12,6 +12,8 @@ const predicatesPath = path.resolve(
 );
 const utils = require("../../utils/common");
 const { runTask, taskResponse, taskError } = require("../../controllers/threading/threadHandler");
+const { isMainThread } = require("worker_threads");
+const { getQueryQueue } = require("../../controllers/async/asyncquery_queue");
 
 class V1RouteQuery {
   setRoutes(app) {
@@ -19,8 +21,8 @@ class V1RouteQuery {
       .route("/v1/query")
       .post(swaggerValidation.validate, async (req, res, next) => {
         try {
-          req.schema = await utils.getSchema();
-          const response = await runTask(req, this.task, path.parse(__filename).name);
+          // req.schema = await utils.getSchema();
+          const response = await runTask(req, this.task, path.parse(__filename).name, res);
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify(response));
         } catch (err) {
@@ -30,20 +32,18 @@ class V1RouteQuery {
       .all(utils.methodNotAllowed);
   }
 
-  async task(req) {
+  async task(job) {
+    const queryGraph = job.data.queryGraph,
+      workflow = job.data.workflow,
+      options = { ...job.data.options, schema: await utils.getSchema() };
     try {
-      utils.validateWorkflow(req.body.workflow);
-      const queryGraph = req.body.message.query_graph;
-      const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
-        { apiList, ...req.query, submitter: req.body.submitter, schema: req.schema },
-        smartAPIPath,
-        predicatesPath,
-      );
+      utils.validateWorkflow(workflow);
+      const handler = new TRAPIGraphHandler.TRAPIQueryHandler({ apiList, ...options }, smartAPIPath, predicatesPath);
       handler.setQueryGraph(queryGraph);
       await handler.query();
 
       const response = handler.getResponse();
-      utils.filterForLogLevel(response, req.body.log_level);
+      utils.filterForLogLevel(response, options.logLevel);
       return taskResponse(response);
     } catch (error) {
       return taskError(error);

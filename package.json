@@ -69,6 +69,7 @@
     "node-cron": "^2.0.3",
     "npm": "^9.4.1",
     "openapi-validator-middleware": "^3.2.2",
+    "piscina": "^3.2.0",
     "ps-node": "^0.1.6",
     "snake-case": "^3.0.4",
     "stream-chunker": "^1.2.8",

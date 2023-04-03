@@ -21,9 +21,10 @@ class RouteBullBoardPage {
       return;
     }
     const queues = {
-      "/v1/asyncquery": getQueryQueue("bte_query_queue"),
+      "/v1/asynquery": getQueryQueue("bte_query_queue"),
       "/v1/smartapi/{smartapi_id}/asyncquery": getQueryQueue("bte_query_queue_by_api"),
       "/v1/team/{team_name}/asyncquery": getQueryQueue("bte_query_queue_by_team"),
+      "/v1/query": getQueryQueue("bte_sync_query_queue"),
     };
 
     const serverAdapter = new ExpressAdapter();
@@ -42,8 +43,11 @@ class RouteBullBoardPage {
           readOnlyMode: true,
           description: name,
         });
-        adapter.setFormatter("name", job => `Asynchronous Request #${job.id}`);
-        adapter.setFormatter("data", ({ worker, ...rest }) => rest);
+        adapter.setFormatter(
+          "name",
+          job => `${name === "/v1/query" ? "Synchronous" : "Asynchronous"} Request #${job.id}`,
+        );
+        adapter.setFormatter("data", ({ abortController, threadId, route, ...rest }) => rest);
         return adapter;
       }),
       serverAdapter,
