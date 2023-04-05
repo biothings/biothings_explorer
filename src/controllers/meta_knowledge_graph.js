@@ -71,6 +71,8 @@ module.exports = class MetaKnowledgeGraphHandler {
       let output = this._modifyCategory(op.association.output_type);
       let outputIDs = Array.isArray(op.association.output_id) ? op.association.output_id : [op.association.output_id];
       let pred = this._modifyPredicate(op.association.predicate);
+      let association_id = op.association.association_id ? this._modifyCategory(op.association.association_id) : undefined;
+      let qualifiers = op.association.qualifiers;
 
       //edges
       if (!(input in predicates)) {
@@ -80,7 +82,7 @@ module.exports = class MetaKnowledgeGraphHandler {
         predicates[input][output] = [];
       }
       if (!predicates[input][output].includes(pred)) {
-        predicates[input][output].push(pred);
+        predicates[input][output].push({predicate: pred, association: association_id, qualifiers});
       }
 
       //nodes
@@ -100,8 +102,10 @@ module.exports = class MetaKnowledgeGraphHandler {
         predicates[input][output].map(pred => {
           const edge = {
             subject: input,
-            predicate: pred,
+            predicate: pred.predicate,
             object: output,
+            association: pred.association,
+            qualifiers: pred.qualifiers ? Object.entries(pred.qualifiers).map(([qual, val]) => ({ qualifier_type_id: qual, applicable_values: [this._modifyPredicate(val)]})) : undefined,
             knowledge_types: ["lookup"],
           };
           knowledge_graph.edges.push(edge);

@@ -149,9 +149,9 @@ const getPredicatesFromGraphData = (predicate_endpoint, data) => {
       predicates[edge.object] = {};
     }
     if (Array.isArray(predicates[edge.object][edge.subject])) {
-      predicates[edge.object][edge.subject].push(edge.predicate);
+      predicates[edge.object][edge.subject].push({predicate: edge.predicate, association_id: edge.association, qualifiers: edge.qualifiers});
     } else {
-      predicates[edge.object][edge.subject] = [edge.predicate];
+      predicates[edge.object][edge.subject] = [{predicate: edge.predicate, association_id: edge.association, qualifiers: edge.qualifiers}];
     }
   };
 
