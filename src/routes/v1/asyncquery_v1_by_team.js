@@ -70,6 +70,7 @@ class V1RouteAsyncQueryByTeam {
       { apiList, teamName, enableIDResolution, ...options },
       smartAPIPath,
       predicatesPath,
+      false
     );
     handler.setQueryGraph(queryGraph);
     const result = await asyncqueryResponse(handler, callback_url, jobID, jobURL, queryGraph);
