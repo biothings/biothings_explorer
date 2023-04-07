@@ -60,7 +60,9 @@ const queueTaskToWorkers = async (pool, req, route, job) => {
     let WorkerThreadID;
     const abortController = new AbortController();
     const { port1: toWorker, port2: fromWorker } = new MessageChannel();
-    const task = pool.run({ req, route, port: toWorker }, { signal: abortController.signal, transferList: [toWorker] });
+    const taskData = { req, route, port: toWorker };
+    if (job) taskData.job = { jobId: job.id, queueName: job.queue.name };
+    const task = pool.run(taskData, { signal: abortController.signal, transferList: [toWorker] });
     if (job) {
       job.update({ ...job.data, abortController });
     }
@@ -165,6 +167,7 @@ async function runTask(req, task, route, res, useBullSync = true) {
       },
     },
     params: req.params,
+    endpoint: req.originalUrl
   };
   if (queryQueue && useBullSync) {
     const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 10);
@@ -198,7 +201,7 @@ async function runTask(req, task, route, res, useBullSync = true) {
       }
     });
   }
-  // redis unavailable or query not to sync queue such as check_query_status
+  // redis unavailable or query not to sync queue such as asyncquery_status
   if (!(process.env.USE_THREADING === "false")) {
     const response = await queueTaskToWorkers(
       useBullSync ? global.threadpool.sync : global.threadpool.misc,

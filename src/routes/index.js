@@ -7,7 +7,7 @@ const routesV1Query = require("./v1/query_v1");
 const routesV1AsyncQuery = require('./v1/asyncquery_v1');
 const routesV1AsyncQueryByAPI = require("./v1/asyncquery_v1_by_api");
 const routesV1AsyncQueryByTeam = require("./v1/asyncquery_v1_by_team");
-const routesV1CheckQueryStatus = require('./v1/check_query_status');
+const routesV1CheckQueryStatus = require('./v1/asyncquery_status');
 const routesV1MetaKG = require("./v1/meta_knowledge_graph_v1")
 const routesV1MetaKGByAPI = require("./v1/meta_knowledge_graph_v1_by_api");
 const routesV1MetaKGByTeam = require("./v1/meta_knowledge_graph_v1_by_team");
@@ -43,7 +43,7 @@ module.exports = {
         query_v1: routesV1Query.task,
         query_v1_by_api: routesV1QueryByAPI.task,
         query_v1_by_team: routesV1QueryByTeam.task,
-        check_query_status: routesV1CheckQueryStatus.task,
+        asyncquery_status: routesV1CheckQueryStatus.task,
         // async processor uses thread
         asyncquery_v1: routesV1AsyncQuery.task,
         asyncquery_v1_by_api: routesV1AsyncQueryByAPI.task,
