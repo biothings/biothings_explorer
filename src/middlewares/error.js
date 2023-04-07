@@ -21,6 +21,7 @@ class ErrorHandler {
         error.stack.includes("InvalidQueryGraphError") ||
         error.name === "InvalidQueryGraphError"
       ) {
+        json.description = `Your input query graph is invalid: ${error.message}`;
         return res.status(400).json(json);
       }
       if (error instanceof PredicatesLoadingError || error.name === "PredicatesLoadingError") {
