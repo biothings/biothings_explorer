@@ -97,7 +97,7 @@ module.exports = class MetaKnowledgeGraphHandler {
       if (!(output in predicates[input])) {
         predicates[input][output] = [];
       }
-      if (!predicates[input][output].includes(pred)) {
+      if (predicates[input][output].every(obj => JSON.stringify(obj) !== JSON.stringify({predicate: pred, association: association_id, qualifiers}))) {
         predicates[input][output].push({predicate: pred, association: association_id, qualifiers});
       }
 
