@@ -128,20 +128,28 @@ module.exports = class MetaKnowledgeGraphHandler {
             knowledge_types: ["lookup"],
           };
           knowledge_graph.edges.push(edge);
-          edges[`${input}-${pred}-${output}`] = edge;
+          if (edges[`${input}-${pred}-${output}`]) {
+            edges[`${input}-${pred}-${output}`].push(edge);
+          } else {
+            edges[`${input}-${pred}-${output}`] = [edge];
+          }
         });
       });
     });
     if (!smartAPIID && !teamName) {
       (await supportedLookups()).forEach(edge => {
+        const {subject, predicate, object, qualifiers} = edge;
         if (Object.keys(edges).includes(edge)) {
-          edges[edge].knowledge_types.push("inferred");
+          edges[`${subject}-${predicate}-${object}`].forEach(e => e.knowledge_types.push("inferred"));
         } else {
-          let [subject, predicate, object] = edge.split("-");
           knowledge_graph.edges.push({
             subject,
             predicate,
             object,
+            qualifiers: qualifiers ? Object.entries(qualifiers).map(([qual, val]) => {
+                const [type_id, value] = this._modifyQualifierData(qual, val);
+                return { qualifier_type_id: type_id, applicable_values: [value] };
+            }) : undefined,
             knowledge_types: ["inferred"],
           });
         }
