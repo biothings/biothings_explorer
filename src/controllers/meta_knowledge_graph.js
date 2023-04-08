@@ -57,6 +57,22 @@ module.exports = class MetaKnowledgeGraphHandler {
     }
   }
 
+  _modifyQualifierData(type_id, value) {
+    type_id = this._modifyPredicate(type_id);
+
+    if (type_id.includes("predicate")) {
+        if (!value.startsWith("biolink:")) {
+            value = "biolink:" + value;
+        }
+    } else {
+        if (value.startsWith("biolink:")) {
+            value = value.slice(8);
+        }
+    }
+
+    return [type_id, value];
+  }
+
   async getKG(smartAPIID = this.smartAPIID, teamName = this.teamName) {
     const kg = await this._loadMetaKG(smartAPIID, teamName);
     let knowledge_graph = {
@@ -105,7 +121,10 @@ module.exports = class MetaKnowledgeGraphHandler {
             predicate: pred.predicate,
             object: output,
             association: pred.association,
-            qualifiers: pred.qualifiers ? Object.entries(pred.qualifiers).map(([qual, val]) => ({ qualifier_type_id: qual, applicable_values: [this._modifyPredicate(val)]})) : undefined,
+            qualifiers: pred.qualifiers ? Object.entries(pred.qualifiers).map(([qual, val]) => {
+                const [type_id, value] = this._modifyQualifierData(qual, val);
+                return { qualifier_type_id: type_id, applicable_values: [value] };
+            }) : undefined,
             knowledge_types: ["lookup"],
           };
           knowledge_graph.edges.push(edge);
