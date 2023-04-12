@@ -6,11 +6,11 @@
 
 ## Introduction
 
-This Repository serves as the development workspace for the TRAPI implementation of **BioThings Explorer (BTE)**. BTE is an engine for autonomously querying a distributed knowledge graph. The distributed knowledge graph is made up of biomedical APIs that have been annotated with semantically-precise descriptions of their inputs and outputs in the [SmartAPI registry](https://smart-api.info/). This project is primarily funded by the [NCATS Translator project](https://ncats.nih.gov/translator). There is also an older [python version of BioThings Explorer](https://github.com/biothings/biothings_explorer) that is now deprecated.
+This Repository serves as the development workspace for the TRAPI implementation of **BioThings Explorer (BTE)**. BTE is an engine for autonomously querying a distributed knowledge graph. The distributed knowledge graph is made up of biomedical APIs that have been annotated with semantically-precise descriptions of their inputs and outputs in the [SmartAPI registry](https://smart-api.info/). This project is primarily funded by the [NCATS Translator project](https://ncats.nih.gov/translator). There is also an older [python version of BioThings Explorer](https://github.com/biothings/biothings_explorer_archived) that is now deprecated.
 
 An older version of the meta knowledge graph that is consumed by BTE is in this figure (which, although older, gives a nice conceptual visualization of API interoperability):
 
-![BTE Meta-KG](diagrams/smartapi_metagraph.png "BioThings Explorer metagraph")
+![BTE Meta-KG](https://github.com/biothings/biothings_explorer/diagrams/smartapi_metagraph.png "BioThings Explorer metagraph")
 
 ### What's TRAPI?
 
@@ -76,7 +76,7 @@ I->>I: bteGraph: prune not fully connected <br/> results from graph
 
 ### Live TRAPI Instance
 
-We maintain a live instance of this application at https://api.bte.ncats.io/ that can be used for testing. Query Examples can be found [here](/examples).
+We maintain a live instance of this application at https://api.bte.ncats.io/ that can be used for testing. Query Examples can be found [here](./examples).
 
 ### Local installations
 
