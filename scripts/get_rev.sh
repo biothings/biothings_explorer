@@ -4,8 +4,6 @@ current_folder=`pwd`
 
 echo '# Generated from "npm run get_rev" on ' $(date)
 
-echo `git ls-remote --get-url` `git rev-parse --short HEAD` `git rev-parse HEAD`
-
 while read line || [ -n "$line" ];
 do
     read -r url module_dir <<< $line
