@@ -182,13 +182,21 @@ async function runTask(req, task, route, res, useBullSync = true) {
       throw new ServerOverloadedError(message, expectedWaitTime);
     }
 
-    try {
+    return new Promise(async (resolve, reject) => {
       const job = await queryQueue.add(req.data, jobOpts);
-      const response = await job.finished();
-      return response;
-    } catch (error) {
-      throw error;
-    }
+      try {
+        const response = await job.finished();
+        resolve(response);
+      } catch (error) {
+        // Have to reconstruct the error because Bull does some weirdness
+        const jobLatest = await queryQueue.getJob(jobOpts.jobId);
+        const reconstructedError = new Error();
+        reconstructedError.name = jobLatest.stacktrace[0].split(':')[0];
+        reconstructedError.message = jobLatest.stacktrace[0].split('\n')[0];
+        reconstructedError.stack = jobLatest.stacktrace[0];
+        reject(reconstructedError);
+      }
+    });
   }
   // redis unavailable or query not to sync queue such as check_query_status
   if (!(process.env.USE_THREADING === "false")) {
@@ -262,7 +270,11 @@ if (!global.queryQueue.bte_sync_query_queue && !isWorkerThread) {
   getQueryQueue("bte_sync_query_queue");
   if (global.queryQueue.bte_sync_query_queue) {
     global.queryQueue.bte_sync_query_queue.process(Math.ceil(os.cpus().length * 0.75), async job => {
-      return await runBullTask(job, job.data.route, false);
+      try {
+        return await runBullTask(job, job.data.route, false);
+      } catch (error) {
+        throw error;
+      }
     });
   }
 }
