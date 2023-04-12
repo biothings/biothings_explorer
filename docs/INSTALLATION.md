@@ -196,6 +196,12 @@ npm stop
 
 This will ensure the server and its subprocesses are killed, and will stop any Redis containers and native Redis servers.
 
+#### Using VSCode's debugging
+
+This repository intentionally includes a set of VSCode task and debug configs for ease-of-use.
+
+If you want to run BTE with debug logging and async support, with VSCode's debugger attaching to BTE so you can set breakpoints, catch on errors, etc., Use "Run and Debug" > "Build w/ Cache" and hit the play button. A number of other configurations are supplied, you can explore them in [the launch.json file.](../.vscode/launch.json)
+
 ## Usage
 
 Now that you have an instance of BTE up and running, you can POST queries to `http://<HOST>:3000/v1/query`. See [Usage](./USAGE.md) for more information.
