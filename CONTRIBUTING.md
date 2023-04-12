@@ -1,6 +1,6 @@
 # How to Contribute
 
-See the [main README](https://github.com/biothings/BioThings_Explorer_TRAPI#biothings-explorer-trapi-api). This file just has additional details.
+See the [main README](https://github.com/biothings/biothings_explorer#biothings-explorer-trapi-api). This file just has additional details.
 
 ## Set up Dev Environment
 
@@ -21,6 +21,6 @@ If your updates will affect multiple packages, you may find it helpful to use [N
 - `npm run build --workspaces`
 - `npm run test --workspaces`
 
-5. To run an NPM script for a specific package, try `npm run <script-name> --workspace=package-a` from the top-level directory, e.g., to start the BioThings_Explorer_TRAPI endpoint: `npm run start --workspace='@biothings-explorer/single-hop-app'`.
+5. To run an NPM script for a specific package, try `npm run <script-name> --workspace=package-a` from the top-level directory, e.g., to start the biothings_explorer endpoint: `npm run start --workspace='@biothings-explorer/single-hop-app'`.
 6. From the directories in `./packages`, you can edit code and run git commands, e.g., `cd './packages/@biothings-explorer/single-hop-app'` and `git pull`.
 7. For now, you still need to run the build step for each package affected by your updates: `npm run build --workspaces` from the top-level directory. If it doesn't work immediately, try running it again. (We can automate this in the future.)

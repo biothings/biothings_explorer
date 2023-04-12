@@ -1,13 +1,18 @@
 const utils = require("../utils/common");
+const history = require("connect-history-api-fallback");
+const express = require("express");
+const path = require("path");
 
 class RouteFrontPage {
   setRoutes(app) {
-    app
-      .route("/")
-      .get((req, res) => {
-        res.redirect("https://smart-api.info/ui/dc91716f44207d2e1287c727f281d339");
-      })
-      .all(utils.methodNotAllowed);
+    const staticFileMiddleware = express.static(path.resolve(__dirname, "../web-app/dist"));
+    app.use(staticFileMiddleware);
+    app.use(
+      history({
+        disableDotRule: true,
+      }),
+    );
+    app.use(staticFileMiddleware);
   }
 }
 

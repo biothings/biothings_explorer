@@ -15,7 +15,7 @@ jobs:
 
     - uses: actions/checkout@v3
       with:
-        repository: biothings/bte-trapi-workspace
+        repository: biothings/biothings_explorer
 
     - name: Use Node.js 16.x
       uses: actions/setup-node@v1
@@ -27,11 +27,11 @@ jobs:
         npm run clone
         npm run git checkout ${{ steps.branch-name.outputs.current_branch }}
         npm i || true && npm i
-        npm run test-cov --workspace=@biothings-explorer/bte-trapi
+        npm run test-cov
 
     - name: Send coverage report to codecov for visualization
       uses: codecov/codecov-action@v3
       with:
-        working-directory: ./packages/@biothings-explorer/bte-trapi
+        # working-directory: ./packages/@biothings-explorer/bte-trapi
         files: ./coverage/lcov.info
         verbose: true

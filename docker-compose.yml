@@ -1,20 +1,22 @@
 version: '3'
 services:
-  api:
-    container_name: api
-    restart: always
+  bte:
+    container_name: bte-trapi
+    restart: on-failure
     build: .
+    image: biothings/bte-trapi
     ports:
       - '3000:3000'
     environment:
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      LOG: ./log
-    volumes:
-      - /var/log/bte:/home/node/app/log
+      DEBUG: biomedical-id-resolver,bte*
+      DEBUG_COLORS: true
+    # volumes:
+    #   - /log/bte:/home/node/app/log
   redis:
-    container_name: bte_redis
-    restart: always
+    container_name: bte-redis
+    restart: on-failure
     image: "redis:alpine"
     volumes:
       - ./.redis.conf:/usr/local/etc/redis/redis.conf

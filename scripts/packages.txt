@@ -1,0 +1,8 @@
+biothings/biothings_explorer           .
+biothings/api-respone-transform.js.git       ./packages/@biothings-explorer/api-response-transform
+biothings/call-apis.js.git                   ./packages/@biothings-explorer/call-apis
+biothings/smartapi-kg.js.git                 ./packages/@biothings-explorer/smartapi-kg
+biothings/bte_trapi_query_graph_handler.git  ./packages/@biothings-explorer/query_graph_handler
+biothings/node-expansion.git                 ./packages/@biothings-explorer/node-expansion
+biothings/biolink-model.js.git               ./packages/biolink-model
+biothings/biomedical_id_resolver.js.git      ./packages/biomedical_id_resolver

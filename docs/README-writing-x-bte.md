@@ -45,7 +45,7 @@ info:
     x-id: https://github.com/biothings
     x-role: responsible developers
   description: >-
-    Documentation of the BioThings [BioPlanet](https://tripod.nih.gov/bioplanet/#) pathway-disease 
+    Documentation of the BioThings [BioPlanet](https://tripod.nih.gov/bioplanet/#) pathway-disease
     association query web services.
   termsOfService: https://biothings.io/about
   title: BioThings BioPlanet Pathway-Disease API
@@ -75,7 +75,7 @@ Often, you will edit:
   * `infores` uses terms that are in this [catalog](https://docs.google.com/spreadsheets/d/1Ak1hRqlTLr1qa-7O0s5bqeTHukj9gSLQML1-lg6xIHM/edit#gid=293462374), or we create terms and then add them to the catalog (and then let the Translator members that control the catalog know). You can use CTRL-F to see if a term that matches your API already exists. Note that this property's string value [has to start with `infores:`](https://github.com/NCATSTranslator/translator_extensions/blob/main/x-translator/smartapi_x-translator_schema.json)
   * `team` may need to be adjusted. If other teams are involved in the creation of this API, add them to the list. The accepted values are [here](https://github.com/NCATSTranslator/translator_extensions/blob/main/x-translator/smartapi_x-translator_schema.json)
   * `biolink-version` should be set to the version of the biolink-model that BTE is currently on
-* `servers`: edit the urls. For pending APIs, use the "biothings.ncats.io" urls. 
+* `servers`: edit the urls. For pending APIs, use the "biothings.ncats.io" urls.
 
 ### tags
 
@@ -230,7 +230,7 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
   * any `summary` for a path
   * the `example`/`examples`
   * the `x-bte-kgs-operations` section. This should be on the same level as the `parameters`, `requestBody`, `responses`, and `tags` properties. Check that this section is in the endpoint you want BTE to use when querying the API.
-  * Notice that `x-bte-kgs-operations` is a list of "references" to other parts of the SmartAPI yaml. This should list the keys / names of the stuff in the `components.x-bte-kgs-operations` section. Read [this](https://json-schema.org/understanding-json-schema/structuring.html#ref) for more info on how references work.  
+  * Notice that `x-bte-kgs-operations` is a list of "references" to other parts of the SmartAPI yaml. This should list the keys / names of the stuff in the `components.x-bte-kgs-operations` section. Read [this](https://json-schema.org/understanding-json-schema/structuring.html#ref) for more info on how references work.
 
 Optional: Some commented-out sections of the document are about "schemas". These can be useful for describing the endpoint responses. However, we currently aren't really using them.
 
@@ -402,7 +402,7 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
 * 3 potential types:
   * diseases: omim disease IDs without prefixes, in field subject.PHENO_TYPE
   * genes: ncbi gene / entrez IDs without prefixes, in field relation.GENE_ID
-  * pathways: bioplanet pathway IDs without prefixes but ID itself seems to have text (bioplanet_90), 
+  * pathways: bioplanet pathway IDs without prefixes but ID itself seems to have text (bioplanet_90),
     in field object.PATHWAY_ID
 ```
 
@@ -412,7 +412,7 @@ Look at the [biolink-model](https://github.com/biolink/biolink-model/blob/master
 
 Tips:
 
-* you have to use biolink-model semantic types that exist in the version of biolink-model BTE is using. They cannot be labeled `abstract: true` or `mixin: true` (abstract and mixin terms are only for querying, not for annotating data). 
+* you have to use biolink-model semantic types that exist in the version of biolink-model BTE is using. They cannot be labeled `abstract: true` or `mixin: true` (abstract and mixin terms are only for querying, not for annotating data).
 * CTRL-F to see if the biolink-model contains suggestions for semantic-type / ID-spelling
 * the spelling for biolink-model categories is actually PascalCase (upper-case first-letters, no spaces)
 * we use more-specific terms (not top-level ones like NamedThing, ChemicalEntity, MolecularEntity, BiologicalEntity). We don't use mixins (the entry in the yaml will have `mixin: true`)
@@ -454,7 +454,7 @@ Figure out what combinations/combos of things there are, and make a list of them
 Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml):
 
 ```text
-* Gene is an "intermediate" / explanation for Disease <-> Pathway associations so 
+* Gene is an "intermediate" / explanation for Disease <-> Pathway associations so
   I'm currently only doing Disease <-> Pathway
   * Disease -> Pathway
   * Pathway -> Disease
@@ -466,8 +466,8 @@ Decide what biolink-model predicates to use for each combo; write that down in t
 
 Tips:
 
-* you have to use biolink-model predicates that exist in the version of biolink-model BTE is using. Generally, they cannot be labeled `abstract: true` or `mixin: true` (abstract and mixin terms are only for querying, not for annotating data). 
-  * However, you may encounter a predicate you want to use that is labeled abstract or mixin, or your data's relationship term maps to a term that is labeled abstract or mixin. In this case, ask Data-Modeling team about this situation and ask what predicate to use. 
+* you have to use biolink-model predicates that exist in the version of biolink-model BTE is using. Generally, they cannot be labeled `abstract: true` or `mixin: true` (abstract and mixin terms are only for querying, not for annotating data).
+  * However, you may encounter a predicate you want to use that is labeled abstract or mixin, or your data's relationship term maps to a term that is labeled abstract or mixin. In this case, ask Data-Modeling team about this situation and ask what predicate to use.
 * CTRL-F using your words for the relationship to see if the biolink-model has suggestions / mappings
 * the spelling for biolink-model predicates is actually snake_case (all lower-case, "_" between words)
 * use predicates that have inverses!
@@ -534,7 +534,7 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
   ## - Gene is an "intermediate" / explanation for Disease <-> Pathway associations
   ##   so I'm currently only doing Disease <-> Pathway
     pathway-disease:
-    ## 44,084 documents in the API 
+    ## 44,084 documents in the API
       - supportBatch: true
         useTemplating: true ## flag to say templating is being used below
         inputs:
@@ -592,7 +592,7 @@ Example from [BioPlanet pathway-disease](https://github.com/NCATS-Tangerine/tran
         response_mapping:
           "$ref": "#/components/x-bte-response-mapping/pathway"
         # testExamples:
-        #   - qInput: "OMIM:603909"                        ## Autoimmune lymphoproliferative syndrome, type II, 603909 (3) 
+        #   - qInput: "OMIM:603909"                        ## Autoimmune lymphoproliferative syndrome, type II, 603909 (3)
         #     oneOutput: "ncats.bioplanet:bioplanet_26"    ## D4-GDI signaling pathway
 ```
 
@@ -674,7 +674,7 @@ It can be helpful to paste the yaml into the SmartAPI [editor](https://smart-api
 
 To test that the yaml can be used properly by BTE, you can install a local version of BTE (using [bte-trapi-workspace](https://github.com/biothings/bte-trapi-workspace)). If you have any issues installing BTE, contact a member of the BTE team. Then you can:
 
-* modify the `packages/@biothings-explorer/bte-trapi/src/config/smartapi_overrides.json` file. Set `only_overrides` to `true`, and put a key-value pair into the `apis` section. The key can be arbitrary, and the value can be a file path (starting with file:/// for absolute paths) or a link to a raw yaml file. See the instructions [here](https://github.com/biothings/BioThings_Explorer_TRAPI#using-api_overridetrue) for details on this.
+* modify the `packages/@biothings-explorer/bte-trapi/src/config/smartapi_overrides.json` file. Set `only_overrides` to `true`, and put a key-value pair into the `apis` section. The key can be arbitrary, and the value can be a file path (starting with file:/// for absolute paths) or a link to a raw yaml file. See the instructions [here](https://github.com/biothings/biothings_explorer#using-api_overridetrue) for details on this.
 * run `API_OVERRIDE=true npm run smartapi_sync --workspace='@biothings-explorer/bte-trapi'` to set BTE to only use the API yaml you're testing
 * start up BTE `npm run debug --workspace='@biothings-explorer/bte-trapi'` and set up a `POST` request to `http://localhost:3000/v1/smartapi/your-id-here/query` where `your-id-here` is replaced with the key you set in the `apis` section.
 * put a TRAPI query into the `POST` request's request-body section. One can test each operation, or only a few. For testing an operation, you can set the example subject ID (from the testExamples notes) and semantic type and the object-semantic type (and sometimes the predicate). Then run the `POST` query, and look for the object-ID (from the testExamples notes) in BTE's response. You can also look at the corresponding edge to see if the edge-attributes match what you'd expect from the response-mapping (aka all info is there and is formatted correctly).
@@ -685,7 +685,7 @@ If there are issues with testing, talk to a more experienced team-member. Someti
 
 ### Checking
 
-When the SmartAPI yaml with x-bte annotation has been written, we suggest that you send links to the yaml file and corresponding API to Colleen Xu, a member of the BTE team that is the current expert on writing these yamls and x-bte annotation. They can check for things like: 
+When the SmartAPI yaml with x-bte annotation has been written, we suggest that you send links to the yaml file and corresponding API to Colleen Xu, a member of the BTE team that is the current expert on writing these yamls and x-bte annotation. They can check for things like:
 
 * correct adherence to Translator standards (whenever possible)
 * structuring templated queries to BioThings APIs
@@ -695,27 +695,27 @@ When the SmartAPI yaml with x-bte annotation has been written, we suggest that y
 
 Once the SmartAPI yaml with x-bte annotation is ready, it needs to be registered in the SmartAPI registry [here](https://smart-api.info/add-api). You may need to make an account with the registry by linking your github account.
 
-Often you just need to paste a raw-github link of your SmartAPI yaml (make sure the repo name and branch are what you want them to be, because if you change them the registration will break and need to be deleted / re-registered). Then, press the submit button. 
+Often you just need to paste a raw-github link of your SmartAPI yaml (make sure the repo name and branch are what you want them to be, because if you change them the registration will break and need to be deleted / re-registered). Then, press the submit button.
 
-Afterwards, you should check your [dashboard](https://smart-api.info/dashboard) and validate your yaml, refresh your registration, and do an uptime-check. The validation is to make sure the yaml passes all requirements for a valid SmartAPI yaml. Refreshing your registration pulls the latest version of the SmartAPI file from the raw-github link (this is also good if edits have been made). Finally, the uptime-check will use the examples on the endpoints to check if the API is responsive / up - and then a badge showing the uptime-status will show up on the registration.  
+Afterwards, you should check your [dashboard](https://smart-api.info/dashboard) and validate your yaml, refresh your registration, and do an uptime-check. The validation is to make sure the yaml passes all requirements for a valid SmartAPI yaml. Refreshing your registration pulls the latest version of the SmartAPI file from the raw-github link (this is also good if edits have been made). Finally, the uptime-check will use the examples on the endpoints to check if the API is responsive / up - and then a badge showing the uptime-status will show up on the registration.
 
 ### Connecting to BTE
 
-In almost all cases, you will want your API to "automatically" be used by various ARA tools like BTE, Aragorn, etc. This means you will want to do the following to connect your registered API (with SmartAPI and x-bte annotation) to BTE (which also functions as a Service Provider tool). 
+In almost all cases, you will want your API to "automatically" be used by various ARA tools like BTE, Aragorn, etc. This means you will want to do the following to connect your registered API (with SmartAPI and x-bte annotation) to BTE (which also functions as a Service Provider tool).
 
-You will want to make a PR to BTE's `include` list, which is in the exports.API_LIST object stored in this [github file](https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js). Inside the list, there are different sections (specified by comments) for the different KP tools that BTE automatically uses when it works as an ARA. In addition, all listed KPs that use x-bte annotation will also automatically be available to other ARA tools like Aragorn through the [BTE's separate Service Provider function](https://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0). 
+You will want to make a PR to BTE's `include` list, which is in the exports.API_LIST object stored in this [github file](https://github.com/biothings/biothings_explorer/blob/main/src/config/apis.js). Inside the list, there are different sections (specified by comments) for the different KP tools that BTE automatically uses when it works as an ARA. In addition, all listed KPs that use x-bte annotation will also automatically be available to other ARA tools like Aragorn through the [BTE's separate Service Provider function](https://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0).
 
 In your edit, you'll want to add an object for your API into the section that fits your API (is it made in collaboration with Multiomics or Text Mining Provider? is it owned by the Su / Wu Labs?). If no section fits your API, contact a member of BTE (Colleen Xu is the current point-person for this part of BTE) to ask for help.
 
-Each object has two key-value pairs, one for the SmartAPI Registration ID (`id`) and one for SmartAPI Registration's name (`name`, aka the API's name specified in info.title of the SmartAPI yaml). This is why we need the API to be registered in the SmartAPI registry (and passing validation) first. 
+Each object has two key-value pairs, one for the SmartAPI Registration ID (`id`) and one for SmartAPI Registration's name (`name`, aka the API's name specified in info.title of the SmartAPI yaml). This is why we need the API to be registered in the SmartAPI registry (and passing validation) first.
 
 Once the PR is ready, please contact a member of BTE (anyone should do) to ask about merging and deploying this change to BTE.
 
-If you do not do this, your API will only be accessible through specific URLs that you will have to tell other teams with ARA tools to use. 
+If you do not do this, your API will only be accessible through specific URLs that you will have to tell other teams with ARA tools to use.
 
 ## Editing an existing SmartAPI yaml
 
-When editing a SmartAPI yaml with x-bte annotation that has already been registered in the SmartAPI Registry (for the first few times), we strongly suggest putting your edits in a side-branch and making a PR. That gives everyone a chance to do the checking and refreshing-registration process. 
+When editing a SmartAPI yaml with x-bte annotation that has already been registered in the SmartAPI Registry (for the first few times), we strongly suggest putting your edits in a side-branch and making a PR. That gives everyone a chance to do the checking and refreshing-registration process.
 
 The checking process will be similar (hopefully less rigorous) to the process described above for new APIs. Then the edits would be merged. Because the yaml is already registered, you (if you own the registration) or a member of the Service Provider team can refresh the registration to pull the latest version of the SmartAPI file from the raw-github link. We then suggest doing an uptime-check.
 
@@ -725,11 +725,11 @@ If the API is already connected to BTE (has an entry in the exports.API_LIST's `
 
 Current for 2022-11-14.
 
-DO NOT directly edit the registered yaml; instead, make the edits for qualifiers/biolink-3.0.3 in a different github branch. Then contact Colleen or Jackson to ask about hooking your edited yaml up to BTE's dev instance. The BTE devs ask this because at the moment, Translator wants all qualifier stuff on dev instances of tools only. 
+DO NOT directly edit the registered yaml; instead, make the edits for qualifiers/biolink-3.0.3 in a different github branch. Then contact Colleen or Jackson to ask about hooking your edited yaml up to BTE's dev instance. The BTE devs ask this because at the moment, Translator wants all qualifier stuff on dev instances of tools only.
 
-BTE is planning to migrate to biolink-model v3.0.3. The biolink-model update from v2 to v3 involved refactoring predicates and adding qualifiers for chemical-gene and gene-gene relationships. 
+BTE is planning to migrate to biolink-model v3.0.3. The biolink-model update from v2 to v3 involved refactoring predicates and adding qualifiers for chemical-gene and gene-gene relationships.
 
-For biolink v3.0.3, the types of qualifiers and their possible enumerated values are listed [here](https://github.com/biothings/BioThings_Explorer_TRAPI/issues/512#issuecomment-1273814279). Currently, BTE's dev team is only planning support for qualifier values that are enumerated in the biolink-model. There may be bugs or missing features ("expanding" down an ontology) if ontology-terms or arbitrary strings are used as qualifier values in x-bte annotation. 
+For biolink v3.0.3, the types of qualifiers and their possible enumerated values are listed [here](https://github.com/biothings/biothings_explorer/issues/512#issuecomment-1273814279). Currently, BTE's dev team is only planning support for qualifier values that are enumerated in the biolink-model. There may be bugs or missing features ("expanding" down an ontology) if ontology-terms or arbitrary strings are used as qualifier values in x-bte annotation.
 
 To add qualifier-types and their values to an existing operation (in the `x-bte-kgs-operations` section):
 
@@ -738,10 +738,10 @@ To add qualifier-types and their values to an existing operation (in the `x-bte-
     * don't include a biolink-prefix; BTE will handle that
   * the values are the qualifier's value (aka qualifier_value's value in TRAPI)
     * don't include a biolink-prefix for a qualified_predicate
-    * currently, the enumerated-qualifier-values from biolink-model DO NOT need the biolink-prefix 
+    * currently, the enumerated-qualifier-values from biolink-model DO NOT need the biolink-prefix
 * for reverse operations, subject- and object-specific qualifier-types from the forward operation will need to be adjusted (replace "subject" with "object" and vice versa)
 
-The DGIdb yaml on the biolink3 branch [here](https://github.com/NCATS-Tangerine/translator-api-registry/blob/biolink3/dgidb/openapi.yml#L476) is a good example of operations with qualifier information. Here is an example of two operations (forward and reverse) from DGIdb with `qualifiers` fields: 
+The DGIdb yaml on the biolink3 branch [here](https://github.com/NCATS-Tangerine/translator-api-registry/blob/biolink3/dgidb/openapi.yml#L476) is a good example of operations with qualifier information. Here is an example of two operations (forward and reverse) from DGIdb with `qualifiers` fields:
 
 ```yaml
     activator:

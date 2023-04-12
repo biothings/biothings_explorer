@@ -1,0 +1,16 @@
+{
+  "extends": "../../../tsconfig.opts.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "built"
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "__test__/"
+  ],
+  "references": [
+  ]
+}
