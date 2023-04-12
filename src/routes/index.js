@@ -24,13 +24,13 @@ class Routes {
         routesV1MetaKGByAPI.setRoutes(app);
         routesV1MetaKGByTeam.setRoutes(app);
         routesV1CheckQueryStatus.setRoutes(app);
-        routesFrontPage.setRoutes(app);
         routesPerformance.setRoutes(app);
         routesV1QueryByAPI.setRoutes(app);
         routesV1QueryByTeam.setRoutes(app);
         LoggingHandler.setRoutes(app);
         routesV1Query.setRoutes(app);
         ErrorHandler.setRoutes(app);
+        routesFrontPage.setRoutes(app);
     }
 
 }
