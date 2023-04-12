@@ -10,7 +10,7 @@ This Repository serves as the development workspace for the TRAPI implementation
 
 An older version of the meta knowledge graph that is consumed by BTE is in this figure (which, although older, gives a nice conceptual visualization of API interoperability):
 
-![BTE Meta-KG](https://github.com/biothings/biothings_explorer/diagrams/smartapi_metagraph.png "BioThings Explorer metagraph")
+![BTE Meta-KG](./diagrams/smartapi_metagraph.png "BioThings Explorer metagraph")
 
 ### What's TRAPI?
 
