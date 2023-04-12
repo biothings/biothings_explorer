@@ -33,8 +33,8 @@ If you're building your own image from the repository, you might want Docker Com
 First, you'll want to clone the repository and `cd` into it:
 
 ```bash
-git clone git@github.com:biothings/BioThings_Explorer_TRAPI.git
-cd Biothings_Explorer_TRAPI
+git clone git@github.com:biothings/biothings_explorer.git
+cd biothings_explorer
 ```
 
 #### Using Docker Compose
@@ -135,8 +135,8 @@ Optionally, if you plan to use BTE's asynchronous endpoints or caching features,
 The following commands will clone the repository and install it
 
 ```
-git clone https://github.com/biothings/Biothings_Explorer_TRAPI.git
-cd Biothings_Explorer_TRAPI
+git clone https://github.com/biothings/biothings_explorer.git
+cd biothings_explorer
 npm run setup
 ```
 

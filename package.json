@@ -37,7 +37,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/biothings/BioThings_Explorer_TRAPI.git"
+    "url": "git+https://github.com/biothings/biothings_explorer.git"
   },
   "keywords": [
     "bte",
@@ -49,9 +49,9 @@
   "author": "BioThings Team",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/biothings/BioThings_Explorer_TRAPI/issues"
+    "url": "https://github.com/biothings/biothings_explorer/issues"
   },
-  "homepage": "https://github.com/biothings/BioThings_Explorer_TRAPI#readme",
+  "homepage": "https://github.com/biothings/biothings_explorer#readme",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",

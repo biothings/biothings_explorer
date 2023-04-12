@@ -22,7 +22,7 @@ jobs:
         key: ${{ secrets.SSH_KEY_DEV }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          cd ~/opt/BioThings_Explorer_TRAPI
+          cd ~/opt/biothings_explorer
           git fetch
           git reset ${{ github.event.inputs.git-ref }}
           cp docker-compose-dev.yml docker-compose.yml

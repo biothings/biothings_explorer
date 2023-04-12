@@ -8,9 +8,9 @@ Generally speaking, there are four steps to adding a new data resource as a BioT
     * This step will generally be performed by a member of the BioThings team
     * Add a comment to the Github issue with the link to the BioThings API ([example](https://github.com/biothings/pending.api/issues/60#issuecomment-1170754249))
 3. Annotate the BioThings API in the SmartAPI registry
-    * instructions: https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/docs/README-writing-x-bte.md
+    * instructions: https://github.com/biothings/biothings_explorer/blob/main/docs/README-writing-x-bte.md
     * example: https://github.com/NCATS-Tangerine/translator-api-registry/blob/master/bioplanet/bioplanet-pathway-disease.yaml
 4. Write an example TRAPI query that utilizes the new data source
-    * Add a comment to the Github issue with an example TRAPI query and evidence that BTE's response contains data from the BioThings API, successfully incorporated ([example](https://github.com/biothings/pending.api/issues/60#issuecomment-1212232362)). 
+    * Add a comment to the Github issue with an example TRAPI query and evidence that BTE's response contains data from the BioThings API, successfully incorporated ([example](https://github.com/biothings/pending.api/issues/60#issuecomment-1212232362)).
         * Ideally this query should be sent to a public instance of BTE (dev, CI, test, or prod)
         * The evidence can be a file storing BTE's response, pasted excerpts of the response, or screenshots (BTE's response in a json-viewer or UI like ARAX)

@@ -1,8 +1,8 @@
 # BioThings Explorer TRAPI API
 
-[![Test with workspace](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/test_ws_codecov.yml/badge.svg)](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/test_ws_codecov.yml)
-[![codecov](https://codecov.io/gh/biothings/BioThings_Explorer_TRAPI/branch/main/graph/badge.svg?token=I4A29PQQJK)](https://codecov.io/gh/biothings/BioThings_Explorer_TRAPI)
-[![ci-cd](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/deploy.yml/badge.svg)](https://github.com/biothings/BioThings_Explorer_TRAPI/actions/workflows/deploy.yml)
+[![Test with workspace](https://github.com/biothings/biothings_explorer/actions/workflows/test_ws_codecov.yml/badge.svg)](https://github.com/biothings/biothings_explorer/actions/workflows/test_ws_codecov.yml)
+[![codecov](https://codecov.io/gh/biothings/biothings_explorer/branch/main/graph/badge.svg?token=I4A29PQQJK)](https://codecov.io/gh/biothings/biothings_explorer)
+[![ci-cd](https://github.com/biothings/biothings_explorer/actions/workflows/deploy.yml/badge.svg)](https://github.com/biothings/biothings_explorer/actions/workflows/deploy.yml)
 
 ## Introduction
 

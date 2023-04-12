@@ -33,6 +33,6 @@
       "hidden": true
     }
   ],
-  "commitUrlFormat": "https://github.com/biothings/BioThings_Explorer_TRAPI/commits/{{hash}}",
-  "compareUrlFormat": "https://github.com/biothings/BioThings_Explorer_TRAPI/compare/{{previousTag}}...{{currentTag}}"
+  "commitUrlFormat": "https://github.com/biothings/biothings_explorer/commits/{{hash}}",
+  "compareUrlFormat": "https://github.com/biothings/biothings_explorer/compare/{{previousTag}}...{{currentTag}}"
 }

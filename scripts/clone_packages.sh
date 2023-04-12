@@ -15,8 +15,8 @@ else
    base_url="git@github.com:"
 fi
 # example git URLs, https v.s. git
-# https://github.com/biothings/BioThings_Explorer_TRAPI.git
-# git@github.com:biothings/BioThings_Explorer_TRAPI.git
+# https://github.com/biothings/biothings_explorer.git
+# git@github.com:biothings/biothings_explorer.git
 
 set -x
 while read line || [ -n "$line" ];

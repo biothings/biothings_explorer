@@ -14,7 +14,7 @@ The simplest way BTE works is by accepting queries to its synchronous endpoint. 
 
 ### Testing on a specific SmartAPI API
 
-By default, BTE queries all APIs specified in the the [config.js file](https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/routes/v1/config.js). In some cases, you may want to override that default to specifically query a single API. For example, the SmartAPI ID for the EBI Proteins API is [`43af91b3d7cae43591083bff9d75c6dd`](https://smart-api.info/registry?q=43af91b3d7cae43591083bff9d75c6dd). To instruct BTE to query that API only, you can POST your query to `http://localhost:3000/v1/smartapi/43af91b3d7cae43591083bff9d75c6dd/query`. The general format is `http://localhost:3000/v1/smartapi/{smartapi_id}/query`.
+By default, BTE queries all APIs specified in the the [config.js file](https://github.com/biothings/biothings_explorer/blob/main/src/routes/v1/config.js). In some cases, you may want to override that default to specifically query a single API. For example, the SmartAPI ID for the EBI Proteins API is [`43af91b3d7cae43591083bff9d75c6dd`](https://smart-api.info/registry?q=43af91b3d7cae43591083bff9d75c6dd). To instruct BTE to query that API only, you can POST your query to `http://localhost:3000/v1/smartapi/43af91b3d7cae43591083bff9d75c6dd/query`. The general format is `http://localhost:3000/v1/smartapi/{smartapi_id}/query`.
 
 ## Asynchronous queries
 

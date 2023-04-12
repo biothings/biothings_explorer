@@ -15,7 +15,7 @@ jobs:
 
     - uses: actions/checkout@v3
       with:
-        repository: biothings/BioThings_Explorer_TRAPI
+        repository: biothings/biothings_explorer
 
     - name: Use Node.js 16.x
       uses: actions/setup-node@v1

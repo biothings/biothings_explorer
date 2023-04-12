@@ -1,4 +1,4 @@
-biothings/BioThings_Explorer_TRAPI           .
+biothings/biothings_explorer           .
 biothings/api-respone-transform.js.git       ./packages/@biothings-explorer/api-response-transform
 biothings/call-apis.js.git                   ./packages/@biothings-explorer/call-apis
 biothings/smartapi-kg.js.git                 ./packages/@biothings-explorer/smartapi-kg
