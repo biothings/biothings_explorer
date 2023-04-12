@@ -205,4 +205,4 @@ If you want to run BTE with debug logging and async support, with VSCode's debug
 
 Now that you have an instance of BTE up and running, you can POST queries to `http://<HOST>:3000/v1/query`. See [Usage](./USAGE.md) for more information.
 
-Query Examples can be found [here](/examples).
+Query Examples can be found [here](./examples).
