@@ -137,7 +137,6 @@ The following commands will clone the repository and install it
 ```
 git clone https://github.com/biothings/Biothings_Explorer_TRAPI.git
 cd Biothings_Explorer_TRAPI
-npm run clone
 npm run setup
 ```
 
