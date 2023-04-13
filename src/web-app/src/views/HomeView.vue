@@ -11,7 +11,6 @@ import LinkOut from '../components/LinkOutIcon.vue'
       <BTE class="-left-80 -top-28 opacity-50"></BTE>
     </div>
     <div class="text-center flex-grow">
-      <h6 class="text-orange-400 text-md">Installation successful!</h6>
       <h2 class="text-white text-3xl"><Logo class="w-3/4 inline"></Logo> Is Ready!</h2>
       <div class="flex p-3 justify-center items-center">
         <a class="main-btn-outline" href="https://biothings.io/explorer/" target="_blank" rel="nonopenner">
