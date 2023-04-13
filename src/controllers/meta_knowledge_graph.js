@@ -126,10 +126,10 @@ module.exports = class MetaKnowledgeGraphHandler {
             knowledge_types: ["lookup"],
           };
           knowledge_graph.edges.push(edge);
-          if (edges[`${input}-${pred}-${output}`]) {
-            edges[`${input}-${pred}-${output}`].push(edge);
+          if (edges[`${input}-${pred.predicate}-${output}`]) {
+            edges[`${input}-${pred.predicate}-${output}`].push(edge);
           } else {
-            edges[`${input}-${pred}-${output}`] = [edge];
+            edges[`${input}-${pred.predicate}-${output}`] = [edge];
           }
         });
       });
