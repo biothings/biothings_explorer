@@ -137,7 +137,7 @@ module.exports = class MetaKnowledgeGraphHandler {
     if (!smartAPIID && !teamName) {
       (await supportedLookups()).forEach(edge => {
         const {subject, predicate, object, qualifiers} = edge;
-        if (Object.keys(edges).includes(edge)) {
+        if (Object.keys(edges).includes(`${subject}-${predicate}-${object}`)) {
           edges[`${subject}-${predicate}-${object}`].forEach(e => e.knowledge_types.push("inferred"));
         } else {
           knowledge_graph.edges.push({
