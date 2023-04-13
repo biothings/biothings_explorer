@@ -6,6 +6,8 @@ BTE can be used locally using Docker, or by [installing the workspace locally](#
 
 Docker is a program that handles standardized virtual software environments. Put simply, it solves the problem of "Well, it works on my system!" by letting us hand you a bare-bones virtual system on which our code _does work_ so that you don't have to worry about requirements, compatibilities, etc.
 
+Note that our Dockerfile does not take into account your local workspace and instead build from online repositories, so it won't reflect any local development you've done.
+
 ### Requirements
 
 #### Docker
@@ -42,10 +44,10 @@ cd biothings_explorer
 BTE provides a [docker-compose.yml](../docker-compose.yml) file, which will automatically handle building and running your own BTE image:
 
 ```bash
-docker compose up --build
+docker compose build --no-cache
 ```
 
-This will build an image of BTE, pull an image of Redis, and then start the two in concert as if BTE were running on a production server. After the first time running, you can omit the `--build` option to avoid rebuilding the image every time.
+This will instruct Docker to build and image of BTE using our online repositories.
 
 #### Manually building an image
 
