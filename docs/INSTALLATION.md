@@ -105,11 +105,15 @@ This will install the latest version of Node v18, and the appropriate version of
 
 #### Dependencies:
 
-There are some additional dependencies, to install them on Ubuntu (Linux or WSL):
+There are some additional dependencies when running a local workspace.
+
+**Ubuntu (Linux or WSL):**
 
 ```bash
 sudo apt install lz4 python3 make g++
 ```
+
+**MacOS:**
 
 MacOS will require the XCode Command Line Tools and [Homebrew](https://brew.sh/):
 
