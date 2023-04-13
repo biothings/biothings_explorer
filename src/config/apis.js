@@ -252,7 +252,7 @@ exports.API_LIST = {
         // not accessible by team or api-specific endpoints
         {
             id: '855adaa128ce5aa58a091d99e520d396',
-            name: 'Connections Hypothesis Provider API'
+            name: 'Connections Hypothesis Provider API (Trapi v1.3.0)'
         },
         // TRAPI (Translator standard) APIs: ICEES
         // not accessible by team or api-specific endpoints
