@@ -1,0 +1,48 @@
+{
+  "apps": [
+    {
+      "name": "bte-trapi",
+      "cwd": ".",
+      "script": "./src/server.js",
+      "exec_mode": "cluster",
+      "instances": 4,
+      "autorestart": true,
+      "exp_backoff_restart_delay": 100,
+      "instance_var": "INSTANCE_ID",
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "env": {
+        "PORT": "3000",
+        "LOG": "./log",
+        "REQUEST_TIMEOUT": 600
+      },
+      "env_prod": {
+        "NODE_ENV": "production",
+        "REDIS_HOST": "localhost",
+        "REDIS_PORT": 6379
+      },
+      "env_prod_nocache": {
+        "NODE_ENV": "production",
+        "REDIS_HOST": "localhost",
+        "REDIS_PORT": 6379,
+        "RESULT_CACHING": false
+      },
+      "env_prodci": {
+        "NODE_ENV": "production",
+        "REDIS_TLS_ENABLED": true,
+        "REDIS_CLUSTER": true
+      },
+      "env_dev": {
+        "DEBUG": "biomedical-id-resolver,bte*",
+        "REDIS_HOST": "localhost",
+        "REDIS_PORT": 6379,
+        "RESULT_CACHING": false
+      },
+      "env_dev_prodmirror": {
+        "NODE_ENV": "production",
+        "REDIS_HOST": "localhost",
+        "REDIS_PORT": 6379,
+        "API_OVERRIDE": "true"
+      }
+    }
+  ]
+}

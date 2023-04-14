@@ -70,7 +70,7 @@ describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
             })
     })
     // 2021-09-09: need to update the example query
-    // also skipping because this API and its x-bte annotation will soon change. 
+    // also skipping because this API and its x-bte annotation will soon change.
     //   Once both are updated, can review this test and its desired behavior again...
     test.skip("Query to Text Mining Targeted Association KP should have id resolution turned off", async () => {
         const query = JSON.parse(fs.readFileSync(path.join(example_folder, "textmining/query_chemicals_related_to_gene_or_gene_product.json")));
@@ -86,7 +86,9 @@ describe("Testing /v1/smartapi/{smartapi_id}/query endpoints", () => {
             })
     })
 
-    test("Query to non-Text Mining KPs should have id resolution turned on", async () => {
+    // 2023-03-14: id resolution has been disable on by-team and by-api endpoints for a while
+    // so this test doesn't make a lot of sense anymor...
+    test.skip("Query to non-Text Mining KPs should have id resolution turned on", async () => {
         const sri_path = path.resolve(__dirname, '../../data/api_results/chembl_sri.json');
         axios.default.post.mockResolvedValue({ data: JSON.parse(fs.readFileSync(sri_path)) })
         const mychem_path = path.resolve(__dirname, '../../data/api_results/mychem_query.json');

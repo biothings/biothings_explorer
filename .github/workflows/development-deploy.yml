@@ -37,7 +37,7 @@ jobs:
         key: ${{ secrets.SSH_KEY_DEV }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          cd ~/opt/BioThings_Explorer_TRAPI
+          cd ~/opt/biothings_explorer
           rm docker-compose.yml
           git stash
           git pull
@@ -75,5 +75,5 @@ jobs:
         key: ${{ secrets.SSH_KEY_DEV }}
         port: ${{ secrets.SSH_PORT }}
         source: "performance-test/report.html"
-        target: "opt/BioThings_Explorer_TRAPI/performance-test"
+        target: "opt/biothings_explorer/performance-test"
         strip_components: 1

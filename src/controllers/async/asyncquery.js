@@ -31,6 +31,15 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
         {
           jobId: jobId,
           url: url,
+          timeout: parseInt(process.env.JOB_TIMEOUT ?? (1000 * 60 * 60 * 2).toString()),
+          removeOnFail: {
+            age: 24 * 60 * 60, // keep failed jobs for a day (in case user needs to review fail reason)
+            count: 2000,
+          },
+          removeOnComplete: {
+            age: 90 * 24 * 60 * 60, // keep completed jobs for 90 days
+            count: 2000,
+          },
         },
       );
       res.setHeader("Content-Type", "application/json");
@@ -47,8 +56,8 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
 
 async function storeQueryResponse(jobID, response, logLevel = null) {
   // const lock = await redisClient.client.lock();
-  return await redisClient.client.usingLock([`asyncQueryResult:lock:${jobID}`], 600000, async (signal) => {
-    const defaultExpirySeconds = String(7 * 24 * 60 * 60); // one 7-day week
+  return await redisClient.client.usingLock([`asyncQueryResult:lock:${jobID}`], 600000, async signal => {
+    const defaultExpirySeconds = String(30 * 24 * 60 * 60); // 30 days
     const entries = [];
     if (typeof response === "undefined") {
       return;
@@ -95,12 +104,11 @@ async function storeQueryResponse(jobID, response, logLevel = null) {
       `asyncQueryResult:logLevel:${jobID}`,
       process.env.ASYNC_COMPLETED_EXPIRE_TIME || defaultExpirySeconds,
     );
-
   });
 }
 
 exports.getQueryResponse = async (jobID, logLevel = null) => {
-  return await redisClient.client.usingLock([`asyncQueryResult:lock:${jobID}`], 600000, async (signal) => {
+  return await redisClient.client.usingLock([`asyncQueryResult:lock:${jobID}`], 600000, async signal => {
     const entries = await redisClient.client.getTimeout(`asyncQueryResult:entries:${jobID}`);
     if (!entries) {
       return null;
@@ -160,10 +168,11 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
       await storeQueryResponse(jobID, response);
     }
   }
+
   if (callback_url) {
     if (!utils.stringIsAValidUrl(callback_url)) {
       return {
-        response: true,
+        response: "TRAPI Execution complete",
         status: 200,
         callback: "The callback url must be a valid url",
       };
@@ -183,20 +192,20 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
       //console.log(res)
     } catch (e) {
       return {
-        response: true,
+        response: "TRAPI Execution complete",
         status: e.response?.status,
         callback: `Request failed, received code ${e.response?.status}`,
       };
     }
   } else {
     return {
-      response: true,
+      response: "TRAPI Execution complete",
       status: 200,
       callback: "Callback url was not provided",
     };
   }
   return {
-    response: true,
+    response: "TRAPI Execution complete",
     status: callback_response?.status,
     callback: "Data sent to callback_url",
   };

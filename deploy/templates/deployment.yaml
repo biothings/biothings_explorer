@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "bte.fullname" . }}
+  labels:
+    {{- include "bte.labels" . | nindent 4 }}
+spec:
+  strategy:
+        type: {{ .Values.deployment.strategyType }}
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "bte.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "bte.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "bte.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          env:
+            - name: REDIS_HOST
+              value: "{{ .Values.env.REDIS_HOST_VALUE }}"
+            - name: REDIS_PORT
+              value: "{{ .Values.env.REDIS_PORT_VALUE }}"
+            - name: REDIS_PASSWORD
+              value: "{{ .Values.env.REDIS_PASSWORD_VALUE }}"
+            - name: REDIS_TLS_ENABLED
+              value: "{{ .Values.env.REDIS_TLS_ENABLED_VALUE }}"
+            - name: REDIS_CLUSTER
+              value: "{{ .Values.env.REDIS_CLUSTER_VALUE }}"
+            - name: REQUEST_TIMEOUT
+              value: "{{ .Values.env.REQUEST_TIMEOUT_VALUE }}"
+            - name: INSTANCE_ENV
+              value: "{{ .Values.env.INSTANCE_ENV_VALUE }}"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: {{ include "bte.fullname" . }}-secret-volume
+          secret:
+            secretName: {{ include "bte.fullname" . }}-secret
+            defaultMode: 0400

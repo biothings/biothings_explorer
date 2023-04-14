@@ -1,7 +1,8 @@
 node_modules/
-
 STEPS.md
-
 README.md
-
 .gitignore
+.git
+__test__/
+node_modules/
+packages/
