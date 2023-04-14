@@ -135,9 +135,11 @@ module.exports = class MetaKnowledgeGraphHandler {
       });
     });
     if (!smartAPIID && !teamName) {
+      const has_inferred = {};
       (await supportedLookups()).forEach(edge => {
         const {subject, predicate, object, qualifiers} = edge;
-        if (Object.keys(edges).includes(`${subject}-${predicate}-${object}`)) {
+        if (Object.keys(edges).includes(`${subject}-${predicate}-${object}`) && !has_inferred[`${subject}-${predicate}-${object}`]) {
+          has_inferred[`${subject}-${predicate}-${object}`] = true;
           edges[`${subject}-${predicate}-${object}`].forEach(e => e.knowledge_types.push("inferred"));
         } else {
           knowledge_graph.edges.push({
