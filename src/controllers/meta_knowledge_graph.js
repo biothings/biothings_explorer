@@ -115,22 +115,35 @@ module.exports = class MetaKnowledgeGraphHandler {
     Object.keys(predicates).map(input => {
       Object.keys(predicates[input]).map(output => {
         predicates[input][output].map(pred => {
+          if (edges[`${input}-${pred.predicate}-${output}`]) {
+            const cur_edge = edges[`${input}-${pred.predicate}-${output}`];
+            if (pred.qualifiers) {
+              Object.entries(pred.qualifiers).forEach(([qual, val]) => {
+                const [type_id, value] = this._modifyQualifierData(qual, val);
+                const existing_qualifier = cur_edge.qualifiers?.find(q => q.qualifier_type_id === type_id);
+                if (existing_qualifier) {
+                  if (!existing_qualifier.applicable_values.includes(value)) existing_qualifier.applicable_values.push(value);
+                } else {
+                  if (!cur_edge.qualifiers) cur_edge.qualifiers = [];
+                  cur_edge.qualifiers.push({ qualifier_type_id: type_id, applicable_values: [value] });
+                }
+              })
+            }
+            return;
+          }
+
           const edge = {
             subject: input,
             predicate: pred.predicate,
             object: output,
             qualifiers: pred.qualifiers ? Object.entries(pred.qualifiers).map(([qual, val]) => {
-                const [type_id, value] = this._modifyQualifierData(qual, val);
-                return { qualifier_type_id: type_id, applicable_values: [value] };
+              const [type_id, value] = this._modifyQualifierData(qual, val);
+              return { qualifier_type_id: type_id, applicable_values: [value] };
             }) : undefined,
             knowledge_types: ["lookup"],
           };
           knowledge_graph.edges.push(edge);
-          if (edges[`${input}-${pred.predicate}-${output}`]) {
-            edges[`${input}-${pred.predicate}-${output}`].push(edge);
-          } else {
-            edges[`${input}-${pred.predicate}-${output}`] = [edge];
-          }
+          edges[`${input}-${pred.predicate}-${output}`] = edge;
         });
       });
     });
@@ -138,11 +151,25 @@ module.exports = class MetaKnowledgeGraphHandler {
       const has_inferred = {};
       (await supportedLookups()).forEach(edge => {
         const {subject, predicate, object, qualifiers} = edge;
-        if (Object.keys(edges).includes(`${subject}-${predicate}-${object}`) && !has_inferred[`${subject}-${predicate}-${object}`]) {
+        if (Object.keys(edges).includes(`${subject}-${predicate}-${object}`)) {
+          if (!has_inferred[`${subject}-${predicate}-${object}`]) edges[`${subject}-${predicate}-${object}`].knowledge_types.push("inferred");
           has_inferred[`${subject}-${predicate}-${object}`] = true;
-          edges[`${subject}-${predicate}-${object}`].forEach(e => e.knowledge_types.push("inferred"));
+
+          const cur_edge = edges[`${subject}-${predicate}-${object}`];
+          if (qualifiers) {
+            Object.entries(qualifiers).forEach(([qual, val]) => {
+              const [type_id, value] = this._modifyQualifierData(qual, val);
+              const existing_qualifier = cur_edge.qualifiers?.find(q => q.qualifier_type_id === type_id);
+              if (existing_qualifier) {
+                if (!existing_qualifier.applicable_values.includes(value)) existing_qualifier.applicable_values.push(value);
+              } else {
+                if (!cur_edge.qualifiers) cur_edge.qualifiers = [];
+                cur_edge.qualifiers.push({ qualifier_type_id: type_id, applicable_values: [value] });
+              }
+            })
+          }
         } else {
-          knowledge_graph.edges.push({
+          edges[`${subject}-${predicate}-${object}`] = {
             subject,
             predicate,
             object,
@@ -151,7 +178,8 @@ module.exports = class MetaKnowledgeGraphHandler {
                 return { qualifier_type_id: type_id, applicable_values: [value] };
             }) : undefined,
             knowledge_types: ["inferred"],
-          });
+          };
+          knowledge_graph.edges.push(edges[`${subject}-${predicate}-${object}`]);
         }
       });
     }
