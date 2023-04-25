@@ -26,7 +26,7 @@ if (!global.threadpool && !isWorkerThread && !(process.env.USE_THREADING === "fa
     sync: new Piscina({
       filename: path.resolve(__dirname, "./taskHandler.js"),
       minThreads: 2,
-      maxThreads: Math.ceil(os.cpus().length * 0.75), // on 8 cores, 24 given 4 instances
+      maxThreads: Math.ceil(os.cpus().length * 0.625), // on 8 cores, 24 given 4 instances
       maxQueue: 600,
       idleTimeout: 10 * 60 * 1000, // 10 minutes
       env,
