@@ -7,13 +7,7 @@ services:
     image: biothings/bte-trapi
     ports:
       - '3000:3000'
-    environment:
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      DEBUG: biomedical-id-resolver,bte*
-      DEBUG_COLORS: true
-    # volumes:
-    #   - /log/bte:/home/node/app/log
+    env_file: .compose-env
   redis:
     container_name: bte-redis
     restart: on-failure
