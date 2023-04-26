@@ -78,7 +78,7 @@ docker run -it --rm -p 3000:3000 --name bte-trapi biothings/bte-trapi
 Note that this will run BTE without Redis, which will disable BTE's asynchronous endpoints and caching features. To start a Redis container and start a BTE container connected to it:
 
 ```bash
-docker run --name test-redis -p 6379:6379 -d --hostname=redis:latest redis bte-redis
+docker run --name bte-redis -p 6379:6379 -d --hostname=redis:latest redis
 docker run -it --rm -p 3000:3000 --name bte-trapi -e REDIS_HOST=host.docker.internal -e REDIS_PORT=6379 biothings/bte-trapi
 ```
 
