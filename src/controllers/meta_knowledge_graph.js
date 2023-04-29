@@ -180,6 +180,7 @@ module.exports = class MetaKnowledgeGraphHandler {
             knowledge_types: ["inferred"],
           };
           knowledge_graph.edges.push(edges[`${subject}-${predicate}-${object}`]);
+          has_inferred[`${subject}-${predicate}-${object}`] = true;
         }
       });
     }
