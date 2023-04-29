@@ -8,9 +8,10 @@ const routesV1AsyncQuery = require('./v1/asyncquery_v1');
 const routesV1AsyncQueryByAPI = require("./v1/asyncquery_v1_by_api");
 const routesV1AsyncQueryByTeam = require("./v1/asyncquery_v1_by_team");
 const routesV1CheckQueryStatus = require('./v1/check_query_status');
-const routesV1MetaKG = require("./v1/meta_knowledge_graph_v1")
+const routesV1MetaKG = require("./v1/meta_knowledge_graph_v1");
 const routesV1MetaKGByAPI = require("./v1/meta_knowledge_graph_v1_by_api");
 const routesV1MetaKGByTeam = require("./v1/meta_knowledge_graph_v1_by_team");
+const routesV1MetaPath = require("./v1/meta_knowledge_path_v1");
 const ErrorHandler = require("../middlewares/error");
 const LoggingHandler = require("../middlewares/logging");
 const routesBullBoardPage = require("./bullboard");
@@ -18,6 +19,7 @@ const routesBullBoardPage = require("./bullboard");
 class Routes {
     setRoutes(app) {
         routesMetaKG.setRoutes(app);
+        routesV1MetaPath.setRoutes(app);
         routesV1MetaKG.setRoutes(app);
         routesV1AsyncQuery.setRoutes(app);
         routesV1AsyncQueryByAPI.setRoutes(app);

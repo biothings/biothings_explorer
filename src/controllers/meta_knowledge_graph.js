@@ -57,6 +57,13 @@ module.exports = class MetaKnowledgeGraphHandler {
     }
   }
 
+  async findPath({startNode, endNode, minLength, maxLength, repeatedNodes}) {
+    const kg = await this._loadMetaKG();
+    console.log("params: ", startNode, endNode, minLength, maxLength, repeatedNodes);
+    const ans = kg.findPath(startNode, endNode, minLength, maxLength, repeatedNodes);
+    return {answer: ans};
+  }
+
   async getKG(smartAPIID = this.smartAPIID, teamName = this.teamName) {
     const kg = await this._loadMetaKG(smartAPIID, teamName);
     let knowledge_graph = {
