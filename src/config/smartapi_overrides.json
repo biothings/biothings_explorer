@@ -3,5 +3,7 @@
     "only_overrides": false
   },
   "apis": {
+    "978fe380a147a8641caf72320862697b": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/text-mining-provider-trapi-1.4/text_mining/smartapi.yaml",
+    "08a5ddcde71b4bf838327ef469076acd": "https://raw.githubusercontent.com/GitHubbit/translator-api-registry/master/multiomics_clinical_trials/smartapi.yaml"
   }
 }
