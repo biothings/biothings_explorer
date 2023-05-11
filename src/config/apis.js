@@ -248,12 +248,12 @@ exports.API_LIST = {
             id: 'e892e3cea582cd28f4e368e463876d21',
             name: 'COHD TRAPI'
         },
-        // TRAPI (Translator standard) APIs: CHP. Temporarily commenting out because the registration is TRAPI 1.3
+        // TRAPI (Translator standard) APIs: CHP
         // not accessible by team or api-specific endpoints
-        // {
-        //     id: '855adaa128ce5aa58a091d99e520d396',
-        //     name: 'Connections Hypothesis Provider API'
-        // },
+        {
+            id: '855adaa128ce5aa58a091d99e520d396',
+            name: 'Connections Hypothesis Provider API'
+        },
     ],
     exclude: [ // explicitly disabled for use even in by_api endpoint. for TRAPI and APIs annotated with SmartAPI x-bte
 
