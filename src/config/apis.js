@@ -235,7 +235,7 @@ exports.API_LIST = {
         //   smartapi ID fc8245e92c970298449294fc04211869
         {
             id: '51c178099fa2dc99b5d8fff8bf9f1a0d',
-            name: 'COHD TRAPI 1.3'
+            name: 'COHD TRAPI'
         },
         // TRAPI (Translator standard) APIs: CHP
         // not accessible by team or api-specific endpoints
@@ -243,27 +243,8 @@ exports.API_LIST = {
             id: '855adaa128ce5aa58a091d99e520d396',
             name: 'Connections Hypothesis Provider API'
         },
-        // TRAPI (Translator standard) APIs: ICEES
-        // not accessible by team or api-specific endpoints
-        // currently commented out because of issues
-        // {
-        //     id: '749c8f527fa07964de692e0969b71a4e',
-        //     name: 'ICEES DILI Instance API - production'
-        // },
-        // {
-        //     id: 'bb806f5c81e86fe12660fa307d4b0a97',
-        //     name: 'ICEES Asthma Instance API - production'
-        // },
-        // {
-        //     id: '4153c947a32e2e2a55a320d0bee22077',
-        //     name: 'ICEES PCD Instance API - production'
-        // },
     ],
     exclude: [ // explicitly disabled for use even in by_api endpoint. for TRAPI and APIs annotated with SmartAPI x-bte
-        // Temporary exclusion due to incompatible x-bte annotation
-        {
-            id: 'e9f69b81e755e163fdf6c41a2b5e07c0',
-            name: 'OpenPredict API',
-        },
+
     ]
 };
