@@ -168,11 +168,6 @@ exports.API_LIST = {
             id: '97da45e75266b021fae885735befad07',
             name: 'Automat-ctd(Trapi v1.4.0)'
         },
-        // 2023-05-10: missing from registry
-        // {
-        //     id: '463525b319d7e1ef8f705bce953d01bd',
-        //     name: 'Automat-cord19(Trapi v1.3.0)'
-        // },
         {
             id: 'a80b9c70e756453d1ce8971b59fe1778',
             name: 'Automat-drug-central(Trapi v1.4.0)'
@@ -215,11 +210,6 @@ exports.API_LIST = {
             id: '0b0a4d48ccd9ad2fd34ee53c34f87e94',
             name: 'Automat-intact(Trapi v1.4.0)'
         },
-        // 2023-05-10: no TRAPI 1.4 version from registry
-        // {
-        //     id: '4c6f9117581531161849e60ea906f0be',
-        //     name: 'Automat-ontology-hierarchy(Trapi v1.3.0)'
-        // },
         {
             id: '26ca4939d437c411bcb65b85a9dc2b99',
             name: 'Automat-panther(Trapi v1.4.0)'
@@ -228,11 +218,6 @@ exports.API_LIST = {
             id: '1c71f68839a44b1b857e79ae7f7e3381',
             name: 'Automat-pharos(Trapi v1.4.0)'
         },
-        // 2023-05-10: no TRAPI 1.4 version from registry
-        // {
-        //     id: 'ef9027a7d2246c6540cc7b3ce202d89f',
-        //     name: 'Automat-uberongraph(Trapi v1.3.0)'
-        // },
         {
             id: '465ff6de7ddf35ca8b2df6c0b01e6554',
             name: 'Automat-viral-proteome(Trapi v1.4.0)'
