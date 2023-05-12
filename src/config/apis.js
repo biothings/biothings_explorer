@@ -95,6 +95,10 @@ exports.API_LIST = {
             name: 'BioThings PFOCR API'
         },
         {
+            id: 'b772ebfbfa536bba37764d7fddb11d6f',
+            name: 'BioThings RARe-SOURCE API'
+        },
+        {
             id: '03283cc2b21c077be6794e1704b1d230',
             name: 'BioThings Rhea API'
         },
