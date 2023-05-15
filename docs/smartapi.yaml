@@ -418,68 +418,6 @@ paths:
             application/json:
               schema:
                 type: string
-  ## not TRAPI spec: BTE-specific endpoint related to asyncquery
-  /check_query_status/{id}:
-  ## moved because smartapi-editor gave alert that a non-existent post endpoint wouldn't know what {id} is
-    parameters:
-      - description: job-id
-        in: path
-        name: id
-        required: true
-        ## Cache refreshing means this will be changing pretty often, so not including an example
-        schema:
-          type: string
-    get:
-      tags:
-        - asyncquery_status
-      summary: >-
-        This endpoint can be used when a Query was sent to BTE through an /asyncquery
-        endpoint without a callback property: BTE then handled it in a polling manner and
-        provided a job id. The job id can be used here to check the status or retrieve
-        the Response.
-      parameters:
-        - description: option to override original query log level
-          in: query
-          name: log_level
-          required: false
-          schema:
-            type: string
-            description: >-
-              Logging level. The order of priority is ERROR, WARNING, INFO, DEBUG. BTE will return all logs at the 
-              specified level and those at higher priority levels
-            enum:
-              - ERROR
-              - WARNING
-              - INFO
-              - DEBUG
-      responses:
-        '200':
-          description: Returns status. If successfully completed, it will return a TRAPI Response object under the field returnvalue
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - id
-                  - state
-                properties:
-                  id:
-                    description: the job-id
-                    type: string
-                  state:
-                    description: the status of the job
-                  reason:
-                    description: when the state is 'failed', this field states a reason for the failure
-                    type: string
-                  returnvalue:
-                    ## returnvalue.response is where the TRAPI Response is
-                    description: >-
-                      When the state is 'completed', this will contain the TRAPI Response object. Note
-                      that BTE might return an error, no results, etc as a Response...
-                    type: object
-                    properties:
-                      response:
-                        $ref: '#/components/schemas/Response'
   ## modified TRAPI spec: summary sections tell users that AsyncQuery schema was changed to make callback optional
   /asyncquery:
     post:
