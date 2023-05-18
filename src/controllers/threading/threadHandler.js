@@ -281,7 +281,7 @@ function taskError(error) {
 if (!global.queryQueue.bte_sync_query_queue && !isWorkerThread) {
   getQueryQueue("bte_sync_query_queue");
   if (global.queryQueue.bte_sync_query_queue) {
-    global.queryQueue.bte_sync_query_queue.process(Math.ceil(os.cpus().length * 0.75), async job => {
+    global.queryQueue.bte_sync_query_queue.process(Math.ceil(os.cpus().length * 0.625), async job => {
       try {
         return await runBullTask(job, job.data.route, false);
       } catch (error) {
