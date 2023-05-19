@@ -234,7 +234,7 @@ exports.API_LIST = {
         // - COHD for COVID-19 should work but BTE gets a 500 when retrieving meta_knowledge_graph...
         //   smartapi ID fc8245e92c970298449294fc04211869
         {
-            id: 'e892e3cea582cd28f4e368e463876d21',
+            id: 'af364143267ad5235bf78c1511223875',
             name: 'COHD TRAPI'
         },
         // TRAPI (Translator standard) APIs: CHP
