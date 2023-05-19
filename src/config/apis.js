@@ -240,7 +240,7 @@ exports.API_LIST = {
         // TRAPI (Translator standard) APIs: CHP
         // not accessible by team or api-specific endpoints
         {
-            id: '855adaa128ce5aa58a091d99e520d396',
+            id: '23f770568b92b7a82063989b3ddd9706',
             name: 'Connections Hypothesis Provider API'
         },
     ],
