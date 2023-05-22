@@ -24,10 +24,10 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
       if (queryQueue.name === "bte_query_queue_by_team") {
         jobId = `BT_${jobId}`;
       }
-      url = `${req.protocol}://${req.header("host")}/v1/check_query_status/${jobId}`;
+      url = `${req.protocol}://${req.header("host")}/v1/asyncquery_status/${jobId}`;
 
       let job = await queryQueue.add(
-        { ...queueData, url },
+        { ...queueData, url: url.replace('status', 'response') },
         {
           jobId: jobId,
           url: url,
@@ -44,7 +44,7 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
       );
       res.setHeader("Content-Type", "application/json");
       // return the job id so the user can check on it later
-      res.end(JSON.stringify({ id: job.id, url: url }));
+      res.end(JSON.stringify({ status: "Accepted", description: "Async query queued", job_id: job.id, job_url: url }));
     } else {
       res.setHeader("Content-Type", "application/json");
       res.status(503).end(JSON.stringify({ error: "Redis service is unavailable" }));
@@ -146,7 +146,7 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
     await handler.query();
     response = handler.getResponse();
     if (jobURL) {
-      response.logs.unshift(new LogEntry("INFO", null, `job status available at: ${jobURL}`).getLog());
+      response.logs.unshift(new LogEntry("INFO", null, `job results available at: ${jobURL}`).getLog());
     }
     if (jobID) {
       await storeQueryResponse(jobID, response, handler.options.logLevel);
