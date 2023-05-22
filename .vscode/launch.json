@@ -1,0 +1,199 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Sync SmartAPI",
+      "type": "node",
+      "preLaunchTask": "build",
+      "runtimeArgs": [
+        "run",
+        "smartapi_sync"
+      ],
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
+      "restart": false,
+      "env": {
+        "DEBUG": "biomedical-id-resolver,bte*"
+      },
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "stopOnEntry": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Sync SmartAPI (with overrides)",
+      "type": "node",
+      "preLaunchTask": "build",
+      "runtimeArgs": [
+        "run",
+        "smartapi_sync"
+      ],
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
+      "restart": false,
+      "env": {
+        "DEBUG": "biomedical-id-resolver,bte*",
+        "API_OVERRIDE": "true"
+      },
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "stopOnEntry": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Build w/o Cache",
+      "type": "node",
+      "preLaunchTask": "build",
+      "runtimeArgs": [
+        "run",
+        "debug",
+      ],
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
+      "restart": false,
+      "env": {
+        "DEBUG": "biomedical-id-resolver,bte*",
+        "RESULT_CACHING": "false"
+      },
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "stopOnEntry": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Build w/o Cache; No Threading",
+      "type": "node",
+      "preLaunchTask": "build and start redis",
+      "runtimeArgs": [
+        "run",
+        "debug",
+      ],
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
+      "restart": false,
+      "env": {
+        "REDIS_HOST": "localhost",
+        "REDIS_PORT": "6379",
+        "DEBUG": "biomedical-id-resolver,bte*",
+        "RESULT_CACHING": "false",
+        "USE_THREADING": "false"
+      },
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "stopOnEntry": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Build w/ Cache",
+      "type": "node",
+      "preLaunchTask": "build and start redis",
+      "runtimeArgs": [
+        "run",
+        "debug",
+      ],
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
+      "restart": false,
+      "env": {
+        "REDIS_HOST": "localhost",
+        "REDIS_PORT": "6379",
+        "DEBUG": "biomedical-id-resolver,bte*",
+        "SMARTAPI_SYNC": "false",
+        "RESULT_CACHING": "true",
+        "CREATIVE_LIMIT": "1000"
+      },
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "stopOnEntry": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Build w/ Cache (connect to existing)",
+      "type": "node",
+      "preLaunchTask": "build",
+      "runtimeArgs": [
+        "run",
+        "debug",
+      ],
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
+      "restart": false,
+      "env": {
+        "REDIS_HOST": "localhost",
+        "REDIS_PORT": "6379",
+        "DEBUG": "biomedical-id-resolver,bte*",
+        "SMARTAPI_SYNC": "false",
+        "RESULT_CACHING": "true",
+        "DEBUG_COLORS": "true"
+      },
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "stopOnEntry": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Build w/ Cache Cluster",
+      "type": "node",
+      "preLaunchTask": "build and start redis cluster",
+      "runtimeArgs": [
+        "run",
+        "debug",
+      ],
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
+      "restart": false,
+      "env": {
+        "REDIS_HOST": "localhost",
+        "REDIS_PORT": "6379",
+        "DEBUG": "biomedical-id-resolver,bte*",
+        "SMARTAPI_SYNC": "false",
+        "RESULT_CACHING": "true",
+        "REDIS_CLUSTER": "true"
+      },
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "stopOnEntry": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Build w/ Cache Cluster (connect to existing)",
+      "type": "node",
+      "preLaunchTask": "build",
+      "runtimeArgs": [
+        "run",
+        "debug",
+      ],
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
+      "restart": false,
+      "env": {
+        "REDIS_HOST": "localhost",
+        "REDIS_PORT": "6379",
+        "DEBUG": "biomedical-id-resolver,bte*",
+        "SMARTAPI_SYNC": "false",
+        "RESULT_CACHING": "true",
+        "REDIS_CLUSTER": "true"
+      },
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "stopOnEntry": true,
+      "console": "integratedTerminal"
+    },
+  ]
+}

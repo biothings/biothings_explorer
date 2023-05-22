@@ -81,7 +81,7 @@ paths:
       parameters:
         - description: >-
             SmartAPI ID of an API with x-bte annotation. The easiest way to find these is to read the list of APIs BTE uses
-            https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js
+            https://github.com/biothings/biothings_explorer/blob/main/src/config/apis.js
           in: path
           name: smartapi_id
           required: true
@@ -106,7 +106,7 @@ paths:
         - description: >-
             Translator Team Name. Current options: Service Provider, Multiomics Provider, Text Mining Provider.
             The easiest way to find what KP APIs would be included under these teams is to read the list of APIs BTE uses
-            https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js.
+            https://github.com/biothings/biothings_explorer/blob/main/src/config/apis.js.
             Note that Service Provider endpoints are also advertised separately as a KP
             http://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0
           in: path
@@ -227,7 +227,7 @@ paths:
       parameters:
         - description: >-
             SmartAPI ID of an API with x-bte annotation. The easiest way to find these is to read the list of APIs BTE uses
-            https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js
+            https://github.com/biothings/biothings_explorer/blob/main/src/config/apis.js
           in: path
           name: smartapi_id
           required: true
@@ -330,7 +330,7 @@ paths:
         - description: >-
             Translator Team Name. Current options: Service Provider, Multiomics Provider, Text Mining Provider.
             The easiest way to find what KP APIs would be included under these teams is to read the list of APIs BTE uses
-            https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js.
+            https://github.com/biothings/biothings_explorer/blob/main/src/config/apis.js.
             Note that Service Provider endpoints are also advertised separately as a KP
             http://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0
           in: path
@@ -608,7 +608,7 @@ paths:
       parameters:
         - description: >-
             SmartAPI ID of an API with x-bte annotation. The easiest way to find these is to read the list of APIs BTE uses
-            https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js
+            https://github.com/biothings/biothings_explorer/blob/main/src/config/apis.js
           in: path
           name: smartapi_id
           required: true
@@ -722,7 +722,7 @@ paths:
         - description: >-
             Translator Team Name. Current options: Service Provider, Multiomics Provider, Text Mining Provider.
             The easiest way to find what KP APIs would be included under these teams is to read the list of APIs BTE uses
-            https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/config/apis.js.
+            https://github.com/biothings/biothings_explorer/blob/main/src/config/apis.js.
             Note that Service Provider endpoints are also advertised separately as a KP
             http://smart-api.info/registry?q=36f82f05705c317bac17ddae3a0ea2f0
           in: path

@@ -51,4 +51,4 @@
 3. GitHub Actions will take care the rest of release steps
 
    Double check to make sure everything works as expected:
-   https://github.com/biothings/BioThings_Explorer_TRAPI/actions
+   https://github.com/biothings/biothings_explorer/actions

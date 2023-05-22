@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.route-active{
+    @apply font-bold text-orange-500;
+}
+
+.link{
+    @apply text-white hover:text-blue-500 hover:underline;
+}
+
+.main-btn{
+    @apply p-2 rounded-md outline outline-orange-600 bg-orange-600 hover:bg-orange-500 text-white transition-all duration-100 cursor-pointer min-w-[200px] text-center;
+}
+
+.main-btn-outline{
+    @apply p-2 rounded-md bg-none outline outline-2 outline-white hover:bg-orange-500 text-white transition-all duration-100 cursor-pointer min-w-[200px] text-center;
+}
+
+.bg-network{
+    background-image: url("./img/network-01.svg");
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.bg-network-2{
+    background-image: url("./img/network-2-01.svg");
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.cy {
+    height: 100px;
+    width: 400px;
+    margin: 0px !important;
+}
+
+#about-cy {
+    height: 600px;
+    width: 900px;
+    margin: 0px !important;
+}
+
+/* CodeMirror */
+.cm-editor {
+    @apply sm:h-[500px] md:h-[550px] w-[100%];
+    background-color: rgba(0, 0, 0, 0.2);
+    overflow: scroll;
+    overflow-y: scroll;
+}

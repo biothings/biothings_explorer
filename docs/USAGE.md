@@ -2,53 +2,27 @@
 
 Once you have a local installation working, you can use your local instance by querying its various endpoints on `localhost:3000`.
 
-## Testing on a specific SmartAPI API
+## The Front Page
 
-By default, BTE queries all APIs specified in the the[ config.js file](https://github.com/biothings/BioThings_Explorer_TRAPI/blob/main/src/routes/v1/config.js). In some cases, you may want to override that default to specifically query a single API. For example, the SmartAPI record for the "EBI Proteins API) is [43af91b3d7cae43591083bff9d75c6dd](https://smart-api.info/registry?q=43af91b3d7cae43591083bff9d75c6dd). To instruct BTE to query that API only, you can POST your query to http://localhost:3000/v1/smartapi/43af91b3d7cae43591083bff9d75c6dd/query
+If this is your first time using BTE and TRAPI, you might wish to familiarize yourself with the querying format first. BTE provides a front page to get you started, which can be found at [`http://localhost:3000`](http://localhost:3000).
+
+You'll be able to run some example queries that might give you an idea of the TRAPI standard.
+
+## Synchronous Querying
+
+The simplest way BTE works is by accepting queries to its synchronous endpoint. You can POST a query to `http://localhost:3000/v1/query` and the response will contain the results.
+
+### Testing on a specific SmartAPI API
+
+By default, BTE queries all APIs specified in the the [config.js file](https://github.com/biothings/biothings_explorer/blob/main/src/routes/v1/config.js). In some cases, you may want to override that default to specifically query a single API. For example, the SmartAPI ID for the EBI Proteins API is [`43af91b3d7cae43591083bff9d75c6dd`](https://smart-api.info/registry?q=43af91b3d7cae43591083bff9d75c6dd). To instruct BTE to query that API only, you can POST your query to `http://localhost:3000/v1/smartapi/43af91b3d7cae43591083bff9d75c6dd/query`. The general format is `http://localhost:3000/v1/smartapi/{smartapi_id}/query`.
 
 ## Asynchronous queries
 
-You can also use our asynchronous query with both web callback and polling support.
+You can also use BTE's asynchronous query endpoint, which features both web callback and polling support.
 
-To sumbit an async query:
+POST to `http://localhost:3000/asyncquery`. This endpoint behaves similarly to the `http://localhost:3000/query` endpoint with the same query graph as the input, however it responds with a link.
 
-POST on `http://localhost:3000/asyncquery`. This endpoint behaves similarly to the `http://localhost:3000/query` endpoint with the same query graph as the input.
-
-```
-POST  {{base_url}}/v1/asyncquery
-Content-Type: application/json
-
-{
-    "message": {
-        "query_graph": {
-            "edges": {
-                "e0": {
-                    "subject": "n0",
-                    "object": "n1",
-                    "predicates": [
-                        "biolink:decreases_abundance_of",
-                        "biolink:decreases_activity_of",
-                        "biolink:decreases_expression_of"
-                    ]
-                }
-            },
-            "nodes": {
-                "n0": {
-                    "categories": ["biolink:SmallMolecule"],
-                    "name": "some chemical"
-                },
-                "n1": {
-                    "name": "EGFR",
-                    "ids": ["NCBIGene:1956"]
-                }
-            }
-        }
-    }
-}
-
-```
-
-**Key differences in an async query**
+#### Key differences in an async query
 
 - Instead of waiting for the query to complete a job _id_ is returned which you can then use to check the query status.
 - If an additional _callback_ parameter is provided, we will send the query result to this callback URL via POST (optional).
@@ -57,28 +31,28 @@ The returned response looks like this:
 
 ```
 {
-  "id": "N96xbq25zP",
-  "url": "http://localhost:3000/v1/check_query_status/N96xbq25zP"
+  "id": "<id>",
+  "url": "http://localhost:3000/v1/check_query_status/<id>"
 }
 ```
 
-**You can then retrieve query results in two ways:**
+#### You can then retrieve query results in two ways:
 
 1. **Checking the query status**
 
-   You can perform a GET request to the `http://localhost:3000/check_async_query/<id>` to check the query status. When the query is finished, the example response will look like this (query result is returned in `returnvalue` field):
+    You can perform a GET request to the `http://localhost:3000/check_async_query/<id>` to check the query status. When the query is finished, the example response will look like this (query result is returned in `returnvalue` field):
 
-   ```
-   {
-     'id': 'N96xbq25zP',
-     'state': 'completed',
-     'returnvalue': {
-       'response': { ... },
-       'status': 200
-     },
-     'progress': 0
-   }
-   ```
+    ```
+    {
+      'id': '<id>',
+      'state': 'completed',
+      'returnvalue': {
+        'response': { ... },
+        'status': 200
+      },
+      'progress': 0
+    }
+    ```
 
 2. **Return result via a callback URL**
 
@@ -100,7 +74,7 @@ The returned response looks like this:
 
    ```
    {
-     'id': 'N96xbq25zP',
+     'id': '<id>',
      'state': 'completed',
      'returnvalue': {
        'response': { ... },
@@ -111,26 +85,60 @@ The returned response looks like this:
    }
    ```
 
-## Environment Variables
+## Tracking queries
 
-Several environment variables are supported for various purposes, listed below:
+BTE exposes a dashboard to track the status of both synchronous and asynchronous queries. You can access it at [`http://localhost:3000/queues`](http://localhost:3000/queues).
 
-- `NODE_ENV` When set as `NODE_ENV=production`, the package runs in production mode, including synchronizing the latest SmartAPI specifications on a schedule.
-- `PORT` Sets the port the server will listen on. Defaults to `3000`.
-- `SMARTAPI_SYNC=true|false` May be set to override all SmartAPI syncing behavior.
-- `API_OVERRIDE=true|false` May be set to set overrides for specific APIs (see [Using `API_OVERRIDE=true`](#using-api_overridetrue))
-- `RESULT_CACHING=true|false` May be set to enable or disable the use of caching for query result edges. Requires `REDIS_HOST` and `REDIS_PORT` to be enabled.
-- `REDIS_HOST` The hostname of the Redis server to be used for caching.
-- `REDIS_PORT` The port of the Redis server to be used for caching.
-- `REDIS_PASSWORD` The password for the Redis server, if applicable.
-- `REDIS_TLS_ENABLED` Enables TLS mode for the Redis client.
-- `REDIS_KEY_EXPIRE_TIME` Sets the time to keep cached results in seconds. Defaults to 10 minutes.
-- `JOB_TIMEOUT` Sets a timeout on asynchronous jobs in ms. No default.
-- `ASYNC_COMPLETED_EXPIRE_TIME` Sets the amount of time to keep an asynchronous job result, after which the results expire and are deleted to make space for new job results. Expressed in seconds. Defaults to 7 days.
-- `DEBUG` May be set to capture different package debug logs by match to comma-separated strings.
-- `SETIMMEDIATE_TIME` Override the timing used on several calls to `setImmediatePromise()` used for performance reasons. Shouldn't be overridden except for performance testing purposes. Expressed in ms.
-- `MAX_QUERIES_PER_MIN` Sets the maximum number of queries allowable from a client in a 1-minute window. Defaults to 15.
-- `STATIC_PATH` Overrides the path to the folder containing `./data/smartapi_specs.json` and `./data/predicates.json`.
-- `REQUEST_TIMEOUT` Sets a timeout for non-synchronous threaded requests in seconds. No default, however the monorepo pm2 configuration defaults to 20 minutes.
-- `USE_THREADING` Disables threading (threaded requests fall back to non-threaded execution) when set to `false`. Threading is enabled by default.
-- `BIOLINK_FILE` Overrides path to biolink file.
+## Testing with Alternate SmartAPI Specs (local or hosted)
+
+### Using API Overrides
+
+You may configure a set of API IDs to override from local files or URLs.
+
+If the environment variable `API_OVERRIDE=true` is set (see example below), then [src/config/smartapi_overrides.json](../src/config/smartapi_overrides.json) is checked at server start and overrides are applied, as well as during subsequent `smartapi_specs.json` updates. Note that syncing must be enabled (`SMARTAPI_SYNC=true`) in order for `API_OVERRIDE` to take effect while BTE is running.
+
+Starting BTE with API Overrides and automatic syncing enabled:
+
+```bash
+SMARTAPI_SYNC=true API_OVERRIDE=true npm run start
+```
+
+Alternatively, you may choose to only get `smartapi_specs.json` and apply overrides once, removing the requirement of enabling `SMARTAPI_SYNC` while running the server:
+
+```bash
+API_OVERRIDE=true npm run smartapi_sync
+```
+
+Override files may be specified as a URL which returns the expected yaml file or a `file:///` URI or arbitrary filepath, either of which must contain the absolute path to your override file. Override files are expected to be in yaml format. If overrides are specified with IDs not in the current SmartAPI spec, they will be appended as new API hits with a log warning.
+
+You may also set `only_overrides` to `true` in the config to remove all other APIs and keep only the specified overrides.
+
+### Example
+
+Replace the latest [MyGene.info API](http://smart-api.info/registry?q=59dce17363dce279d389100834e43648) with a specific revision, and the [MyChem.info API](http://smart-api.info/registry?q=8f08d1446e0bb9c2b323713ce83e2bd3) with a local test version:
+
+```json
+{
+  "conf": {
+    "only_overrides": false
+  },
+  "apis": {
+    "59dce17363dce279d389100834e43648": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/8b36f46d59c82d19b5cba40421a6ca9c2ed62e6b/mygene.info/openapi_full.yml",
+    "8f08d1446e0bb9c2b323713ce83e2bd3": "file:///absolute/path/to/file/mychem_test.yaml"
+  }
+}
+```
+
+### API Overrides with Docker container
+
+You may wish to use a container to test your custom API/annotations. After making changes to your override list (example above) you will need to rebuild the container:
+
+```bash
+docker build --rm --force-rm --compress -t biothings/bte-trapi .
+```
+
+To run the container with overrides and debug logging enabled:
+
+```bash
+docker run -it --rm -p 3000:3000 --name bte-trapi -e DEBUG="biomedical-id-resolver,bte*" -e API_OVERRIDE=true biothings/bte-trapi
+```

@@ -95,6 +95,10 @@ exports.API_LIST = {
             name: 'BioThings PFOCR API'
         },
         {
+            id: 'b772ebfbfa536bba37764d7fddb11d6f',
+            name: 'BioThings RARe-SOURCE API'
+        },
+        {
             id: '03283cc2b21c077be6794e1704b1d230',
             name: 'BioThings Rhea API'
         },
@@ -156,9 +160,6 @@ exports.API_LIST = {
         // TRAPI (Translator standard) APIs: Automat
         // not accessible by team or api-specific endpoints
         // Notes: We don't ingest the following:
-        // - Automat-covidkop: seems to repeat a lot of data that is in the other APIs
-        // - Automat-mole-pro-fda: doesn't have edges / associations
-        // - Automat-mychem-info: since we ingest MyChem directly through x-bte annotations
         // - Automat-robokop: seems to repeat a lot of data that is in the other APIs
         {
         // this API overlaps with our Biolink API registration, but we have bugs with our api-response-transform
@@ -172,10 +173,6 @@ exports.API_LIST = {
             name: 'Automat-ctd(Trapi v1.3.0)'
         },
         {
-            id: '463525b319d7e1ef8f705bce953d01bd',
-            name: 'Automat-cord19(Trapi v1.3.0)'
-        },
-        {
             id: '539873b1f2f2eb913efaee411e09eaa7',
             name: 'Automat-drug-central(Trapi v1.3.0)'
         },
@@ -184,12 +181,16 @@ exports.API_LIST = {
             name: 'Automat-gtex(Trapi v1.3.0)'
         },
         {
+            id: 'aacdd9e863bb659574d302f084084976',
+            name: 'Automat-gtopdb(Trapi v1.3.0)'
+        },
+        {
             id: 'fb1f3780ad67b030cb0617363afa8f61',
             name: 'Automat-gwas-catalog(Trapi v1.3.0)'
         },
         {
-            id: 'aacdd9e863bb659574d302f084084976',
-            name: 'Automat-gtopdb(Trapi v1.3.0)'
+            id: '830600da121a5accc955cbf62e60f802',
+            name: 'Automat-hetio(Trapi v1.3.0)'
         },
         {
             id: '7382f0fabffce3cc7f7b8b6358c69259',
@@ -198,10 +199,6 @@ exports.API_LIST = {
         {
             id: 'ee2d2eae42ca30fe82946d3f42febaa0',
             name: 'Automat-hmdb(Trapi v1.3.0)'
-        },
-        {
-            id: '830600da121a5accc955cbf62e60f802',
-            name: 'Automat-hetio(Trapi v1.3.0)'
         },
         {
         // this API overlaps with our BioThings GO APIs, but
@@ -218,20 +215,12 @@ exports.API_LIST = {
             name: 'Automat-intact(Trapi v1.3.0)'
         },
         {
-            id: '4c6f9117581531161849e60ea906f0be',
-            name: 'Automat-ontology-hierarchy(Trapi v1.3.0)'
-        },
-        {
             id: '2a879882329b000c7e7f08c2d71ccffd',
             name: 'Automat-panther(Trapi v1.3.0)'
         },
         {
             id: '0295640b4d060133e4296dda4c31da47',
             name: 'Automat-pharos(Trapi v1.3.0)'
-        },
-        {
-            id: 'ef9027a7d2246c6540cc7b3ce202d89f',
-            name: 'Automat-uberongraph(Trapi v1.3.0)'
         },
         {
             id: '79310edd01cae96f3d8495250e625886',
@@ -246,7 +235,7 @@ exports.API_LIST = {
         //   smartapi ID fc8245e92c970298449294fc04211869
         {
             id: '51c178099fa2dc99b5d8fff8bf9f1a0d',
-            name: 'COHD TRAPI 1.3'
+            name: 'COHD TRAPI'
         },
         // TRAPI (Translator standard) APIs: CHP
         // not accessible by team or api-specific endpoints
@@ -254,27 +243,8 @@ exports.API_LIST = {
             id: '855adaa128ce5aa58a091d99e520d396',
             name: 'Connections Hypothesis Provider API'
         },
-        // TRAPI (Translator standard) APIs: ICEES
-        // not accessible by team or api-specific endpoints
-        // currently commented out because of issues
-        // {
-        //     id: '749c8f527fa07964de692e0969b71a4e',
-        //     name: 'ICEES DILI Instance API - production'
-        // },
-        // {
-        //     id: 'bb806f5c81e86fe12660fa307d4b0a97',
-        //     name: 'ICEES Asthma Instance API - production'
-        // },
-        // {
-        //     id: '4153c947a32e2e2a55a320d0bee22077',
-        //     name: 'ICEES PCD Instance API - production'
-        // },
     ],
     exclude: [ // explicitly disabled for use even in by_api endpoint. for TRAPI and APIs annotated with SmartAPI x-bte
-        // Temporary exclusion due to incompatible x-bte annotation
-        {
-            id: 'e9f69b81e755e163fdf6c41a2b5e07c0',
-            name: 'OpenPredict API',
-        },
+
     ]
 };

@@ -26,7 +26,7 @@ if (!global.threadpool && !isWorkerThread && !(process.env.USE_THREADING === "fa
     sync: new Piscina({
       filename: path.resolve(__dirname, "./taskHandler.js"),
       minThreads: 2,
-      maxThreads: Math.ceil(os.cpus().length * 0.75), // on 8 cores, 24 given 4 instances
+      maxThreads: Math.ceil(os.cpus().length * 0.625), // on 8 cores, 24 given 4 instances
       maxQueue: 600,
       idleTimeout: 10 * 60 * 1000, // 10 minutes
       env,
@@ -172,7 +172,19 @@ async function runTask(req, task, route, res, useBullSync = true) {
   if (queryQueue && useBullSync) {
     const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 10);
     const jobId = nanoid();
-    const jobOpts = { jobId, attempts: 1, timeout: undefined };
+    const jobOpts = {
+      jobId,
+      attempts: 1,
+      timeout: undefined,
+      removeOnFail: {
+        age: 24 * 60 * 60, // keep failed jobs for a day (in case user needs to review fail reason)
+        count: 2000,
+      },
+      removeOnComplete: {
+        age: 90 * 24 * 60 * 60, // keep completed jobs for 90 days
+        count: 2000,
+      },
+    };
 
     if ((await queryQueue.count()) >= 600) {
       const pool = global.threadpool.sync;
@@ -194,8 +206,8 @@ async function runTask(req, task, route, res, useBullSync = true) {
         // Have to reconstruct the error because Bull does some weirdness
         const jobLatest = await queryQueue.getJob(jobOpts.jobId);
         const reconstructedError = new Error();
-        reconstructedError.name = jobLatest.stacktrace[0].split(':')[0];
-        reconstructedError.message = jobLatest.stacktrace[0].split('\n')[0];
+        reconstructedError.name = jobLatest.stacktrace[0].split(":")[0];
+        reconstructedError.message = jobLatest.stacktrace[0].split("\n")[0];
         reconstructedError.stack = jobLatest.stacktrace[0];
         reject(reconstructedError);
       }
@@ -272,7 +284,7 @@ function taskError(error) {
 if (!global.queryQueue.bte_sync_query_queue && !isWorkerThread) {
   getQueryQueue("bte_sync_query_queue");
   if (global.queryQueue.bte_sync_query_queue) {
-    global.queryQueue.bte_sync_query_queue.process(Math.ceil(os.cpus().length * 0.75), async job => {
+    global.queryQueue.bte_sync_query_queue.process(Math.ceil(os.cpus().length * 0.625), async job => {
       try {
         return await runBullTask(job, job.data.route, false);
       } catch (error) {

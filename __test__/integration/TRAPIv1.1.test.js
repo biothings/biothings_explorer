@@ -57,7 +57,7 @@ describe("Testing v1.1 endpoints", () => {
           expect.arrayContaining([
             expect.objectContaining({
               subject: "biolink:SmallMolecule",
-              predicate: "biolink:entity_positively_regulates_entity",
+              predicate: "biolink:regulates",
               object: "biolink:Gene",
             }),
           ]),
