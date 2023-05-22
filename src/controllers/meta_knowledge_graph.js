@@ -119,14 +119,18 @@ module.exports = class MetaKnowledgeGraphHandler {
             const cur_edge = edges[`${input}-${pred.predicate}-${output}`];
             if (pred.qualifiers) {
               Object.entries(pred.qualifiers).forEach(([qual, val]) => {
-                const [type_id, value] = this._modifyQualifierData(qual, val);
-                const existing_qualifier = cur_edge.qualifiers?.find(q => q.qualifier_type_id === type_id);
-                if (existing_qualifier) {
-                  if (!existing_qualifier.applicable_values.includes(value)) existing_qualifier.applicable_values.push(value);
-                } else {
-                  if (!cur_edge.qualifiers) cur_edge.qualifiers = [];
-                  cur_edge.qualifiers.push({ qualifier_type_id: type_id, applicable_values: [value] });
-                }
+                let values = Array.isArray(val) ? val : [val];
+                values.forEach(curVal => {
+                    console.log(curVal)
+                    const [type_id, value] = this._modifyQualifierData(qual, curVal);
+                    const existing_qualifier = cur_edge.qualifiers?.find(q => q.qualifier_type_id === type_id);
+                    if (existing_qualifier) {
+                        if (!existing_qualifier.applicable_values.includes(value)) existing_qualifier.applicable_values.push(value);
+                    } else {
+                        if (!cur_edge.qualifiers) cur_edge.qualifiers = [];
+                        cur_edge.qualifiers.push({ qualifier_type_id: type_id, applicable_values: [value] });
+                    }
+                })
               })
             }
             return;
@@ -137,8 +141,18 @@ module.exports = class MetaKnowledgeGraphHandler {
             predicate: pred.predicate,
             object: output,
             qualifiers: pred.qualifiers ? Object.entries(pred.qualifiers).map(([qual, val]) => {
-              const [type_id, value] = this._modifyQualifierData(qual, val);
-              return { qualifier_type_id: type_id, applicable_values: [value] };
+              if (!Array.isArray(val)) {
+                const [type_id, value] = this._modifyQualifierData(qual, val);
+                return { qualifier_type_id: type_id, applicable_values: [value] };
+              } else {
+                let type_id = this._modifyPredicate(qual);
+                let values = [];
+                val.forEach(curVal => { 
+                    const [_, value] = this._modifyQualifierData(qual, curVal);
+                    values.push(value);
+                })
+                return { qualifier_type_id: type_id, applicable_values: values };
+              }
             }) : undefined,
             knowledge_types: ["lookup"],
           };
