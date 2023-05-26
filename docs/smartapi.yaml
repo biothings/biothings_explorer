@@ -514,6 +514,12 @@ paths:
           required: false
           schema:
             type: boolean
+        - description: set creative mode limit
+          in: query
+          name: creativeLimit
+          required: false
+          schema:
+            type: number
       requestBody:
         description: Query information to be submitted
         required: true
