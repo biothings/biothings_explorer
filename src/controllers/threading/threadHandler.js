@@ -11,6 +11,8 @@ const ServerOverloadedError = require("../../utils/errors/server_overloaded_erro
 const { customAlphabet } = require("nanoid");
 const { getQueryQueue } = require("../async/asyncquery_queue");
 
+const SYNC_CONCURRENCY_RATIO = 0.5
+
 if (!global.threadpool && !isWorkerThread && !(process.env.USE_THREADING === "false")) {
   const env = {
     ...process.env,
@@ -26,7 +28,7 @@ if (!global.threadpool && !isWorkerThread && !(process.env.USE_THREADING === "fa
     sync: new Piscina({
       filename: path.resolve(__dirname, "./taskHandler.js"),
       minThreads: 2,
-      maxThreads: Math.ceil(os.cpus().length * 0.625), // on 8 cores, 24 given 4 instances
+      maxThreads: Math.ceil(os.cpus().length * SYNC_CONCURRENCY_RATIO), // on 8 cores, 24 given 4 instances
       maxQueue: 600,
       idleTimeout: 10 * 60 * 1000, // 10 minutes
       env,
@@ -284,7 +286,7 @@ function taskError(error) {
 if (!global.queryQueue.bte_sync_query_queue && !isWorkerThread) {
   getQueryQueue("bte_sync_query_queue");
   if (global.queryQueue.bte_sync_query_queue) {
-    global.queryQueue.bte_sync_query_queue.process(Math.ceil(os.cpus().length * 0.625), async job => {
+    global.queryQueue.bte_sync_query_queue.process(Math.ceil(os.cpus().length * SYNC_CONCURRENCY_RATIO), async job => {
       try {
         return await runBullTask(job, job.data.route, false);
       } catch (error) {
