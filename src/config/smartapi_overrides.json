@@ -4,6 +4,9 @@
   },
   "apis": {
     "978fe380a147a8641caf72320862697b": "https://raw.githubusercontent.com/NCATS-Tangerine/translator-api-registry/text-mining-provider-trapi-1.4/text_mining/smartapi.yaml",
-    "08a5ddcde71b4bf838327ef469076acd": "https://raw.githubusercontent.com/GitHubbit/translator-api-registry/master/multiomics_clinical_trials/smartapi.yaml"
+    "08a5ddcde71b4bf838327ef469076acd": "https://raw.githubusercontent.com/GitHubbit/translator-api-registry/master/multiomics_clinical_trials/smartapi.yaml",
+    "adf20dd6ff23dfe18e8e012bde686e31": "https://raw.githubusercontent.com/gloriachin/translator-api-registry/master/drug_response_kp/smartapi.yaml",
+    "d86a24f6027ffe778f84ba10a7a1861a": "https://raw.githubusercontent.com/Hadlock-Lab/clinical_risk_kp/TRAPI_1.4_yaml_edit/ehr_risk_kp.yaml",
+    "02af7d098ab304e80d6f4806c3527027": "https://raw.githubusercontent.com/Hadlock-Lab/multiomics_wellness_kp/main/multiomics_wellness_TRAPI_1.4.yaml"
   }
 }
