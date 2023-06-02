@@ -37,6 +37,6 @@ USER node
 EXPOSE 3000
 ENV NODE_ENV production
 ENV DEBUG ${debug:+biomedical-id-resolver,bte*}
-# ENV API_OVERRIDE true
+ENV API_OVERRIDE true
 # ENV USE_THREADING ${debug:+false}
 CMD ["pm2-runtime", "bte-pm2.json", "--env prodci", "--only", "bte-trapi"]
