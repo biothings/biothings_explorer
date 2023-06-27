@@ -94,6 +94,14 @@ Several environment variables are supported for various purposes, listed below:
 
 **Description:** When set to `production`, the package runs in production mode, including synchronizing the latest SmartAPI specifications on a schedule. When set to `development`, additional traceback information is retained in TRAPI logs.
 
+#### `OVERRIDES_FILE`
+
+**Default:** `undefined`
+
+**Docker Default:** `undefined`
+
+**Description:** Path (absolute or relative to `process.cwd()`) to custom API overrides file. When defined, BTE will assume that `API_OVERRIDES` is true and use the provided file. This can be used to test API overrides without rebuilding a container. 
+
 #### `PORT`
 
 **Default:** `3000`

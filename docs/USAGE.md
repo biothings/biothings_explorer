@@ -142,3 +142,9 @@ To run the container with overrides and debug logging enabled:
 ```bash
 docker run -it --rm -p 3000:3000 --name bte-trapi -e DEBUG="biomedical-id-resolver,bte*" -e API_OVERRIDE=true biothings/bte-trapi
 ```
+
+You can also pass the path to your overrides file to the environment variable `OVERRIDES_FILE`. This will allow you to test your overrides without rebuilding the container. The file must be in the same format as `smartapi_overrides.json`. 
+
+```
+OVERRIDES_FILE=/path/to/file.json docker compose up
+```
