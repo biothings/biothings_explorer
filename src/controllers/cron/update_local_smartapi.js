@@ -10,9 +10,8 @@ var url = require("url");
 const validUrl = require("valid-url");
 const config = require("../../config/smartapi_exclusions");
 
-const userAgent = `BTE/${process.env.NODE_ENV === "production" ? "prod" : "dev"} Node/${process.version} ${
-  process.platform
-}`;
+const userAgent = `BTE/${process.env.NODE_ENV === "production" ? "prod" : "dev"} Node/${process.version} ${process.platform
+  }`;
 
 const getServerFromSpec = spec => {
   const productionLevel = process.env.INSTANCE_ENV ?? "";
@@ -147,9 +146,9 @@ const getPredicatesFromGraphData = (predicate_endpoint, data) => {
       predicates[edge.object] = {};
     }
     if (Array.isArray(predicates[edge.object][edge.subject])) {
-      predicates[edge.object][edge.subject].push({predicate: edge.predicate, qualifiers: edge.qualifiers});
+      predicates[edge.object][edge.subject].push({ predicate: edge.predicate, qualifiers: edge.qualifiers });
     } else {
-      predicates[edge.object][edge.subject] = [{predicate: edge.predicate, qualifiers: edge.qualifiers}];
+      predicates[edge.object][edge.subject] = [{ predicate: edge.predicate, qualifiers: edge.qualifiers }];
     }
   };
 
@@ -176,14 +175,13 @@ const getOpsFromEndpoint = async metadata => {
       }
       debug(
         `[error]: API "${metadata.association.api_name}" Unable to get ${metadata.predicates_path}` +
-          ` for ${metadata.query_operation.server} due to query failure with status code ${res.status}`,
+        ` for ${metadata.query_operation.server} due to query failure with status code ${res.status}`,
       );
       return false;
     })
     .catch(err => {
       debug(
-        `[error]: API "${metadata.association.api_name}" failed to get ${metadata.predicates_path} for ${
-          metadata.query_operation.server
+        `[error]: API "${metadata.association.api_name}" failed to get ${metadata.predicates_path} for ${metadata.query_operation.server
         } due to error ${err.toString()}`,
       );
       return false;
@@ -228,7 +226,7 @@ const updateSmartAPISpecs = async () => {
   const localFilePath = path.resolve(__dirname, "../../../data/smartapi_specs.json");
   const predicatesFilePath = path.resolve(__dirname, "../../../data/predicates.json");
   const writeFunc = process.env.SYNC_AND_EXIT === "true" ? fs.writeFileSync : fs.writeFile;
-  if (process.env.API_OVERRIDE === "true") {
+  if (process.env.OVERRIDES_FILE || process.env.API_OVERRIDE === "true") {
     await getAPIOverrides(res.data);
   }
   debug(`Retrieved ${res.data.total} SmartAPI records`);
@@ -247,7 +245,11 @@ const updateSmartAPISpecs = async () => {
 };
 
 const getAPIOverrides = async data => {
-  const overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
+  // if OVERRIDES_FILE is set, use its value
+  let overridesPath = path.resolve(__dirname, "../../config/smartapi_overrides.json");
+  if (process.env.OVERRIDES_FILE) {
+    overridesPath = path.resolve(process.env.OVERRIDES_FILE);
+  }
   let overrides;
   try {
     overrides = JSON.parse(await readFile(overridesPath));
