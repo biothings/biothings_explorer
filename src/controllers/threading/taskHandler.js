@@ -18,7 +18,8 @@ Sentry.init({
       ...Sentry.autoDiscoverNodePerformanceMonitoringIntegrations(),
       new ProfilingIntegration()
     ],
-  
+    debug: true,
+    normalizeDepth: 6,
     // Set tracesSampleRate to 1.0 to capture 100%
     // of transactions for performance monitoring.
     // We recommend adjusting this value in production
@@ -27,7 +28,6 @@ Sentry.init({
 });
 
 const runTask = async ({ req, route, port, job: { jobId, queueName } = {} }) => {
-    debug("here " + (new Error()).stack);
   debug(`Worker thread ${threadId} beginning task.`);
 
   global.parentPort = port;
@@ -38,18 +38,14 @@ const runTask = async ({ req, route, port, job: { jobId, queueName } = {} }) => 
     queryGraph: req?.body?.message?.query_graph,
   };
 
-  debug("there")
-
   if (queueName) {
     const queue = await getQueryQueue(queueName);
     debug("between everywhere")
     global.job = await queue.getJob(jobId);
   }
 
-  debug("everywhere")
-
   const transaction = Sentry.startTransaction({ name: route });
-  debug(`transaction started ${transaction.spanId}` + (new Error()).stack)
+  debug(`transaction started: ${transaction.spanId}`)
   transaction.setData("request", req.data.queryGraph);
   Sentry.getCurrentHub().configureScope((scope) => scope.setSpan(transaction));
 
@@ -59,7 +55,13 @@ const runTask = async ({ req, route, port, job: { jobId, queueName } = {} }) => 
   debug(`transaction finished for ${transaction.spanId} with data ${JSON.stringify(transaction.data)} for ${transaction.name}`);
   transaction.finish();
 
+  const delay = (delayInms) => {
+    return new Promise(resolve => setTimeout(resolve, delayInms));
+  }
+  await delay(7500);
+
   debug(`Worker thread ${threadId} completed task.`);
+
   return completedTask;
 };
 
