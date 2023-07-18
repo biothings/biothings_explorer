@@ -7,23 +7,25 @@ const debug = require("debug")("bte:biothings-explorer-trapi:error_handler");
 const Sentry = require('@sentry/node');
 
 class ErrorHandler {
+  shouldHandleError(error) {
+    // Capture all 404 and 500 errors
+    if (error instanceof swaggerValidation.InputValidationError || error.name === "InputValidationError") {
+      return false;
+    }
+    if (
+      error instanceof QueryGraphHandler.InvalidQueryGraphError ||
+      error.stack.includes("InvalidQueryGraphError") ||
+      error.name === "InvalidQueryGraphError"
+    ) {
+      return false;
+    }
+    return true;
+  }
+
   setRoutes(app) {
     // first pass through sentry
     app.use(Sentry.Handlers.errorHandler({
-        shouldHandleError(error) {
-          // Capture all 404 and 500 errors
-          if (error instanceof swaggerValidation.InputValidationError || error.name === "InputValidationError") {
-            return false;
-          }
-          if (
-            error instanceof QueryGraphHandler.InvalidQueryGraphError ||
-            error.stack.includes("InvalidQueryGraphError") ||
-            error.name === "InvalidQueryGraphError"
-          ) {
-            return false;
-          }
-          return true;
-        }
+      shouldHandleError: this.shouldHandleError
     }));
 
     app.use((error, req, res, next) => {

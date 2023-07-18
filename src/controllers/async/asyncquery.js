@@ -8,6 +8,8 @@ const { Readable } = require("stream");
 const chunker = require("stream-chunker");
 const { parser } = require("stream-json");
 const Assembler = require("stream-json/Assembler");
+const Sentry = require("@sentry/node");
+const ErrorHandler = require("../../middlewares/error.js");
 
 exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
   try {
@@ -153,6 +155,12 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
     }
   } catch (e) {
     console.error(e);
+
+    // this logic could be used to determine how to send response based on error type
+    if (ErrorHandler.shouldHandleError(e)) {
+        Sentry.captureException(e);
+    }
+
     //shape error > will be handled below
     response = {
       message: {
