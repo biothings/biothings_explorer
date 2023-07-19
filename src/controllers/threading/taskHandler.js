@@ -25,7 +25,10 @@ Sentry.init({
     // of transactions for performance monitoring.
     // We recommend adjusting this value in production
     tracesSampleRate: 1.0,
-    profilesSampleRate: 1.0 // Profiling sample rate is relative to tracesSampleRate
+    profilesSampleRate: 1.0, // Profiling sample rate is relative to tracesSampleRate,
+    _experiments: {
+        maxProfileDurationMs: 6 * 60 * 1000 // max profiling duration of 6 minutes (technically "beta" feature)
+    }
 });
 
 const runTask = async ({ req, route, port, job: { jobId, queueName } = {} }) => {
