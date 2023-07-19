@@ -85,8 +85,9 @@ module.exports = class Config {
     }
 
     setSentry() {
+        // use SENTRY_DSN environment variable
         Sentry.init({
-            dsn: "https://5297933ef0f6487c9fd66532bb1fcefe@o4505444772806656.ingest.sentry.io/4505449737420800",
+            // dsn: "https://5297933ef0f6487c9fd66532bb1fcefe@o4505444772806656.ingest.sentry.io/4505449737420800",
             integrations: [
               // enable HTTP calls tracing
               new Sentry.Integrations.Http({ tracing: true }),
