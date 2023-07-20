@@ -153,20 +153,8 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
     }
   } catch (e) {
     console.error(e);
-    //shape error > will be handled below
-    response = {
-      message: {
-        query_graph: queryGraph,
-        knowledge_graph: { nodes: {}, edges: {} },
-        results: [],
-      },
-      status: "JobQueuingError",
-      description: e.toString(),
-      trace: process.env.NODE_ENV === "production" ? undefined : e.stack,
-    };
-    if (jobID) {
-      await storeQueryResponse(jobID, response);
-    }
+    
+    throw new Error(e.stack);
   }
 
   if (callback_url) {
