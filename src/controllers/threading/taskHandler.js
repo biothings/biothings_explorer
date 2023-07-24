@@ -58,11 +58,6 @@ const runTask = async ({ req, route, port, job: { jobId, queueName } = {} }) => 
   debug(`transaction finished for ${transaction.spanId} with data ${JSON.stringify(transaction.data)} for ${transaction.name}`);
   transaction.finish();
 
-  const delay = (delayInms) => {
-    return new Promise(resolve => setTimeout(resolve, delayInms));
-  }
-  await delay(7500);
-
   debug(`Worker thread ${threadId} completed task.`);
 
   return completedTask;
