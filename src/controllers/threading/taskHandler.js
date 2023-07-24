@@ -24,8 +24,8 @@ Sentry.init({
     // Set tracesSampleRate to 1.0 to capture 100%
     // of transactions for performance monitoring.
     // We recommend adjusting this value in production
-    tracesSampleRate: 1.0,
-    profilesSampleRate: 1.0, // Profiling sample rate is relative to tracesSampleRate,
+    tracesSampleRate: process.env.THREAD_SAMPLE_RATE ? parseFloat(process.env.THREAD_SAMPLE_RATE) : 1.0,
+    profilesSampleRate: process.env.THREAD_PROFILE_RATE ? parseFloat(process.env.THREAD_PROFILE_RATE) : 1.0, // Profiling sample rate is relative to tracesSampleRate,
     _experiments: {
         maxProfileDurationMs: 6 * 60 * 1000 // max profiling duration of 6 minutes (technically "beta" feature)
     }
