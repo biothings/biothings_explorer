@@ -11,6 +11,9 @@ const ServerOverloadedError = require("../../utils/errors/server_overloaded_erro
 const { customAlphabet } = require("nanoid");
 const { getQueryQueue } = require("../async/asyncquery_queue");
 
+const Sentry = require("@sentry/node");
+const ErrorHandler = require("../../middlewares/error.js"); 
+
 const SYNC_CONCURRENCY_RATIO = 0.5
 
 if (!global.threadpool && !isWorkerThread && !(process.env.USE_THREADING === "false")) {
@@ -276,6 +279,9 @@ function taskResponse(response, status = undefined) {
 
 function taskError(error) {
   if (global.parentPort) {
+    if (ErrorHandler.shouldHandleError(error)) {
+        Sentry.captureException(error);
+    }
     global.parentPort.postMessage({ threadId, err: error });
     return undefined;
   } else {
