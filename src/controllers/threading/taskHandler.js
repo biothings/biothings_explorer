@@ -19,7 +19,6 @@ Sentry.init({
       ...Sentry.autoDiscoverNodePerformanceMonitoringIntegrations(),
       new ProfilingIntegration()
     ],
-    debug: true,
     normalizeDepth: 6,
     maxBreadcrumbs: 500,
     // Set tracesSampleRate to 1.0 to capture 100%
@@ -49,7 +48,6 @@ const runTask = async ({ req, route, port, job: { jobId, queueName } = {} }) => 
   }
 
   const transaction = Sentry.startTransaction({ name: route });
-  debug(`transaction started: ${transaction.spanId}`)
   transaction.setData("request", req.data.queryGraph);
   Sentry.getCurrentHub().configureScope((scope) => { 
     scope.clearBreadcrumbs();
@@ -59,7 +57,6 @@ const runTask = async ({ req, route, port, job: { jobId, queueName } = {} }) => 
   const completedTask = await tasks[route](req);
   await Promise.all(global.cachingTasks);
 
-  debug(`transaction finished for ${transaction.spanId} with data ${JSON.stringify(transaction.data)} for ${transaction.name}`);
   transaction.finish();
 
   debug(`Worker thread ${threadId} completed task.`);
