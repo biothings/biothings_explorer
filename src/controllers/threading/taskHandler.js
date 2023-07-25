@@ -21,6 +21,7 @@ Sentry.init({
     ],
     debug: true,
     normalizeDepth: 6,
+    maxBreadcrumbs: 500,
     // Set tracesSampleRate to 1.0 to capture 100%
     // of transactions for performance monitoring.
     // We recommend adjusting this value in production
@@ -50,7 +51,10 @@ const runTask = async ({ req, route, port, job: { jobId, queueName } = {} }) => 
   const transaction = Sentry.startTransaction({ name: route });
   debug(`transaction started: ${transaction.spanId}`)
   transaction.setData("request", req.data.queryGraph);
-  Sentry.getCurrentHub().configureScope((scope) => scope.setSpan(transaction));
+  Sentry.getCurrentHub().configureScope((scope) => { 
+    scope.clearBreadcrumbs();
+    scope.setSpan(transaction);
+ });
 
   const completedTask = await tasks[route](req);
   await Promise.all(global.cachingTasks);
