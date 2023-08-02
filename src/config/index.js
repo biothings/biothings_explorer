@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const dotenv = require("dotenv");
+const Sentry = require('@sentry/node');
 
 
 module.exports = class Config {
@@ -12,6 +13,7 @@ module.exports = class Config {
     }
 
     setConfig() {
+        this.setSentry();
         this.setDotEnv();
         this.setNodeEnv();
         this.setBodyParser();
@@ -80,5 +82,31 @@ module.exports = class Config {
         this.app.use("/v1/meta_knowledge_graph", medLimiter);
         this.app.use("/v1/team/:teamName/meta_knowledge_graph", medLimiter);
         this.app.use("/v1/smartapi/:smartapiID/meta_knowledge_graph", medLimiter);
+    }
+
+    setSentry() {
+        // use SENTRY_DSN environment variable
+        Sentry.init({
+            // dsn: "https://5297933ef0f6487c9fd66532bb1fcefe@o4505444772806656.ingest.sentry.io/4505449737420800",
+            integrations: [
+              // enable HTTP calls tracing
+              new Sentry.Integrations.Http({ tracing: true }),
+              // enable Express.js middleware tracing
+              new Sentry.Integrations.Express({ app: this.app }),
+              // Automatically instrument Node.js libraries and frameworks
+              ...Sentry.autoDiscoverNodePerformanceMonitoringIntegrations(),
+            ],
+          
+            // Set tracesSampleRate to 1.0 to capture 100%
+            // of transactions for performance monitoring.
+            // We recommend adjusting this value in production
+            tracesSampleRate: process.env.EXPRESS_SAMPLE_RATE ? parseFloat(process.env.EXPRESS_SAMPLE_RATE) : 1.0,
+        });
+
+        // RequestHandler creates a separate execution context, so that all
+        // transactions/spans/breadcrumbs are isolated across requests
+        this.app.use(Sentry.Handlers.requestHandler({user: false}));
+        // TracingHandler creates a trace for every incoming request
+        this.app.use(Sentry.Handlers.tracingHandler());
     }
 }
