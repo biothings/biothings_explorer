@@ -153,8 +153,25 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
     }
   } catch (e) {
     console.error(e);
+
+    response = {
+        message: {
+          query_graph: queryGraph,
+          knowledge_graph: { nodes: {}, edges: {} },
+          results: [],
+        },
+        status: "Failed",
+        schema_version: '1.4.0',
+        workflow: [{ id: 'lookup' }],
+        description: e.toString(),
+        trace: process.env.NODE_ENV === "production" ? undefined : e.stack,
+    };
+
+    if (jobID) {
+        await storeQueryResponse(jobID, response);
+    }
     
-    throw new Error(e.stack);
+    throw e;
   }
 
   if (callback_url) {
