@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   description: A TRAPI/Reasoner Standard API for BioThings Explorer (BTE)
-  version: 2.8.1
+  version: 3.0.0
   title: BioThings Explorer (BTE) TRAPI
   contact:
     email: asu@scripps.edu
@@ -12,7 +12,7 @@ info:
     component: ARA
     team:
       - Exploring Agent
-    biolink-version: "3.1.1"
+    biolink-version: "3.5.0"
     infores: "infores:biothings-explorer"
   x-trapi:
     version: 1.4.0
@@ -34,6 +34,15 @@ servers:
 ## ITRB CI / staging deployments are made by our team (will add details later)
 ## non-ITRB dev: deployments are made by our team
 ##               we have full control on when / what branches for modules are used
+- url: https://bte.transltr.io/v1
+  description: ITRB Production server
+  x-maturity: production
+- url: https://bte.test.transltr.io/v1
+  description: ITRB Test server
+  x-maturity: testing
+- url: https://bte.ci.transltr.io/v1
+  description: ITRB CI server
+  x-maturity: staging
 - url: https://api.bte.ncats.io/v1
   description: Non-ITRB dev (internal use)
   x-maturity: development
@@ -1059,7 +1068,8 @@ components:
             Graph Edges and Result Analyses. These are referenced elsewhere by
             the dictionary key.
           additionalProperties:
-            $ref: '#components/schemas/AuxiliaryGraph'
+            $ref: '#/components/schemas/AuxiliaryGraph'
+          nullable: true
       additionalProperties: false
     LogEntry:
       description: >-
@@ -1117,8 +1127,7 @@ components:
         A Result object specifies the nodes and edges in the knowledge graph
         that satisfy the structure or conditions of a user-submitted query
         graph. It must contain a NodeBindings object (list of query graph node
-        to knowledge graph node mappings) and an EdgeBindings object (list of
-        query graph edge to knowledge graph edge mappings).
+        to knowledge graph node mappings) and a list of Analysis objects.
       properties:
         node_bindings:
           type: object
@@ -2042,6 +2051,7 @@ components:
             'aggregator' or 'supporting data' sources.
         upstream_resource_ids:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/CURIE'
           description: >-
@@ -2056,6 +2066,7 @@ components:
           example: [infores:automat-mychem-info, infores:molepro]
         source_record_urls:
           type: array
+          nullable: true
           items: 
             type: string
           description: >-
