@@ -73,7 +73,7 @@ class VCheckQueryStatus {
                 job_id,
                 status,
                 description: `Job was stopped after exceeding time limit of ${
-                  parseInt(process.env.JOB_TIMEOUT) / 1000
+                  parseInt(process.env.JOB_TIMEOUT ?? (1000 * 60 * 5).toString()) / 1000
                 }s`,
                 logs,
               });

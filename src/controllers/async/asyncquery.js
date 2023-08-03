@@ -33,7 +33,7 @@ exports.asyncquery = async (req, res, next, queueData, queryQueue) => {
         {
           jobId: jobId,
           url: url,
-          timeout: parseInt(process.env.JOB_TIMEOUT ?? (1000 * 60 * 60 * 2).toString()),
+          timeout: parseInt(process.env.JOB_TIMEOUT ?? (1000 * 60 * 5).toString()),
           removeOnFail: {
             age: 24 * 60 * 60, // keep failed jobs for a day (in case user needs to review fail reason)
             count: 2000,

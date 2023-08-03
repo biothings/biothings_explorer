@@ -56,11 +56,11 @@ Several environment variables are supported for various purposes, listed below:
 
 #### `JOB_TIMEOUT`
 
-**Default:** `7200000`
+**Default:** `300000`
 
-**Docker Default:** `7200000`
+**Docker Default:** `300000`
 
-**Description:** Number of ms after which an asynchronous query should fail after execution start. Default comes to 2 hours.
+**Description:** Number of ms after which an asynchronous query should fail after execution start. Default comes to 5 minutes.
 
 #### `MAX_QUERIES_PER_MIN`
 
@@ -152,7 +152,7 @@ Several environment variables are supported for various purposes, listed below:
 
 #### `REQUEST_TIMEOUT`
 
-**Default:** `undefined`
+**Default:** `600`
 
 **Docker Default:** `600`
 

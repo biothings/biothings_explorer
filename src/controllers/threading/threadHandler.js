@@ -112,7 +112,7 @@ const queueTaskToWorkers = async (pool, req, route, job) => {
     let reqDone = false;
     let cacheInProgress = 0;
     let cacheKeys = {};
-    const timeout = parseInt(process.env.REQUEST_TIMEOUT) * 1000;
+    const timeout = parseInt(process.env.REQUEST_TIMEOUT ?? (60 * 5).toString()) * 1000;
     fromWorker.on("message", ({ threadId, ...msg }) => {
       if (msg.cacheInProgress) {
         // cache handler has started caching
