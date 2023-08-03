@@ -12,9 +12,22 @@ const { customAlphabet } = require("nanoid");
 const { getQueryQueue } = require("../async/asyncquery_queue");
 
 const Sentry = require("@sentry/node");
-const ErrorHandler = require("../../middlewares/error.js"); 
+const ErrorHandler = require("../../middlewares/error.js");
 
-const SYNC_CONCURRENCY_RATIO = 0.5
+// On Prod: 0.25 ratio * 16 cores * 4 instances = 16 threads
+const SYNC_CONCURRENCY_RATIO = 0.25
+/** On Prod: 0.5 ratio * 16 cores * 4 instances = 32 threads
+ * Async has 3 queues:
+ * - general
+ * - by api
+ * - by team
+ *
+ * Distribution between those is set manually. General should get priority.
+ * */
+const ASYNC_CONCURRENCY_RATIO = 0.5
+
+const SYNC_CONCURRENCY = Math.ceil(os.cpus().length * SYNC_CONCURRENCY_RATIO)
+const ASYNC_CONCURRENCY = Math.ceil(os.cpus().length * ASYNC_CONCURRENCY_RATIO)
 
 if (!global.threadpool && !isWorkerThread && !(process.env.USE_THREADING === "false")) {
   const env = {
@@ -31,7 +44,7 @@ if (!global.threadpool && !isWorkerThread && !(process.env.USE_THREADING === "fa
     sync: new Piscina({
       filename: path.resolve(__dirname, "./taskHandler.js"),
       minThreads: 2,
-      maxThreads: Math.ceil(os.cpus().length * SYNC_CONCURRENCY_RATIO), // on 8 cores, 24 given 4 instances
+      maxThreads: SYNC_CONCURRENCY,
       maxQueue: 600,
       idleTimeout: 10 * 60 * 1000, // 10 minutes
       env,
@@ -42,7 +55,8 @@ if (!global.threadpool && !isWorkerThread && !(process.env.USE_THREADING === "fa
      */
     async: new Piscina({
       filename: path.resolve(__dirname, "./taskHandler.js"),
-      maxThreads: 6, // 3 job queues allowing concurrency of 2
+      // e.g. 8 cores *
+      maxThreads: ASYNC_CONCURRENCY,
       minThreads: 1,
       idleTimeout: 60 * 60 * 1000, // 1 hour
       env,
@@ -292,7 +306,7 @@ function taskError(error) {
 if (!global.queryQueue.bte_sync_query_queue && !isWorkerThread) {
   getQueryQueue("bte_sync_query_queue");
   if (global.queryQueue.bte_sync_query_queue) {
-    global.queryQueue.bte_sync_query_queue.process(Math.ceil(os.cpus().length * SYNC_CONCURRENCY_RATIO), async job => {
+    global.queryQueue.bte_sync_query_queue.process(SYNC_CONCURRENCY, async job => {
       try {
         return await runBullTask(job, job.data.route, false);
       } catch (error) {
