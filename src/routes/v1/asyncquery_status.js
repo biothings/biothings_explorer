@@ -65,7 +65,7 @@ class VCheckQueryStatus {
           null: ["Failed", "The query status is unknown, presumed failed (if you see this, raise an issue)."],
         }[state];
         let progress = job._progress;
-        if (status === "Failed") {
+        if (status === "Failed" && !req.endpoint.includes("asyncquery_response")) {
           if (description.includes("Promise timed out")) {
             // something might break when calculating process.env.JOB_TIMEOUT so wrap it in try catch
             try {
@@ -85,11 +85,16 @@ class VCheckQueryStatus {
         }
 
         // If done, just give response if using the response_url
-        if (state === "completed" && req.endpoint.includes("asyncquery_response")) {
+        if ((state === "completed" || state === "failed") && req.endpoint.includes("asyncquery_response")) {
           let returnValue;
           const storedResponse = await getQueryResponse(job_id, req.data.options.logLevel);
+
+          if (!storedResponse.logs && logs) {
+            storedResponse.logs = logs;
+          }
+
           returnValue = storedResponse ? storedResponse : { error: "Response expired. Responses are kept 30 days." };
-          return taskResponse(returnValue, returnValue.status || 200);
+          return taskResponse(returnValue, returnValue.statusCode || 200);
         }
 
         taskResponse({ job_id, status, progress, description, response_url: job.data.url, logs }, 200);

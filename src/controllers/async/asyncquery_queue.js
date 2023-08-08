@@ -58,20 +58,24 @@ exports.getQueryQueue = name => {
         debug(error);
       }
       if (job.data.callback_url) {
+        const logs = await global.queryQueue[name]?.getJobLogs(job.id)?.logs?.map(log => JSON.parse(log));
         try {
           await axios({
             method: "post",
             url: job.data.callback_url,
+            schema_version: '1.4.0',
+            workflow: [{ id: 'lookup' }],
+            logs: logs,
             data: {
               message: {
                 query_graph: job.data.queryGraph,
                 knowledge_graph: { nodes: {}, edges: {} },
                 results: [],
               },
-              status: "JobQueuingError",
+              status: "Failed",
               description: error.toString(),
               trace: process.env.NODE_ENV === "production" ? undefined : error.stack,
-            },
+            }
           });
         } catch (error) {
           debug(`Callback failed with error ${error.message}`);

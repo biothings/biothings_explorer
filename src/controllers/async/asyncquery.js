@@ -156,25 +156,29 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
   } catch (e) {
     console.error(e);
 
-    // this logic could be used to determine how to send response based on error type
     if (ErrorHandler.shouldHandleError(e)) {
         Sentry.captureException(e);
     }
 
     //shape error > will be handled below
     response = {
-      message: {
-        query_graph: queryGraph,
-        knowledge_graph: { nodes: {}, edges: {} },
-        results: [],
-      },
-      status: "JobQueuingError",
-      description: e.toString(),
-      trace: process.env.NODE_ENV === "production" ? undefined : e.stack,
+        message: {
+          query_graph: queryGraph,
+          knowledge_graph: { nodes: {}, edges: {} },
+          results: [],
+        },
+        status: "Failed",
+        schema_version: '1.4.0',
+        workflow: [{ id: 'lookup' }],
+        description: e.toString(),
+        trace: process.env.NODE_ENV === "production" ? undefined : e.stack,
     };
+
     if (jobID) {
-      await storeQueryResponse(jobID, response);
+        await storeQueryResponse(jobID, response);
     }
+    
+    throw e;
   }
 
   if (callback_url) {
