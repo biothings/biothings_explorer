@@ -13,7 +13,7 @@
       "env": {
         "PORT": "3000",
         "LOG": "./log",
-        "REQUEST_TIMEOUT": 600
+        "REQUEST_TIMEOUT": 300
       },
       "env_prod": {
         "NODE_ENV": "production",
