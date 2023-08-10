@@ -101,6 +101,7 @@ module.exports = class Config {
             // of transactions for performance monitoring.
             // We recommend adjusting this value in production
             tracesSampleRate: process.env.EXPRESS_SAMPLE_RATE ? parseFloat(process.env.EXPRESS_SAMPLE_RATE) : 1.0,
+            environment: process.env.INSTANCE_ENV
         });
 
         // RequestHandler creates a separate execution context, so that all
