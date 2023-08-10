@@ -16,16 +16,6 @@ const predicatesPath = path.resolve(
   process.env.STATIC_PATH ? `${process.env.STATIC_PATH}/data/predicates.json` : "../../../data/predicates.json",
 );
 
-if (!global.queryQueue.bte_query_queue && isMainThread) {
-  getQueryQueue("bte_query_queue");
-  if (global.queryQueue.bte_query_queue) {
-    global.queryQueue.bte_query_queue.process(22, async job => {
-      return await runBullTask(job, path.parse(__filename).name);
-    });
-    // path.resolve(__dirname, "../../controllers/async/processors/async_v1.js"),
-  }
-}
-
 class V1RouteAsyncQuery {
   setRoutes(app) {
     app
