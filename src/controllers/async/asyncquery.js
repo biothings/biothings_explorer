@@ -168,7 +168,8 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
           results: [],
         },
         status: "Failed",
-        schema_version: '1.4.0',
+        schema_version: global.SCHEMA_VERSION,
+        biolink_version: global.BIOLINK_VERSION,
         workflow: [{ id: 'lookup' }],
         description: e.toString(),
         trace: process.env.NODE_ENV === "production" ? undefined : e.stack,
@@ -177,7 +178,7 @@ exports.asyncqueryResponse = async (handler, callback_url, jobID = null, jobURL 
     if (jobID) {
         await storeQueryResponse(jobID, response);
     }
-    
+
     throw e;
   }
 

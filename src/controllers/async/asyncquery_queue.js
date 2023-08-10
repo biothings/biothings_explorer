@@ -63,7 +63,8 @@ exports.getQueryQueue = name => {
           await axios({
             method: "post",
             url: job.data.callback_url,
-            schema_version: '1.4.0',
+            schema_version: global.SCHEMA_VERSION,
+            biolink_version: global.BIOLINK_VERSION,
             workflow: [{ id: 'lookup' }],
             logs: logs,
             data: {
