@@ -55,7 +55,7 @@ class VCheckQueryStatus {
         logs = logs.logs.map(log => JSON.parse(log));
         let [status, description] = {
           // convert to TRAPI states
-          completed: ["Completed", "The query has finixhed executing."],
+          completed: ["Completed", "The query has finished executing."],
           failed: ["Failed", job.failedReason],
           delayed: ["Queued", "The query is queued, but has been delayed."],
           active: ["Running", "The query is currently being processed."],

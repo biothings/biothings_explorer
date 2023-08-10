@@ -14,20 +14,29 @@ const { getQueryQueue } = require("../async/asyncquery_queue");
 const Sentry = require("@sentry/node");
 const ErrorHandler = require("../../middlewares/error.js");
 
+const SYNC_MIN_CONCURRENCY = 2;
+const ASYNC_MIN_CONCURRENCY = 3;
+
 // On Prod: 0.25 ratio * 16 cores * 4 instances = 16 threads
-const SYNC_CONCURRENCY_RATIO = 0.25
-/** On Prod: 0.5 ratio * 16 cores * 4 instances = 32 threads
+const SYNC_CONCURRENCY_RATIO = 0.25;
+/** On Prod: 0.25 ratio * 16 cores * 4 instances = 16 threads
  * Async has 3 queues:
  * - general
  * - by api
  * - by team
  *
- * Distribution between those is set manually. General should get priority.
+ * Distribution between those is seen below.
  * */
-const ASYNC_CONCURRENCY_RATIO = 0.5
+const ASYNC_CONCURRENCY_RATIO = 0.25;
 
-const SYNC_CONCURRENCY = Math.ceil(os.cpus().length * SYNC_CONCURRENCY_RATIO)
-const ASYNC_CONCURRENCY = Math.ceil(os.cpus().length * ASYNC_CONCURRENCY_RATIO)
+let SYNC_CONCURRENCY = Math.ceil(os.cpus().length * SYNC_CONCURRENCY_RATIO);
+if (SYNC_CONCURRENCY < SYNC_MIN_CONCURRENCY) SYNC_CONCURRENCY = SYNC_MIN_CONCURRENCY;
+let ASYNC_CONCURRENCY = Math.ceil(os.cpus().length * ASYNC_CONCURRENCY_RATIO);
+if (ASYNC_CONCURRENCY < ASYNC_MIN_CONCURRENCY) ASYNC_CONCURRENCY = ASYNC_MIN_CONCURRENCY;
+
+const ASYNC_MAIN_CONCURRENCY = ASYNC_CONCURRENCY <= 9 ? Math.ceil(ASYNC_CONCURRENCY / 3) : ASYNC_CONCURRENCY - 6;
+const ASYNC_BY_API_CONCURRENCY = ASYNC_CONCURRENCY <= 9 ? Math.floor(ASYNC_CONCURRENCY / 3) : 3;
+const ASYNC_BY_TEAM_CONCURRENCY = ASYNC_CONCURRENCY <= 9 ? Math.floor(ASYNC_CONCURRENCY / 3) : 3;
 
 if (!global.threadpool && !isWorkerThread && !(process.env.USE_THREADING === "false")) {
   const env = {
@@ -186,7 +195,7 @@ async function runTask(req, task, route, res, useBullSync = true) {
       },
     },
     params: req.params,
-    endpoint: req.originalUrl
+    endpoint: req.originalUrl,
   };
   if (queryQueue && useBullSync) {
     const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 10);
@@ -294,7 +303,7 @@ function taskResponse(response, status = undefined) {
 function taskError(error) {
   if (global.parentPort) {
     if (ErrorHandler.shouldHandleError(error)) {
-        Sentry.captureException(error);
+      Sentry.captureException(error);
     }
     global.parentPort.postMessage({ threadId, err: error });
     return undefined;
@@ -312,6 +321,33 @@ if (!global.queryQueue.bte_sync_query_queue && !isWorkerThread) {
       } catch (error) {
         throw error;
       }
+    });
+  }
+}
+
+if (!global.queryQueue.bte_query_queue && !isWorkerThread) {
+  getQueryQueue("bte_query_queue");
+  if (global.queryQueue.bte_query_queue) {
+    global.queryQueue.bte_query_queue.process(ASYNC_MAIN_CONCURRENCY, async job => {
+      return await runBullTask(job, "asyncquery_v1");
+    });
+  }
+}
+
+if (!global.queryQueue.bte_query_queue_by_api && !isWorkerThread) {
+  getQueryQueue("bte_query_queue_by_api");
+  if (global.queryQueue.bte_query_queue_by_api) {
+    global.queryQueue.bte_query_queue_by_api.process(ASYNC_BY_API_CONCURRENCY, async job => {
+      return await runBullTask(job, "asyncquery_v1_by_api");
+    });
+  }
+}
+
+if (!global.queryQueue.bte_query_queue_by_team && !isWorkerThread) {
+  getQueryQueue("bte_query_queue_by_team");
+  if (global.queryQueue.bte_query_queue_by_team) {
+    global.queryQueue.bte_query_queue_by_team.process(ASYNC_BY_TEAM_CONCURRENCY, async job => {
+      return await runBullTask(job, "asyncquery_v1_by_team");
     });
   }
 }
