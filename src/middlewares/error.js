@@ -19,6 +19,9 @@ class ErrorHandler {
     ) {
       return false;
     }
+    if (error.name === "QueryAborted") {
+      return false;
+    }
     return true;
   }
 
@@ -26,7 +29,10 @@ class ErrorHandler {
     // first pass through sentry
     app.use(Sentry.Handlers.errorHandler({
       shouldHandleError(error) {
-         // Capture all 404 and 500 errors
+        // Do not capture non-server errors
+        if (error.status && error.status < 500) {
+            return false;
+        }
         if (error instanceof swaggerValidation.InputValidationError || error.name === "InputValidationError") {
             return false;
         }
@@ -36,6 +42,9 @@ class ErrorHandler {
             error.name === "InvalidQueryGraphError"
         ) {
             return false;
+        }
+        if (error.name === "QueryAborted") {
+          return false;
         }
         return true;
       }

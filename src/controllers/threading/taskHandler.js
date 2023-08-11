@@ -19,6 +19,8 @@ Sentry.init({
       ...Sentry.autoDiscoverNodePerformanceMonitoringIntegrations(),
       new ProfilingIntegration()
     ],
+    environment: process.env.INSTANCE_ENV,
+    debug: true,
     normalizeDepth: 6,
     maxBreadcrumbs: 500,
     // Set tracesSampleRate to 1.0 to capture 100%
