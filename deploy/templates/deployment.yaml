@@ -36,8 +36,6 @@ spec:
               value: "{{ .Values.env.REDIS_TLS_ENABLED_VALUE }}"
             - name: REDIS_CLUSTER
               value: "{{ .Values.env.REDIS_CLUSTER_VALUE }}"
-            - name: REQUEST_TIMEOUT
-              value: "{{ .Values.env.REQUEST_TIMEOUT_VALUE }}"
             - name: INSTANCE_ENV
               value: "{{ .Values.env.INSTANCE_ENV_VALUE }}"
             - name: SENTRY_DSN
