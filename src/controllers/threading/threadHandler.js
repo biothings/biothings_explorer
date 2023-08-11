@@ -234,9 +234,14 @@ async function runTask(req, task, route, res, useBullSync = true) {
         // Have to reconstruct the error because Bull does some weirdness
         const jobLatest = await queryQueue.getJob(jobOpts.jobId);
         const reconstructedError = new Error();
-        reconstructedError.name = jobLatest.stacktrace[0].split(":")[0];
-        reconstructedError.message = jobLatest.stacktrace[0].split("\n")[0];
-        reconstructedError.stack = jobLatest.stacktrace[0];
+        try {
+          reconstructedError.name = jobLatest.stacktrace[0].split(":")[0];
+          reconstructedError.message = jobLatest.stacktrace[0].split("\n")[0];
+          reconstructedError.stack = jobLatest.stacktrace[0];
+        } catch (constructionError) {
+          reconstructedError.name = 'ThreadingError';
+          reconstructedError.message = JSON.stringify(jobLatest.stacktrace);
+        }
         reject(reconstructedError);
       }
     });
