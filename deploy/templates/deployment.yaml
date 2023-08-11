@@ -40,6 +40,8 @@ spec:
               value: "{{ .Values.env.REQUEST_TIMEOUT_VALUE }}"
             - name: INSTANCE_ENV
               value: "{{ .Values.env.INSTANCE_ENV_VALUE }}"
+            - name: SENTRY_DSN
+              value: "{{ .Values.env.SENTRY_DSN }}"
           livenessProbe:
             httpGet:
               path: /
