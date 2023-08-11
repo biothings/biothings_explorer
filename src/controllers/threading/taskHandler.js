@@ -36,6 +36,8 @@ Sentry.init({
 const runTask = async ({ req, route, port, job: { jobId, queueName } = {} }) => {
   debug(`Worker thread ${threadId} beginning task.`);
 
+  global.SCHEMA_VERSION = "1.4.0"
+
   global.parentPort = port;
   port.postMessage({ threadId, registerId: true });
   global.cachingTasks = [];
@@ -51,7 +53,7 @@ const runTask = async ({ req, route, port, job: { jobId, queueName } = {} }) => 
 
   const transaction = Sentry.startTransaction({ name: route });
   transaction.setData("request", req.data.queryGraph);
-  Sentry.getCurrentHub().configureScope((scope) => { 
+  Sentry.getCurrentHub().configureScope((scope) => {
     scope.clearBreadcrumbs();
     scope.setSpan(transaction);
  });
