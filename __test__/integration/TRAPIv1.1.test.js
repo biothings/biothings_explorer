@@ -57,7 +57,7 @@ describe("Testing v1.1 endpoints", () => {
           expect.arrayContaining([
             expect.objectContaining({
               subject: "biolink:SmallMolecule",
-              predicate: "biolink:regulates",
+              predicate: "biolink:affects",
               object: "biolink:Gene",
             }),
           ]),
@@ -190,7 +190,7 @@ describe("Testing v1.1 endpoints", () => {
       if (
         qData.url === "https://mychem.info/v1/query" &&
         qData.data ===
-          "q=A0A024RB10,A0A024RB77,B4DDL9,E7ESI2,G3V5T9,P24941&scopes=drugcentral.bioactivity.uniprot.uniprot_id"
+        "q=A0A024RB10,A0A024RB77,B4DDL9,E7ESI2,G3V5T9,P24941&scopes=drugcentral.bioactivity.uniprot.uniprot_id"
       ) {
         res = [
           { query: "A0A024RB10", notfound: true },
