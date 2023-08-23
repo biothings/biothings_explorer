@@ -194,12 +194,12 @@ export const useExamplesStore = defineStore({
         store.loading = false;
         console.log(res.data)
         self.jobs.unshift({
-          'id': res.data.id,
+          'id': res.data.job_id,
           'date': this.getDateRightNow(),
-          'url': res.data.url,
+          'url': res.data.job_url,
           'description': description
         });
-        self.message = `A new job ID has been created: ${res.data.id} `
+        self.message = `A new job ID has been created: ${res.data.job_id} `
         self.updateJobs();
       }).catch(err=>{
         store.loading = false;
