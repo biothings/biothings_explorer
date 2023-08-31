@@ -1,0 +1,23 @@
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "categories": ["biolink:ChemicalEntity"]
+                },
+                "n1": {
+                    "categories": ["biolink:Disease"],
+                    "ids": ["MONDO:0800044"]
+                }
+            },
+            "edges": {
+                "e01": {
+                    "subject": "n0",
+                    "object": "n1",
+                    "predicates": ["biolink:treats"],
+                    "knowledge_type": "inferred"
+                }
+            }
+        }
+    }
+}
