@@ -26,6 +26,7 @@ ingress:
   annotations: 
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/tags: Name=BTE_ALB_TAG_VALUE,Environment=ENVIRONMENT_TAG_VALUE
     alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=660
     alb.ingress.kubernetes.io/security-groups: translator-ci-alb-http-sg
