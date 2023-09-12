@@ -107,6 +107,10 @@ exports.API_LIST = {
             name: 'BioThings SEMMEDDB API'
         },
         {
+            id: 'b48c34df08d16311e3bca06b135b828d',
+            name: 'BioThings SuppKG API'
+        },
+        {
             id: 'ec6d76016ef40f284359d17fbf78df20',
             name: 'BioThings UBERON API'
         },
