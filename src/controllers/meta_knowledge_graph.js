@@ -121,7 +121,7 @@ module.exports = class MetaKnowledgeGraphHandler {
               Object.entries(pred.qualifiers).forEach(([qual, val]) => {
                 let values = Array.isArray(val) ? val : [val];
                 values.forEach(curVal => {
-                    console.log(curVal)
+                    // console.log(curVal)
                     const [type_id, value] = this._modifyQualifierData(qual, curVal);
                     const existing_qualifier = cur_edge.qualifiers?.find(q => q.qualifier_type_id === type_id);
                     if (existing_qualifier) {

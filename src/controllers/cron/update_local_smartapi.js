@@ -316,10 +316,10 @@ module.exports = () => {
   // rather, if just this function is imported and run (e.g. using workspace script)
   let sync_and_exit = process.env.SYNC_AND_EXIT === "true";
   if (sync_and_exit) {
-    console.log("Syncing SmartAPI specs with subsequent exit...");
+    debug("Syncing SmartAPI specs with subsequent exit...");
     updateSmartAPISpecs()
       .then(() => {
-        console.log("SmartAPI sync successful.");
+        debug("SmartAPI sync successful.");
         process.exit(0);
       })
       .catch(err => {
