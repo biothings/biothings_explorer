@@ -1,6 +1,6 @@
 const path = require("path");
 const { API_LIST: apiList } = require("../../config/apis");
-const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
+const TRAPIQueryHandler = require("@biothings-explorer/query_graph_handler").default;
 const swaggerValidation = require("../../middlewares/validate");
 const smartAPIPath = path.resolve(
   __dirname,
@@ -38,7 +38,7 @@ class V1RouteQuery {
       options = { ...job.data.options, schema: await utils.getSchema() };
     try {
       utils.validateWorkflow(workflow);
-      const handler = new TRAPIGraphHandler.TRAPIQueryHandler({ apiList, ...options }, smartAPIPath, predicatesPath);
+      const handler = new TRAPIQueryHandler({ apiList, ...options }, smartAPIPath, predicatesPath);
       handler.setQueryGraph(queryGraph);
       await handler.query();
 

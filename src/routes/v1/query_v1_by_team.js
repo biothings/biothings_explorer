@@ -1,4 +1,4 @@
-const TRAPIGraphHandler = require("@biothings-explorer/query_graph_handler");
+const TRAPIQueryHandler = require("@biothings-explorer/query_graph_handler").default;
 const swaggerValidation = require("../../middlewares/validate");
 const path = require("path");
 const smartAPIPath = path.resolve(
@@ -37,7 +37,7 @@ class RouteQueryV1ByTeam {
     try {
       utils.validateWorkflow(workflow);
       // const enableIDResolution = (req.params.team_name === "Text Mining Provider") ? false : true;
-      const handler = new TRAPIGraphHandler.TRAPIQueryHandler(
+      const handler = new TRAPIQueryHandler(
         {
           apiList,
           ...options,
