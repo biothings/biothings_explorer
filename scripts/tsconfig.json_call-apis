@@ -1,5 +1,5 @@
 {
-  "extends": "../../../tsconfig.opts.json",
+  "extends": "../../tsconfig.opts.json",
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "built"
@@ -16,7 +16,7 @@
       "path": "../api-response-transform"
     },
     {
-      "path": "../../biomedical_id_resolver"
+      "path": "../biomedical_id_resolver"
     },
     {
       "path": "../smartapi-kg"
