@@ -25,11 +25,11 @@ do
     git clone $base_url"$url" "$module_dir"
 done < scripts/packages.txt
 
-cd "./packages/@biothings-explorer/call-apis"
+cd "./packages/call-apis"
 ln -s ../../../scripts/tsconfig.json_call-apis ./tsconfig.json
 cd $current_folder
 
-cd "./packages/@biothings-explorer/node-expansion"
+cd "./packages/node-expansion"
 ln -s ../../../scripts/tsconfig.json_node-expansion ./tsconfig.json
 # # no need to do this after we commit the package name change to the repo
 # if [ "$(uname)" = "Darwin" ]; then

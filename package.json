@@ -117,14 +117,14 @@
     }
   },
   "workspaces": [
-    "./packages/@biothings-explorer/api-response-transform",
-    "./packages/@biothings-explorer/call-apis",
-    "./packages/@biothings-explorer/query_graph_handler",
-    "./packages/@biothings-explorer/smartapi-kg",
+    "./packages/api-response-transform",
+    "./packages/call-apis",
+    "./packages/query_graph_handler",
+    "./packages/smartapi-kg",
     "./packages/biolink-model",
     "./packages/biomedical_id_resolver",
     "./src/web-app",
     ".",
-    "./packages/@biothings-explorer/node-expansion"
+    "./packages/node-expansion"
   ]
 }
