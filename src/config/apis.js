@@ -107,6 +107,10 @@ exports.API_LIST = {
             name: 'BioThings SEMMEDDB API'
         },
         {
+            id: 'e481efd21f8e8c1deac05662439c2294',
+            name: 'Biothings Therapeutic Target Database API'
+        },
+        {
             id: 'ec6d76016ef40f284359d17fbf78df20',
             name: 'BioThings UBERON API'
         },
