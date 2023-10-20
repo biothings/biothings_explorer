@@ -6,14 +6,57 @@
         "^build"
       ],
       "outputs": [
-        "./built/**"
+        "./built/**",
+        "./dist/**"
       ]
     },
+    "clean": {},
+    "build:clean": {},
     "test": {
       "dependsOn": [
         "build"
       ]
     },
-    "lint": {}
-  }
+    "//:lint": {
+      "inputs": [
+        "!.git/**",
+        "!node_modules/**",
+        "!packages/**"
+      ]
+    },
+    "//:lint:fix": {
+      "inputs": [
+        "!.git/**",
+        "!node_modules/**",
+        "!packages/**"
+      ]
+    },
+    "//:format": {
+      "inputs": [
+        "!.git/**",
+        "!node_modules/**",
+        "!packages/**"
+      ]
+    },
+    "//:format:fix": {
+      "inputs": [
+        "!.git/**",
+        "!node_modules/**",
+        "!packages/**"
+      ]
+    },
+    "lint": {},
+    "lint:fix": {},
+    "format": {},
+    "format:fix": {}
+  },
+  "globalDependencies": [
+    ".eslintrc.js",
+    ".eslintignore",
+    ".lintstagedrc.js",
+    ".prettierrc.yaml",
+    "tsconfig.base.json",
+    "tsconfig.build.json",
+    "tsconfig.json"
+  ]
 }
