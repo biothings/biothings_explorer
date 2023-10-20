@@ -129,6 +129,9 @@ packages/*
 # Explicit allow packages.txt
 !packages/packages.txt
 
+# Temporary: allow web-app until new web-app integrated
+!packages/web-app
+
 # .vscode generally
 .vscode/*
 

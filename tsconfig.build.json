@@ -17,6 +17,9 @@
       "path": "packages/bte-server"
     },
     {
+      "paths": "packages/bte-server/web-app"
+    },
+    {
       "path": "packages/biolink-model"
     },
     {
