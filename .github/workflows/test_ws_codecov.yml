@@ -29,6 +29,7 @@ jobs:
 
     - name: pnpm install, generate coverage report
       run: |
+        git checkout ${{ steps.branch-name.outputs.current_branch }}
         pnpm run clone
         pnpm run git checkout ${{ steps.branch-name.outputs.current_branch }}
         pnpm i

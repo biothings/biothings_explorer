@@ -417,9 +417,6 @@ importers:
       '@sentry/profiling-node':
         specifier: ^1.0.8
         version: 1.2.1(supports-color@7.2.0)
-      '@types/node':
-        specifier: ^20.8.7
-        version: 20.8.7
       axios:
         specifier: ^0.27.2
         version: 0.27.2(debug@4.3.4)
@@ -511,6 +508,24 @@ importers:
         specifier: ^4.5.1
         version: 4.7.1(winston@3.11.0)
     devDependencies:
+      '@types/async':
+        specifier: ^3.2.22
+        version: 3.2.22
+      '@types/debug':
+        specifier: ^4.1.10
+        version: 4.1.10
+      '@types/jsonata':
+        specifier: ^1.5.1
+        version: 1.5.1
+      '@types/lodash':
+        specifier: ^4.14.200
+        version: 4.14.200
+      '@types/node':
+        specifier: ^20.8.7
+        version: 20.8.7
+      '@types/pascal-case':
+        specifier: ^1.1.2
+        version: 1.1.2
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.8.0
         version: 6.8.0(@typescript-eslint/parser@6.8.0)(eslint@8.51.0)(supports-color@7.2.0)(typescript@5.2.2)
@@ -4761,6 +4776,13 @@ packages:
 
   /@types/parse-json@4.0.1:
     resolution: {integrity: sha512-3YmXzzPAdOTVljVMkTMBdBEvlOLg2cDQaDhnnhT3nT9uDbnJzjWhKlzb+desT12Y7tGqaN6d+AbozcKzyL36Ng==}
+
+  /@types/pascal-case@1.1.2:
+    resolution: {integrity: sha512-3mcrPtqkUuYNNaltpNF8eIL1qDJhY/o8YP9jzyKMQyhweyEubTCb6WQH39Ng0vZqDjWx3c1YaWkMcGDO6c6t8A==}
+    deprecated: This is a stub types definition for pascal-case (https://github.com/blakeembrey/pascal-case). pascal-case provides its own type definitions, so you don't need @types/pascal-case installed!
+    dependencies:
+      pascal-case: 3.1.2
+    dev: true
 
   /@types/prettier@2.7.3:
     resolution: {integrity: sha512-+68kP9yzs4LMp7VNh8gdzMSPZFL44MLGqiHWvttYJe+6qnuVr4Ek9wSBQoveqY/r+LwjCcU29kNVkidwim+kYA==}
@@ -13035,7 +13057,6 @@ packages:
     resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
     dependencies:
       tslib: 2.6.2
-    dev: false
 
   /lowercase-keys@1.0.1:
     resolution: {integrity: sha512-G2Lj61tXDnVFFOi8VZds+SoQjtQC3dgokKdDG2mTm1tx4m50NUHBOZSBwQQHyy0V12A0JTG4icfZQH+xPyh8VA==}
@@ -13686,7 +13707,6 @@ packages:
     dependencies:
       lower-case: 2.0.2
       tslib: 2.6.2
-    dev: false
 
   /node-abi@3.51.0:
     resolution: {integrity: sha512-SQkEP4hmNWjlniS5zdnfIXTk1x7Ome85RDzHlTbBtzE97Gfwz/Ipw4v/Ryk20DWIy3yCNVLVlGKApCnmvYoJbA==}
@@ -14682,7 +14702,6 @@ packages:
     dependencies:
       no-case: 3.0.4
       tslib: 2.6.2
-    dev: false
 
   /pascalcase@0.1.1:
     resolution: {integrity: sha512-XHXfu/yOQRy9vYOtUDVMN60OEJjW013GoObG1o+xwQTpB9eYJX/BjXMsdW13ZDPruFhYYn0AG22w0xgQMwl3Nw==}
