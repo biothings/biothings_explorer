@@ -11,4 +11,4 @@ do
     echo "-----"
     git pull
     cd $current_folder
-done < scripts/packages.txt
+done < packages/packages.txt

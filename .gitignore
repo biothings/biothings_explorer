@@ -124,7 +124,10 @@ built
 /.idea
 .idea/
 
-packages
+packages/*
+
+# Explicit allow packages.txt
+!packages/packages.txt
 
 # .vscode generally
 .vscode/*

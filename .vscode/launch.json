@@ -10,7 +10,7 @@
         "smartapi_sync"
       ],
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "restart": false,
       "env": {
         "DEBUG": "biomedical-id-resolver,bte*"
@@ -31,7 +31,7 @@
         "smartapi_sync"
       ],
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "restart": false,
       "env": {
         "DEBUG": "biomedical-id-resolver,bte*",
@@ -50,10 +50,10 @@
       "preLaunchTask": "build",
       "runtimeArgs": [
         "run",
-        "debug",
+        "debug"
       ],
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "restart": false,
       "env": {
         "DEBUG": "biomedical-id-resolver,bte*",
@@ -72,10 +72,10 @@
       "preLaunchTask": "build and start redis",
       "runtimeArgs": [
         "run",
-        "debug",
+        "debug"
       ],
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "restart": false,
       "env": {
         "REDIS_HOST": "localhost",
@@ -97,10 +97,10 @@
       "preLaunchTask": "build and start redis",
       "runtimeArgs": [
         "run",
-        "debug",
+        "debug"
       ],
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "restart": false,
       "env": {
         "REDIS_HOST": "localhost",
@@ -123,10 +123,10 @@
       "preLaunchTask": "build",
       "runtimeArgs": [
         "run",
-        "debug",
+        "debug"
       ],
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "restart": false,
       "env": {
         "REDIS_HOST": "localhost",
@@ -149,10 +149,10 @@
       "preLaunchTask": "build and start redis cluster",
       "runtimeArgs": [
         "run",
-        "debug",
+        "debug"
       ],
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "restart": false,
       "env": {
         "REDIS_HOST": "localhost",
@@ -175,10 +175,10 @@
       "preLaunchTask": "build",
       "runtimeArgs": [
         "run",
-        "debug",
+        "debug"
       ],
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "restart": false,
       "env": {
         "REDIS_HOST": "localhost",
@@ -194,6 +194,6 @@
       ],
       "stopOnEntry": true,
       "console": "integratedTerminal"
-    },
+    }
   ]
 }

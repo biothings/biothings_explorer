@@ -23,21 +23,8 @@ while read line || [ -n "$line" ];
 do
     read -r url module_dir <<< $line
     git clone $base_url"$url" "$module_dir"
-done < scripts/packages.txt
+done < packages/packages.txt
 
-cd "./packages/call-apis"
-ln -s ../../scripts/tsconfig.json_call-apis ./tsconfig.json
-cd $current_folder
-
-cd "./packages/node-expansion"
-ln -s ../../scripts/tsconfig.json_node-expansion ./tsconfig.json
-# # no need to do this after we commit the package name change to the repo
-# if [ "$(uname)" = "Darwin" ]; then
-#     # sed on mac has a workaround to make it work
-#     sed -i '' 's/single-hop-app/bte-trapi/g' package.json
-# else
-#     sed -i 's/single-hop-app/bte-trapi/g' package.json
-# fi
 cd $current_folder
 
 set +x

@@ -11,4 +11,4 @@ do
     echo "-----"
     git $*
     cd $current_folder
-done < scripts/packages.txt
+done < packages/packages.txt
