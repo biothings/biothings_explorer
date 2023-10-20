@@ -21,11 +21,11 @@
     "siege-local": "artillery run -e local --output report_local.json --config performance-test/config.yaml performance-test/scenarios/query.yaml",
     "smartapi_sync": "DEBUG=bte* SYNC_AND_EXIT=true node ./scripts/smartapi_sync.js",
     "get_rev": "./scripts/get_rev.sh",
-    "watch": "nodemon -e js,mjs,json,ts --watch packages --exec pnpm run build",
+    "basic-start": "node .",
     "start": "./scripts/start_server.sh",
     "stop": "./scripts/stop_server.sh",
-    "basic-start": "nodemon --ignore '**/data'",
-    "debug": "DEBUG=biomedical-id-resolver,bte* pnpm run basic-start"
+    "watch": "nodemon -e js,mjs,json,ts --watch './packages/**/src/*' './packages/**/data/*' --exec 'pnpm run build && node .'",
+    "debug": "DEBUG=biomedical-id-resolver,bte* pnpm run watch"
   },
   "engines": {
     "pnpm": ">=8.9.2"
