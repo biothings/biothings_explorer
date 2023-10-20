@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.opts.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "built"
@@ -15,12 +15,5 @@
     "**/packages/**",
     "./packages/server/src/web-app/dist/*"
   ],
-  "references": [
-    {
-      "path": "./packages/smartapi-kg"
-    },
-    {
-      "path": "./packages/query_graph_handler"
-    }
-  ]
+  "references": []
 }

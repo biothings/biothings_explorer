@@ -7,11 +7,15 @@
       "@biothings-explorer/call-apis": ["packages/biomedical_id_resolver"],
       "@biothings-explorer/node-expansion": ["packages/node-expansion"],
       "@biothings-explorer/query_graph_handler": ["packages/query_graph_handler"],
-      "@biothings-explorer/smartapi-kg": ["packages/smartapi-kg"]
+      "@biothings-explorer/smartapi-kg": ["packages/smartapi-kg"],
+      "@biothings-explorer/bte-server": ["packages/bte-server"]
     }
   },
   "files": [],
   "references": [
+    {
+      "path": "packages/bte-server"
+    },
     {
       "path": "packages/biolink-model"
     },
