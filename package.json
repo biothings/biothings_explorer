@@ -2,7 +2,7 @@
   "name": "@biothings-explorer/bte-trapi",
   "version": "3.0.0",
   "description": "BioThings Explorer's TRAPI Knowledgebase Query API",
-  "main": "packages/server/built/server.js",
+  "main": "packages/bte-server/built/server.js",
   "scripts": {
     "setup": "pnpm run clone && pnpm i",
     "clone": "./scripts/clone_packages.sh",
@@ -24,7 +24,7 @@
     "watch": "nodemon -e js,mjs,json,ts --watch packages --exec pnpm run build",
     "start": "./scripts/start_server.sh",
     "stop": "./scripts/stop_server.sh",
-    "basic-start": "nodemon --ignore '**/data' packages/bte-server/built/server.js",
+    "basic-start": "nodemon --ignore '**/data'",
     "debug": "DEBUG=biomedical-id-resolver,bte* pnpm run basic-start"
   },
   "engines": {
