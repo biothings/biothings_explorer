@@ -35,7 +35,7 @@
 2. Run one of these commands to make a new release:
 
    ```bash
-   npm run release:patch
+   pnpm run release:patch
 
    (use "release:patch", "release:minor" or "release:major" based on the release types)
    ```

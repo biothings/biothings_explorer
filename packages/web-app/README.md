@@ -16,14 +16,14 @@ Additionally I added [vite-svg-loader](https://github.com/jpkleemans/vite-svg-lo
 Node v.17>= 
 
 ```
-npm i
+pnpm i
 ```
 
 ## Run / Develop
 
 ```
 
-npm run dev
+pnpm run dev
 
 ```
 
@@ -31,7 +31,7 @@ npm run dev
 
 ```
 
-npm run build
+pnpm run build
 
 ```
 
@@ -39,7 +39,7 @@ npm run build
 
 ```
 
-npm run preview
+pnpm run preview
 
 ```
 
@@ -47,6 +47,6 @@ npm run preview
 
 ```
 
-npm run lint
+pnpm run lint
 
 ```

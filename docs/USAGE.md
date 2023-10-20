@@ -100,13 +100,13 @@ If the environment variable `API_OVERRIDE=true` is set (see example below), then
 Starting BTE with API Overrides and automatic syncing enabled:
 
 ```bash
-SMARTAPI_SYNC=true API_OVERRIDE=true npm run start
+SMARTAPI_SYNC=true API_OVERRIDE=true pnpm run start
 ```
 
 Alternatively, you may choose to only get `smartapi_specs.json` and apply overrides once, removing the requirement of enabling `SMARTAPI_SYNC` while running the server:
 
 ```bash
-API_OVERRIDE=true npm run smartapi_sync
+API_OVERRIDE=true pnpm run smartapi_sync
 ```
 
 Override files may be specified as a URL which returns the expected yaml file or a `file:///` URI or arbitrary filepath, either of which must contain the absolute path to your override file. Override files are expected to be in yaml format. If overrides are specified with IDs not in the current SmartAPI spec, they will be appended as new API hits with a log warning.

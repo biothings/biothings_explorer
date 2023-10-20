@@ -90,11 +90,11 @@ If you'd prefer to get BTE working outside of a container, for development or an
 
 ### Requirements
 
-For development, you will need Node.js and a node global package, e.g. npm, installed in your environment. Your Node version must be higher than v12.
+For development, you will need Node.js the pnpm package manager installed in your environment. Your Node version must be higher than v12.
 
-#### Node.js and NPM
+#### Node.js and pnpm
 
-It's recommended to manage Node and NPM using the Node Version Manager (NVM). [You can find the install script for NVM here](https://github.com/nvm-sh/nvm#installing-and-updating). After installing NVM, you'll want to ensure you're using at least version 18, which is the current recommended version of Node for BTE.
+It's recommended to manage Node using the Node Version Manager (NVM). [You can find the install script for NVM here](https://github.com/nvm-sh/nvm#installing-and-updating). After installing NVM, you'll want to ensure you're using at least version 18, which is the current recommended version of Node for BTE.
 
 ```bash
 nvm install 18
@@ -103,7 +103,10 @@ nvm use 18
 
 > On Windows, ensure that you're doing this from within WSL. To install WSL, see the [instructions in the Docker section](#docker).
 
-This will install the latest version of Node v18, and the appropriate version of NPM as well.
+This will install the latest version of Node v18. It'll also install npm, which we forgoing in favor of pnpm -- don't get the two confused!
+
+This workspace uses pnpm instead of npm for its speed and better workspace support. To get pnpm installed, see the [instructions on pnpm's website](https://pnpm.io/installation).
+
 
 #### Dependencies:
 
@@ -143,24 +146,24 @@ The following commands will clone the repository and install it
 ```
 git clone https://github.com/biothings/biothings_explorer.git
 cd biothings_explorer
-npm run setup
+pnpm run setup
 ```
 
 > If you ever change Node versions, you'll probably encounter some problems re-running the project. To fix this:
 
 > ```bash
-> npm install && npm rebuild
+> pnpm install && pnpm rebuild
 > ```
 
 
 ### Syncing SmartAPI Specifications
 
-By default, this package does not automatically sync the latest SmartAPI Specifications. You may set it to do so by setting either `NODE_ENV=production` or `SMARTAPI_SYNC=true` as environment variables (e.g. `SMARTAPI_SYNC=true npm start`). `SMARTAPI_SYNC` overrides the behavior of `NODE_ENV`.
+By default, this package does not automatically sync the latest SmartAPI Specifications. You may set it to do so by setting either `NODE_ENV=production` or `SMARTAPI_SYNC=true` as environment variables (e.g. `SMARTAPI_SYNC=true pnpm start`). `SMARTAPI_SYNC` overrides the behavior of `NODE_ENV`.
 
 You may additionally manually trigger a one-time sync by using the following command:
 
 ```bash
-npm run smartapi_sync
+pnpm run smartapi_sync
 ```
 
 Note that this is only required for a local workspace, in a container syncing is handled automatically.
@@ -172,13 +175,13 @@ Note that this is only required for a local workspace, in a container syncing is
 To start the server with debug logging, which outputs logging statements to the terminal in real time:
 
 ```
-npm start
+pnpm start
 ```
 
 To run the server without debug logging:
 
 ```
-npm run basic-start
+pnpm run basic-start
 ```
 
 #### Running the project with Redis
@@ -186,7 +189,7 @@ npm run basic-start
 If you have a native installation or Docker image of Redis, the workspace provides a means of automatically starting the server alongside redis with default host/port configurations:
 
 ```
-npm start redis
+pnpm start redis
 ```
 
 This will automatically start Redis (preferring a Docker container, and falling back to native installation), and then start the server ready to connect to redis. If an existing Redis container is running, or the native Redis is running, they will be reset (all keys dropped) before starting.
@@ -196,7 +199,7 @@ This will automatically start Redis (preferring a Docker container, and falling 
 After stopping BTE (or in order to stop it if it's running detached from the terminal), if you want to ensure related Redis instances are stopped:
 
 ```
-npm stop
+pnpm stop
 ```
 
 This will ensure the server and its subprocesses are killed, and will stop any Redis containers and native Redis servers.

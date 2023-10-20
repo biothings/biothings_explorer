@@ -10,7 +10,7 @@
 
 ### Running BTE
 
-* To get console logs in close-to-real-time, you can use `USE_THREADING=false npm start` to run your local instance
+* To get console logs in close-to-real-time, you can use `USE_THREADING=false pnpm start` to run your local instance
 
 ## BTE links
 
