@@ -3,7 +3,7 @@
 current_folder=`pwd`
 redis_available=false
 
-npm run compile
+pnpm run build
 if [ "$1" = "redis" ]
 then
     {

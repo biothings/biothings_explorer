@@ -1,39 +1,34 @@
 {
   "name": "@biothings-explorer/bte-trapi",
-  "version": "2.8.1",
+  "version": "3.0.0",
   "description": "BioThings Explorer's TRAPI Knowledgebase Query API",
-  "main": "src/server.js",
+  "main": "packages/server/built/server.js",
   "scripts": {
-    "setup": "npm run clone && (npm i || true) && npm i",
+    "setup": "pnpm run clone && pnpm i",
     "clone": "./scripts/clone_packages.sh",
     "pull": "./scripts/pull_packages.sh",
     "git": "./scripts/run_git_packages.sh",
-    "compile": "tsc -b tsconfig.build.json",
-    "prepare": "npm run compile",
-    "build": "npm run compile",
+    "prepare": "pnpm run build",
+    "build": "turbo run build",
+    "clean": "turbo run clean",
+    "build:clean": "pnpm run clean && pnpm run build",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "lint": "eslint . --ext .ts,.js",
+    "lint:fix": "pnpm lint --fix",
+    "test": "turbo run --parallel test",
+    "test-cov": "turbo run --parallel test-cov",
+    "siege-local": "artillery run -e local --output report_local.json --config performance-test/config.yaml performance-test/scenarios/query.yaml",
+    "smartapi_sync": "DEBUG=bte* SYNC_AND_EXIT=true node ./scripts/smartapi_sync.js",
     "get_rev": "./scripts/get_rev.sh",
-    "watch": "tsc -b tsconfig.build.json --watch",
-    "watch2": "nodemon -e js,mjs,json,ts --watch packages --exec npm run compile",
+    "watch": "nodemon -e js,mjs,json,ts --watch packages --exec pnpm run build",
     "start": "./scripts/start_server.sh",
     "stop": "./scripts/stop_server.sh",
-    "basic-start": "nodemon --ignore './data/' src/server.js",
-    "debug": "DEBUG=biomedical-id-resolver,bte* npm run basic-start",
-    "debug-all": "DEBUG=* nodemon --ignore './data/' src/server.js",
-    "clean": "rimraf \"packages/**/built\" \"packages/**/*.tsbuildinfo\"",
-    "clean_on_prod": "rimraf \"packages/**/__test__\" \"packages/**/.git\" \"packages/**/node_modules\"",
-    "prettier": "prettier \"*.{js,json,yml,md}\" \"packages/**/*\"",
-    "format": "npm run prettier -- --write",
-    "format:check": "npm run prettier -- --check",
-    "lint": "npm run format:check",
-    "test": "jest --forceExit --env node",
-    "test-all": "jest --",
-    "test-cov": "jest --coverage --env node",
-    "release": "standard-version",
-    "release:minor": "standard-version --release-as minor",
-    "release:patch": "standard-version --release-as patch",
-    "release:major": "standard-version --release-as major",
-    "siege-local": "artillery run -e local --output report_local.json --config performance-test/config.yaml performance-test/scenarios/query.yaml",
-    "smartapi_sync": "DEBUG=bte* SYNC_AND_EXIT=true node ./scripts/smartapi_sync.js"
+    "basic-start": "nodemon --ignore '**/data' packages/bte-server/built/server.js",
+    "debug": "DEBUG=biomedical-id-resolver,bte* pnpm run basic-start"
+  },
+  "engines": {
+    "pnpm": ">=8.9.2"
   },
   "repository": {
     "type": "git",
@@ -53,8 +48,9 @@
   },
   "homepage": "https://github.com/biothings/biothings_explorer#readme",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.29.3",
-    "@typescript-eslint/parser": "^4.29.3",
+    "@types/node": "^20.8.7",
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
+    "@typescript-eslint/parser": "^6.8.0",
     "artillery": "^1.6.2",
     "cookie-parser": "~1.4.4",
     "coveralls": "^3.1.0",
@@ -79,7 +75,6 @@
     "@bull-board/express": "^5.0.0",
     "@sentry/node": "^7.57.0",
     "@sentry/profiling-node": "^1.0.8",
-    "@types/node": "^20.8.7",
     "axios": "^0.27.2",
     "body-parser": "^1.19.0",
     "bull": "^4.10.4",
@@ -99,7 +94,6 @@
     "lz4": "^0.6.5",
     "nanoid": "^3.1.31",
     "node-cron": "^2.0.3",
-    "npm": "^9.4.1",
     "openapi-validator-middleware": "^3.2.2",
     "piscina": "^3.2.0",
     "ps-node": "^0.1.6",
@@ -115,16 +109,5 @@
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
-  },
-  "workspaces": [
-    "./packages/api-response-transform",
-    "./packages/call-apis",
-    "./packages/query_graph_handler",
-    "./packages/smartapi-kg",
-    "./packages/biolink-model",
-    "./packages/biomedical_id_resolver",
-    "./src/web-app",
-    ".",
-    "./packages/node-expansion"
-  ]
+  }
 }
