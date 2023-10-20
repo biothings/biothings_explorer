@@ -17,6 +17,11 @@
         "build"
       ]
     },
+    "test-cov": {
+      "dependsOn": [
+        "build"
+      ]
+    },
     "//:lint": {
       "inputs": [
         "!.git/**",
