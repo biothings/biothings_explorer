@@ -1,3 +1,4 @@
+biothings/bte-server.git                     ./packages/bte-server
 biothings/api-respone-transform.js.git       ./packages/api-response-transform
 biothings/call-apis.js.git                   ./packages/call-apis
 biothings/smartapi-kg.js.git                 ./packages/smartapi-kg
