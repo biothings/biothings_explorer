@@ -2,6 +2,10 @@
 
 current_folder=`pwd`
 
+echo ". (workspace)"
+echo "-----"
+git $*
+
 while read line || [ -n "$line" ];
 do
     read -r url module_dir <<< $line
