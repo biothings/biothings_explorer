@@ -3,7 +3,7 @@
     {
       "name": "bte-trapi",
       "cwd": ".",
-      "script": "./packages/bte-server/built/src/server.js",
+      "script": "./packages/bte-server/built/server.js",
       "exec_mode": "cluster",
       "instances": 4,
       "autorestart": true,
