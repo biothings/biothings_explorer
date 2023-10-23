@@ -22,7 +22,7 @@ set -x
 while read line || [ -n "$line" ];
 do
     read -r url module_dir <<< $line
-    git clone $base_url"$url" "$module_dir"
+    git clone $base_url"$url" "./packages/$module_dir"
 done < packages/packages.txt
 
 cd $current_folder

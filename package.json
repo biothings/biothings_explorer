@@ -6,7 +6,7 @@
   "scripts": {
     "setup": "pnpm run clone && pnpm i",
     "clone": "./scripts/clone_packages.sh",
-    "pull": "./scripts/pull_packages.sh",
+    "pull": "pnpm run git pull",
     "git": "./scripts/run_git_packages.sh",
     "prepare": "pnpm run build",
     "build": "turbo run build",
