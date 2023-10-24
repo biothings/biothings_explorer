@@ -8,6 +8,7 @@
     "clone": "./scripts/clone_packages.sh",
     "pull": "pnpm run git pull",
     "git": "./scripts/run_git_packages.sh",
+    "ggit": "pnpm -r --no-bail exec git",
     "prepare": "pnpm run build",
     "build": "turbo run build",
     "clean": "turbo run clean",
