@@ -2,13 +2,17 @@
 
 current_folder=`pwd`
 
+echo ". (workspace)"
+echo "-----"
+git $*
+
 while read line || [ -n "$line" ];
 do
     read -r url module_dir <<< $line
-    cd "$module_dir"
+    cd "./packages/$module_dir"
     echo
     basename "$module_dir"
     echo "-----"
     git $*
     cd $current_folder
-done < scripts/packages.txt
+done < packages/packages.txt

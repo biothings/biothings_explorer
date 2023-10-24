@@ -1,8 +1,23 @@
 {
+  "compilerOptions": {
+    "paths": {
+      "@biothings-explorer/api-response-transform": ["packages/api-response-transform"],
+      "biolink-model": ["packages/biolink-model"],
+      "biomedical_id_resolver": ["packages/biomedical_id_resolver"],
+      "@biothings-explorer/call-apis": ["packages/biomedical_id_resolver"],
+      "@biothings-explorer/node-expansion": ["packages/node-expansion"],
+      "@biothings-explorer/query_graph_handler": ["packages/query_graph_handler"],
+      "@biothings-explorer/smartapi-kg": ["packages/smartapi-kg"],
+      "@biothings-explorer/bte-server": ["packages/bte-server"]
+    }
+  },
   "files": [],
   "references": [
     {
-      "path": "."
+      "path": "packages/bte-server"
+    },
+    {
+      "paths": "packages/bte-server/web-app"
     },
     {
       "path": "packages/biolink-model"
@@ -11,19 +26,19 @@
       "path": "packages/biomedical_id_resolver"
     },
     {
-      "path": "packages/@biothings-explorer/smartapi-kg"
+      "path": "packages/smartapi-kg"
     },
     {
-      "path": "packages/@biothings-explorer/api-response-transform"
+      "path": "packages/api-response-transform"
     },
     {
-      "path": "packages/@biothings-explorer/call-apis"
+      "path": "packages/call-apis"
     },
     {
-      "path": "packages/@biothings-explorer/query_graph_handler"
+      "path": "packages/query_graph_handler"
     },
     {
-      "path": "packages/@biothings-explorer/node-expansion"
+      "path": "packages/node-expansion"
     }
   ]
 }

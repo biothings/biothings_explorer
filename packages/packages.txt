@@ -1,0 +1,8 @@
+biothings/bte-server.git                     bte-server
+biothings/api-respone-transform.js.git       api-response-transform
+biothings/call-apis.js.git                   call-apis
+biothings/smartapi-kg.js.git                 smartapi-kg
+biothings/bte_trapi_query_graph_handler.git  query_graph_handler
+biothings/node-expansion.git                 node-expansion
+biothings/biolink-model.js.git               biolink-model
+biothings/biomedical_id_resolver.js.git      biomedical_id_resolver

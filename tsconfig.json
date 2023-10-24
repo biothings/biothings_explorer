@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.opts.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "built"
@@ -10,17 +10,10 @@
     "./data/predicates.json"
   ],
   "exclude": [
-    "node_modules",
-    "__test__/",
-    "packages",
-    "./src/web-app/dist/*"
+    "**/node_modules/**",
+    "**/__test__/**",
+    "**/packages/**",
+    "./packages/server/src/web-app/dist/*"
   ],
-  "references": [
-    {
-      "path": "./packages/@biothings-explorer/smartapi-kg"
-    },
-    {
-      "path": "./packages/@biothings-explorer/query_graph_handler"
-    }
-  ]
+  "references": []
 }

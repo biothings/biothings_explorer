@@ -6,7 +6,7 @@
     {
       "label": "build",
       "type": "shell",
-      "command": "npm run compile",
+      "command": "pnpm run build",
       "presentation": {
         "echo": true,
         "reveal": "never",

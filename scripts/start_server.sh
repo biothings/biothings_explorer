@@ -3,7 +3,6 @@
 current_folder=`pwd`
 redis_available=false
 
-npm run compile
 if [ "$1" = "redis" ]
 then
     {
@@ -23,12 +22,12 @@ then
     }
     if [ "$redis_available" ] ;
     then
-        REDIS_HOST=localhost REDIS_PORT=6379 npm run debug
+        REDIS_HOST=localhost REDIS_PORT=6379 pnpm run debug
     else
-        npm run debug
+        pnpm run debug
     fi
 else
-    npm run debug
+    pnpm run debug
 fi
 
 cd $current_folder
