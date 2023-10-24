@@ -15,6 +15,7 @@ SHELL ["/bin/bash", "-c"]
 RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
 WORKDIR /home/node/app
 RUN npm i pm2 -g
+RUN npm i pnpm -g
 # Install required dependecies in a "build-deps" virtual package,
 # which can be easily cleaned up after build completes
 # Add additional dependencies in the same line if needed
@@ -23,14 +24,14 @@ RUN npm i pm2 -g
 RUN apk add --no-cache --virtual build-deps git lz4 python3 make g++
 RUN apk add --no-cache curl
 COPY --chown=node:node . .
-USER node
+# USER node
 
 RUN export GIT_REMOTE_PROTOCOL=https \
-    && npm run setup \
-    && npm run --silent get_rev > .current_rev \
-    && npm run clean_on_prod \
-    && (npm i --production || true)
-USER root
+    && pnpm run setup \
+    && pnpm run --silent get_rev > .current_rev \
+    # && pnpm run clean_on_prod \
+    # && (pnpm i --production || true)
+# USER root
 # clean up dependecies from the "build-deps" virtual package
 RUN apk del build-deps
 USER node

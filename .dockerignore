@@ -5,4 +5,7 @@ README.md
 .git
 __test__/
 node_modules/
-packages/
+packages/*
+!packages/web-app
+!packages/packages.txt
+
