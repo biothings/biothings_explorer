@@ -20,7 +20,7 @@
     "test": "turbo run --parallel test",
     "test-cov": "turbo run --parallel test-cov",
     "siege-local": "artillery run -e local --output report_local.json --config performance-test/config.yaml performance-test/scenarios/query.yaml",
-    "smartapi_sync": "DEBUG=bte* SYNC_AND_EXIT=true node ./scripts/smartapi_sync.js",
+    "smartapi_sync": "node ./scripts/smartapi_sync.js",
     "get_rev": "./scripts/get_rev.sh",
     "basic-start": "node .",
     "start": "./scripts/start_server.sh",
