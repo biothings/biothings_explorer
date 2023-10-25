@@ -90,7 +90,7 @@ If you'd prefer to get BTE working outside of a container, for development or an
 
 ### Requirements
 
-For development, you will need Node.js the pnpm package manager installed in your environment. Your Node version must be higher than v12.
+For development, you will need Node.js and the pnpm package manager installed in your environment. Your Node version must be version 18 or higher.
 
 #### Node.js and pnpm
 
