@@ -2,7 +2,7 @@
 
 current_folder=`pwd`
 
-echo '# Generated from "npm run get_rev" on ' $(date)
+echo '# Generated from "pnpm run get_rev" on ' $(date)
 
 while read line || [ -n "$line" ];
 do
