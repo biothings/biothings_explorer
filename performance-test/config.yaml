@@ -1,25 +1,25 @@
+---
 config:
-    environments:
-        production:
-            target: "https://api.bte.ncats.io"
-            phases:
-                - duration: 120
-                  arrivalRate: 0.5
-
-        local:
-            target: "http://localhost:3000"
-            phases:
-                - duration: 120
-                  arrivalRate: 0.5
-
-        dev:
-            target: "https://dev.api.bte.ncats.io"
-            phases:
-                - duration: 120
-                  arrivalRate: 0.5
-    payload:
-        path: "single_hop_examples.csv"
-        fields:
-            - "input_type"
-            - "input_id"
-            - "output_type"
+  environments:
+    local:
+      target: http://localhost:3000
+      http:
+        timeout: 300
+      phases:
+        - duration: 300
+          maxVusers: 20
+          arrivalRate: 20
+          name: Concurrency test
+    dev:
+      target: http://api.bte.ncats.io
+      http:
+        timeout: 300
+      phases:
+        - duration: 300
+          maxVusers: 20
+          arrivalRate: 20
+          name: Concurrency test
+  payload:
+    path: creative_examples.csv
+    fields: [input_id]
+  processor: functions.js
