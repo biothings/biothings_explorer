@@ -18,7 +18,7 @@
     "lint:fix": "pnpm lint --fix",
     "test": "turbo run --parallel test",
     "test-cov": "turbo run --parallel test-cov",
-    "siege-local": "artillery run -e local --output report_local.json --config performance-test/config.yaml performance-test/scenarios/query.yaml",
+    "siege-local": "artillery run -e local --output report_local.json --config performance-test/config.yaml performance-test/scenarios/creative.yaml",
     "smartapi_sync": "node ./scripts/smartapi_sync.js",
     "get_rev": "./scripts/get_rev.sh",
     "basic-start": "node .",
@@ -28,6 +28,7 @@
     "debug": "DEBUG=biomedical-id-resolver,bte* pnpm run watch"
   },
   "engines": {
+    "node": ">=18.0.0",
     "pnpm": ">=8.9.2"
   },
   "repository": {
@@ -52,6 +53,7 @@
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
     "artillery": "^1.7.9",
+    "commitlint": "^18.2.0",
     "cookie-parser": "~1.4.6",
     "coveralls": "^3.1.1",
     "eslint": "^7.32.0",
