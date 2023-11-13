@@ -24,6 +24,8 @@ let results = Array(20).fill(0);
 results = async
   .map(results, async () => {
     return new Promise(async resolve => {
+      // jitter sendout time by a few ms
+      await new Promise((resolve) => setTimeout(() => resolve(), Math.floor(Math.random() * 10)));
       const start = performance.now();
       const body = {
         message: {
@@ -109,7 +111,7 @@ results = async
       }
     });
     end = performance.now();
-    console.log(`\n Test completed in ${Math.ceil((end - start) / 1000)}s`);
+    console.log(`\nTest completed in ${Math.ceil((end - start) / 1000)}s`);
     console.log(`Test ${passed ? "passed!" : "failed."}`);
     process.exit();
   });
