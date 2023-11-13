@@ -6,18 +6,18 @@ config:
       http:
         timeout: 300
       phases:
-        - duration: 300
+        - duration: 1
           maxVusers: 20
-          arrivalRate: 20
+          arrivalCount: 20
           name: Concurrency test
     dev:
       target: http://api.bte.ncats.io
       http:
         timeout: 300
       phases:
-        - duration: 300
+        - duration: 1
           maxVusers: 20
-          arrivalRate: 20
+          arrivalCount: 20
           name: Concurrency test
   payload:
     path: creative_examples.csv

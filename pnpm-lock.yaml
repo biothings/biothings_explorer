@@ -123,6 +123,9 @@ importers:
       artillery:
         specifier: ^1.7.9
         version: 1.7.9(supports-color@7.2.0)
+      async:
+        specifier: ^3.2.4
+        version: 3.2.4
       commitlint:
         specifier: ^18.2.0
         version: 18.4.0(typescript@5.2.2)

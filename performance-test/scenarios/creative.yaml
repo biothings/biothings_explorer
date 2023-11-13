@@ -29,7 +29,7 @@ scenarios:
       - loop:
           - think: 5
           - get:
-              url: /v1/asyncquery_status/{{ job_id }}
+              url: "/v1/asyncquery_status/{{ job_id }}"
               capture:
                 - json: $.status
                   as: status
