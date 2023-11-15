@@ -429,6 +429,9 @@ importers:
       '@biothings-explorer/smartapi-kg':
         specifier: workspace:../smartapi-kg
         version: link:../smartapi-kg
+      '@biothings-explorer/utils':
+        specifier: workspace:../utils
+        version: link:../utils
       '@bull-board/api':
         specifier: ^5.9.1
         version: 5.9.1(@bull-board/ui@5.9.1)
@@ -619,12 +622,18 @@ importers:
       '@biothings-explorer/smartapi-kg':
         specifier: workspace:../smartapi-kg
         version: link:../smartapi-kg
+      '@biothings-explorer/utils':
+        specifier: workspace:../utils
+        version: link:../utils
       '@sentry/node':
         specifier: ^7.74.1
         version: 7.74.1(supports-color@7.2.0)
       axios:
         specifier: ^0.21.4
         version: 0.21.4(debug@4.3.4)
+      axios-retry:
+        specifier: ^3.8.1
+        version: 3.9.0
       biomedical_id_resolver:
         specifier: workspace:../biomedical_id_resolver
         version: link:../biomedical_id_resolver
@@ -759,6 +768,9 @@ importers:
       '@biothings-explorer/smartapi-kg':
         specifier: workspace:../smartapi-kg
         version: link:../smartapi-kg
+      '@biothings-explorer/utils':
+        specifier: workspace:../utils
+        version: link:../utils
       '@sentry/node':
         specifier: ^7.74.1
         version: 7.74.1(supports-color@7.2.0)
@@ -5844,12 +5856,11 @@ packages:
       is-retry-allowed: 2.2.0
     dev: false
 
-  /axios-retry@3.8.1:
-    resolution: {integrity: sha512-4XseuArB4CEbfLRtMpUods2q8MLBvD4r8ifKgK4SP2FRgzQIPUDpzZ+cjQ/19eu3w2UpKgkJA+myEh2BYDSjqQ==}
+  /axios-retry@3.9.0:
+    resolution: {integrity: sha512-uK9K/GnlExfShu9dB4GuK0j+iGkIR+LRus3ILhE0zSVXY2q6Dxpemr50NPMs5kP7eOKv9Pz4VvUO40ps1F67dA==}
     dependencies:
       '@babel/runtime': 7.23.2
       is-retry-allowed: 2.2.0
-    dev: true
 
   /axios@0.21.4(debug@4.3.4):
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
@@ -14075,7 +14086,7 @@ packages:
     hasBin: true
     dependencies:
       axios: 0.24.0(debug@2.6.9)
-      axios-retry: 3.8.1
+      axios-retry: 3.9.0
       component-type: 1.2.1
       join-component: 1.1.0
       md5: 2.3.0
