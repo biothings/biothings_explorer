@@ -52,6 +52,40 @@ spec:
             httpGet:
               path: /
               port: http
+        - name: bte-kp
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3010
+              protocol: TCP
+          env:
+            - name: REDIS_HOST
+              value: "{{ .Values.env.REDIS_HOST_VALUE }}"
+            - name: REDIS_PORT
+              value: "{{ .Values.env.REDIS_PORT_VALUE }}"
+            - name: REDIS_PASSWORD
+              value: "{{ .Values.env.REDIS_PASSWORD_VALUE }}"
+            - name: REDIS_TLS_ENABLED
+              value: "{{ .Values.env.REDIS_TLS_ENABLED_VALUE }}"
+            - name: REDIS_CLUSTER
+              value: "{{ .Values.env.REDIS_CLUSTER_VALUE }}"
+            - name: INSTANCE_ENV
+              value: "{{ .Values.env.INSTANCE_ENV_VALUE }}"
+            - name: SENTRY_DSN
+              value: "{{ .Values.env.SENTRY_DSN }}"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+
       {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

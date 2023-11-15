@@ -20,10 +20,24 @@ spec:
               name: ssl-redirect
               port:
                 name: use-annotation
-        - path: /*
-          pathType: ImplementationSpecific
+        - path: /
+          pathType: Prefix
           backend:
             service:
               name: {{ $fullName }}
+              port:
+                number: {{ $svcPort }}
+        - path: /smartapi
+          pathType: Prefix
+          backend:
+            service:
+              name: bte-kp
+              port:
+                number: {{ $svcPort }}        
+        - path: /team
+          pathType: Prefix
+          backend:
+            service:
+              name: bte-kp
               port:
                 number: {{ $svcPort }}
