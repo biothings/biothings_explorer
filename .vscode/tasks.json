@@ -56,32 +56,6 @@
         "showReuseMessage": true,
         "clear": true
       }
-    },
-    {
-      "label": "build and start redis",
-      "type": "shell",
-      "dependsOn": ["build", "start redis"],
-      "presentation": {
-        "echo": true,
-        "reveal": "silent",
-        "focus": false,
-        "panel": "shared",
-        "showReuseMessage": true,
-        "clear": true
-      }
-    },
-    {
-      "label": "build and start redis cluster",
-      "type": "shell",
-      "dependsOn": ["build", "start redis cluster"],
-      "presentation": {
-        "echo": true,
-        "reveal": "silent",
-        "focus": false,
-        "panel": "shared",
-        "showReuseMessage": true,
-        "clear": true
-      }
     }
   ]
 }

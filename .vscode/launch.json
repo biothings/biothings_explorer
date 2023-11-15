@@ -47,7 +47,6 @@
     {
       "name": "Build w/o Cache",
       "type": "node",
-      "preLaunchTask": "build",
       "runtimeArgs": [
         "run",
         "debug"
@@ -56,20 +55,17 @@
       "runtimeExecutable": "pnpm",
       "restart": false,
       "env": {
-        "DEBUG": "biomedical-id-resolver,bte*",
         "RESULT_CACHING": "false"
       },
       "request": "launch",
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "stopOnEntry": true,
       "console": "integratedTerminal"
     },
     {
       "name": "Build w/o Cache; No Threading",
       "type": "node",
-      "preLaunchTask": "build and start redis",
       "runtimeArgs": [
         "run",
         "debug"
@@ -78,8 +74,6 @@
       "runtimeExecutable": "pnpm",
       "restart": false,
       "env": {
-        "REDIS_HOST": "localhost",
-        "REDIS_PORT": "6379",
         "DEBUG": "biomedical-id-resolver,bte*",
         "RESULT_CACHING": "false",
         "USE_THREADING": "false"
@@ -94,7 +88,7 @@
     {
       "name": "Build w/ Cache",
       "type": "node",
-      "preLaunchTask": "build and start redis",
+      "preLaunchTask": "start redis",
       "runtimeArgs": [
         "run",
         "debug"
@@ -108,7 +102,6 @@
         "DEBUG": "biomedical-id-resolver,bte*",
         "SMARTAPI_SYNC": "false",
         "RESULT_CACHING": "true",
-        "CREATIVE_LIMIT": "1000"
       },
       "request": "launch",
       "skipFiles": [
@@ -120,7 +113,6 @@
     {
       "name": "Build w/ Cache (connect to existing)",
       "type": "node",
-      "preLaunchTask": "build",
       "runtimeArgs": [
         "run",
         "debug"
@@ -146,7 +138,7 @@
     {
       "name": "Build w/ Cache Cluster",
       "type": "node",
-      "preLaunchTask": "build and start redis cluster",
+      "preLaunchTask": "start redis cluster",
       "runtimeArgs": [
         "run",
         "debug"
@@ -172,7 +164,6 @@
     {
       "name": "Build w/ Cache Cluster (connect to existing)",
       "type": "node",
-      "preLaunchTask": "build",
       "runtimeArgs": [
         "run",
         "debug"
