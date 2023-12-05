@@ -5,6 +5,7 @@ const async = require("async");
 const CONCURRENCY = 20;
 
 const TEST_URL = "https://api.bte.ncats.io";
+// const TEST_URL = "http://localhost:3000"
 const TEST_ENDPOINT = "/v1/asyncquery";
 
 const IDS = [
@@ -31,6 +32,7 @@ results = async
       // jitter sendout time by a few ms
       await new Promise((resolve) => setTimeout(() => resolve(), Math.floor(Math.random() * 10)));
       const start = performance.now();
+      const id = IDS[Math.floor(Math.random() * IDS.length)]
       const body = {
         message: {
           query_graph: {
@@ -47,7 +49,7 @@ results = async
                 categories: ["biolink:SmallMolecule"],
               },
               n1: {
-                ids: [IDS[Math.floor(Math.random() * IDS.length)]],
+                ids: [id],
                 categories: ["biolink:Disease"],
               },
             },
@@ -55,7 +57,7 @@ results = async
         },
       };
 
-      setTimeout(() => resolve("Timed out."), 300000);
+      setTimeout(() => resolve(`${id}: Timed out.`), 300000);
       let isAccepted = false;
 
       try {
@@ -69,12 +71,12 @@ results = async
           timeout: 300000,
         });
       } catch (error) {
-        resolve("Query error.");
+        resolve(`${id}: Query error.`);
         return;
       }
 
       if (!isAccepted) {
-        resolve("Query not accepted.");
+        resolve(`${id}: Query not accepted.`);
         return;
       }
 
@@ -91,11 +93,11 @@ results = async
           });
           if (response.data.status === "Completed") {
             const end = performance.now();
-            resolve(`Finished in ${Math.ceil((end - start) / 1000)}s`);
+            resolve(`${id}: Finished in ${Math.ceil((end - start) / 1000)}s`);
             return;
             break;
           } else if (response.data.status === "Failed") {
-            resolve("Query failed.");
+            resolve(`${id}: Query failed.`);
             return;
             break;
           }
