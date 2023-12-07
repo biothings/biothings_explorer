@@ -1,17 +1,18 @@
+---
 scenarios:
-    - flow:
-        - post:
-            url: "/v1/query"
-            json:
-                message:
-                    query_graph:
-                        edges:
-                          e0:
-                            subject: "n0"
-                            object: "n1"
-                        nodes:
-                          n0:
-                            id: "{{ input_id }}"
-                            category: "{{ input_type }}"
-                          n1:
-                            category: "{{ output_type }}"
+  - flow:
+      - post:
+          url: /v1/query
+          json:
+            message:
+              query_graph:
+                edges:
+                  e0:
+                    subject: n0
+                    object: n1
+                nodes:
+                  n0:
+                    ids: ["{{ input_id }}"]
+                    categories: ["{{ input_type }}"]
+                  n1:
+                    categoies: ["{{ output_type }}"]
