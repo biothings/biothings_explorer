@@ -148,7 +148,7 @@
       "restart": false,
       "env": {
         "REDIS_HOST": "localhost",
-        "REDIS_PORT": "6379",
+        "REDIS_PORT": "9000",
         "DEBUG": "biomedical-id-resolver,bte*",
         "SMARTAPI_SYNC": "false",
         "RESULT_CACHING": "true",
