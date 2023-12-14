@@ -7,6 +7,7 @@
     "setup": "pnpm run clone && pnpm i",
     "clone": "./scripts/clone_packages.sh",
     "pull": "pnpm run git pull",
+    "status": "pnpm run git status",
     "git": "./scripts/run_git_packages.sh",
     "ggit": "pnpm -r --no-bail exec git",
     "build": "turbo run build",
