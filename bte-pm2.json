@@ -4,6 +4,10 @@
       "name": "bte-trapi",
       "cwd": ".",
       "script": "./packages/bte-server/built/server.js",
+      "node_args": [
+        "--require",
+        "./packages/bte-server/built/controllers/opentelemetry.js"
+      ],
       "exec_mode": "cluster",
       "instances": 4,
       "autorestart": true,
