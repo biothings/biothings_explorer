@@ -24,14 +24,14 @@ RUN npm i pnpm -g
 RUN apk add --no-cache --virtual build-deps git lz4 python3 make g++
 RUN apk add --no-cache curl
 COPY --chown=node:node . .
-# USER node
+USER node
 
 RUN export GIT_REMOTE_PROTOCOL=https \
     && pnpm run setup \
-    && pnpm run --silent get_rev > .current_rev \
+    && pnpm run --silent get_rev > .current_rev 
     # && pnpm run clean_on_prod \
     # && (pnpm i --production || true)
-# USER root
+USER root
 # clean up dependecies from the "build-deps" virtual package
 RUN apk del build-deps
 USER node
