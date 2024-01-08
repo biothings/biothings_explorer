@@ -2,7 +2,7 @@
 
 deployment:
   strategyType: Recreate
-  replicaCount: 1
+  replicaCount: 2
 
 image:
   repository: 853771734544.dkr.ecr.us-east-1.amazonaws.com/translator-bte
@@ -47,8 +47,6 @@ env:
   REDIS_TLS_ENABLED_VALUE: true
   REDIS_CLUSTER_VALUE: true
   
-
-      
 # With the following two sections, we can restrict the deployment on and only on the specific node
 # toleration to node taint such that this deployment can be scheduled on the tainted node while others without the toleration can not
 tolerations: 
