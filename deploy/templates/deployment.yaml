@@ -52,10 +52,12 @@ spec:
             httpGet:
               path: /
               port: http
-        - name: bte-kp
-          #resources:
-            #{{- toYaml . | nindent 12 }}
-          #{{- end }}
+
+        - name: {{ .Values.containers.name }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:

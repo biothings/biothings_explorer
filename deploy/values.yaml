@@ -9,6 +9,9 @@ image:
   pullPolicy: IfNotPresent
   tag: "BUILD_VERSION"
 
+containers:
+  name: bte-kp
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: false
