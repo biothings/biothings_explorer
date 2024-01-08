@@ -9,9 +9,6 @@ image:
   pullPolicy: IfNotPresent
   tag: "BUILD_VERSION"
 
-containers:
-  name: bte-kp
-
 serviceAccount:
   # Specifies whether a service account should be created
   create: false
@@ -83,8 +80,8 @@ affinity:
       topologyKey: "kubernetes.io/hostname"
 resources:
   requests:
-    memory: 28Gi
-    cpu: 6000m
+    memory: 56Gi
+    cpu: 13000m
   limits:
     memory: 58Gi
     cpu: 14000m 
