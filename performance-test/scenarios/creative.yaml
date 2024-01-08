@@ -1,0 +1,36 @@
+---
+scenarios:
+  - flow:
+      - post:
+          url: /v1/asyncquery
+          json:
+            message:
+              query_graph:
+                edges:
+                  e0:
+                    subject: n0
+                    predicates: [biolink:treats]
+                    object: n1
+                    knowledge_type: inferred
+                nodes:
+                  n0:
+                    categories: [biolink:SmallMolecule]
+                  n1:
+                    ids: ["{{ input_id }}"]
+                    categories: [biolink:Disease]
+          capture:
+            - json: $.status
+              as: status
+            - json: $.job_id
+              as: job_id
+          expect:
+            - statusCode: 200
+            - equals: [Accepted, "{{ status }}"]
+      - loop:
+          - think: 5
+          - get:
+              url: "/v1/asyncquery_status/{{ job_id }}"
+              capture:
+                - json: $.status
+                  as: status
+        whileTrue: statusComplete

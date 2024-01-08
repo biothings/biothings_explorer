@@ -4,6 +4,10 @@
       "name": "bte-trapi",
       "cwd": ".",
       "script": "./packages/bte-server/built/server.js",
+      "node_args": [
+        "--require",
+        "./packages/bte-server/built/controllers/opentelemetry.js"
+      ],
       "exec_mode": "cluster",
       "instances": 4,
       "autorestart": true,
@@ -13,7 +17,10 @@
       "env": {
         "PORT": "3000",
         "LOG": "./log",
-        "REQUEST_TIMEOUT": 300
+        "REQUEST_TIMEOUT": 300,
+        "EXPRESS_SAMPLE_RATE": 0.1,
+        "THREAD_SAMPLE_RATE": 0.1,
+        "PROFILE_SAMPLE_RATE": 0.1
       },
       "env_prod": {
         "NODE_ENV": "production",

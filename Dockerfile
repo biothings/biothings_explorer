@@ -24,20 +24,20 @@ RUN npm i pnpm -g
 RUN apk add --no-cache --virtual build-deps git lz4 python3 make g++
 RUN apk add --no-cache curl
 COPY --chown=node:node . .
-# USER node
+USER node
 
 RUN export GIT_REMOTE_PROTOCOL=https \
     && pnpm run setup \
-    && pnpm run --silent get_rev > .current_rev \
+    && pnpm run --silent get_rev > .current_rev 
     # && pnpm run clean_on_prod \
     # && (pnpm i --production || true)
-# USER root
+USER root
 # clean up dependecies from the "build-deps" virtual package
 RUN apk del build-deps
 USER node
 EXPOSE 3000
 ENV NODE_ENV production
 ENV DEBUG ${debug:+biomedical-id-resolver,bte*}
-# ENV API_OVERRIDE true
+ENV API_OVERRIDE true
 # ENV USE_THREADING ${debug:+false}
 CMD ["pm2-runtime", "bte-pm2.json", "--env prodci", "--only", "bte-trapi"]
