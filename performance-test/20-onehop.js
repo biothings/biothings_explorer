@@ -63,7 +63,7 @@ results = async
       // jitter sendout time by a few ms
       await new Promise((resolve) => setTimeout(() => resolve(), Math.floor(Math.random() * 10)));
       const start = performance.now();
-      const id = IDS[Math.floor(Math.random() * IDS.length)]
+      const id = IDS.pop(Math.floor(Math.random() * IDS.length))
       const body = {
         message: {
           query_graph: {
