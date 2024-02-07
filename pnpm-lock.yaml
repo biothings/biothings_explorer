@@ -181,7 +181,7 @@ importers:
   packages/api-response-transform:
     dependencies:
       '@biothings-explorer/utils':
-        specifier: link:../utils
+        specifier: workspace:../utils
         version: link:../utils
       '@commitlint/cli':
         specifier: ^17.8.1
