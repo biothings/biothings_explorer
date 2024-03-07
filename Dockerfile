@@ -35,6 +35,8 @@ USER root
 # clean up dependecies from the "build-deps" virtual package
 RUN apk del build-deps
 USER node
+RUN pm2 install pm2-logrotate
+RUN pm2 set pm2-logrotate:max_size 1G
 EXPOSE 3000
 ENV NODE_ENV production
 ENV DEBUG ${debug:+biomedical-id-resolver,bte*}
