@@ -102,6 +102,14 @@ Several environment variables are supported for various purposes, listed below:
 
 **Description:**` The port that BTE will listen on.
 
+#### `QEDGE_CACHE_TIME_S`
+
+**Default:** `1800`
+
+**Docker Default:** `1800`
+
+**Description:** Number of seconds after which cached edges should expire. Default comes to 30 minutes.
+
 #### `REDIS_CLUSTER`
 
 **Default:** `false`
@@ -117,14 +125,6 @@ Several environment variables are supported for various purposes, listed below:
 **Docker Default:** `localhost`
 
 **Description:** The hostname of the Redis server BTE will be using. Required for BTE to run with Redis. See [Running BTE through Docker](./INSTALLATION.md#running-manually) or [Running the project with Redis](./INSTALLATION.md#running-the-project-with-redis) if you're using the workspace.
-
-#### `REDIS_KEY_EXPIRE_TIME`
-
-**Default:** `1800`
-
-**Docker Default:** `1800`
-
-**Description:** Number of seconds after which cached edges should expire. Default comes to 30 minutes.
 
 #### `REDIS_PORT`
 
