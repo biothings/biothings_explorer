@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "Sync SmartAPI",
-      "type": "node",
+      "type": "pwa-node",
       "preLaunchTask": "build",
       "runtimeArgs": [
         "run",
@@ -24,7 +24,7 @@
     },
     {
       "name": "Sync SmartAPI (with overrides)",
-      "type": "node",
+      "type": "pwa-node",
       "preLaunchTask": "build",
       "runtimeArgs": [
         "run",
@@ -46,7 +46,7 @@
     },
     {
       "name": "Build w/o Cache",
-      "type": "node",
+      "type": "pwa-node",
       "runtimeArgs": [
         "run",
         "debug"
@@ -65,7 +65,7 @@
     },
     {
       "name": "Build w/o Cache; No Threading",
-      "type": "node",
+      "type": "pwa-node",
       "runtimeArgs": [
         "run",
         "debug"
@@ -87,7 +87,7 @@
     },
     {
       "name": "Build w/ Cache",
-      "type": "node",
+      "type": "pwa-node",
       "preLaunchTask": "start redis",
       "runtimeArgs": [
         "run",
@@ -112,7 +112,7 @@
     },
     {
       "name": "Build w/ Cache (connect to existing)",
-      "type": "node",
+      "type": "pwa-node",
       "runtimeArgs": [
         "run",
         "debug"
@@ -137,7 +137,7 @@
     },
     {
       "name": "Build w/ Cache Cluster",
-      "type": "node",
+      "type": "pwa-node",
       "preLaunchTask": "start redis cluster",
       "runtimeArgs": [
         "run",
@@ -163,7 +163,7 @@
     },
     {
       "name": "Build w/ Cache Cluster (connect to existing)",
-      "type": "node",
+      "type": "pwa-node",
       "runtimeArgs": [
         "run",
         "debug"
