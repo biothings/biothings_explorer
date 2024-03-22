@@ -184,3 +184,7 @@ export interface TrapiAsyncStatusResponse {
   logs: TrapiLog[];
   response_url?: string;
 }
+
+export interface TrapiSchema {
+  info: { version: string };
+}

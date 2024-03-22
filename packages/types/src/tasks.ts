@@ -1,5 +1,6 @@
+import { MessagePort } from "worker_threads";
 import { APIList } from "./misc";
-import { TrapiQueryGraph, TrapiResponse, TrapiWorkflow } from "./trapi";
+import { TrapiQueryGraph, TrapiResponse, TrapiSchema, TrapiWorkflow } from "./trapi";
 
 // Options as they are assembled from the route
 export interface QueryOptions {
@@ -16,7 +17,7 @@ export interface QueryHandlerOptions extends QueryOptions {
   provenanceUsesServiceProvider?: boolean;
   enableIDResolution?: boolean;
   apiList?: APIList;
-  schema?: { info: { version: string } }; // might be hard to type -- it's the entire TRAPI schema IIRC
+  schema?: TrapiSchema; // might be hard to type -- it's the entire TRAPI schema IIRC
   resolveOutputIDs?: boolean;
   EDGE_ATTRIBUTES_USED_IN_RECORD_HASH?: string[];
 }
@@ -31,7 +32,7 @@ export interface QueueData {
 }
 
 export interface QueryParams {
-  id: string | number; // Job ID
+  id?: string; // Job ID
 }
 
 export interface TaskData extends QueueData {
@@ -45,7 +46,7 @@ export interface TaskData extends QueueData {
 
 // Info provided to outer task function (defined alongside route)
 export interface TaskInfo {
-  id?: string | number;
+  id?: string;
   data: TaskData;
 }
 

@@ -4,6 +4,7 @@ import { TrapiQueryGraph } from "./trapi";
 import { SmartAPISpec } from "@biothings-explorer/smartapi-kg";
 import { Queue } from "bull";
 import Piscina from "piscina";
+import { MessagePort } from "worker_threads";
 
 export interface QueryQueue {
   bte_sync_query_queue: Queue;
