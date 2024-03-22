@@ -71,6 +71,7 @@
     "rimraf": "^3.0.2",
     "supertest": "^6.3.3",
     "supports-color": "^7.2.0",
+    "turbo": "^1.13.0",
     "typescript": "5.2.2"
   },
   "dependencies": {
@@ -104,7 +105,6 @@
     "snake-case": "^3.0.4",
     "stream-chunker": "^1.2.8",
     "stream-json": "^1.8.0",
-    "turbo": "^1.10.16",
     "valid-url": "^1.0.9",
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^4.7.1"
