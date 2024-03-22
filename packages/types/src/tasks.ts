@@ -53,6 +53,8 @@ export interface TaskInfo {
 export interface InnerTaskData {
   req: TaskInfo;
   route: string;
+  traceparent?: string;
+  tracestate?: string;
   port: MessagePort;
   job?: {
     jobId: string | number;
