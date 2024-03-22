@@ -30,6 +30,9 @@
     "url": "https://github.com/biothings/biothings_explorer/issues"
   },
   "homepage": "https://github.com/biothings/biothings_explorer#readme",
+  "dependencies": {
+    "@biothings_explorer/smartapi-kg": "workspace:../smartapi-kg"
+  },
   "devDependencies": {
     "@types/jest": "^29.5.12"
   }

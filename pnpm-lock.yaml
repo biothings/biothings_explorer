@@ -1063,6 +1063,10 @@ importers:
         version: 4.10.0(webpack@5.89.0)
 
   packages/types:
+    dependencies:
+      '@biothings_explorer/smartapi-kg':
+        specifier: workspace:../smartapi-kg
+        version: link:../smartapi-kg
     devDependencies:
       '@types/jest':
         specifier: ^29.5.12
