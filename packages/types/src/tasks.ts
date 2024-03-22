@@ -16,7 +16,7 @@ export interface QueryHandlerOptions extends QueryOptions {
   provenanceUsesServiceProvider?: boolean;
   enableIDResolution?: boolean;
   apiList?: APIList;
-  schema?: unknown; // might be hard to type -- it's the entire TRAPI schema IIRC
+  schema?: { info: { version: string } }; // might be hard to type -- it's the entire TRAPI schema IIRC
   resolveOutputIDs?: boolean;
   EDGE_ATTRIBUTES_USED_IN_RECORD_HASH?: string[];
 }
