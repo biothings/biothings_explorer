@@ -132,6 +132,9 @@ packages/*
 # Temporary: allow web-app until new web-app integrated
 !packages/web-app
 
+# Allow types package
+!packages/types
+
 # .vscode generally
 .vscode/*
 

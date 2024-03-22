@@ -9,7 +9,9 @@
       "@biothings-explorer/node-expansion": ["packages/node-expansion"],
       "@biothings-explorer/query_graph_handler": ["packages/query_graph_handler"],
       "@biothings-explorer/smartapi-kg": ["packages/smartapi-kg"],
-      "@biothings-explorer/bte-server": ["packages/bte-server"]
+      "@biothings-explorer/bte-server": ["packages/bte-server"],
+      "@biothings-explorer/utils": ["packages/utils"],
+      "@biothings-explorer/types": ["packages/types"]
     }
   },
   "files": [],
@@ -40,6 +42,12 @@
     },
     {
       "path": "packages/node-expansion"
+    },
+    {
+      "path": "packages/utils"
+    },
+    {
+      "path": "packages/types"
     }
   ]
 }

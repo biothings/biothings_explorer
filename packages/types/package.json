@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "@biothings-explorer/types",
+  "version": "1.0.0",
+  "description": "A collection of common types used by Biothings Explorer",
+  "main": "./built/index.js",
+  "types": "./built/index.d.ts",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc -b",
+    "clean": "rimraf ./built './**/tsconfig.tsbuildinfo'",
+    "build:clean": "pnpm run clean && pnpm run build",
+    "format": "prettier --check 'src/**/*.js'",
+    "format:fix": "prettier --write 'src/**/*.js'",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "pnpm lint --fix",
+    "test": "jest",
+    "test-cov": "jest --coverage"
+  },
+  "keywords": [
+    "bte",
+    "biothings",
+    "single",
+    "hop",
+    "query"
+  ],
+  "author": "BioThings Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/biothings/biothings_explorer/issues"
+  },
+  "homepage": "https://github.com/biothings/biothings_explorer#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.12"
+  }
+}
