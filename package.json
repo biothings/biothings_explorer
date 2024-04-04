@@ -75,12 +75,10 @@
     "typescript": "5.2.2"
   },
   "dependencies": {
-    "@biothings-explorer/query_graph_handler": "file:packages/query_graph_handler",
-    "@biothings-explorer/smartapi-kg": "file:packages/smartapi-kg",
     "@bull-board/express": "^5.9.1",
     "@sentry/node": "^7.74.1",
     "@sentry/profiling-node": "^1.2.1",
-    "axios": "^0.27.2",
+    "axios": "^0.28.0",
     "body-parser": "^1.20.2",
     "bull": "^4.11.4",
     "compression": "^1.7.4",
