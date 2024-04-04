@@ -29,6 +29,7 @@ export interface QueueData {
   callback_url?: string;
   smartAPIID?: string;
   teamName?: string;
+  route: string;
 }
 
 export interface QueryParams {
