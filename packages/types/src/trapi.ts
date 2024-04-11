@@ -27,6 +27,7 @@ export interface TrapiSource {
   resource_id: string;
   resource_role: string;
   upstream_resource_ids?: string[];
+  source_record_urls?: string[];
 }
 
 export interface TrapiKGNodes {
