@@ -165,6 +165,7 @@ export interface TrapiQuery {
   workflow?: TrapiWorkflow[];
   submitter?: string;
   callback?: string;
+  bypass_cache?: boolean;
 }
 
 export interface TrapiResponse {
