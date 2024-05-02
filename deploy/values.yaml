@@ -51,7 +51,7 @@ env:
 # toleration to node taint such that this deployment can be scheduled on the tainted node while others without the toleration can not
 tolerations: 
 - key      : "transltr"
-  value    : "managed-app"
+  value    : "bte"
   operator : "Equal"
   effect   : "NoSchedule"
 
@@ -65,7 +65,7 @@ affinity:
         - key: application
           operator: In
           values:
-          - managed-app
+          - bte
   # this ensures only ONE pod will run on each node
   podAntiAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
@@ -74,7 +74,7 @@ affinity:
         - key: app.kubernetes.io/name
           operator: In
           values:
-          - managed-app
+          - bte
       topologyKey: "kubernetes.io/hostname"
 resources:
   requests:
