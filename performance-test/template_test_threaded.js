@@ -6,8 +6,7 @@ const InferredQueryHandler = require('../packages/query_graph_handler/built/infe
 const TRAPIQueryHandler = require('../packages/query_graph_handler/built/index').default;
 
 if (isMainThread) {
-        
-    const CORE_CONCURRENCY_RATIO = parseInt(process.env.CORE_CONCURRENCY_RATIO) || 0.25;
+    const CORE_CONCURRENCY_RATIO = parseInt(process.env.CORE_CONCURRENCY_RATIO) || 0.5;
     const MEM_CONCURRENCY_RATIO = parseFloat(process.env.MEM_CONCURRENCY_RATIO) || 0.6;
     const CORE_LIMIT = Math.ceil(os.cpus().length * CORE_CONCURRENCY_RATIO);
     const MEM_LIMIT = Math.ceil((os.totalmem() / 1e9) * MEM_CONCURRENCY_RATIO);
@@ -29,28 +28,20 @@ if (isMainThread) {
             console.log(file)
             // read the file
             const filePath = path.resolve(templateDataPath, file);
-            const data = await fs.readFile(filePath, 'utf-8');
-            const queryGraph = JSON.parse(data).message.query_graph;
-
-            // create a new InferredQueryHandler instance
-            const parentHandler = new TRAPIQueryHandler();
-            parentHandler.setQueryGraph(queryGraph);
-            parentHandler._initializeResponse();
-            await parentHandler.addQueryNodes();
-            await parentHandler._processQueryGraph(parentHandler.queryGraph);
-            const handler = new InferredQueryHandler(parentHandler, parentHandler.queryGraph, [], {}, parentHandler.path, parentHandler.predicatePath, true);
-
-            // get templates
-            const { qEdge, qSubject, qObject } = handler.getQueryParts();
-            const subQueries = await handler.createQueries(qEdge, qSubject, qObject);
-
-
-            // go through each template
-            for (const { template, queryGraph: templateQueryGraph } of subQueries) {
-                if (!templateTimes[template]) {
-                    templateTimes[template] = { count: 0, totalMs: 0 };
+            const data = JSON.parse(await fs.readFile(filePath, 'utf-8'));
+            if (data.ids) {
+                for (const id of data.ids) {
+                    console.log(`file-${id}`)
+                    const queryGraph = JSON.parse(JSON.stringify(data.message.query_graph));
+                    for (const node of Object.values(queryGraph.nodes)) {
+                        if (node.ids === "{ID}") {
+                            node.ids = Array.isArray(id) ? id : [id];
+                        }
+                    }
+                    await handleQueryGraph(queryGraph, templateTimes, tasks);
                 }
-                tasks.push({ template, queryGraph: templateQueryGraph })
+            } else {
+                await handleQueryGraph(data.message.query_graph, templateTimes, tasks);
             }
         }
 
@@ -73,14 +64,35 @@ if (isMainThread) {
                             templateTimes[template].totalMs += msg.totalMs;
                         }
                         resolve();
-                    });
-                    
-                })
+                    });                
+                });
             }));
         }
 
         Object.values(templateTimes).map(a => a.avgMin = parseFloat((a.totalMs / a.count / 60 / 1000).toFixed(2)));
         console.log(templateTimes)
+    }
+
+    async function handleQueryGraph(queryGraph, templateTimes, tasks) {
+        // create a new InferredQueryHandler instance
+        const parentHandler = new TRAPIQueryHandler();
+        parentHandler.setQueryGraph(queryGraph);
+        parentHandler._initializeResponse();
+        await parentHandler.addQueryNodes();
+        await parentHandler._processQueryGraph(parentHandler.queryGraph);
+        const handler = new InferredQueryHandler(parentHandler, parentHandler.queryGraph, [], {}, parentHandler.path, parentHandler.predicatePath, true);
+
+        // get templates
+        const { qEdge, qSubject, qObject } = handler.getQueryParts();
+        const subQueries = await handler.createQueries(qEdge, qSubject, qObject);
+
+        // go through each template
+        for (const { template, queryGraph: templateQueryGraph } of subQueries) {
+            if (!templateTimes[template]) {
+                templateTimes[template] = { count: 0, totalMs: 0 };
+            }
+            tasks.push({ template, queryGraph: templateQueryGraph })
+        }
     }
 
     main();

@@ -17,56 +17,71 @@ async function main() {
 
     for (const file of files) {
         console.log(file)
-        // read the file
         const filePath = path.resolve(templateDataPath, file);
-        const data = await fs.readFile(filePath, 'utf-8');
-        const queryGraph = JSON.parse(data).message.query_graph;
-
-        // create a new InferredQueryHandler instance
-        const parentHandler = new TRAPIQueryHandler();
-        parentHandler.setQueryGraph(queryGraph);
-        parentHandler._initializeResponse();
-        await parentHandler.addQueryNodes();
-        await parentHandler._processQueryGraph(parentHandler.queryGraph);
-        const handler = new InferredQueryHandler(parentHandler, parentHandler.queryGraph, [], {}, parentHandler.path, parentHandler.predicatePath, true);
-
-        // get templates
-        const { qEdge, qSubject, qObject } = handler.getQueryParts();
-        const subQueries = await handler.createQueries(qEdge, qSubject, qObject);
-
-        // go through each template
-        for (const { template, queryGraph: templateQueryGraph } of subQueries) {
-            if (!templateTimes[template]) {
-                templateTimes[template] = { count: 0, totalMs: 0 };
-            }
-            const start = Date.now();
-            try {
-                const resp = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({message: { query_graph: templateQueryGraph }})
-                });
-                if (resp.status < 300) {
-                    const end = Date.now();
-                    templateTimes[template].count++;
-                    templateTimes[template].totalMs += end - start;
-                } else if (resp.status == 500) {
-                    const is_timeout = (await resp.json())?.description?.includes?.("time");
-                    if (is_timeout) {
-                        templateTimes[template].count++;
-                        templateTimes[template].totalMs += 10 * 60 * 1000; // timeout = 10 minutes
+        const data = JSON.parse(await fs.readFile(filePath, 'utf-8'));
+        if (data.ids) {
+            for (const id of data.ids) {
+                console.log(`file-${id}`)
+                const queryGraph = JSON.parse(JSON.stringify(data.message.query_graph));
+                for (const node of Object.values(queryGraph.nodes)) {
+                    if (node.ids === "{ID}") {
+                        node.ids = Array.isArray(id) ? id : [id];
                     }
                 }
-            } catch (e) {
-                console.log(`Error while requesting: ${e} ${e.stack}`)
-            } 
+                await handleQueryGraph(queryGraph, templateTimes);
+            }
+        } else {
+            await handleQueryGraph(data.message.query_graph, templateTimes);
         }
     }
+        
     Object.values(templateTimes).map(a => a.avgMin = parseFloat((a.totalMs / a.count / 60 / 1000).toFixed(2)));
     console.log(templateTimes)
+}
+
+async function handleQueryGraph(queryGraph, templateTimes) {
+    // create a new InferredQueryHandler instance
+    const parentHandler = new TRAPIQueryHandler();
+    parentHandler.setQueryGraph(queryGraph);
+    parentHandler._initializeResponse();
+    await parentHandler.addQueryNodes();
+    await parentHandler._processQueryGraph(parentHandler.queryGraph);
+    const handler = new InferredQueryHandler(parentHandler, parentHandler.queryGraph, [], {}, parentHandler.path, parentHandler.predicatePath, true);
+
+    // get templates
+    const { qEdge, qSubject, qObject } = handler.getQueryParts();
+    const subQueries = await handler.createQueries(qEdge, qSubject, qObject);
+
+    // go through each template
+    for (const { template, queryGraph: templateQueryGraph } of subQueries) {
+        if (!templateTimes[template]) {
+            templateTimes[template] = { count: 0, totalMs: 0 };
+        }
+        const start = Date.now();
+        try {
+            const resp = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({message: { query_graph: templateQueryGraph }})
+            });
+            if (resp.status < 300) {
+                const end = Date.now();
+                templateTimes[template].count++;
+                templateTimes[template].totalMs += end - start;
+            } else if (resp.status == 500) {
+                const is_timeout = (await resp.json())?.description?.includes?.("time");
+                if (is_timeout) {
+                    templateTimes[template].count++;
+                    templateTimes[template].totalMs += 10 * 60 * 1000; // timeout = 10 minutes
+                }
+            }
+        } catch (e) {
+            console.log(`Error while requesting: ${e} ${e.stack}`)
+        } 
+    }
 }
 
 main();
