@@ -1,0 +1,37 @@
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "ids": "{ID}"
+                },
+                "n1": {
+                    "categories": ["biolink:Gene"]
+                }
+            },
+            "edges": {
+                "e0": {
+                    "subject": "n0",
+                    "object": "n1",
+                    "predicates": ["biolink:affects"],
+                    "knowledge_type": "inferred",
+                    "qualifier_constraints": [
+                        {
+                            "qualifier_set": [
+                                {
+                                    "qualifier_type_id": "biolink:object_direction_qualifier",
+                                    "qualifier_value": "decreased"
+                                },
+                                {
+                                    "qualifier_type_id": "biolink:object_aspect_qualifier",
+                                    "qualifier_value": "activity_or_abundance"
+                                }    
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "ids": ["PUBCHEM.COMPOUND:3007", "PUBCHEM.COMPOUND:5826"]
+}
