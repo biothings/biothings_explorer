@@ -25,55 +25,76 @@ if (isMainThread) {
         const files = await fs.readdir(templateDataPath);
 
         for (const file of files) {
-            console.log(file)
-            // read the file
+            let templates = 0;
             const filePath = path.resolve(templateDataPath, file);
             const data = JSON.parse(await fs.readFile(filePath, 'utf-8'));
             if (data.ids) {
                 for (const id of data.ids) {
-                    console.log(`file-${id}`)
                     const queryGraph = JSON.parse(JSON.stringify(data.message.query_graph));
                     for (const node of Object.values(queryGraph.nodes)) {
                         if (node.ids === "{ID}") {
                             node.ids = Array.isArray(id) ? id : [id];
                         }
                     }
-                    await handleQueryGraph(queryGraph, templateTimes, tasks);
+                    templates += await handleQueryGraph(queryGraph, templateTimes, tasks);
                 }
             } else {
-                await handleQueryGraph(data.message.query_graph, templateTimes, tasks);
+                templates += await handleQueryGraph(data.message.query_graph, templateTimes, tasks);
             }
-        }
 
-        
-        for (let i = 0; i < tasks.length; i += threads) {
-            const subtasks = tasks.slice(i, i + threads);
-            await Promise.all(subtasks.map(({ template, queryGraph }) => {
-                const worker = new Worker(__filename, { workerData: { queryGraph }});
-                return new Promise((resolve) => {
-                    const cancelTimeout = setTimeout(() => {
-                        worker.terminate();
-                        templateTimes[template].count += 1;
-                        templateTimes[template].totalMs += 10 * 60 * 1000; // 10 mins if there is a timeout
-                        resolve();
-                    }, 1000 * 60 * 5); // 5 mins timeout
-                    worker.on('message', (msg) => {
-                        clearTimeout(cancelTimeout);
-                        if (msg.good) {
-                            templateTimes[template].count += 1;
-                            templateTimes[template].totalMs += msg.totalMs;
-                        }
-                        resolve();
-                    });                
-                });
-            }));
+            console.log(`${templates} templates found for ${file}`)
         }
+        
+        let task_position = threads;
+        const first_tasks = tasks.slice(0, threads);
+        await Promise.all(first_tasks.map(({ template, queryGraph }) => {
+            let worker = new Worker(__filename);
+            return new Promise((resolve) => {
+                const genTimeout = () => setTimeout(() => {
+                    worker.terminate();
+                    templateTimes[curTemplate].count += 1;
+                    templateTimes[curTemplate].totalMs += 10 * 60 * 1000; // 10 mins if there is a timeout
+                    if (task_position >= tasks.length) {
+                        resolve();
+                    } else {
+                        const { template: taskTemplate, queryGraph } = tasks[task_position];
+                        curTemplate = taskTemplate;
+                        task_position++;
+                        worker = new Worker(__filename);
+                        worker.postMessage({ queryGraph });
+                        worker.on('message', handleMsg);
+                        cancelTimeout = genTimeout();
+                    }
+                }, 1000 * 60 * 5); // 5 mins timeout
+                let curTemplate = template;
+                let cancelTimeout = genTimeout();
+                const handleMsg = (msg) => {
+                    clearTimeout(cancelTimeout);
+                    if (msg.good) {
+                        templateTimes[curTemplate].count += 1;
+                        templateTimes[curTemplate].totalMs += msg.totalMs;
+                    }
+                    if (task_position >= tasks.length) {
+                        resolve();
+                    } else {
+                        const { template: taskTemplate, queryGraph: taskQueryGraph } = tasks[task_position];
+                        curTemplate = taskTemplate;
+                        task_position++;
+                        worker.postMessage({ queryGraph: taskQueryGraph });
+                        cancelTimeout = genTimeout();
+                    }
+                }
+                worker.on('message', handleMsg);
+                worker.postMessage({ queryGraph });                
+            });
+        }));
 
         Object.values(templateTimes).map(a => a.avgMin = parseFloat((a.totalMs / a.count / 60 / 1000).toFixed(2)));
         console.log(templateTimes)
     }
 
     async function handleQueryGraph(queryGraph, templateTimes, tasks) {
+        let templates = 0;
         // create a new InferredQueryHandler instance
         const parentHandler = new TRAPIQueryHandler();
         parentHandler.setQueryGraph(queryGraph);
@@ -92,16 +113,18 @@ if (isMainThread) {
                 templateTimes[template] = { count: 0, totalMs: 0 };
             }
             tasks.push({ template, queryGraph: templateQueryGraph })
+            templates++
         }
+        return templates
     }
 
     main();
 
 } 
 else {
-    async function threadMain() {
+    async function threadMain(queryGraph) {
         const queryHandler = new TRAPIQueryHandler({}, path.resolve(__dirname, "../packages/bte-server/data/smartapi_specs.json"), path.resolve(__dirname, "../packages/bte-server/data/predicates.json"));
-        queryHandler.setQueryGraph(workerData.queryGraph);
+        queryHandler.setQueryGraph(queryGraph);
         try {
             const start = Date.now();
             await queryHandler.query();
@@ -112,7 +135,9 @@ else {
             return;
         }
     }
-    threadMain();
+    parentPort.once('message', message => {
+       threadMain(message.queryGraph); 
+    });
 }
 
 
