@@ -7,5 +7,6 @@ __test__/
 node_modules/
 packages/*
 !packages/web-app
+!packages/types
 !packages/packages.txt
 
