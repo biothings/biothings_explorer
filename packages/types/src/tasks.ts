@@ -1,6 +1,15 @@
 import { MessagePort } from "worker_threads";
 import { APIList } from "./misc";
-import { TrapiQueryGraph, TrapiResponse, TrapiSchema, TrapiWorkflow } from "./trapi";
+import {
+  TrapiQueryGraph,
+  TrapiResponse,
+  TrapiSchema,
+  TrapiWorkflow,
+} from "./trapi";
+import {
+  SmartAPIKGOperationObject,
+  SmartAPIQueryResult,
+} from "@biothings-explorer/smartapi-kg";
 
 // Options as they are assembled from the route
 export interface QueryOptions {
@@ -14,12 +23,14 @@ export interface QueryOptions {
 
 // Options as they are passed to the Query Handler
 export interface QueryHandlerOptions extends QueryOptions {
+  metakg?: SmartAPIKGOperationObject[]; // list of meta kg ops
   provenanceUsesServiceProvider?: boolean;
   enableIDResolution?: boolean;
   apiList?: APIList;
   schema?: TrapiSchema; // might be hard to type -- it's the entire TRAPI schema IIRC
   resolveOutputIDs?: boolean;
   EDGE_ATTRIBUTES_USED_IN_RECORD_HASH?: string[];
+  smartapi?: SmartAPIQueryResult;
 }
 
 export interface QueueData {
