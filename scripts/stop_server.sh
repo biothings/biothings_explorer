@@ -1,6 +1,5 @@
 #!/bin/bash
-
-btepid=$(pgrep -f bte-trapi)
+btepid=$(pgrep -f "(node|nodemon).*/packages/.*/data")
 echo "$btepid" | xargs -n1 pkill -9 -P && echo 'BTE subprocesses stopped.' || true
 echo "$btepid" | xargs -n1 kill -s KILL && echo 'BTE Stopped.'
 [ "$(docker ps -a | grep test-redis)" ] && docker rm test-redis --force > /dev/null 2>&1 && echo 'Containerized redis stopped.'
