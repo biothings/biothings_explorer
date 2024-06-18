@@ -1,0 +1,38 @@
+{
+    "message": {
+        "query_graph": {
+            "nodes": {
+                "n0": {
+                    "ids": "{ID}"
+                },
+                "n1": {
+                    "categories": ["biolink:SmallMolecule"]
+                }
+            },
+            "edges": {
+                "e0": {
+                    "subject": "n1",
+                    "object": "n0",
+                    "predicates": ["biolink:affects"],
+                    "knowledge_type": "inferred",
+                    "qualifier_constraints": [
+                        {
+                            "qualifier_set": [
+                                {
+                                    "qualifier_type_id": "biolink:object_direction_qualifier",
+                                    "qualifier_value": "decreased"
+                                },
+                                {
+                                    "qualifier_type_id": "biolink:object_aspect_qualifier",
+                                    "qualifier_value": "activity_or_abundance"
+                                }
+                                
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "ids": ["NCBIGene:23162", "NCBIGene:7157"]
+}
