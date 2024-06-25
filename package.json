@@ -21,6 +21,7 @@
     "test-cov": "turbo run --parallel test-cov",
     "siege-local": "artillery run -e local --output report_local.json --config performance-test/config.yaml performance-test/scenarios/creative.yaml",
     "smartapi_sync": "node ./scripts/smartapi_sync.js",
+    "test_smartapi": "node ./scripts/test_smartapi.js",
     "get_rev": "./scripts/get_rev.sh",
     "basic-start": "node .",
     "start": "./scripts/start_server.sh",
