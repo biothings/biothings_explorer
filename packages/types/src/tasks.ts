@@ -75,16 +75,10 @@ export interface InnerTaskData {
   };
 }
 
-// Data sent from thread to main to keep track of execution
-// TODO break down into types of messages
-export interface DialHome {
+// Data sent to/from worker threads
+export interface ThreadMessage {
   threadId: string | number;
-  cacheInProgress?: number;
-  addCacheKey?: string;
-  completeCacheKey?: string;
-  registerId?: string;
-  cacheDone?: number;
-  err?: Error;
-  result?: TrapiResponse;
+  type: string;
+  value?: unknown;
   status?: number;
 }
