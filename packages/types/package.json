@@ -31,7 +31,9 @@
   },
   "homepage": "https://github.com/biothings/biothings_explorer#readme",
   "dependencies": {
-    "@biothings-explorer/smartapi-kg": "workspace:../smartapi-kg"
+    "@biothings-explorer/smartapi-kg": "workspace:../smartapi-kg",
+    "biomedical_id_resolver": "workspace:../biomedical_id_resolver",
+    "@biothings-explorer/utils": "workspace:../utils"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12"
