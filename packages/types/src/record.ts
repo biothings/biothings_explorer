@@ -467,7 +467,7 @@ export class Record {
       JSON.stringify(
         this.provenanceChain.sort((sourceA, sourceB) =>
           sourceA.resource_id.localeCompare(sourceB.resource_id),
-        ),
+        ).map(source => _.omit(source, ["source_record_urls"])),
       ),
     ].join("-");
   }
