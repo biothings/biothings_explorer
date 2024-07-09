@@ -88,9 +88,9 @@ Several environment variables are supported for various purposes, listed below:
 
 #### `NGD_TIMEOUT_MS`
 
-**Default:** `20000`
+**Default:** `10000`
 
-**Docker Default:** `20000`
+**Docker Default:** `10000`
 
 **Description:** Timeout used for the NGD scoring process of results.
 
