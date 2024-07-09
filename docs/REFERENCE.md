@@ -46,6 +46,14 @@ Several environment variables are supported for various purposes, listed below:
 
 **Description:** Run query execution as normal, but do not actually query APIs.
 
+#### `CREATIVE_TIMEOUT_S`
+
+**Default:** `285` (4.75 minutes)
+
+**Docker Default:** `285`
+
+**Description:** Timeout for creative mode template execution (does not include final results merging).
+
 #### `INSTANCE_ENV`
 
 **Default:** `prod`
