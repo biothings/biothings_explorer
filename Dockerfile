@@ -21,7 +21,7 @@ RUN npm i pnpm -g
 # Add additional dependencies in the same line if needed
 #    git: used for clone multiple source repos in our monorepo setup
 #    lz4 python3 make g++: required to build lz4 nodejs package
-RUN apk add --no-cache --virtual build-deps git lz4 python3 make g++
+RUN apk add --no-cache --virtual build-deps git lz4 python3 make g++ py3-setuptools
 RUN apk add --no-cache curl
 COPY --chown=node:node . .
 USER node
