@@ -43,13 +43,13 @@ export interface QueueData {
   route: string;
 }
 
-export interface QueryParams {
+export interface TaskQueryParams {
   id?: string; // Job ID
 }
 
 export interface TaskData extends QueueData {
   route: string;
-  params?: QueryParams;
+  params?: TaskQueryParams;
   endpoint?: string;
   abortController?: AbortController;
   url?: string;

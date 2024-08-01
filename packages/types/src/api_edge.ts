@@ -36,3 +36,14 @@ export interface TemplateNonBatchAPIEdge extends APIEdge {
 export interface TemplateBatchAPIEdge extends APIEdge {
   input: TemplatedInput;
 }
+
+
+export interface QueryParams {
+  [paramName: string]: unknown;
+}
+
+export interface BiothingsResponse {
+  total: number;
+  hits: unknown[];
+  max_total?: number;
+}
