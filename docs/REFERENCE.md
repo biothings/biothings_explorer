@@ -72,17 +72,17 @@ Several environment variables are supported for various purposes, listed below:
 
 #### `MAX_RECORDS_PER_EDGE`
 
-**Default:** `30000`
+**Default:** `100000`
 
-**Docker Default:** `30000`
+**Docker Default:** `100000`
 
 **Description:** Maximum number of records allowable on a single query edge, after which query execution will be forced to move on to the next edge (or complete if there are no other edges).
 
 #### `MAX_RECORDS_TOTAL`
 
-**Default:** `60000`
+**Default:** `200000`
 
-**Docker Default:** `60000`
+**Docker Default:** `200000`
 
 **Description:** Maximum number of records allowable in a single query execution, after which the query will be terminated.
 
