@@ -543,8 +543,8 @@ export class Record {
     }
     returnValue.push({
       resource_id: this.config.provenanceUsesServiceProvider
-        ? "infores:bte-non-trapi"
-        : "infores:bte",
+        ? "infores:service-provider-trapi"
+        : "infores:biothings-explorer",
       resource_role: "aggregator_knowledge_source",
       upstream_resource_ids: [this.apiInforesCurie],
     });
