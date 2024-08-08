@@ -43,13 +43,13 @@ export interface QueueData {
   route: string;
 }
 
-export interface QueryParams {
+export interface TaskQueryParams {
   id?: string; // Job ID
 }
 
 export interface TaskData extends QueueData {
   route: string;
-  params?: QueryParams;
+  params?: TaskQueryParams;
   endpoint?: string;
   abortController?: AbortController;
   url?: string;
@@ -75,16 +75,10 @@ export interface InnerTaskData {
   };
 }
 
-// Data sent from thread to main to keep track of execution
-// TODO break down into types of messages
-export interface DialHome {
+// Data sent to/from worker threads
+export interface ThreadMessage {
   threadId: string | number;
-  cacheInProgress?: number;
-  addCacheKey?: string;
-  completeCacheKey?: string;
-  registerId?: string;
-  cacheDone?: number;
-  err?: Error;
-  result?: TrapiResponse;
+  type: string;
+  value?: unknown;
   status?: number;
 }

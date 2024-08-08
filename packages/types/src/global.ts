@@ -33,7 +33,7 @@ declare global {
   var missingAPIs: SmartAPISpec[];
   var BIOLINK_VERSION: string;
   var SCHEMA_VERSION: string;
-  var parentPort: MessagePort;
+  var workerSide: MessagePort;
   var cachingTasks: Promise<void>[];
   var queryInformation: QueryInformation;
   var job: {
