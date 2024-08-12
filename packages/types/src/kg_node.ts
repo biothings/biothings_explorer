@@ -8,12 +8,14 @@ export interface KGNodeInfo {
   curies: string[];
   primaryCurie: string;
   qNodeID: string;
+  originalCurie?: string;
 }
 
 export default class KGNode {
   id: string;
   primaryCurie: string;
   qNodeID: string;
+  originalCurie?: string;
   curies: string[];
   names: string[];
   semanticType: string[];
@@ -36,6 +38,9 @@ export default class KGNode {
     this.targetNodes = new Set();
     this.sourceQNodeIDs = new Set();
     this.targetQNodeIDs = new Set();
+    
+    // store original curie to output `query_id bte#815`
+    this.originalCurie = info.originalCurie;
   }
 
   addSourceNode(kgNodeID: string): void {

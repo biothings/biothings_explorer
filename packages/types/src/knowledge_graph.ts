@@ -14,6 +14,7 @@ import {
 import KGNode from "./kg_node";
 import KGEdge from "./kg_edge";
 import { BTEGraphUpdate } from "./graph";
+import { Telemetry } from '@biothings-explorer/utils';
 
 const debug = Debug("bte:KnowledgeGraph");
 const NON_ARRAY_ATTRIBUTES = [
@@ -21,6 +22,37 @@ const NON_ARRAY_ATTRIBUTES = [
   "biolink:agent_type",
   "biolink:evidence_count",
 ];
+
+interface SpecialAttributeHandlers {
+  [attribute_type_id: string]: (value: Set<string | number>, kgEdge: KGEdge) => TrapiAttribute['value'];
+}
+
+const SPECIAL_ATTRIBUTE_HANDLERS: SpecialAttributeHandlers = {
+  'biolink:max_research_phase': (value, kgEdge) => {
+    // Special handling for max research phase
+    const phase_map = {
+      '-1.0': 'not_provided',
+      '0.5': 'pre_clinical_research_phase',
+      '1.0': 'clinical_trial_phase_1',
+      '2.0': 'clinical_trial_phase_2',
+      '3.0': 'clinical_trial_phase_3',
+      '4.0': 'clinical_trial_phase_4',
+    };
+    function map_phase(val: string) {
+      let new_val = phase_map[val];
+      if (typeof new_val !== 'undefined') return new_val;
+
+      const source = Object.values(kgEdge.sources).find((src) => typeof src.primary_knowledge_source !== 'undefined')
+        .primary_knowledge_source.resource_id;
+      const err = new Error(
+        `Unrecognized research phase (${val}) from ${source} ${kgEdge.subject} > ${kgEdge.predicate} > ${kgEdge.object}`,
+      );
+      Telemetry.captureException(err);
+      return 'not_provided';
+    }
+    return Array.from(value as Set<string>).map(map_phase);
+  },
+};
 
 export default class KnowledgeGraph {
   nodes: {
@@ -122,13 +154,19 @@ export default class KnowledgeGraph {
 
     Object.entries(kgEdge.attributes).forEach(([key, value]) => {
       if (key === "edge-attributes") return;
-      // if (key == 'edge-attributes') return;
+      
+      let formatted_value: TrapiAttribute['value'] = NON_ARRAY_ATTRIBUTES.includes(key)
+        ? Array.from(value as Set<string>).reduce((acc, val) => acc + val)
+        : Array.from(value as Set<string>);
+
+      if (key in SPECIAL_ATTRIBUTE_HANDLERS) {
+        formatted_value = SPECIAL_ATTRIBUTE_HANDLERS[key](value as Set<string | number>, kgEdge);
+      }
+
       attributes.push({
         attribute_type_id: key,
         // technically works for numbers as well
-        value: NON_ARRAY_ATTRIBUTES.includes(key)
-          ? [...(value as Set<string>)].reduce((acc, val) => acc + val)
-          : Array.from(value as Set<string>),
+        value: formatted_value,
         //value_type_id: 'bts:' + key,
       });
     });
