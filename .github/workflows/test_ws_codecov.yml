@@ -32,7 +32,7 @@ jobs:
       run: |
         pnpm run clone
         pnpm run git checkout ${{ steps.branch-name.outputs.current_branch }}
-        pnpm i || pnpm i
+        pnpm i
         pnpm run test-cov
 
     - name: Send coverage report to codecov for visualization
