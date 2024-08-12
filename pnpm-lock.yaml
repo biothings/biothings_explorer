@@ -175,13 +175,13 @@ importers:
   packages/api-response-transform:
     dependencies:
       '@biothings-explorer/smartapi-kg':
-        specifier: workspace:../smartapi-kg
+        specifier: workspace:*
         version: link:../smartapi-kg
       '@biothings-explorer/types':
-        specifier: workspace:../types
+        specifier: workspace:*
         version: link:../types
       '@biothings-explorer/utils':
-        specifier: workspace:../utils
+        specifier: workspace:*
         version: link:../utils
       '@commitlint/cli':
         specifier: ^17.8.1
@@ -363,7 +363,7 @@ importers:
         specifier: ^3.8.0
         version: 3.9.0
       biolink-model:
-        specifier: workspace:../biolink-model
+        specifier: workspace:*
         version: link:../biolink-model
       debug:
         specifier: ^4.3.4
@@ -427,19 +427,19 @@ importers:
   packages/bte-server:
     dependencies:
       '@biothings-explorer/call-apis':
-        specifier: workspace:../call-apis
+        specifier: workspace:*
         version: link:../call-apis
       '@biothings-explorer/query_graph_handler':
-        specifier: workspace:../query_graph_handler
+        specifier: workspace:*
         version: link:../query_graph_handler
       '@biothings-explorer/smartapi-kg':
-        specifier: workspace:../smartapi-kg
+        specifier: workspace:*
         version: link:../smartapi-kg
       '@biothings-explorer/types':
-        specifier: workspace:../types
+        specifier: workspace:*
         version: link:../types
       '@biothings-explorer/utils':
-        specifier: workspace:../utils
+        specifier: workspace:*
         version: link:../utils
       '@bull-board/api':
         specifier: ^5.9.1
@@ -689,16 +689,16 @@ importers:
   packages/call-apis:
     dependencies:
       '@biothings-explorer/api-response-transform':
-        specifier: workspace:../api-response-transform
+        specifier: workspace:*
         version: link:../api-response-transform
       '@biothings-explorer/smartapi-kg':
-        specifier: workspace:../smartapi-kg
+        specifier: workspace:*
         version: link:../smartapi-kg
       '@biothings-explorer/types':
-        specifier: workspace:../types
+        specifier: workspace:*
         version: link:../types
       '@biothings-explorer/utils':
-        specifier: workspace:../utils
+        specifier: workspace:*
         version: link:../utils
       '@sentry/node':
         specifier: ^7.74.1
@@ -713,7 +713,7 @@ importers:
         specifier: ^3.8.1
         version: 3.9.0
       biomedical_id_resolver:
-        specifier: workspace:../biomedical_id_resolver
+        specifier: workspace:*
         version: link:../biomedical_id_resolver
       debug:
         specifier: ^4.3.4
@@ -838,22 +838,22 @@ importers:
   packages/query_graph_handler:
     dependencies:
       '@biothings-explorer/api-response-transform':
-        specifier: workspace:../api-response-transform
+        specifier: workspace:*
         version: link:../api-response-transform
       '@biothings-explorer/call-apis':
-        specifier: workspace:../call-apis
+        specifier: workspace:*
         version: link:../call-apis
       '@biothings-explorer/node-expansion':
-        specifier: workspace:../node-expansion
+        specifier: workspace:*
         version: link:../node-expansion
       '@biothings-explorer/smartapi-kg':
-        specifier: workspace:../smartapi-kg
+        specifier: workspace:*
         version: link:../smartapi-kg
       '@biothings-explorer/types':
-        specifier: workspace:../types
+        specifier: workspace:*
         version: link:../types
       '@biothings-explorer/utils':
-        specifier: workspace:../utils
+        specifier: workspace:*
         version: link:../utils
       '@sentry/node':
         specifier: ^7.74.1
@@ -861,14 +861,11 @@ importers:
       async:
         specifier: ^3.2.4
         version: 3.2.4
-      axios:
-        specifier: ^0.27.2
-        version: 0.27.2(debug@4.3.4(supports-color@7.2.0))
       biolink-model:
-        specifier: workspace:../biolink-model
+        specifier: workspace:*
         version: link:../biolink-model
       biomedical_id_resolver:
-        specifier: workspace:../biomedical_id_resolver
+        specifier: workspace:*
         version: link:../biomedical_id_resolver
       chi-square-p-value:
         specifier: ^1.0.5
@@ -1086,13 +1083,13 @@ importers:
   packages/types:
     dependencies:
       '@biothings-explorer/smartapi-kg':
-        specifier: workspace:../smartapi-kg
+        specifier: workspace:*
         version: link:../smartapi-kg
       '@biothings-explorer/utils':
-        specifier: workspace:../utils
+        specifier: workspace:*
         version: link:../utils
       biomedical_id_resolver:
-        specifier: workspace:../biomedical_id_resolver
+        specifier: workspace:*
         version: link:../biomedical_id_resolver
     devDependencies:
       '@types/jest':
@@ -1108,7 +1105,7 @@ importers:
         specifier: ^7.74.1
         version: 7.74.1(supports-color@7.2.0)
       biolink-model:
-        specifier: workspace:../biolink-model
+        specifier: workspace:*
         version: link:../biolink-model
       debug:
         specifier: ^4.3.4
