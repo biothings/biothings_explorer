@@ -121,6 +121,7 @@ export interface TrapiAuxiliaryGraph {
 
 export interface TrapiPfocrFigure {
   figureUrl: string;
+  pfocrUrl: string;
   pmc: string;
   matchedCuries: string[];
   score: number;
