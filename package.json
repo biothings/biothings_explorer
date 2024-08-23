@@ -71,7 +71,7 @@
     "rimraf": "^3.0.2",
     "supertest": "^6.3.3",
     "supports-color": "^7.2.0",
-    "turbo": "^1.13.0",
+    "turbo": "^2.0.14",
     "typescript": "5.2.2"
   },
   "dependencies": {
@@ -111,5 +111,6 @@
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
-  }
+  },
+  "packageManager": "pnpm@9.8.0"
 }
