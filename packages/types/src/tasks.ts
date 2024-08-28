@@ -6,7 +6,7 @@ import {
   TrapiSchema,
   TrapiWorkflow,
 } from "./trapi";
-import {
+import MetaKG, {
   SmartAPIKGOperationObject,
   SmartAPIQueryResult,
 } from "@biothings-explorer/smartapi-kg";
@@ -35,7 +35,7 @@ export interface QueryHandlerOptions extends QueryOptions {
 
 export interface QueueData {
   queryGraph: TrapiQueryGraph;
-  options: QueryOptions;
+  options: QueryHandlerOptions;
   workflow?: TrapiWorkflow[];
   callback_url?: string;
   smartAPIID?: string;
