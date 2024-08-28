@@ -3,6 +3,8 @@ export interface TrapiQNode {
   categories?: string[];
   is_set?: boolean;
   constraints?: TrapiAttributeConstraint[];
+  set_interpretation?: string;
+  member_ids?: string[];
 }
 
 export interface TrapiQEdge {
