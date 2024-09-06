@@ -3,6 +3,8 @@ export interface TrapiQNode {
   categories?: string[];
   is_set?: boolean;
   constraints?: TrapiAttributeConstraint[];
+  set_interpretation?: string;
+  member_ids?: string[];
 }
 
 export interface TrapiQEdge {
@@ -121,6 +123,7 @@ export interface TrapiAuxiliaryGraph {
 
 export interface TrapiPfocrFigure {
   figureUrl: string;
+  pfocrUrl: string;
   pmc: string;
   matchedCuries: string[];
   score: number;

@@ -94,6 +94,14 @@ Several environment variables are supported for various purposes, listed below:
 
 **Description:** Maximum number of records allowable in a single query execution, after which the query will be terminated.
 
+#### `NGD_TIMEOUT_MS`
+
+**Default:** `10000`
+
+**Docker Default:** `10000`
+
+**Description:** Timeout used for the NGD scoring process of results.
+
 #### `NODE_ENV`
 
 **Default:** `development`
