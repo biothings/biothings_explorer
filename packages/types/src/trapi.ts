@@ -97,12 +97,12 @@ export interface TrapiAttributeConstraint {
 export interface TrapiNodeBinding {
   id: string;
   query_id?: string;
-  attributes?: TrapiAttribute[];
+  attributes: TrapiAttribute[];
 }
 
 export interface TrapiEdgeBinding {
   id: string;
-  attributes?: TrapiAttribute[];
+  attributes: TrapiAttribute[];
 }
 
 export interface TrapiAnalysis {
