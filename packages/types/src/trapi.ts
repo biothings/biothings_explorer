@@ -118,7 +118,7 @@ export interface TrapiAnalysis {
 
 export interface TrapiAuxiliaryGraph {
   edges: string[];
-  attributes?: TrapiAttribute[];
+  attributes: TrapiAttribute[];
 }
 
 export interface TrapiPfocrFigure {
