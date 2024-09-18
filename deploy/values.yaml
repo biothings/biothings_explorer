@@ -78,8 +78,8 @@ affinity:
       topologyKey: "kubernetes.io/hostname"
 resources:
   requests:
-    memory: 50Gi
-    cpu: 10000m
+    memory: 30Gi
+    cpu: 8000m
   limits:
-    memory: 58Gi
-    cpu: 14000m 
+    memory: 38Gi
+    cpu: 10000m 
