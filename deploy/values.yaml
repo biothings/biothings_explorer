@@ -67,15 +67,15 @@ affinity:
           values:
           - bte
   # this ensures only ONE pod will run on each node
-  podAntiAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-    - labelSelector:
-        matchExpressions:
-        - key: app.kubernetes.io/name
-          operator: In
-          values:
-          - bte
-      topologyKey: "kubernetes.io/hostname"
+  # podAntiAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #   - labelSelector:
+  #       matchExpressions:
+  #       - key: app.kubernetes.io/name
+  #         operator: In
+  #         values:
+  #         - bte
+  #     topologyKey: "kubernetes.io/hostname"
 resources:
   requests:
     memory: 25Gi
