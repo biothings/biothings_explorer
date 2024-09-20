@@ -9,6 +9,7 @@ import QNode from "./query_node";
 import { resolveSRI } from "biomedical_id_resolver";
 import _ from "lodash";
 import * as utils from "@biothings-explorer/utils";
+import { NotImplementedError } from "./exceptions";
 
 const debug = Debug("bte:query_graph");
 
@@ -18,9 +19,11 @@ export default class QueryGraph {
   logs: StampedLog[];
   nodes: { [QNodeID: string]: QNode };
   edges: { [QEdgeID: string]: QEdge };
-  constructor(queryGraph: TrapiQueryGraph, schema: any) {
+  skipCycleDetection: boolean;
+  constructor(queryGraph: TrapiQueryGraph, schema: any, skipCycleDetection = false) {
     this.queryGraph = queryGraph;
     this.schema = schema;
+    this.skipCycleDetection = skipCycleDetection;
     this.logs = [];
   }
 
@@ -110,7 +113,7 @@ export default class QueryGraph {
     }
 
     for (const firstNode in nodes) {
-      if (nodes[firstNode].visited === true) continue;
+      if (nodes[firstNode].visited == true) continue;
       const stack: { curNode: string; parent: string | number }[] = [
         { curNode: firstNode, parent: -1 },
       ];
@@ -206,6 +209,14 @@ export default class QueryGraph {
       }
     });
   }
+  
+  _validateNoMCQ(queryGraph: TrapiQueryGraph): boolean {
+    return Object.values(queryGraph.nodes).some((node) => {
+      if (node.set_interpretation && node.set_interpretation.toLowerCase() === 'many') {
+        throw new NotImplementedError('NotImplementedError', 'Set interpretation is not yet implemented.')
+      }
+    })
+  }
 
   _validate(queryGraph: TrapiQueryGraph): void {
     this._validateEmptyEdges(queryGraph);
@@ -216,8 +227,9 @@ export default class QueryGraph {
     this._validateNodeProperties(queryGraph);
     this._validateEdgeProperties(queryGraph);
     this._validateBatchSize(queryGraph);
-    this._validateCycles(queryGraph);
+    !this.skipCycleDetection && this._validateCycles(queryGraph);
     this._validateNoDuplicateQualifierTypes(queryGraph);
+    this._validateNoMCQ(queryGraph);
   }
 
   private async _findNodeCategories(curies: string[]): Promise<string[]> {
@@ -413,6 +425,14 @@ export default class QueryGraph {
         ) {
           nodes[qNodeID].categories.push("biolink:Gene");
         }
+        if (
+          nodes[qNodeID].categories.includes('biolink:Gene') &&
+          !nodes[qNodeID].categories.includes('biolink:Protein')
+        ) {
+          nodes[qNodeID].categories.push('biolink:Protein');
+        }
+        // Ensure categories are rolled into expandedCategories
+        nodes[qNodeID].expandCategories()
       }
     }
     this.logs.push(

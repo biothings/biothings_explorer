@@ -469,6 +469,8 @@ export class Record {
           sourceA.resource_id.localeCompare(sourceB.resource_id),
         ).map(source => _.omit(source, ["source_record_urls"])),
       ),
+      this.knowledge_level,
+      this.agent_type
     ].join("-");
   }
 
@@ -511,9 +513,9 @@ export class Record {
 
   get apiInforesCurie(): string {
     if (this.association["x-translator"]) {
-      return this.association["x-translator"]["infores"] || undefined;
+      return this.association["x-translator"]["infores"] || "infores:error-not-provided";
     }
-    return undefined;
+    return "infores:error-not-provided";
   }
 
   get metaEdgeSource(): string {

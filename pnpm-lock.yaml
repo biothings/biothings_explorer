@@ -21,8 +21,8 @@ importers:
         specifier: ^0.28.0
         version: 0.28.0(debug@4.3.4(supports-color@7.2.0))
       body-parser:
-        specifier: ^1.20.2
-        version: 1.20.2(supports-color@7.2.0)
+        specifier: ^1.20.3
+        version: 1.20.3(supports-color@7.2.0)
       bull:
         specifier: ^4.11.4
         version: 4.11.4(supports-color@7.2.0)
@@ -42,8 +42,8 @@ importers:
         specifier: ^8.6.0
         version: 8.6.0
       express:
-        specifier: ^4.18.2
-        version: 4.18.2(supports-color@7.2.0)
+        specifier: ^4.20.0
+        version: 4.20.0(supports-color@7.2.0)
       express-rate-limit:
         specifier: ^5.5.1
         version: 5.5.1
@@ -20600,7 +20600,7 @@ snapshots:
   set-function-length@1.1.1:
     dependencies:
       define-data-property: 1.1.1
-      get-intrinsic: 1.2.1
+      get-intrinsic: 1.2.4
       gopd: 1.0.1
       has-property-descriptors: 1.0.0
 
@@ -20955,7 +20955,7 @@ snapshots:
       formidable: 2.1.2
       methods: 1.1.2
       mime: 2.6.0
-      qs: 6.11.2
+      qs: 6.13.0
       semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
@@ -21385,7 +21385,7 @@ snapshots:
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 20.9.0
+      '@types/node': 20.8.7
       acorn: 8.10.0
       acorn-walk: 8.3.2
       arg: 4.1.3
