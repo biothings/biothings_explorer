@@ -357,13 +357,13 @@ importers:
         specifier: ^11.0.0
         version: 11.0.0
       axios:
-        specifier: ^0.21.4
-        version: 0.21.4(debug@4.3.4(supports-color@7.2.0))
+        specifier: ^1.7.2
+        version: 1.7.7(debug@4.3.4(supports-color@7.2.0))
       axios-retry:
         specifier: ^3.8.0
         version: 3.9.0
       biolink-model:
-        specifier: workspace:*
+        specifier: workspace:../biolink-model
         version: link:../biolink-model
       debug:
         specifier: ^4.3.4
@@ -4198,6 +4198,9 @@ packages:
   axios@1.5.1:
     resolution: {integrity: sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==}
 
+  axios@1.7.7:
+    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
+
   babel-jest@29.7.0:
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -5942,6 +5945,15 @@ packages:
 
   follow-redirects@1.15.3:
     resolution: {integrity: sha512-1VzOtuEM8pC9SFU1E+8KfTjZyMztRsgEfwQl44z8A25uy13jSzTj6dyK2Df52iV0vgHCfBwLhDWevLn95w5v6Q==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
+  follow-redirects@1.15.9:
+    resolution: {integrity: sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -14445,6 +14457,14 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  axios@1.7.7(debug@4.3.4(supports-color@7.2.0)):
+    dependencies:
+      follow-redirects: 1.15.9(debug@4.3.4(supports-color@7.2.0))
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   babel-jest@29.7.0(@babel/core@7.23.2(supports-color@7.2.0))(supports-color@7.2.0):
     dependencies:
       '@babel/core': 7.23.2(supports-color@7.2.0)
@@ -16714,6 +16734,10 @@ snapshots:
       debug: 2.6.9(supports-color@7.2.0)
 
   follow-redirects@1.15.3(debug@4.3.4(supports-color@7.2.0)):
+    optionalDependencies:
+      debug: 4.3.4(supports-color@7.2.0)
+
+  follow-redirects@1.15.9(debug@4.3.4(supports-color@7.2.0)):
     optionalDependencies:
       debug: 4.3.4(supports-color@7.2.0)
 
@@ -19282,7 +19306,7 @@ snapshots:
       '@yarnpkg/lockfile': 1.1.0
       '@yarnpkg/parsers': 3.0.0-rc.46
       '@zkochan/js-yaml': 0.0.6
-      axios: 1.5.1(debug@4.3.4(supports-color@7.2.0))
+      axios: 1.7.7(debug@4.3.4(supports-color@7.2.0))
       chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.6.1
