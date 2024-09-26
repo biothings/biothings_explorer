@@ -17,6 +17,7 @@ export interface QueryOptions {
   submitter?: string;
   smartAPIID?: string;
   teamName?: string;
+  dryrun_pathfinder?: boolean;
   dryrun?: boolean;
   caching?: boolean; // from request url query values
 }
