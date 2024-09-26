@@ -31,6 +31,7 @@ export interface QueryHandlerOptions extends QueryOptions {
   resolveOutputIDs?: boolean;
   EDGE_ATTRIBUTES_USED_IN_RECORD_HASH?: string[];
   smartapi?: SmartAPIQueryResult;
+  skipPfocr?: boolean;
 }
 
 export interface QueueData {
