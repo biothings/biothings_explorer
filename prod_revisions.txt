@@ -2,8 +2,8 @@
 > @biothings-explorer/bte-trapi@3.0.0 get_rev /Users/jcallaghan/Projects/bte-main
 > ./scripts/get_rev.sh
 
-# Generated from "pnpm run get_rev" on  Thu Sep 26 13:37:17 EDT 2024
-https://github.com/biothings/bte-server.git b9e489b b9e489bb58704b4165efc639820d4b82d5285f2b
+# Generated from "pnpm run get_rev" on  Thu Sep 26 15:33:49 EDT 2024
+https://github.com/biothings/bte-server.git c7f2860 c7f2860f48e5fa294258a9a72a5057a632997b27
 https://github.com/biothings/api-respone-transform.js.git 13c306d 13c306d2accc288d99ade65cb684244498e75013
 https://github.com/biothings/call-apis.js.git 273b866 273b866273056e9e43ab057c25e76758bfa23944
 https://github.com/biothings/smartapi-kg.js.git a328307 a3283077e18145d1865e4a9ba57ef56846d19264
