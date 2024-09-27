@@ -17,8 +17,8 @@
     "format:fix": "prettier --write .",
     "lint": "eslint . --ext .ts,.js",
     "lint:fix": "pnpm lint --fix",
-    "test": "turbo run --parallel test",
-    "test-cov": "turbo run --parallel test-cov",
+    "test": "turbo run --parallel test --ui tui",
+    "test-cov": "turbo run --parallel test-cov --ui tui",
     "siege-local": "artillery run -e local --output report_local.json --config performance-test/config.yaml performance-test/scenarios/creative.yaml",
     "smartapi_sync": "node ./scripts/smartapi_sync.js",
     "get_rev": "./scripts/get_rev.sh",
@@ -71,7 +71,7 @@
     "rimraf": "^3.0.2",
     "supertest": "^6.3.3",
     "supports-color": "^7.2.0",
-    "turbo": "^1.13.0",
+    "turbo": "^2.0.14",
     "typescript": "5.2.2"
   },
   "dependencies": {
@@ -111,5 +111,6 @@
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
-  }
+  },
+  "packageManager": "pnpm@9.8.0"
 }
