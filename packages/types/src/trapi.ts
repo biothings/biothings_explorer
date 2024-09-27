@@ -67,12 +67,12 @@ export interface TrapiAttribute {
   value_type_id?: string;
   attribute_source?: string | null;
   value_url?: string | null;
-  attributes?: TrapiAttribute;
+  attributes?: TrapiAttribute[];
   [additionalProperties: string]:
   | string
   | string[]
   | null
-  | TrapiAttribute
+  | TrapiAttribute[]
   | number
   | number[];
 }
