@@ -1,6 +1,15 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "globalDependencies": [
+    ".eslintrc.js",
+    ".eslintignore",
+    ".lintstagedrc.js",
+    ".prettierrc.yaml",
+    "tsconfig.base.json",
+    "tsconfig.build.json",
+    "tsconfig.json"
+  ],
+  "tasks": {
     "build": {
       "dependsOn": [
         "^build"
@@ -55,14 +64,5 @@
     "lint:fix": {},
     "format": {},
     "format:fix": {}
-  },
-  "globalDependencies": [
-    ".eslintrc.js",
-    ".eslintignore",
-    ".lintstagedrc.js",
-    ".prettierrc.yaml",
-    "tsconfig.base.json",
-    "tsconfig.build.json",
-    "tsconfig.json"
-  ]
+  }
 }

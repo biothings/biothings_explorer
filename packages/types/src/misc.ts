@@ -4,6 +4,7 @@ export type APIDefinition = {
   name: string; // Must match name on SmartAPI registry
   infores?: string; // infores of API
   primarySource?: boolean;
+  includeFlipped?: boolean; // Automatically generate flipped MetaEdges (TRAPI only)
 } & ({ id: string } | { infores: string });
 
 export interface APIList {
