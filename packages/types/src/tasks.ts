@@ -43,6 +43,8 @@ export interface QueueData {
   smartAPIID?: string;
   teamName?: string;
   route: string;
+  traceparent?: string;
+  tracestate?: string;
 }
 
 export interface QueryParams {
