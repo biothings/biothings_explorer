@@ -205,6 +205,7 @@
         "RESULT_CACHING": "true",
         "JAEGER_HOST": "http://localhost",
         "JAEGER_PORT": "4318",
+        "JAEGER_RES_NAME": "/v1/traces",
       },
       "request": "launch",
       "skipFiles": [
