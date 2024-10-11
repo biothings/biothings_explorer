@@ -213,5 +213,29 @@
       "stopOnEntry": true,
       "console": "integratedTerminal"
     },
+    {
+      "name": "Build w/ Jaeger NO Cache",
+      "type": "pwa-node",
+      "runtimeArgs": [
+        "run",
+        "debug-otel",
+      ],
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "pnpm",
+      "restart": false,
+      "env": {
+        "DEBUG": "biomedical-id-resolver,bte*",
+        "SMARTAPI_SYNC": "false",
+        "RESULT_CACHING": "false",
+        "JAEGER_HOST": "localhost",
+        "JAEGER_PORT": "4318",
+      },
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "stopOnEntry": true,
+      "console": "integratedTerminal"
+    },
   ]
 }
