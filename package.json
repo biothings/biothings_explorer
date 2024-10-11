@@ -17,8 +17,8 @@
     "format:fix": "prettier --write .",
     "lint": "eslint . --ext .ts,.js",
     "lint:fix": "pnpm lint --fix",
-    "test": "turbo run --parallel test",
-    "test-cov": "turbo run --parallel test-cov",
+    "test": "turbo run --parallel test --ui tui",
+    "test-cov": "turbo run --parallel test-cov --ui tui",
     "siege-local": "artillery run -e local --output report_local.json --config performance-test/config.yaml performance-test/scenarios/creative.yaml",
     "smartapi_sync": "node ./scripts/smartapi_sync.js",
     "get_rev": "./scripts/get_rev.sh",
@@ -26,7 +26,9 @@
     "start": "./scripts/start_server.sh",
     "stop": "./scripts/stop_server.sh",
     "watch": "nodemon -e js,mjs,json,ts --watch './packages/**/src/*' './packages/**/data/*' --exec 'pnpm run build && node .'",
-    "debug": "DEBUG=biomedical-id-resolver,bte* pnpm run watch"
+    "watch-otel": "nodemon -e js,mjs,json,ts --watch './packages/**/src/*' './packages/**/data/*' --exec 'pnpm run build && node --require ./packages/bte-server/built/controllers/opentelemetry.js .'",
+    "debug": "DEBUG=biomedical-id-resolver,bte* pnpm run watch",
+    "debug-otel": "DEBUG=biomedical-id-resolver,bte* pnpm run watch-otel"
   },
   "engines": {
     "node": ">=18.0.0",
@@ -71,7 +73,7 @@
     "rimraf": "^3.0.2",
     "supertest": "^6.3.3",
     "supports-color": "^7.2.0",
-    "turbo": "^1.13.0",
+    "turbo": "^2.0.14",
     "typescript": "5.2.2"
   },
   "dependencies": {
@@ -79,14 +81,14 @@
     "@sentry/node": "^7.74.1",
     "@sentry/profiling-node": "^1.2.1",
     "axios": "^0.28.0",
-    "body-parser": "^1.20.2",
+    "body-parser": "^1.20.3",
     "bull": "^4.11.4",
     "compression": "^1.7.4",
     "connect-history-api-fallback": "^2.0.0",
     "cors": "^2.8.5",
     "debug": "^4.3.4",
     "dotenv": "^8.6.0",
-    "express": "^4.18.2",
+    "express": "^4.20.0",
     "express-rate-limit": "^5.5.1",
     "express-winston": "^4.2.0",
     "helmet": "^4.6.0",
@@ -111,5 +113,6 @@
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
-  }
+  },
+  "packageManager": "pnpm@9.8.0"
 }

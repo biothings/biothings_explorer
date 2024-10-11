@@ -67,12 +67,12 @@ export interface TrapiAttribute {
   value_type_id?: string;
   attribute_source?: string | null;
   value_url?: string | null;
-  attributes?: TrapiAttribute;
+  attributes?: TrapiAttribute[];
   [additionalProperties: string]:
   | string
   | string[]
   | null
-  | TrapiAttribute
+  | TrapiAttribute[]
   | number
   | number[];
 }
@@ -97,12 +97,12 @@ export interface TrapiAttributeConstraint {
 export interface TrapiNodeBinding {
   id: string;
   query_id?: string;
-  attributes?: TrapiAttribute[];
+  attributes: TrapiAttribute[];
 }
 
 export interface TrapiEdgeBinding {
   id: string;
-  attributes?: TrapiAttribute[];
+  attributes: TrapiAttribute[];
 }
 
 export interface TrapiAnalysis {
@@ -118,7 +118,7 @@ export interface TrapiAnalysis {
 
 export interface TrapiAuxiliaryGraph {
   edges: string[];
-  attributes?: TrapiAttribute[];
+  attributes: TrapiAttribute[];
 }
 
 export interface TrapiPfocrFigure {

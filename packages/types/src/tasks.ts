@@ -6,7 +6,7 @@ import {
   TrapiSchema,
   TrapiWorkflow,
 } from "./trapi";
-import {
+import MetaKG, {
   SmartAPIKGOperationObject,
   SmartAPIQueryResult,
 } from "@biothings-explorer/smartapi-kg";
@@ -17,6 +17,7 @@ export interface QueryOptions {
   submitter?: string;
   smartAPIID?: string;
   teamName?: string;
+  dryrun_pathfinder?: boolean;
   dryrun?: boolean;
   caching?: boolean; // from request url query values
 }
@@ -31,16 +32,20 @@ export interface QueryHandlerOptions extends QueryOptions {
   resolveOutputIDs?: boolean;
   EDGE_ATTRIBUTES_USED_IN_RECORD_HASH?: string[];
   smartapi?: SmartAPIQueryResult;
+  skipPfocr?: boolean;
+  handlerIndex?: number;
 }
 
 export interface QueueData {
   queryGraph: TrapiQueryGraph;
-  options: QueryOptions;
+  options: QueryHandlerOptions;
   workflow?: TrapiWorkflow[];
   callback_url?: string;
   smartAPIID?: string;
   teamName?: string;
   route: string;
+  traceparent?: string;
+  tracestate?: string;
 }
 
 export interface QueryParams {
