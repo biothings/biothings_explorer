@@ -13,11 +13,15 @@ export interface QueryQueue {
   bte_query_queue_by_team: Queue;
 }
 
+export interface recordCount {
+  [handler_index: number]: number;
+}
+
 export interface QueryInformation {
   queryGraph: TrapiQueryGraph;
   isCreativeMode?: boolean;
   creativeTemplate?: string;
-  totalRecords?: number;
+  totalRecords?: recordCount;
   jobID?: string;
   callback_url?: string;
 }

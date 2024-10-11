@@ -33,6 +33,7 @@ export interface QueryHandlerOptions extends QueryOptions {
   EDGE_ATTRIBUTES_USED_IN_RECORD_HASH?: string[];
   smartapi?: SmartAPIQueryResult;
   skipPfocr?: boolean;
+  handlerIndex?: number;
 }
 
 export interface QueueData {
@@ -43,6 +44,8 @@ export interface QueueData {
   smartAPIID?: string;
   teamName?: string;
   route: string;
+  traceparent?: string;
+  tracestate?: string;
 }
 
 export interface QueryParams {
