@@ -1,14 +1,14 @@
 
-> @biothings-explorer/bte-trapi@3.0.0 get_rev /Users/anudeep-mac/Desktop/dev/biothings/biothings_explorer
+> @biothings-explorer/bte-trapi@3.0.0 get_rev /Users/jcallaghan/Projects/bte-ci
 > ./scripts/get_rev.sh
 
-# Generated from "pnpm run get_rev" on  Fri Oct 11 16:08:35 EDT 2024
-https://github.com/biothings/bte-server.git cc22b21 cc22b21267001573b00315ba8f34c3d300f9438f
+# Generated from "pnpm run get_rev" on  Wed Oct 16 13:29:41 EDT 2024
+https://github.com/biothings/bte-server.git d00498c d00498c6b61976fa951e7142bc587b3f592add5e
 https://github.com/biothings/api-respone-transform.js.git 356ba91 356ba91ecd681b3ac3c9fa2e9eca56dc2884747e
-https://github.com/biothings/call-apis.js.git 273b866 273b866273056e9e43ab057c25e76758bfa23944
+https://github.com/biothings/call-apis.js.git f02d561 f02d5616a5855cebb6cebe04917972ed639e2002
 https://github.com/biothings/smartapi-kg.js.git bac4cc2 bac4cc292e36c2d9448f347bc021c576d4643b40
-https://github.com/biothings/bte_trapi_query_graph_handler.git 9f27ba7 9f27ba7b328b658e961535f5de06848c168d1e04
+https://github.com/biothings/bte_trapi_query_graph_handler.git cd021c4 cd021c45ed2ec79a556f860aa52fa62aa045e8fe
 https://github.com/biothings/node-expansion.git d140a26 d140a264e96d71fc20da90891bd37c4f4d0e06a8
 https://github.com/biothings/biolink-model.js.git 12a862b 12a862b3d61d8b3ae72c2d2ec30153263e479e05
-https://github.com/biothings/biomedical_id_resolver.js.git 8c1f094 8c1f094d7525fb1ddc6502a379ae2e23f9dbfbe5
-https://github.com/biothings/bte-utils.git 581f71b 581f71b3d5b5e8068ee6776afe282635de97857f
+https://github.com/biothings/biomedical_id_resolver.js.git 3761d62 3761d6255a83dd9f92bd68a1cf7a9e19a5569e75
+https://github.com/biothings/bte-utils.git 0e5358b 0e5358b33b65bcf4eee009b3ff0f2a76b6a09bd4
