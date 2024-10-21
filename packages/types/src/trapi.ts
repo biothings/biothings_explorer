@@ -126,6 +126,7 @@ export interface TrapiPfocrFigure {
   pfocrUrl: string;
   pmc: string;
   matchedCuries: string[];
+  matchedKGNodes: string[];
   score: number;
 }
 
