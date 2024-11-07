@@ -24,7 +24,7 @@ export interface QueryOptions {
 
 // Options as they are passed to the Query Handler
 export interface QueryHandlerOptions extends QueryOptions {
-  metakg_ops?: SmartAPIKGOperationObject[]; // list of meta kg ops
+  metakg?: SmartAPIKGOperationObject[]; // list of meta kg ops
   provenanceUsesServiceProvider?: boolean;
   enableIDResolution?: boolean;
   apiList?: APIList;
