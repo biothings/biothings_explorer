@@ -69,8 +69,8 @@ importers:
         specifier: ^0.6.5
         version: 0.6.5
       nanoid:
-        specifier: ^3.3.6
-        version: 3.3.6
+        specifier: ^3.3.8
+        version: 3.3.8
       node-cron:
         specifier: ^2.0.3
         version: 2.0.3
@@ -4472,6 +4472,11 @@ packages:
 
   nanoid@3.3.6:
     resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}
+    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+
+  nanoid@3.3.8:
+    resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
@@ -12037,6 +12042,8 @@ snapshots:
   nano-memoize@1.3.1: {}
 
   nanoid@3.3.6: {}
+
+  nanoid@3.3.8: {}
 
   nanotimer@0.3.14: {}
 
